@@ -28,34 +28,39 @@ mixin NavMixin {
     Color pencilIconColor = Colors.white,
   }) => BlocBuilder<CAPIBloC, CAPIState>(
     builder: (context, state) {
-      bool showPencil = !fco.canEditContent();
+      final dropdownItems = <DropdownMenuItem<String>>[];
+      bool showPencil =
+          !fco.canEditAnyContent() &&
+          !fco.isArticleEditor() &&
+          !fco.isGuestEditor();
       if (showPencil) {
-        final dropdownItems = <DropdownMenuItem<String>>[];
         dropdownItems.add(
           _dropdownItemWithPI(
             value: 'sign-in-as-editor',
             child: Text('sign in as a Content editor'),
           ),
         );
-        if (fco.router != null) {
-          dropdownItems.add(
-            _dropdownItemWithPI(
-              value: 'create-editable-page',
-              child: RichText(
-                text: TextSpan(
-                  text: 'create your own ',
-                  style: TextStyle(color: Colors.grey),
-                  children: [
-                    TextSpan(
-                      text: 'editable',
-                      style: TextStyle(color: Colors.purpleAccent),
-                    ),
-                    TextSpan(text: ' page'),
-                  ],
+        if (fco.canEditAnyContent()) {
+          if (fco.router != null) {
+            dropdownItems.add(
+              _dropdownItemWithPI(
+                value: 'create-editable-page',
+                child: RichText(
+                  text: TextSpan(
+                    text: 'create your own ',
+                    style: TextStyle(color: Colors.grey),
+                    children: [
+                      TextSpan(
+                        text: 'editable',
+                        style: TextStyle(color: Colors.purpleAccent),
+                      ),
+                      TextSpan(text: ' page'),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
+            );
+          }
         }
         addBrightnessItem(dropdownItems);
 
@@ -84,11 +89,11 @@ mixin NavMixin {
           ),
         );
       } else {
-        final dropdownItems = <DropdownMenuItem<String>>[];
+        // signed in as super, article or guest editor
         dropdownItems.add(
           _dropdownItemWithPI(value: 'sign-out', child: _signOutBtn(context)),
         );
-        if (fco.router != null) {
+        if (fco.canEditAnyContent() && fco.router != null) {
           dropdownItems.add(
             _dropdownItemWithPI(
               value: 'create-editable-page',
@@ -108,24 +113,28 @@ mixin NavMixin {
             ),
           );
         }
-        for (String pagePath in fco.pageList) {
-          // skip currentPath
-          try {
-            final String currentPath = GoRouterState.of(context).uri.toString();
-            if (pagePath != currentPath) {
-              String sandboxIndicator =
-                  (fco.appInfo.anonymousUserEditablePages.contains(pagePath))
-                  ? ' *'
-                  : "";
-              dropdownItems.add(
-                _dropdownItemWithPI(
-                  value: pagePath,
-                  child: _pageNavBtn(context, pagePath, sandboxIndicator),
-                ),
-              );
+        if (!fco.isGuestEditor()) {
+          for (String pagePath in fco.pageList) {
+            // skip currentPath
+            try {
+              final String currentPath = GoRouterState.of(
+                context,
+              ).uri.toString();
+              if (pagePath != currentPath) {
+                String sandboxIndicator =
+                    (fco.appInfo.anonymousUserEditablePages.contains(pagePath))
+                    ? ' *'
+                    : "";
+                dropdownItems.add(
+                  _dropdownItemWithPI(
+                    value: pagePath,
+                    child: _pageNavBtn(context, pagePath, sandboxIndicator),
+                  ),
+                );
+              }
+            } catch (e) {
+              print(e);
             }
-          } catch (e) {
-            print(e);
           }
         }
         addBrightnessItem(dropdownItems);
@@ -136,7 +145,7 @@ mixin NavMixin {
             items: dropdownItems,
             underline: Offstage(),
             icon: PointerInterceptor(
-              child: Icon(Icons.more_vert, color: Colors.red, size: 24),
+              child: Icon(Icons.more_vert, color: fco.canEditAnyContent() ? Colors.red : Colors.purpleAccent, size: 24),
             ),
             onChanged: (value) {
               if (fco.router != null) {

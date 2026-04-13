@@ -61,12 +61,14 @@ class UMLImageNodeMapper extends SubClassMapperBase<UMLImageNode> {
     'fit',
     _$fit,
     opt: true,
+    def: BoxFitEnum.none,
   );
   static AlignmentEnum? _$alignment(UMLImageNode v) => v.alignment;
   static const Field<UMLImageNode, AlignmentEnum> _f$alignment = Field(
     'alignment',
     _$alignment,
     opt: true,
+    def: AlignmentEnum.center,
   );
   static String _$uid(UMLImageNode v) => v.uid;
   static const Field<UMLImageNode, String> _f$uid = Field(

@@ -203,7 +203,7 @@ class QuillTargetModel extends TargetConfigModel with QuillTargetModelMappable {
   // );
 
   Widget possiblyEditableContent({required bool justPlaying}) =>
-      fco.canEditContent() && !justPlaying
+      fco.canEditAnyContent() && !justPlaying
       ? content(justPlaying: justPlaying)
       : content(justPlaying: justPlaying);
 

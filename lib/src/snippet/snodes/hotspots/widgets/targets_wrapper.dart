@@ -34,7 +34,7 @@ class TargetsWrapper extends StatefulWidget {
     TargetsWrapperState wrapperState, {
     bool quickly = false,
   }) {
-    if (!fco.canEditContent()) return;
+    if (!fco.canEditAnyContent()) return;
 
     var coverGK = tc.gk;
     Rect? targetRect = coverGK!.globalPaintBounds();
@@ -142,7 +142,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
   // Offset? _lineStartPos;
   // Offset? _lineEndPos;
 
-  bool canAutoPlay() => _canAutoPlay && !fco.canEditContent();
+  bool canAutoPlay() => _canAutoPlay && !fco.canEditAnyContent();
 
   // Offset? wrapperPos;
   // Size? _wrapperSize;
@@ -207,13 +207,13 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 
       // after 2nd build can auto play callouts if not signed in
       fco.afterMsDelayDo(2000, () {
-        if (mounted && !fco.canEditContent()) _canAutoPlay = true;
+        if (mounted && !fco.canEditAnyContent()) _canAutoPlay = true;
       });
     });
   }
 
   void autoPlayTargets() {
-    if (fco.canEditContent()) return;
+    if (fco.canEditAnyContent()) return;
     for (HotspotTargetModel tc in widget.parentNode.targets) {
       if (!tc.hasABtn() && !fco.anyPresent([tc.contentCId])) {
         tc.showContentCallout(
@@ -394,7 +394,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     return BlocConsumer<CAPIBloC, CAPIState>(
       // autoPlay callouts when just signed out
       listenWhen: (prev, curr) {
-        return prev.isSignedIn != curr.isSignedIn && !curr.isSignedIn;
+        return prev.isSignedInAsSuperEditor != curr.isSignedInAsSuperEditor && !curr.isSignedInAsSuperEditor;
       },
       listener: (context, state) {
         autoPlayTargets();
@@ -450,13 +450,13 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                   // },
                   onTapUp: (TapUpDetails details) async {
                     // ignore if not in editing mode or if currently showing config toolbar
-                    if (!fco.canEditContent() ||
+                    if (!fco.canEditAnyContent() ||
                         fco.anyPresent([HotspotTargetConfigToolbar.CID]) ||
                         fco.snippetBeingEdited != null) {
                       return;
                     }
                     // dismiss any auto-played target callouts
-                    if (fco.canEditContent()) {
+                    if (fco.canEditAnyContent()) {
                       bool hidACallout = false;
                       for (HotspotTargetModel tc in widget.parentNode.targets) {
                         if (!tc.hasABtn() &&

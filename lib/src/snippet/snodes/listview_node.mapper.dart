@@ -16,6 +16,7 @@ class ListViewNodeMapper extends SubClassMapperBase<ListViewNode> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ListViewNodeMapper._());
       BoxScrollViewNodeMapper.ensureInitialized().addSubMapper(_instance!);
+      ArticleListViewNodeMapper.ensureInitialized();
       EdgeInsetsValueMapper.ensureInitialized();
       SNodeMapper.ensureInitialized();
     }

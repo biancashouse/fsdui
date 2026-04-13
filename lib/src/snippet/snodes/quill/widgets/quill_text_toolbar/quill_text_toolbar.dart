@@ -226,7 +226,7 @@ class QuillTextToolbarState extends State<QuillTextToolbar> {
       );
 
   QuillTargetModel? _createQuillTarget() {
-    if (!fco.canEditContent()) return null;
+    if (!fco.canEditAnyContent()) return null;
 
     TargetId newTargetId = DateTime.now().millisecondsSinceEpoch;
     return QuillTargetModel(

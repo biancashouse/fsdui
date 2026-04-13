@@ -1,12 +1,8 @@
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/api/snippet_builder/tr_triangle_painter.dart'
-    show TRTriangle;
 import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'snippet_root_node.mapper.dart';
 
@@ -140,7 +136,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
             Icon(Icons.warning, color: Colors.red, size: 24);
 
         // guest or editing or selecting a widget node
-        if (!bloc.state.isSignedIn ||
+        if (!bloc.state.isSignedInAsSuperEditor ||
             bloc.aSnippetIsBeingEdited() ||
             bloc.showTappableBorderRects()) {
           return snippetWidget;
@@ -176,7 +172,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
               }
 
               // guest or editing or selecting a widget node
-              if (!bloc.state.isSignedIn ||
+              if (!bloc.state.isSignedInAsSuperEditor ||
                   bloc.aSnippetIsBeingEdited() ||
                   bloc.showTappableBorderRects()) {
                 return snippetWidget;
@@ -217,7 +213,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
     bool editingPublishedVersion =
         snippetInfo.publishedVersionId == snippetInfo.editingVersionId;
 
-    return fco.canEditContent()
+    return fco.canEditAnyContent()
         ? ValueListenableBuilder<String>(
             // must assume snippetInfo will be in cache
             valueListenable: snippetInfo.getChangeNotifier(),

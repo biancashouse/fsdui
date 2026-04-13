@@ -39,7 +39,7 @@ class TargetPlayBtn extends StatelessWidget {
     HotspotTargetModel tc,
     bool toolbarPresent,
   ) {
-    return !fco.canEditContent()
+    return !fco.canEditAnyContent()
         ? GestureDetector(
             onTap: () {
               wrapperState.widget.parentNode.playList.toList()
@@ -93,7 +93,7 @@ class TargetPlayBtn extends StatelessWidget {
                 );
               },
               onLongPressDown: () {
-                if (fco.canEditContent())
+                if (fco.canEditAnyContent())
                   playIconPicker(context, tc, wrapperState);
               },
               child: IntegerCircleAvatar(

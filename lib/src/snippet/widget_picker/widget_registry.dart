@@ -1,4 +1,5 @@
 import 'package:flutter_content/flutter_content.dart';
+import '../snodes/article_listview_node.dart' show ArticleListViewNode;
 import 'widget_entry.dart';
 
 const List<WidgetEntry> widgetRegistry = [
@@ -26,6 +27,7 @@ const List<WidgetEntry> widgetRegistry = [
   WidgetEntry(label: 'ListView', type: ListViewNode, category: WidgetCategory.scroll),
   WidgetEntry(label: 'PageView', type: PageViewNode, category: WidgetCategory.scroll),
   WidgetEntry(label: 'SingleChildScrollView', type: SingleChildScrollViewNode, category: WidgetCategory.scroll),
+  WidgetEntry(label: 'ArticleListView', type: ArticleListViewNode, category: WidgetCategory.scroll),
   // stack
   WidgetEntry(label: 'Positioned', type: PositionedNode, category: WidgetCategory.stack),
   WidgetEntry(label: 'SplitView', type: SplitViewNode, category: WidgetCategory.stack),

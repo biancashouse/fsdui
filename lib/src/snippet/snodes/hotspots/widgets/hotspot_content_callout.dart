@@ -37,7 +37,7 @@ void showHotspotSnippetContentCallout({
   );
 
   Widget possiblyEditableContent() =>
-      fco.canEditContent() && !justPlaying ? editableContent() : content();
+      fco.canEditAnyContent() && !justPlaying ? editableContent() : content();
 
   final snippetBeingEdited = fco.snippetBeingEdited != null;
 
@@ -110,7 +110,7 @@ void showHotspotSnippetContentCallout({
       // tc.tcAlignment = AlignmentModel(cc.targetAlignment!.x, cc.targetAlignment!.y);
     },
     onDragEndedF: (Offset newPos) {
-      if ((justPlaying && tc.hasABtn()) || !fco.canEditContent()) return;
+      if ((justPlaying && tc.hasABtn()) || !fco.canEditAnyContent()) return;
 
       // update the targetAlignment
       final Rect calloutRect = Rect.fromLTWH(

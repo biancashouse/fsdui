@@ -85,14 +85,26 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
         opt: true,
         def: const [],
       );
-  static List<String> _$editorPasswords(AppInfoModel v) => v.editorPasswords;
-  static const Field<AppInfoModel, List<String>> _f$editorPasswords = Field(
-    'editorPasswords',
-    _$editorPasswords,
-    key: r'editor-passwords',
-    opt: true,
-    def: const [],
-  );
+  static List<String> _$superEditorPasswords(AppInfoModel v) =>
+      v.superEditorPasswords;
+  static const Field<AppInfoModel, List<String>> _f$superEditorPasswords =
+      Field(
+        'superEditorPasswords',
+        _$superEditorPasswords,
+        key: r'super-editor-passwords',
+        opt: true,
+        def: const [],
+      );
+  static List<String> _$articleEditorPasswords(AppInfoModel v) =>
+      v.articleEditorPasswords;
+  static const Field<AppInfoModel, List<String>> _f$articleEditorPasswords =
+      Field(
+        'articleEditorPasswords',
+        _$articleEditorPasswords,
+        key: r'article-editor-passwords',
+        opt: true,
+        def: const [],
+      );
 
   @override
   final MappableFields<AppInfoModel> fields = const {
@@ -103,7 +115,8 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
     #userButtonStyles: _f$userButtonStyles,
     #userContainerStyles: _f$userContainerStyles,
     #anonymousUserEditablePages: _f$anonymousUserEditablePages,
-    #editorPasswords: _f$editorPasswords,
+    #superEditorPasswords: _f$superEditorPasswords,
+    #articleEditorPasswords: _f$articleEditorPasswords,
   };
 
   static AppInfoModel _instantiate(DecodingData data) {
@@ -115,7 +128,8 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
       userButtonStyles: data.dec(_f$userButtonStyles),
       userContainerStyles: data.dec(_f$userContainerStyles),
       anonymousUserEditablePages: data.dec(_f$anonymousUserEditablePages),
-      editorPasswords: data.dec(_f$editorPasswords),
+      superEditorPasswords: data.dec(_f$superEditorPasswords),
+      articleEditorPasswords: data.dec(_f$articleEditorPasswords),
     );
   }
 
@@ -215,7 +229,9 @@ abstract class AppInfoModelCopyWith<$R, $In extends AppInfoModel, $Out>
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
   get anonymousUserEditablePages;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
-  get editorPasswords;
+  get superEditorPasswords;
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
+  get articleEditorPasswords;
   $R call({
     SNode? clipboard,
     bool? autoPublishDefault,
@@ -224,7 +240,8 @@ abstract class AppInfoModelCopyWith<$R, $In extends AppInfoModel, $Out>
     Map<String, ButtonStyleProperties>? userButtonStyles,
     Map<String, ContainerStyleProperties>? userContainerStyles,
     List<String>? anonymousUserEditablePages,
-    List<String>? editorPasswords,
+    List<String>? superEditorPasswords,
+    List<String>? articleEditorPasswords,
   });
   AppInfoModelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -300,10 +317,17 @@ class _AppInfoModelCopyWithImpl<$R, $Out>
   );
   @override
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
-  get editorPasswords => ListCopyWith(
-    $value.editorPasswords,
+  get superEditorPasswords => ListCopyWith(
+    $value.superEditorPasswords,
     (v, t) => ObjectCopyWith(v, $identity, t),
-    (v) => call(editorPasswords: v),
+    (v) => call(superEditorPasswords: v),
+  );
+  @override
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
+  get articleEditorPasswords => ListCopyWith(
+    $value.articleEditorPasswords,
+    (v, t) => ObjectCopyWith(v, $identity, t),
+    (v) => call(articleEditorPasswords: v),
   );
   @override
   $R call({
@@ -314,7 +338,8 @@ class _AppInfoModelCopyWithImpl<$R, $Out>
     Map<String, ButtonStyleProperties>? userButtonStyles,
     Map<String, ContainerStyleProperties>? userContainerStyles,
     List<String>? anonymousUserEditablePages,
-    List<String>? editorPasswords,
+    List<String>? superEditorPasswords,
+    List<String>? articleEditorPasswords,
   }) => $apply(
     FieldCopyWithData({
       if (clipboard != $none) #clipboard: clipboard,
@@ -326,7 +351,10 @@ class _AppInfoModelCopyWithImpl<$R, $Out>
         #userContainerStyles: userContainerStyles,
       if (anonymousUserEditablePages != null)
         #anonymousUserEditablePages: anonymousUserEditablePages,
-      if (editorPasswords != null) #editorPasswords: editorPasswords,
+      if (superEditorPasswords != null)
+        #superEditorPasswords: superEditorPasswords,
+      if (articleEditorPasswords != null)
+        #articleEditorPasswords: articleEditorPasswords,
     }),
   );
   @override
@@ -347,7 +375,14 @@ class _AppInfoModelCopyWithImpl<$R, $Out>
       #anonymousUserEditablePages,
       or: $value.anonymousUserEditablePages,
     ),
-    editorPasswords: data.get(#editorPasswords, or: $value.editorPasswords),
+    superEditorPasswords: data.get(
+      #superEditorPasswords,
+      or: $value.superEditorPasswords,
+    ),
+    articleEditorPasswords: data.get(
+      #articleEditorPasswords,
+      or: $value.articleEditorPasswords,
+    ),
   );
 
   @override

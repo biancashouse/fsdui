@@ -74,7 +74,7 @@ class SnippetInfoModel with SnippetInfoModelMappable {
   // bool get isAPageSnippet => name.startsWith("/");
 
   VersionId? currentVersionId() =>
-      fco.canEditContent() ? editingVersionId : publishedVersionId;
+      fco.canEditAnyContent() ? editingVersionId : publishedVersionId;
 
   Future<SnippetRootNode?> currentVersionFromCacheOrFB() async {
     SnippetRootNode? rootNode;

@@ -94,7 +94,7 @@ class TargetsWrapperOnTapMenu extends StatelessWidget {
     TapUpDetails details,
     bool withHotspot,
   ) {
-    if (!fco.canEditContent()) return;
+    if (!fco.canEditAnyContent()) return;
     SnippetName? snippetName = parentNode.rootNodeOfSnippet()?.name;
     if (snippetName == null) return;
 
