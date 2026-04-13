@@ -179,7 +179,7 @@ class HelpIconEmbedBuilder implements EmbedBuilder {
   ) {
     // prevent configuring targets when overlay is open
     if (fco.anyPresent(['quill-te', QuillTargetConfigToolbar.CID])) return;
-    if (!fco.canEditContent()) return;
+    if (!fco.canEditAnyContent()) return;
     fco.hide(parentSNode.quillTextToolbarCID);
     // configure target
     qt.showConfigToolbar(

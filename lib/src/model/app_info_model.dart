@@ -16,8 +16,10 @@ class AppInfoModel with AppInfoModelMappable {
   Map<ContainerStyleName, ContainerStyleProperties> userContainerStyles;
   @MappableField(key: 'anonymous-user-pages')
   List<String> anonymousUserEditablePages;
-  @MappableField(key: 'editor-passwords')
-  List<String> editorPasswords;
+  @MappableField(key: 'super-editor-passwords')
+  List<String> superEditorPasswords;
+  @MappableField(key: 'article-editor-passwords')
+  List<String> articleEditorPasswords;
 
   static bool needToSave = false;
 
@@ -30,7 +32,8 @@ class AppInfoModel with AppInfoModelMappable {
     this.userContainerStyles = const {},
     this.anonymousUserEditablePages = const [],
     // managed manually in firestore console
-    this.editorPasswords = const [],
+    this.superEditorPasswords = const [],
+    this.articleEditorPasswords = const [],
   });
 
   bool get clipboardIsEmpty => clipboard == null;

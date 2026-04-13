@@ -3,16 +3,16 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../pnodes/edge_insets_pnode.dart';
+import 'article_listview_node.dart' show ArticleListViewNode;
 
 part 'listview_node.mapper.dart';
 
-@MappableClass()
+@MappableClass(
+  discriminatorKey: 'DK:listview',
+  includeSubClasses: [ArticleListViewNode],
+)
 class ListViewNode extends BoxScrollViewNode with ListViewNodeMappable {
   List<SNode> children;
 

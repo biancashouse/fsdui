@@ -30,8 +30,9 @@ abstract class CAPIState with _$CAPIState {
     HotspotTargetModel? selectedTarget,
     //
     // String? selectedPanel,
-    @Default(false) bool isSignedIn,
-    @Default(false) bool signedInAsGuestEditor,
+    @Default(false) bool isSignedInAsSuperEditor,
+    @Default(false) bool isSignedInAsArticleEditor,
+    @Default(false) bool isSignedInAsGuestEditor,
 
     @Default(true) bool showClipboardContent,
     @Default(0) int force, // hacky way to force a transition

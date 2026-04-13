@@ -84,6 +84,15 @@ const List<Type> multiChildSubClasses = [
   WrapNode,
 ];
 
+// Scroll-view nodes that carry children but extend CL (not MC).
+// Must NOT be in multiChildSubClasses (MC.includeSubClasses) — wrong hierarchy.
+// Include in candidate lists (wrap/append/sibling) separately.
+const List<Type> scrollViewChildSubClasses = [
+  ArticleListViewNode,
+  GridViewNode,
+  ListViewNode,
+];
+
 const List<Type> buttonSubClasses = [
   ElevatedButtonNode,
   OutlinedButtonNode,
@@ -1520,23 +1529,23 @@ abstract class SNode extends Node with SNodeMappable {
           );
   }
 
-  List<Widget> menuAnchorWidgets(BuildContext context, NodeAction action) {
-    List<Widget> mis = [];
-    if (action == NodeAction.wrapWith) {
-      mis.addAll(menuAnchorWidgets_WrapWith(context, action, false));
-    }
-    if (action == NodeAction.addChild) {
-      mis.addAll(menuAnchorWidgets_Append(context, action, false));
-    }
-    if (action == NodeAction.addSiblingBefore ||
-        action == NodeAction.addSiblingAfter) {
-      mis.addAll(menuAnchorWidgets_InsertSibling(context, action, false));
-    }
-    if (action == NodeAction.replaceWith) {
-      mis.addAll(menuAnchorWidgets_ReplaceWith(context, action, false));
-    }
-    return mis;
-  }
+  // List<Widget> menuAnchorWidgets(BuildContext context, NodeAction action) {
+  //   List<Widget> mis = [];
+  //   if (action == NodeAction.wrapWith) {
+  //     mis.addAll(menuAnchorWidgets_WrapWith(context, action, false));
+  //   }
+  //   if (action == NodeAction.addChild) {
+  //     mis.addAll(menuAnchorWidgets_Append(context, action, false));
+  //   }
+  //   if (action == NodeAction.addSiblingBefore ||
+  //       action == NodeAction.addSiblingAfter) {
+  //     mis.addAll(menuAnchorWidgets_InsertSibling(context, action, false));
+  //   }
+  //   if (action == NodeAction.replaceWith) {
+  //     mis.addAll(menuAnchorWidgets_ReplaceWith(context, action, false));
+  //   }
+  //   return mis;
+  // }
 
   List<Type> replaceWithOnly() => [];
 
@@ -1553,18 +1562,21 @@ abstract class SNode extends Node with SNodeMappable {
   List<Type> wrapCandidates() => [
     ...singleChildSubClasses,
     ...multiChildSubClasses,
+    ...scrollViewChildSubClasses,
   ];
 
   List<Type> siblingCandidates() => [
     ...childlessSubClasses,
     ...singleChildSubClasses,
     ...multiChildSubClasses,
+    ...scrollViewChildSubClasses,
   ];
 
   List<Type> appendCandidates() => [
     ...childlessSubClasses,
     ...singleChildSubClasses,
     ...multiChildSubClasses,
+    ...scrollViewChildSubClasses,
   ];
 
   // ---------------------------------------------------------------------------
@@ -1786,6 +1798,7 @@ abstract class SNode extends Node with SNodeMappable {
           ),
           const Divider(),
           menuItemButton(context, "ListView", ListViewNode, action),
+          menuItemButton(context, "ArticleListView", ArticleListViewNode, action),
           menuItemButton(context, "GridView", GridViewNode, action),
           menuItemButton(context, "Column", ColumnNode, action),
           menuItemButton(context, "Row", RowNode, action),
@@ -1871,6 +1884,7 @@ abstract class SNode extends Node with SNodeMappable {
           menuItemButton(context, "SizedBox", SizedBoxNode, action),
           menuItemButton(context, "ConstrainedBox", ConstrainedBoxNode, action),
           menuItemButton(context, "ListView", ListViewNode, action),
+          menuItemButton(context, "ArticleListView", ArticleListViewNode, action),
           menuItemButton(context, "GridView", GridViewNode, action),
           menuItemButton(
             context,
@@ -2133,6 +2147,7 @@ abstract class SNode extends Node with SNodeMappable {
               action,
             ),
             menuItemButton(context, "ListView", ListViewNode, action),
+            menuItemButton(context, "ArticleListView", ArticleListViewNode, action),
             menuItemButton(context, "GridView", GridViewNode, action),
             menuItemButton(
               context,

@@ -25,7 +25,7 @@ class TargetCover extends StatelessWidget {
     //   HotspotCalloutConfigToolbar.CID,
     // ], includeHidden: true);
 
-    return fco.aSnippetIsBeingEdited || !fco.canEditContent()
+    return fco.aSnippetIsBeingEdited || !fco.canEditAnyContent()
         ? CircleAvatar(
             backgroundColor: const Color.fromRGBO(0, 0, 0, .01),
             radius: tc.targetRadius(wrapperState),
@@ -60,7 +60,7 @@ class TargetCover extends StatelessWidget {
       return;
     }
 
-    if (fco.anyPresent([tc.contentCId]) && fco.canEditContent()) {
+    if (fco.anyPresent([tc.contentCId]) && fco.canEditAnyContent()) {
       fco.dismiss(tc.contentCId);
     } else {
       wrapperState.widget.parentNode.playList.toList()

@@ -91,7 +91,7 @@ extension RoutesExtension on FlutterContentMixins {
 
         // implicit built-in page
         if (matchedLocation == '/pages') {
-          if (fco.canEditContent()) {
+          if (fco.canEditAnyContent()) {
             return Pages();
           } else {
             return AlertDialog(

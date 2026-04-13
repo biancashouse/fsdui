@@ -118,7 +118,7 @@ class SnippetBuilderState extends State<SnippetBuilder>
     final name = snippetName();
     final notifier = fco.appInfo.cachedSnippetInfo(name)?.getChangeNotifier();
 
-    return fco.canEditContent() && notifier != null
+    return fco.canEditAnyContent() && notifier != null
         ? ValueListenableBuilder<String>(
             // must assume snippetInfo will be in cache
             valueListenable: notifier,
@@ -306,7 +306,7 @@ class SnippetBuilderState extends State<SnippetBuilder>
 
     // orange indicator when not signed in and
     // showing an unpublished snippet
-    if (!widget.justPlaying && !isPublishedVersion && !fco.canEditContent()) {
+    if (!widget.justPlaying && !isPublishedVersion && !fco.canEditAnyContent()) {
       stackChildren.add(
         Align(
           alignment: Alignment.topLeft,
@@ -321,7 +321,7 @@ class SnippetBuilderState extends State<SnippetBuilder>
 
     // show menu anchor if signed in and not selecting a
     // widget not editing a snippety
-    if (fco.canEditContent() &&
+    if (fco.canEditAnyContent() &&
         bloc.dontShowTappableBorderRects() &&
         bloc.aSnippetIsNotBeingEdited() &&
         !fco.anyPresent([], startsWith: 'quill-toolbar-')) {
@@ -343,7 +343,7 @@ class SnippetBuilderState extends State<SnippetBuilder>
     // show menu anchor for a hotspot's content
     // cId as a number means it's a hotspot content callout
     if (!widget.justPlaying &&
-        fco.canEditContent() &&
+        fco.canEditAnyContent() &&
         bloc.dontShowTappableBorderRects() &&
         bloc.aSnippetIsNotBeingEdited() &&
         pageIsEditable &&

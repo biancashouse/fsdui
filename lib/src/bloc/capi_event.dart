@@ -20,8 +20,11 @@ class CAPIEvent with _$CAPIEvent {
   //   required TargetModel tc,
   // }) = DeleteTarget;
 
-  const factory CAPIEvent.signedIn({@Default(false) bool asGuestEditor}) =
-      SignedIn;
+  const factory CAPIEvent.signedInAsSuperEditor() = SignedInAsSuperEditor;
+
+  const factory CAPIEvent.signedInAsArticleEditor() = SignedInAsArticleEditor;
+
+  const factory CAPIEvent.signedInAsGuestEditor() = SignedInAsGuestEditor;
 
   const factory CAPIEvent.signedOut() = SignedOut;
 

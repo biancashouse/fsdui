@@ -40,7 +40,8 @@ import 'package:flutter_content/src/snippet/snodes/filled_button_node.dart';
 import 'package:flutter_content/src/snippet/snodes/flex_node.dart';
 import 'package:flutter_content/src/snippet/snodes/flexible_node.dart';
 import 'package:flutter_content/src/snippet/snodes/flexible_space_bar_node.dart';
-import 'package:flutter_content/src/snippet/snodes/quill/widgets/focus_notifier.dart';
+
+// import 'package:flutter_content/src/snippet/snodes/quill/widgets/focus_notifier.dart';
 import 'package:flutter_content/src/snippet/snodes/storage_image_node.dart';
 import 'package:flutter_content/src/snippet/snodes/gap_node.dart';
 import 'package:flutter_content/src/snippet/snodes/named_multi_child_node.dart';
@@ -53,6 +54,7 @@ import 'package:flutter_content/src/snippet/snodes/iframe_node.dart';
 import 'package:flutter_content/src/snippet/snodes/inlinespan_node.dart';
 import 'package:flutter_content/src/snippet/snodes/intrinsic_height_node.dart';
 import 'package:flutter_content/src/snippet/snodes/intrinsic_width_node.dart';
+import 'package:flutter_content/src/snippet/snodes/article_listview_node.dart';
 import 'package:flutter_content/src/snippet/snodes/listview_node.dart';
 import 'package:flutter_content/src/snippet/snodes/markdown_node.dart';
 import 'package:flutter_content/src/snippet/snodes/menu_bar_node.dart';
@@ -110,7 +112,6 @@ import 'src/bloc/capi_bloc.dart';
 import 'src/bloc/capi_event.dart';
 import 'src/model/app_info_model.dart';
 import 'src/model/model_repo.dart';
-import 'src/model/snippet_info_model.dart';
 import 'src/nav/nav_mixin.dart';
 import 'src/passwordless/passwordless_mixin.dart';
 import 'src/snippet/pnode.dart';
@@ -245,6 +246,7 @@ export 'src/snippet/snodes/algc_node.dart';
 export 'src/snippet/snodes/tab_node.dart';
 export 'src/snippet/snodes/custom_scrollview_node.dart';
 export 'src/snippet/snodes/abstract_boxscrollview_node.dart';
+export 'src/snippet/snodes/article_listview_node.dart';
 export 'src/snippet/snodes/listview_node.dart';
 export 'src/snippet/snodes/gridview_node.dart';
 export 'src/snippet/snodes/pageview_node.dart';
@@ -479,10 +481,16 @@ class FlutterContentMixins
 
     // fco.logger.i('init 7. ${fco.stopwatch.elapsedMilliseconds}');
 
-    bool authenticated = localStorage.read("signed-in") ?? false;
-
     // FutureBuilder requires this return
-    return CAPIBloC(modelRepo: modelRepo, authenticated: authenticated);
+    return CAPIBloC(
+      modelRepo: modelRepo,
+      isSignedInAsSuperEditor:
+          localStorage.read("signed-in-as-super-editor") ?? false,
+      isSignedInAsArticleEditor:
+          localStorage.read("signed-in-as-article-editor") ?? false,
+      isSignedInAsGuestEditor:
+          localStorage.read("signed-in-as-guest-editor") ?? false,
+    );
   }
 
   late bool logging;
@@ -513,15 +521,16 @@ class FlutterContentMixins
   late ValueNotifier<RoutingConfig> routingConfigVN;
   var themeModeNotifier = ValueNotifier<ThemeMode>(ThemeMode.light);
 
-  bool canEditContent() {
+  bool canEditAnyContent() {
     String? currentPagePath = fco.currentEditablePagePath;
     bool isGuestPage = fco.appInfo.anonymousUserEditablePages.contains(
       currentPagePath,
     );
-    return capiBloc.state.isSignedIn || isGuestPage;
+    return capiBloc.state.isSignedInAsSuperEditor || isGuestPage;
   }
 
-  bool isGuestEditor() => capiBloc.state.signedInAsGuestEditor;
+  bool isArticleEditor() => capiBloc.state.isSignedInAsArticleEditor;
+  bool isGuestEditor() => capiBloc.state.isSignedInAsGuestEditor;
 
   GlobalKey authIconGK = GlobalKey();
 
@@ -540,8 +549,6 @@ class FlutterContentMixins
   // FocusChangeNotifier focusNodeCN = FocusChangeNotifier();
   FocusNode? focussedFN;
   final quillTextToolbarCIDVN = ValueNotifier<CalloutId?>(null);
-
-
 
   //
   SnippetBeingEdited? get snippetBeingEdited =>
@@ -763,23 +770,19 @@ class FlutterContentMixins
 
   Offset calloutConfigToolbarPos() =>
       _calloutConfigToolbarPos ??
-          Offset(
-            scrW / 2 - 600,
-            calloutConfigToolbarAtTopOfScreen ? 10 : scrH - 90,
-          );
+      Offset(
+        scrW / 2 - 600,
+        calloutConfigToolbarAtTopOfScreen ? 10 : scrH - 90,
+      );
 
   Offset quillTextToolbarPos() =>
       _quillTextToolbarPos ??
-          Offset(
-            scrW / 2 - 600,
-            quillTextToolbarAtTopOfScreen ? 10 : scrH - 90,
-          );
+      Offset(scrW / 2 - 600, quillTextToolbarAtTopOfScreen ? 10 : scrH - 90);
 
   void setCalloutConfigToolbarPos(Offset newPos) =>
       _calloutConfigToolbarPos = newPos;
 
-  void setQuillTextToolbarPos(Offset newPos) =>
-      _quillTextToolbarPos = newPos;
+  void setQuillTextToolbarPos(Offset newPos) => _quillTextToolbarPos = newPos;
 
   Offset devToolsFABPos(context) =>
       _devToolsFABPos ?? Offset(40, MediaQuery.sizeOf(context).height - 100);
@@ -1000,6 +1003,7 @@ class FlutterContentMixins
     // SC
     AlignNodeMapper.ensureInitialized();
     AspectRatioNodeMapper.ensureInitialized();
+    ArticleListViewNodeMapper.ensureInitialized();
     ButtonNodeMapper.ensureInitialized();
     CenterNodeMapper.ensureInitialized();
     ContainerNodeMapper.ensureInitialized();

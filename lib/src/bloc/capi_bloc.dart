@@ -8,11 +8,15 @@ import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_size.dart';
 import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
 
+import '../snippet/snodes/article_listview_node.dart' show ArticleListViewNode;
+
 class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   // late SnippetUndoRedoStack _ur;
 
   final IModelRepository modelRepo;
-  final bool authenticated;
+  final bool isSignedInAsSuperEditor;
+  final bool isSignedInAsArticleEditor;
+  final bool isSignedInAsGuestEditor;
 
   // void clearUR() => _ur.clear();
   //
@@ -32,17 +36,23 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   CAPIBloC({
     required this.modelRepo,
-    required this.authenticated,
+    required this.isSignedInAsSuperEditor,
+    required this.isSignedInAsArticleEditor,
+    required this.isSignedInAsGuestEditor,
     SnippetBeingEdited? mockSnippetBeingEdited, // for testing
   }) : super(
          CAPIState(
            snippetBeingEdited: mockSnippetBeingEdited, // testing usage only
-           isSignedIn: authenticated,
+           isSignedInAsSuperEditor: isSignedInAsSuperEditor,
+           isSignedInAsArticleEditor: isSignedInAsArticleEditor,
+           isSignedInAsGuestEditor: isSignedInAsGuestEditor,
          ),
        ) {
     // _ur = SnippetUndoRedoStack(this);
 
-    on<SignedIn>((event, emit) => _signedIn(event, emit));
+    on<SignedInAsSuperEditor>((event, emit) => _signedInAsSuperEditor(event, emit));
+    on<SignedInAsArticleEditor>((event, emit) => _signedInAsArticleEditor(event, emit));
+    on<SignedInAsGuestEditor>((event, emit) => _signedInAsGuestEditor(event, emit));
     on<SignedOut>((event, emit) => _signedOut(event, emit));
     on<ForceRefresh>((event, emit) => _forceRefresh(event, emit));
     // on<SelectPanel>((event, emit) => _selectPanel(event, emit));
@@ -108,19 +118,40 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     on<Redo>((event, emit) => _redo(event, emit));
   }
 
-  void _signedIn(SignedIn event, emit) async {
-    await fco.localStorage.write("signed-in", true);
+  void _signedInAsSuperEditor(SignedInAsSuperEditor event, emit) async {
+    await fco.localStorage.write("signed-in-as-super-editor", true);
     emit(
       state.copyWith(
-        isSignedIn: true,
-        signedInAsGuestEditor: event.asGuestEditor,
+        isSignedInAsSuperEditor: true,
+      ),
+    );
+  }
+
+  void _signedInAsArticleEditor(SignedInAsArticleEditor event, emit) async {
+    await fco.localStorage.write("signed-in-as-article-editor", true);
+    emit(
+      state.copyWith(
+        isSignedInAsArticleEditor: true,
+      ),
+    );
+  }
+
+  void _signedInAsGuestEditor(SignedInAsGuestEditor event, emit) async {
+    await fco.localStorage.write("signed-in-as-guest-editor", true);
+    emit(
+      state.copyWith(
+        isSignedInAsGuestEditor: true,
       ),
     );
   }
 
   void _signedOut(event, emit) async {
-    await fco.localStorage.write("signed-in", false);
-    emit(state.copyWith(isSignedIn: false, signedInAsGuestEditor: false));
+    await fco.localStorage.write("signed-in-as-super-editor", false);
+    await fco.localStorage.write("signed-in-as-article-editor", false);
+    await fco.localStorage.write("signed-in-as-guest-editor", false);
+    emit(state.copyWith(isSignedInAsSuperEditor: false));
+    emit(state.copyWith(isSignedInAsArticleEditor: false));
+    emit(state.copyWith(isSignedInAsGuestEditor: false));
   }
 
   Future<void> _revertSnippet(RevertSnippet event, emit) async {
@@ -839,6 +870,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         leading: NamedSC(propertyName: 'leading'),
         bottom: NamedPS(propertyName: 'bottom'),
       ),
+      const (ArticleListViewNode) => ArticleListViewNode(children: []),
       const (UMLImageNode) => UMLImageNode(),
       const (StorageImageNode) => StorageImageNode(),
       // const (FirebaseStorageImageNode) => FirebaseStorageImageNode(),
@@ -1180,7 +1212,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         selectedNodeParent.children.add(w);
       }
     } else {
-      if (w is CL || w is WidgetSpanNode) return;
+      if ((w is CL && w is! ListViewNode && w is! GridViewNode) || w is WidgetSpanNode) return;
       if (selectedNode is InlineSpanNode && w is! InlineSpanNode) return;
       if (w is PollNode && selectedNode is! PollOptionNode) return;
       if (selectedNode is PollOptionNode && w is! PollNode) return;
@@ -1817,7 +1849,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   bool showTappableBorderRects() => state.activeSnippetName != null;
 
   bool dontShowTappableBorderRects() =>
-      !state.isSignedIn || state.activeSnippetName == null;
+      !state.isSignedInAsSuperEditor || state.activeSnippetName == null;
 
   bool aSnippetIsBeingEdited() => state.snippetBeingEdited != null;
 

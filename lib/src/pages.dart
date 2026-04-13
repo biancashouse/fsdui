@@ -53,7 +53,7 @@ class Pages extends StatelessWidget {
 
     return BlocBuilder<CAPIBloC, CAPIState>(
       builder: (context, state) {
-        bool showPencil = !fco.canEditContent();
+        bool showPencil = !fco.canEditAnyContent();
         return Stack(
           children: [
             scaffold,

@@ -128,8 +128,8 @@ class EditablePageState extends State<EditablePage> {
         // update border rects on selection change
         if (previous.snippetBeingEdited?.selectedNode !=
             current.snippetBeingEdited?.selectedNode) return true;
-        if ((previous.isSignedIn != current.isSignedIn) &&
-            !fco.canEditContent()) return true;
+        if ((previous.isSignedInAsSuperEditor != current.isSignedInAsSuperEditor) &&
+            !fco.canEditAnyContent()) return true;
         if (current.onlyTargetsWrappers) return false;
         return false;
       },
@@ -322,15 +322,24 @@ class EditablePageState extends State<EditablePage> {
                 prompt: () => 'password',
                 originalS: '',
                 onTextChangedF: (String s) async {
-                  if (!fco.appInfo.editorPasswords.contains(s)) {
-                    return;
+                  if (fco.appInfo.superEditorPasswords.contains(s)) {
+                    fco.dismissAll();
+                    fco.capiBloc.add(
+                      CAPIEvent.signedInAsSuperEditor(),
+                    );
                   }
-                  // if (!kDebugMode && !(fco.editorPasswords.contains(s))) return;
-                  // fco.dismiss(cid_EditorPassword);
-                  fco.dismissAll();
-                  fco.capiBloc.add(
-                    CAPIEvent.signedIn(asGuestEditor: s == "GUEST"),
-                  );
+                  else if (fco.appInfo.articleEditorPasswords.contains(s)) {
+                    fco.dismissAll();
+                    fco.capiBloc.add(
+                      CAPIEvent.signedInAsArticleEditor(),
+                    );
+                  }
+                  else if (s == 'GUEST') {
+                    fco.dismissAll();
+                    fco.capiBloc.add(
+                      CAPIEvent.signedInAsGuestEditor(),
+                    );
+                  }
                 },
                 onEscapedF: (_) {
                   fco.dismiss(cid_EditorPassword);
@@ -420,7 +429,7 @@ class EditablePageState extends State<EditablePage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           fco.purpleText(
-            fco.canEditContent()
+            fco.canEditAnyContent()
                 ? 'Create an editable Page'
                 : 'Create your own editable Page',
             fontSize: 24,
@@ -443,7 +452,7 @@ class EditablePageState extends State<EditablePage> {
                 String pageName = s.replaceAll(' ', '-').toLowerCase();
                 pageName = pageName.startsWith('/') ? pageName : '/$pageName';
                 // add to appInfo
-                if (!fco.canEditContent() &&
+                if (!fco.canEditAnyContent() &&
                     !fco.appInfo.anonymousUserEditablePages.contains(
                       pageName,
                     )) {
@@ -460,7 +469,7 @@ class EditablePageState extends State<EditablePage> {
                       fco.router?.go(pageName);
                     });
                   });
-                } else if (fco.canEditContent() &&
+                } else if (fco.canEditAnyContent() &&
                     !fco.appInfo.snippetNames.contains(pageName)) {
                   // fco.dismiss('exit-editMode');
                   // bool userCanEdit = canEditContent.isTrue;

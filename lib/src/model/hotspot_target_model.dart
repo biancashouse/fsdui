@@ -277,7 +277,7 @@ class HotspotTargetModel extends TargetConfigModel
     );
 
     Widget possiblyEditableContent() =>
-        fco.canEditContent() && !justPlaying ? editableContent() : content();
+        fco.canEditAnyContent() && !justPlaying ? editableContent() : content();
 
     final snippetBeingEdited = fco.snippetBeingEdited != null;
 
@@ -343,7 +343,7 @@ class HotspotTargetModel extends TargetConfigModel
         // tcAlignment = AlignmentModel(cc.targetAlignment!.x, cc.targetAlignment!.y);
       },
       onDragEndedF: (Offset newPos) {
-        if ((justPlaying && hasABtn()) || !fco.canEditContent()) return;
+        if ((justPlaying && hasABtn()) || !fco.canEditAnyContent()) return;
 
         // update the targetAlignment
         final Rect calloutRect = Rect.fromLTWH(

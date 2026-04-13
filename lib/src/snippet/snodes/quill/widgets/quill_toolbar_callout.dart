@@ -331,7 +331,7 @@ class QuillToolbarOverlay extends StatelessWidget {
   }
 
   QuillTargetModel? _createQuillTarget() {
-    if (!fco.canEditContent()) return null;
+    if (!fco.canEditAnyContent()) return null;
 
     TargetId newTargetId = DateTime.now().millisecondsSinceEpoch;
     return QuillTargetModel(
