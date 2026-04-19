@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 import 'markdown_toolbar.dart';
 
@@ -28,7 +28,7 @@ class _MarkdownEditorState extends State<MarkdownEditor> {
     _controller.addListener(() {
       if (widget.originalMarkdown != _controller.text) {
         widget.onChangeF(_controller.text);
-        fco.afterNextBuildDo((){
+        fsdui.afterNextBuildDo((){
           _currentSelection = _controller.selection;
         });
       }
@@ -48,7 +48,7 @@ class _MarkdownEditorState extends State<MarkdownEditor> {
 
   @override
   Widget build(BuildContext context) {
-    fco.afterNextBuildDo(() {
+    fsdui.afterNextBuildDo(() {
       if (mounted && _focusNode.hasFocus) {
         // Check if the widget is still mounted and has focus
         _controller.selection = _currentSelection;

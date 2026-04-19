@@ -23,6 +23,12 @@ class MarkdownNodeMapper extends SubClassMapperBase<MarkdownNode> {
   @override
   final String id = 'MarkdownNode';
 
+  static String? _$name(MarkdownNode v) => v.name;
+  static const Field<MarkdownNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static String? _$data(MarkdownNode v) => v.data;
   static const Field<MarkdownNode, String> _f$data = Field(
     'data',
@@ -33,6 +39,12 @@ class MarkdownNodeMapper extends SubClassMapperBase<MarkdownNode> {
   static const Field<MarkdownNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(MarkdownNode v) => v.tags;
+  static const Field<MarkdownNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(MarkdownNode v) =>
@@ -64,8 +76,10 @@ class MarkdownNodeMapper extends SubClassMapperBase<MarkdownNode> {
 
   @override
   final MappableFields<MarkdownNode> fields = const {
+    #name: _f$name,
     #data: _f$data,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -87,7 +101,7 @@ class MarkdownNodeMapper extends SubClassMapperBase<MarkdownNode> {
   ]);
 
   static MarkdownNode _instantiate(DecodingData data) {
-    return MarkdownNode(data: data.dec(_f$data));
+    return MarkdownNode(name: data.dec(_f$name), data: data.dec(_f$data));
   }
 
   @override
@@ -153,7 +167,7 @@ extension MarkdownNodeValueCopy<$R, $Out>
 abstract class MarkdownNodeCopyWith<$R, $In extends MarkdownNode, $Out>
     implements CLCopyWith<$R, $In, $Out> {
   @override
-  $R call({String? data});
+  $R call({String? name, String? data});
   MarkdownNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -166,11 +180,17 @@ class _MarkdownNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<MarkdownNode> $mapper =
       MarkdownNodeMapper.ensureInitialized();
   @override
-  $R call({Object? data = $none}) =>
-      $apply(FieldCopyWithData({if (data != $none) #data: data}));
+  $R call({Object? name = $none, Object? data = $none}) => $apply(
+    FieldCopyWithData({
+      if (name != $none) #name: name,
+      if (data != $none) #data: data,
+    }),
+  );
   @override
-  MarkdownNode $make(CopyWithData data) =>
-      MarkdownNode(data: data.get(#data, or: $value.data));
+  MarkdownNode $make(CopyWithData data) => MarkdownNode(
+    name: data.get(#name, or: $value.name),
+    data: data.get(#data, or: $value.data),
+  );
 
   @override
   MarkdownNodeCopyWith<$R2, MarkdownNode, $Out2> $chain<$R2, $Out2>(

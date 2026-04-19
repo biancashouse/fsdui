@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'package:web/web.dart' as web;
@@ -18,7 +18,7 @@ mixin NavMixin {
     if (kIsWeb) {
       web.window.location.reload();
     } else {
-      fco.logger.w(
+      fsdui.logger.w(
         'refreshCurrentPage() was called on a non-web platform and will have no effect.',
       );
     }
@@ -30,9 +30,9 @@ mixin NavMixin {
     builder: (context, state) {
       final dropdownItems = <DropdownMenuItem<String>>[];
       bool showPencil =
-          !fco.canEditAnyContent() &&
-          !fco.isArticleEditor() &&
-          !fco.isGuestEditor();
+          !fsdui.canEditAnyContent() &&
+          !fsdui.isArticleEditor() &&
+          !fsdui.isGuestEditor();
       if (showPencil) {
         dropdownItems.add(
           _dropdownItemWithPI(
@@ -40,8 +40,8 @@ mixin NavMixin {
             child: Text('sign in as a Content editor'),
           ),
         );
-        if (fco.canEditAnyContent()) {
-          if (fco.router != null) {
+        if (fsdui.canEditAnyContent()) {
+          if (fsdui.router != null) {
             dropdownItems.add(
               _dropdownItemWithPI(
                 value: 'create-editable-page',
@@ -65,10 +65,13 @@ mixin NavMixin {
         addBrightnessItem(dropdownItems);
 
         return PointerInterceptor(
-          child: DropdownButton<String>(
+          child: Theme(
+            data: Theme.of(context).copyWith(hoverColor: Colors.transparent),
+            child: DropdownButton<String>(
             // key: fco.authIconGK,
             items: dropdownItems,
             underline: Offstage(),
+            focusColor: Colors.transparent,
             icon: PointerInterceptor(
               child: Icon(Icons.edit, color: pencilIconColor, size: 24),
             ),
@@ -77,15 +80,16 @@ mixin NavMixin {
               switch (value) {
                 case 'sign-in-as-editor':
                   EditablePage.of(context)?.editorPasswordDialog();
-                  fco.capiBloc.add(CAPIEvent.forceRefresh());
+                  fsdui.capiBloc.add(CAPIEvent.forceRefresh());
                   break;
                 default:
-                  if (fco.router != null) {
+                  if (fsdui.router != null) {
                     EditablePage.of(context)?.showPageNameDialog();
                   }
                   break;
               }
             },
+          ),
           ),
         );
       } else {
@@ -93,7 +97,7 @@ mixin NavMixin {
         dropdownItems.add(
           _dropdownItemWithPI(value: 'sign-out', child: _signOutBtn(context)),
         );
-        if (fco.canEditAnyContent() && fco.router != null) {
+        if (fsdui.canEditAnyContent() && fsdui.router != null) {
           dropdownItems.add(
             _dropdownItemWithPI(
               value: 'create-editable-page',
@@ -113,8 +117,8 @@ mixin NavMixin {
             ),
           );
         }
-        if (!fco.isGuestEditor()) {
-          for (String pagePath in fco.pageList) {
+        if (!fsdui.isGuestEditor()) {
+          for (String pagePath in fsdui.pageList) {
             // skip currentPath
             try {
               final String currentPath = GoRouterState.of(
@@ -122,7 +126,7 @@ mixin NavMixin {
               ).uri.toString();
               if (pagePath != currentPath) {
                 String sandboxIndicator =
-                    (fco.appInfo.anonymousUserEditablePages.contains(pagePath))
+                    (fsdui.appInfo.anonymousUserEditablePages.contains(pagePath))
                     ? ' *'
                     : "";
                 dropdownItems.add(
@@ -141,23 +145,27 @@ mixin NavMixin {
 
         // wrap dd and its menu items with pointer interceptor
         return PointerInterceptor(
-          child: DropdownButton<String>(
-            items: dropdownItems,
-            underline: Offstage(),
-            icon: PointerInterceptor(
-              child: Icon(Icons.more_vert, color: fco.canEditAnyContent() ? Colors.red : Colors.purpleAccent, size: 24),
-            ),
-            onChanged: (value) {
-              if (fco.router != null) {
-                switch (value) {
-                  case 'create-editable-page':
-                    EditablePage.of(context)?.showPageNameDialog();
-                    break;
-                  default:
-                    break;
+          child: Theme(
+            data: Theme.of(context).copyWith(hoverColor: Colors.transparent),
+            child: DropdownButton<String>(
+              items: dropdownItems,
+              underline: Offstage(),
+              focusColor: Colors.transparent,
+              icon: PointerInterceptor(
+                child: Icon(Icons.more_vert, color: fsdui.canEditAnyContent() ? Colors.red : Colors.purpleAccent, size: 24),
+              ),
+              onChanged: (value) {
+                if (fsdui.router != null) {
+                  switch (value) {
+                    case 'create-editable-page':
+                      EditablePage.of(context)?.showPageNameDialog();
+                      break;
+                    default:
+                      break;
+                  }
                 }
-              }
-            },
+              },
+            ),
           ),
         );
       }
@@ -169,7 +177,7 @@ mixin NavMixin {
       _dropdownItemWithPI(
         value: 'brightness',
         child: ValueListenableBuilder<ThemeMode>(
-          valueListenable: fco.themeModeNotifier,
+          valueListenable: fsdui.themeModeNotifier,
           builder: (context, currentMode, child) {
             String buttonText;
             ThemeMode nextMode;
@@ -195,7 +203,7 @@ mixin NavMixin {
             }
             return MenuItemButton(
               onPressed: () {
-                fco.themeModeNotifier.value = nextMode;
+                fsdui.themeModeNotifier.value = nextMode;
               },
               leadingIcon: Icon(buttonIcon),
               child: Text(buttonText),
@@ -208,12 +216,12 @@ mixin NavMixin {
 
   Widget _signOutBtn(context) => TextButton(
     onPressed: () {
-      if (!fco.anyPresent([HotspotTargetConfigToolbar.CID])) {
-        fco.capiBloc.add(CAPIEvent.signedOut());
+      if (!fsdui.anyPresent([HotspotTargetConfigToolbar.CID])) {
+        fsdui.capiBloc.add(CAPIEvent.signedOut());
         Navigator.pop(context);
       }
     },
-    child: fco.coloredText('Sign Out', color: Colors.red),
+    child: fsdui.coloredText('Sign Out', color: Colors.red),
   );
 
   Widget _pageNavBtn(
@@ -225,8 +233,8 @@ mixin NavMixin {
       context.go(pagePath);
       // something funny going on when not in prod mode
       if (false && kDebugMode) {
-        fco.afterMsDelayDo(1000, () {
-          fco.refreshCurrentPage();
+        fsdui.afterMsDelayDo(1000, () {
+          fsdui.refreshCurrentPage();
         });
       }
     },
@@ -257,23 +265,23 @@ mixin NavMixin {
           if (pagePath != '/')
             IconButton(
               onPressed: () async {
-                fco.appInfo.snippetNames.remove(pagePath);
+                fsdui.appInfo.snippetNames.remove(pagePath);
                 // because dart_mappable creates jsarrays
                 var potentiallyUnmodifiablePages =
-                    fco.appInfo.anonymousUserEditablePages;
+                    fsdui.appInfo.anonymousUserEditablePages;
                 List<String> modifiablePages = List.from(
                   potentiallyUnmodifiablePages,
                 );
                 modifiablePages.remove(pagePath);
-                fco.appInfo = fco.appInfo.copyWith(
+                fsdui.appInfo = fsdui.appInfo.copyWith(
                   anonymousUserEditablePages: modifiablePages,
                 );
-                fco.deleteSubRoute(path: pagePath);
+                fsdui.deleteSubRoute(path: pagePath);
                 context.pop();
-                await fco.modelRepo.saveAppInfo();
-                await fco.modelRepo.deleteSnippet(pagePath);
-                fco.appInfo.removeFromCache(pagePath);
-                fco.capiBloc.add(CAPIEvent.forceRefresh());
+                await fsdui.modelRepo.saveAppInfo();
+                await fsdui.modelRepo.deleteSnippet(pagePath);
+                fsdui.appInfo.removeFromCache(pagePath);
+                fsdui.capiBloc.add(CAPIEvent.forceRefresh());
               },
               icon: Icon(Icons.delete, color: Colors.red),
             ),
