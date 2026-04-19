@@ -1,8 +1,8 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/markdown_pnode.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/src/snippet/pnodes/markdown_pnode.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:markdown_widget/config/configs.dart';
 import 'package:markdown_widget/widget/blocks/leaf/link.dart';
@@ -15,7 +15,7 @@ part 'markdown_node.mapper.dart';
 class MarkdownNode extends CL with MarkdownNodeMappable {
   String? data;
 
-  MarkdownNode({this.data});
+  MarkdownNode({super.name, this.data});
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
@@ -40,8 +40,8 @@ class MarkdownNode extends CL with MarkdownNodeMappable {
         refreshWithUpdate(context, () => data = newValue ?? '');
       },
       calloutButtonSize: const Size(280, 3000),
-      calloutWidth: fco.scrW * .8,
-      calloutHeight: fco.scrH * .8,
+      calloutWidth: fsdui.scrW * .8,
+      calloutHeight: fsdui.scrH * .8,
     ),
   ];
 
@@ -51,9 +51,13 @@ class MarkdownNode extends CL with MarkdownNodeMappable {
       setParent(parentNode); // propagating parents down from root
       //ScrollControllerName? scName = EditablePage.name(context);
       //possiblyHighlightSelectedNode(scName);
+      final insideListView = parentNode is ListViewNode ||
+          (parentNode?.getParent() is ListViewNode);
       return MarkdownWidget(
         key: createNodeWidgetGK(),
         data: data ?? SAMPLE_MD,
+        shrinkWrap: insideListView,
+        physics: insideListView ? const NeverScrollableScrollPhysics() : null,
         config: MarkdownConfig(
           configs: [
             LinkConfig(
@@ -68,8 +72,8 @@ class MarkdownNode extends CL with MarkdownNodeMappable {
                     throw Exception('Could not launch $href');
                   }
                 } catch (e) {
-                  fco.logger.d('Following exception ignored:');
-                  fco.logger.e('', error: e);
+                  fsdui.logger.d('Following exception ignored:');
+                  fsdui.logger.e('', error: e);
                 }
               },
             ),
@@ -137,7 +141,7 @@ Select the valid headers:
 
 ## Images
 
-![Flowers](/assets/images/flowers.jpg)
+![Flowers](assets/images/flowers.jpg)
 
 ## Tables
 
@@ -177,7 +181,7 @@ void main() {
 
 ###### ※ ※ ※
 
-_* How to implement it see main.dart#L129 in example_using_go_router._
+_* How to implement it see migrate_snippets.dart#L129 in example_using_go_router._
 
 ## Custom Syntax
 

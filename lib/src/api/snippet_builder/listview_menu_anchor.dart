@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'tr_triangle_painter.dart' show TRTriangle;
 
@@ -129,7 +129,7 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
             ],
           ),
         ),
-        if (!SnippetRootNode.isHotspotCalloutContent(snippetInfo.name))
+        if (!SNode.isHotspotCalloutContent(snippetInfo.name))
           _menuItemButtonWithPI(
             onPressed: () {
               final bloc = context.read<CAPIBloC>();
@@ -179,7 +179,7 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
               ],
             ),
           ),
-        if (SnippetRootNode.isHotspotCalloutContent(snippetInfo.name))
+        if (SNode.isHotspotCalloutContent(snippetInfo.name))
           _menuItemButtonWithPI(
             onPressed: () {
               snippetInfo.currentVersionInCache()?.tappedToEditSnippetNode();
@@ -280,7 +280,7 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
           },
           child: const Text('rebuild snippet from JSON...'),
         ),
-        if (!SnippetRootNode.isHotspotCalloutContent(snippetInfo.name))
+        if (!SNode.isHotspotCalloutContent(snippetInfo.name))
           _menuItemButtonWithPI(
             onPressed: () async {
               fco.capiBloc.add(
@@ -316,7 +316,7 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
   void _discardPendingChanges(SnippetInfoModel snippetInfo) {
     final originalJson = snippetInfo.originalEditingJson;
     if (originalJson == null || originalJson.isEmpty) return;
-    final originalNode = SnippetRootNodeMapper.fromJson(originalJson);
+    final originalNode = SNodeMapper.fromJson(originalJson);
     snippetInfo.cacheVersion(snippetInfo.editingVersionId, originalNode);
     snippetInfo.notifyChange(originalNode);
     _rebuildTree(snippetInfo, originalNode);
@@ -325,7 +325,7 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
     });
   }
 
-  void _rebuildTree(SnippetInfoModel snippetInfo, SnippetRootNode rootNode) {
+  void _rebuildTree(SnippetInfoModel snippetInfo, SNode rootNode) {
     final newTreeC = SnippetTreeController(
       roots: [rootNode],
       childrenProvider: SNode.childrenProvider,
@@ -337,7 +337,7 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
     if (fco.snippetBeingEdited != null) {
       fco.snippetBeingEdited!
         ..setRootNode(rootNode)
-        ..selectedNode = rootNode.child
+        ..selectedNode = rootNode
         ..showProperties = false
         ..treeC = newTreeC;
     }
@@ -400,7 +400,7 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
 
         fco.snippetBeingEdited!
           ..setRootNode(revertedVersion)
-          ..selectedNode = revertedVersion.child
+          ..selectedNode = revertedVersion
           ..showProperties = false
           ..treeC = newTreeC;
 

@@ -1,12 +1,13 @@
 // ignore_for_file: constant_identifier_names
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/int_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
-import 'package:flutter_content/src/snippet/snodes/iframe/iframe.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/src/snippet/pnodes/int_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
+import 'package:fsdui/src/snippet/snodes/iframe/iframe.dart';
+import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 // import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
@@ -14,73 +15,49 @@ part 'yt_node.mapper.dart';
 
 @MappableClass()
 class YTNode extends CL with YTNodeMappable {
-  String? ytUrl;
-  int? startAtSecs;
-  int? endAtSecs;
-  double iframeWidth;
-  double iframeHeight;
+  String ytEmbedHtml;
+  double scale;
 
   YTNode({
-    this.ytUrl,
-    this.startAtSecs,
-    this.endAtSecs,
-    this.iframeWidth = 560, // not 595?
-    this.iframeHeight = 316, // not 842?
+    super.name,
+    this.ytEmbedHtml =
+        '<iframe width="560" height="315" src="https://www.youtube.com/embed/u1FAoLEG16c?si=YN1UucqLyPLntjYJ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>',
+    this.scale = 1.0,
+    // this.iframeWidth = 560, // not 595?
+    // this.iframeHeight = 316, // not 842?
   });
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
     FlutterDocPNode(
-        buttonLabel: 'IFrame',
-        webLink: 'https://pub.dev/packages/webview_flutter_web',
-        snode: this,
-        name: 'fyi'),
-        StringPNode(
-          snode: this,
-          name: 'Youtube Url',
-          stringValue: ytUrl,
-          onStringChange: (newValue) =>
-              refreshWithUpdate(context, () => ytUrl = newValue),
-          calloutButtonSize: const Size(280, 20),
-          calloutWidth: 280,
-        ),
-        IntPNode(
-          snode: this,
-          name: 'starts (secs)',
-          intValue: startAtSecs,
-          onIntChange: (newValue) =>
-              refreshWithUpdate(context, () => startAtSecs = newValue),
-          calloutButtonSize: const Size(120, 20),
-        ),
-        IntPNode(
-          snode: this,
-          name: 'ends (secs)',
-          intValue: endAtSecs,
-          onIntChange: (newValue) =>
-              refreshWithUpdate(context, () => endAtSecs = newValue),
-          calloutButtonSize: const Size(120, 20),
-        ),
-        DecimalPNode(
-          snode: this,
-          name: 'iframeWidth',
-          decimalValue: iframeWidth,
-          onDoubleChange: (newValue) =>
-              refreshWithUpdate(context, () => iframeWidth = newValue ?? 800),
-          calloutButtonSize: const Size(90, 20),
-        ),
-        DecimalPNode(
-          snode: this,
-          name: 'iframeHeight',
-          decimalValue: iframeHeight,
-          onDoubleChange: (newValue) =>
-              refreshWithUpdate(context, () => iframeHeight = newValue ?? 800),
-          calloutButtonSize: const Size(90, 20),
-        ),
-      ];
+      buttonLabel: 'IFrame',
+      webLink: 'https://pub.dev/packages/webview_flutter_web',
+      snode: this,
+      name: 'fyi',
+    ),
+    StringPNode(
+      snode: this,
+      name: 'Youtube Url',
+      stringValue: ytEmbedHtml,
+      onStringChange: (newValue) => refreshWithUpdate(
+        context,
+        () => ytEmbedHtml = newValue ?? ytEmbedHtml,
+      ),
+      calloutButtonSize: const Size(280, 20),
+      calloutWidth: 280,
+    ),
+    DecimalPNode(
+      snode: this,
+      name: 'starts (secs)',
+      decimalValue: scale,
+      onDoubleChange: (newValue) =>
+          refreshWithUpdate(context, () => scale = newValue ?? 1.0),
+      calloutButtonSize: const Size(120, 20),
+    ),
+  ];
 
   @override
-  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
-      ) {
+  Widget build(BuildContext context, SNode? parentNode) {
     try {
       setParent(parentNode); // propagating parents down from root
       //ScrollControllerName? scName = EditablePage.name(context);
@@ -91,31 +68,59 @@ class YTNode extends CL with YTNodeMappable {
       //   autoPlay: false,
       //   params: const YoutubePlayerParams(showFullscreenButton: true),
       // );
-      String embedUrl = extractUrlFromIframe(ytUrl) ??
-          'https://www.youtube.com/embed/u1FAoLEG16c?si=gNKISAxvqR4Bto9k&amp;start=26&amp;end=70&amp;rel=0';
-      if (startAtSecs != null) embedUrl += "&amp;start=$startAtSecs";
-      if (endAtSecs != null) embedUrl += "&amp;end=$endAtSecs";
+      // Extract width, height, src URL and optional start/end from ytEmbedHtml.
+      final wMatch = RegExp(r"""width=["'](\d+)["']""").firstMatch(ytEmbedHtml);
+      final double w = double.tryParse(wMatch?.group(1) ?? '') ?? 560;
+
+      final hMatch = RegExp(r"""height=["'](\d+)["']""").firstMatch(ytEmbedHtml);
+      final double h = double.tryParse(hMatch?.group(1) ?? '') ?? 316;
+
+      final srcMatch = RegExp(r"""src=["']([^"']+)["']""").firstMatch(ytEmbedHtml);
+      final String srcUrl = srcMatch?.group(1) ?? '';
+      final uri = Uri.tryParse(srcUrl.replaceAll('&amp;', '&'));
+      final int? start = int.tryParse(uri?.queryParameters['start'] ?? '');
+      final int? end = int.tryParse(uri?.queryParameters['end'] ?? '');
+
+      String embedUrl = srcUrl;
+      if (start != null) embedUrl += '&amp;start=$start';
+      if (end != null) embedUrl += '&amp;end=$end';
       embedUrl += '&amp;rel=0';
-       return SizedBox(
-        width: iframeWidth,
-        height: iframeHeight,
+
+      return SizedBox(
+        width: w,
+        height: h,
         child: AspectRatio(
           aspectRatio: 16 / 9,
-          child: IFrame(
-            key: createNodeWidgetGK(),
-            src: embedUrl,
-            iframeW: iframeWidth,
-            iframeH: iframeHeight,
-          ),
+          child: fsdui.canEditAnyContent()
+              ? Stack(
+                  children: [
+                    IFrame(
+                      key: createNodeWidgetGK(),
+                      src: embedUrl,
+                      iframeW: w * scale,
+                      iframeH: h * scale,
+                    ),
+                    Positioned.fill(
+                      child: PointerInterceptor(child: SizedBox.expand()),
+                    ),
+                  ],
+                )
+              : IFrame(
+                  key: createNodeWidgetGK(),
+                  src: embedUrl,
+                  iframeW: w * scale,
+                  iframeH: h * scale,
+                ),
         ),
       );
     } catch (e) {
       return Error(
-          key: createNodeWidgetGK(),
-          FLUTTER_TYPE,
-          color: Colors.red,
-          size: 16,
-          errorMsg: e.toString());
+        key: createNodeWidgetGK(),
+        FLUTTER_TYPE,
+        color: Colors.red,
+        size: 16,
+        errorMsg: e.toString(),
+      );
     }
 
     // YoutubePlayer(
@@ -138,10 +143,8 @@ class YTNode extends CL with YTNodeMappable {
   // }
 
   @override
-  Widget? widgetLogo() => Image.asset(
-    fco.asset('lib/assets/images/pub.dev.png'),
-    width: 16,
-  );
+  Widget? widgetLogo() =>
+      Image.asset(fsdui.asset('lib/assets/images/pub.dev.png'), width: 16);
 
   @override
   String toString() => FLUTTER_TYPE;
