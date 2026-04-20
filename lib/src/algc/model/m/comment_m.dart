@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/algc/model/bv/comment_bv.dart';
-import 'package:flutter_content/src/algc/model/m/string_encoder_decoder.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/algc/model/bv/comment_bv.dart';
+import 'package:fsdui/src/algc/model/m/string_encoder_decoder.dart';
 
 import 'flowchart_m.dart';
 import 'has_image.dart';
@@ -15,7 +15,7 @@ class CommentM with HasImageInFBStorage, StringEncoderDecoder {
   // initially a 300x200 placeholder
   double? calloutWidth = 300;
   double? calloutHeight = 200;
-  SnippetRootNode? snippet = SnippetRootNode(name: 'who-cares', child: PlaceholderNode());
+  SNode? snippet = PlaceholderNode(name: 'who-cares');
 
   String? _topTxt;
   String? _bottomTxt;
@@ -57,16 +57,16 @@ class CommentM with HasImageInFBStorage, StringEncoderDecoder {
         ..calloutWidth = theBVComment.calloutWidth ?? 300
         ..calloutHeight = theBVComment.calloutHeight ?? 200
         ..snippet = theBVComment.snippetEncodedJson != null
-            ? SnippetRootNodeMapper.fromJson(
+            ? SNodeMapper.fromJson(
                 jsonDecode(theBVComment.snippetEncodedJson!))
-            : SnippetRootNode(name: 'who-cares', child: PlaceholderNode())
+            : PlaceholderNode(name: 'who-cares')
         ..topTxt = theBVComment.topTxt
         ..bottomTxt = theBVComment.bottomTxt
         // ..fsBottom = theBVComment.fsBottom
         // ..fsTop = theBVComment.fsTop
         ..imageSize = theBVComment.imageSize;
     } catch (e) {
-      fco.logger.e('commentBV2M: ${e.toString()}');
+      fsdui.logger.e('commentBV2M: ${e.toString()}');
     }
     return mComment;
   }

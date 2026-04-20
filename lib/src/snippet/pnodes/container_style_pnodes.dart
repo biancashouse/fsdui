@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/bool_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/edge_insets_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/property_button_search_container_styles.dart';
-import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration_shape.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/gradient_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/size_pnode.dart';
-import 'package:flutter_content/src/text_styles/style_name_editor.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/bool_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/edge_insets_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/editors/property_button_search_container_styles.dart';
+import 'package:fsdui/src/snippet/pnodes/enum_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_decoration_shape.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/src/snippet/pnodes/gradient_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/size_pnode.dart';
+import 'package:fsdui/src/text_styles/style_name_editor.dart';
 
 class ContainerStylePNode /*Group*/ extends PNode /*Group*/ {
   final ContainerStyleProperties containerStyleProperties;
@@ -193,8 +193,8 @@ class ContainerStylePNode /*Group*/ extends PNode /*Group*/ {
 
   @override
   String propertyLabel() {
-    var containerStyleName = fco.findContainerStyleName(
-      fco.appInfo,
+    var containerStyleName = fsdui.findContainerStyleName(
+      fsdui.appInfo,
       containerStyleProperties,
     );
     return containerStyleName != null ? '$name: $containerStyleName' : name;
@@ -270,9 +270,9 @@ class ContainerStyleSavePNode extends PNode {
             ContainerStyleProperties? csGroup = snode
                 .containerStyleProperties();
             if (csGroup != null) {
-              fco.namedContainerStyles[csName] = csGroup.clone();
-              await fco.modelRepo.saveAppInfo();
-              fco.showToast(
+              fsdui.namedContainerStyles[csName] = csGroup.clone();
+              await fsdui.modelRepo.saveAppInfo();
+              fsdui.showToast(
                 textColor: Colors.blue,
                 bgColor: Colors.yellow,
                 msg: "Container Style '$csName' saved",

@@ -1,5 +1,5 @@
 
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 bool testSNodeSerialization() {
   if (test_ColorModel() &&
@@ -233,7 +233,7 @@ bool test_AppBarNode() {
     bottom: NamedPS(
       propertyName: 'bottom',
       child: TabBarNode(
-        name: 'some-tabbar-name',
+        tabBarName: 'some-tabbar-name',
         labelTSPropGroup: TextStyleProperties(),
         children: [
           TextNode(text: 'tab 1', tsPropGroup: TextStyleProperties()),

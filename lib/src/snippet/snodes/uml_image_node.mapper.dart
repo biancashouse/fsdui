@@ -76,6 +76,12 @@ class UMLImageNodeMapper extends SubClassMapperBase<UMLImageNode> {
     _$uid,
     mode: FieldMode.member,
   );
+  static List<String>? _$tags(UMLImageNode v) => v.tags;
+  static const Field<UMLImageNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(UMLImageNode v) =>
       v.treeNodeGK;
   static const Field<UMLImageNode, GlobalKey<State<StatefulWidget>>>
@@ -107,6 +113,7 @@ class UMLImageNodeMapper extends SubClassMapperBase<UMLImageNode> {
     #fit: _f$fit,
     #alignment: _f$alignment,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,

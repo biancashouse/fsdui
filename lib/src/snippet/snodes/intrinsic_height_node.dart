@@ -2,14 +2,15 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'intrinsic_height_node.mapper.dart';
 
 @MappableClass()
 class IntrinsicHeightNode extends SC with IntrinsicHeightNodeMappable {
   IntrinsicHeightNode({
+    super.name,
     super.child,
   });
 
@@ -43,7 +44,7 @@ class IntrinsicHeightNode extends SC with IntrinsicHeightNodeMappable {
 
       return Center(
             key: createNodeWidgetGK(),
-            child: child?.buildFlutterWidget(context, this),
+            child: child?.build(context, this),
           );
     // } catch (e) {
     //   return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());

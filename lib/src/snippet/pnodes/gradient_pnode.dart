@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/property_button_color.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/editors/property_button_color.dart';
 
 class ColorOrGradientPNode extends PNode {
   UpTo6Colors? colors;
@@ -27,7 +27,7 @@ class ColorOrGradientPNode extends PNode {
         width: 180,
         child: Column(
           children: [
-            fco.coloredText(name, color: Colors.white),
+            fsdui.coloredText(name, color: Colors.white),
             Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,

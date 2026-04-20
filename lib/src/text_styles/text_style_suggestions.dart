@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 class TextStyleNameSuggestions extends StatelessWidget {
   final BuildContext anchorContext;
@@ -63,7 +63,7 @@ class TextStyleNameSuggestions extends StatelessWidget {
         child: Text(
           suggestedTextStyleName,
           softWrap: false,
-          style: fco.namedTextStyles[suggestedTextStyleName]
+          style: fsdui.namedTextStyles[suggestedTextStyleName]
               ?.toTextStyle(anchorContext),
           overflow: TextOverflow.clip,
         ),

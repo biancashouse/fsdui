@@ -24,6 +24,12 @@ class SubmenuButtonNodeMapper extends SubClassMapperBase<SubmenuButtonNode> {
   @override
   final String id = 'SubmenuButtonNode';
 
+  static String? _$name(SubmenuButtonNode v) => v.name;
+  static const Field<SubmenuButtonNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static String _$itemLabel(SubmenuButtonNode v) => v.itemLabel;
   static const Field<SubmenuButtonNode, String> _f$itemLabel = Field(
     'itemLabel',
@@ -40,6 +46,12 @@ class SubmenuButtonNodeMapper extends SubClassMapperBase<SubmenuButtonNode> {
   static const Field<SubmenuButtonNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(SubmenuButtonNode v) => v.tags;
+  static const Field<SubmenuButtonNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(SubmenuButtonNode v) =>
@@ -73,9 +85,11 @@ class SubmenuButtonNodeMapper extends SubClassMapperBase<SubmenuButtonNode> {
 
   @override
   final MappableFields<SubmenuButtonNode> fields = const {
+    #name: _f$name,
     #itemLabel: _f$itemLabel,
     #menuChildren: _f$menuChildren,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -98,6 +112,7 @@ class SubmenuButtonNodeMapper extends SubClassMapperBase<SubmenuButtonNode> {
 
   static SubmenuButtonNode _instantiate(DecodingData data) {
     return SubmenuButtonNode(
+      name: data.dec(_f$name),
       itemLabel: data.dec(_f$itemLabel),
       menuChildren: data.dec(_f$menuChildren),
     );
@@ -176,7 +191,7 @@ abstract class SubmenuButtonNodeCopyWith<
     implements MCCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get menuChildren;
   @override
-  $R call({String? itemLabel, List<SNode>? menuChildren});
+  $R call({String? name, String? itemLabel, List<SNode>? menuChildren});
   SubmenuButtonNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -198,14 +213,20 @@ class _SubmenuButtonNodeCopyWithImpl<$R, $Out>
         (v) => call(menuChildren: v),
       );
   @override
-  $R call({String? itemLabel, List<SNode>? menuChildren}) => $apply(
+  $R call({
+    Object? name = $none,
+    String? itemLabel,
+    List<SNode>? menuChildren,
+  }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (itemLabel != null) #itemLabel: itemLabel,
       if (menuChildren != null) #menuChildren: menuChildren,
     }),
   );
   @override
   SubmenuButtonNode $make(CopyWithData data) => SubmenuButtonNode(
+    name: data.get(#name, or: $value.name),
     itemLabel: data.get(#itemLabel, or: $value.itemLabel),
     menuChildren: data.get(#menuChildren, or: $value.menuChildren),
   );

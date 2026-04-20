@@ -27,6 +27,12 @@ class BoxScrollViewNodeMapper extends SubClassMapperBase<BoxScrollViewNode> {
   @override
   final String id = 'BoxScrollViewNode';
 
+  static String? _$name(BoxScrollViewNode v) => v.name;
+  static const Field<BoxScrollViewNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static AxisEnum _$scrollDirection(BoxScrollViewNode v) => v.scrollDirection;
   static const Field<BoxScrollViewNode, AxisEnum> _f$scrollDirection = Field(
     'scrollDirection',
@@ -50,6 +56,12 @@ class BoxScrollViewNodeMapper extends SubClassMapperBase<BoxScrollViewNode> {
   static const Field<BoxScrollViewNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(BoxScrollViewNode v) => v.tags;
+  static const Field<BoxScrollViewNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(BoxScrollViewNode v) =>
@@ -83,10 +95,12 @@ class BoxScrollViewNodeMapper extends SubClassMapperBase<BoxScrollViewNode> {
 
   @override
   final MappableFields<BoxScrollViewNode> fields = const {
+    #name: _f$name,
     #scrollDirection: _f$scrollDirection,
     #shrinkWrap: _f$shrinkWrap,
     #padding: _f$padding,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -147,7 +161,7 @@ abstract class BoxScrollViewNodeCopyWith<
     implements ScrollViewNodeCopyWith<$R, $In, $Out> {
   EdgeInsetsValueCopyWith<$R, EdgeInsetsValue, EdgeInsetsValue>? get padding;
   @override
-  $R call({bool? shrinkWrap, EdgeInsetsValue? padding});
+  $R call({String? name, bool? shrinkWrap, EdgeInsetsValue? padding});
   BoxScrollViewNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );

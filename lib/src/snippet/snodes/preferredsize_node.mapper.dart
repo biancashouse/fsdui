@@ -24,6 +24,12 @@ class PreferredSizeNodeMapper extends SubClassMapperBase<PreferredSizeNode> {
   @override
   final String id = 'PreferredSizeNode';
 
+  static String? _$name(PreferredSizeNode v) => v.name;
+  static const Field<PreferredSizeNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static double _$width(PreferredSizeNode v) => v.width;
   static const Field<PreferredSizeNode, double> _f$width = Field(
     'width',
@@ -44,6 +50,12 @@ class PreferredSizeNodeMapper extends SubClassMapperBase<PreferredSizeNode> {
   static const Field<PreferredSizeNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(PreferredSizeNode v) => v.tags;
+  static const Field<PreferredSizeNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(PreferredSizeNode v) =>
@@ -71,10 +83,12 @@ class PreferredSizeNodeMapper extends SubClassMapperBase<PreferredSizeNode> {
 
   @override
   final MappableFields<PreferredSizeNode> fields = const {
+    #name: _f$name,
     #width: _f$width,
     #height: _f$height,
     #child: _f$child,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -96,6 +110,7 @@ class PreferredSizeNodeMapper extends SubClassMapperBase<PreferredSizeNode> {
 
   static PreferredSizeNode _instantiate(DecodingData data) {
     return PreferredSizeNode(
+      name: data.dec(_f$name),
       width: data.dec(_f$width),
       height: data.dec(_f$height),
       child: data.dec(_f$child),
@@ -176,7 +191,7 @@ abstract class PreferredSizeNodeCopyWith<
   @override
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({double? width, double? height, SNode? child});
+  $R call({String? name, double? width, double? height, SNode? child});
   PreferredSizeNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -194,8 +209,14 @@ class _PreferredSizeNodeCopyWithImpl<$R, $Out>
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
-  $R call({double? width, double? height, Object? child = $none}) => $apply(
+  $R call({
+    Object? name = $none,
+    double? width,
+    double? height,
+    Object? child = $none,
+  }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (width != null) #width: width,
       if (height != null) #height: height,
       if (child != $none) #child: child,
@@ -203,6 +224,7 @@ class _PreferredSizeNodeCopyWithImpl<$R, $Out>
   );
   @override
   PreferredSizeNode $make(CopyWithData data) => PreferredSizeNode(
+    name: data.get(#name, or: $value.name),
     width: data.get(#width, or: $value.width),
     height: data.get(#height, or: $value.height),
     child: data.get(#child, or: $value.child),

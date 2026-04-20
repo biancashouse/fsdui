@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'callout_following_scroll_demo.dart';
@@ -20,7 +20,7 @@ class IntroPage extends StatefulWidget {
 class IntroPageState extends State<IntroPage> {
 
   double get fontSize {
-    double result = fco.scrW < 600 ? 12.0 : 18.0;
+    double result = fsdui.scrW < 600 ? 12.0 : 18.0;
     return result;
   }
 
@@ -30,8 +30,8 @@ class IntroPageState extends State<IntroPage> {
       body: SingleChildScrollView(
         child: Center(
           child: SizedBox(
-            width: fco.scrW * .6,
-            height: fco.scrH * .95,
+            width: fsdui.scrW * .6,
+            height: fsdui.scrH * .95,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
@@ -105,7 +105,7 @@ class IntroPageState extends State<IntroPage> {
                   ),
                 Spacer(),
                 Text(
-                  "\n\nBTW - We also offer another pkg (flutter_content), "
+                  "\n\nBTW - We also offer another pkg (fsdui), "
                       "built on top of this one, "
                       "that extends this API with an accompanying admin UI. It "
                       "makes it easy to configure your callouts and store "

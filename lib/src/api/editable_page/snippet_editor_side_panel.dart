@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/api/editable_page/snippet_properties_tree_view.dart';
-import 'package:flutter_content/src/api/editable_page/snippet_tree_view.dart';
-import 'package:flutter_content/src/snippet/snode_widget.dart';
-import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/api/editable_page/snippet_properties_tree_view.dart';
+import 'package:fsdui/src/api/editable_page/snippet_tree_view.dart';
+import 'package:fsdui/src/snippet/snode_widget.dart';
+import 'package:fsdui/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
 
 const double kSidePanelWidth = 420.0;
 
@@ -20,7 +20,7 @@ class SnippetEditorSidePanel extends StatefulWidget {
     if (_overlayEntry != null) return;
     _overlayEntry = OverlayEntry(
       builder: (_) => BlocProvider.value(
-        value: fco.capiBloc,
+        value: fsdui.capiBloc,
         child: const SnippetEditorSidePanel(),
       ),
     );
@@ -44,7 +44,7 @@ class _SnippetEditorSidePanelState extends State<SnippetEditorSidePanel> {
     super.initState();
     // Restore the last known panel side so the overlay clip stays correct
     // across panel close/reopen cycles.
-    _isRight = fco.snippetEditorPanelOnRight;
+    _isRight = fsdui.snippetEditorPanelOnRight;
   }
 
   @override
@@ -64,10 +64,12 @@ class _SnippetEditorSidePanelState extends State<SnippetEditorSidePanel> {
                 isRight: _isRight,
                 onFlip: () => setState(() {
                   _isRight = !_isRight;
-                  fco.snippetEditorPanelOnRight = _isRight;
+                  fsdui.snippetEditorPanelOnRight = _isRight;
                   // Recreate the selected-node overlay with the updated clip region.
-                  fco.dismiss('pink-overlay');
-                  fco.afterNextBuildDo(() => SNodeWidget.pointOutSelectedNode());
+                  fsdui.dismiss('pink-overlay');
+                  fsdui.afterNextBuildDo(
+                    () => SNodeWidget.pointOutSelectedNode(),
+                  );
                 }),
               ),
               const Expanded(child: _PanelBody()),
@@ -87,9 +89,8 @@ class _PanelHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final snippetName =
-        fco.snippetBeingEdited?.getRootNode().name ?? '?';
-    final snippetInfo = fco.appInfo.cachedSnippetInfo(snippetName);
+    final snippetName = fsdui.snippetBeingEdited?.getRootNode().name ?? '?';
+    final snippetInfo = fsdui.appInfo.cachedSnippetInfo(snippetName);
 
     return Container(
       color: Colors.purple,
@@ -100,14 +101,15 @@ class _PanelHeader extends StatelessWidget {
           if (isRight)
             IconButton(
               tooltip: 'Move panel to left',
-              icon: Icon(
-                Icons.arrow_circle_left,
-                color: Colors.white,
-              ),
+              icon: Icon(Icons.arrow_circle_left, color: Colors.white),
               onPressed: onFlip,
             ),
           Expanded(
-            child: fco.coloredText(snippetName, color: Colors.white, fontSize: 13),
+            child: fsdui.coloredText(
+              snippetName,
+              color: Colors.white,
+              fontSize: 13,
+            ),
           ),
           _UndoRedoButtons(),
           IconButton(
@@ -117,10 +119,7 @@ class _PanelHeader extends StatelessWidget {
           if (!isRight)
             IconButton(
               tooltip: 'Move panel to right',
-              icon: Icon(
-                Icons.arrow_circle_right,
-                color: Colors.white,
-              ),
+              icon: Icon(Icons.arrow_circle_right, color: Colors.white),
               onPressed: onFlip,
             ),
         ],
@@ -129,15 +128,15 @@ class _PanelHeader extends StatelessWidget {
   }
 
   void _close(String snippetName, SnippetInfoModel? snippetInfo) {
-    if (SnippetRootNode.isHotspotCalloutContent(snippetName)) {
-      fco.dismissAll();
+    if (SNode.isHotspotCalloutContent(snippetName)) {
+      fsdui.dismissAll();
     } else {
-      fco.dismiss('selected-node');
-      fco.unhide(HotspotTargetConfigToolbar.CID);
-      fco.appInfo.hideClipboard();
+      fsdui.dismiss('selected-node');
+      fsdui.unhide(HotspotTargetConfigToolbar.CID);
+      fsdui.appInfo.hideClipboard();
     }
-    fco.dismissAll();
-    fco.capiBloc.add(const CAPIEvent.popSnippetEditor());
+    fsdui.dismissAll();
+    fsdui.capiBloc.add(const CAPIEvent.popSnippetEditor());
     final rootNode = snippetInfo?.currentVersionInCache();
     if (rootNode != null) {
       snippetInfo!.getChangeNotifier().value = rootNode.toJson();
@@ -165,7 +164,7 @@ class _UndoRedoButtons extends StatelessWidget {
               color: Colors.white,
               disabledColor: Colors.white24,
               onPressed: canUndo
-                  ? () => fco.capiBloc.add(const CAPIEvent.undo())
+                  ? () => fsdui.capiBloc.add(const CAPIEvent.undo())
                   : null,
             ),
             IconButton(
@@ -174,7 +173,7 @@ class _UndoRedoButtons extends StatelessWidget {
               color: Colors.white,
               disabledColor: Colors.white24,
               onPressed: canRedo
-                  ? () => fco.capiBloc.add(const CAPIEvent.redo())
+                  ? () => fsdui.capiBloc.add(const CAPIEvent.redo())
                   : null,
             ),
           ],
@@ -200,9 +199,7 @@ class _PanelBody extends StatelessWidget {
 
         return Column(
           children: [
-            Expanded(
-              child: _TreeArea(),
-            ),
+            Expanded(child: _TreeArea()),
             if (pTreeC != null) ...[
               const Divider(height: 1, thickness: 1, color: Colors.purple),
               Expanded(
@@ -235,7 +232,7 @@ class _TreeAreaState extends State<_TreeArea> {
     super.initState();
     // BlocListener only fires on changes, so handle the initial selection here.
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final node = fco.capiBloc.state.snippetBeingEdited?.selectedNode;
+      final node = fsdui.capiBloc.state.snippetBeingEdited?.selectedNode;
       if (node != null) {
         _lastScrolledNode = node;
         _scrollToSelectedNode(node);
@@ -267,7 +264,7 @@ class _TreeAreaState extends State<_TreeArea> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<CAPIBloC, CAPIState>(
+    return BlocConsumer<CAPIBloC, CAPIState>(
       // _selectNode mutates snippetBeingEdited in-place then bumps force,
       // so selectedNode comparisons see the same mutated value on both sides.
       // Listen on force instead and guard with our own last-scrolled tracker.
@@ -279,18 +276,18 @@ class _TreeAreaState extends State<_TreeArea> {
           _scrollToSelectedNode(node);
         }
       },
-      child: GestureDetector(
+      builder: (BuildContext context, CAPIState state) => GestureDetector(
         onTap: () {
-          fco.dismissAll();
-          fco.capiBloc.add(CAPIEvent.clearNodeSelection());
-          fco.hide('floating-clipboard');
+          fsdui.dismissAll();
+          fsdui.capiBloc.add(CAPIEvent.clearNodeSelection());
+          fsdui.hide('floating-clipboard');
         },
         child: Material(
           color: Colors.purple.shade200,
           child: SingleChildScrollView(
             controller: _scrollController,
             padding: const EdgeInsets.all(8),
-            child: const SnippetTreeView(shrinkWrap: true),
+            child: SnippetTreeView(shrinkWrap: true, snippetBeingEdited: state.snippetBeingEdited!),
           ),
         ),
       ),
@@ -302,10 +299,7 @@ class _PropertiesArea extends StatelessWidget {
   final SNode selectedNode;
   final PNodeTreeController pTreeC;
 
-  const _PropertiesArea({
-    required this.selectedNode,
-    required this.pTreeC,
-  });
+  const _PropertiesArea({required this.selectedNode, required this.pTreeC});
 
   @override
   Widget build(BuildContext context) {
@@ -313,23 +307,20 @@ class _PropertiesArea extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.purple,
         automaticallyImplyLeading: false,
-        title: fco.coloredText('Properties', color: Colors.white),
+        title: fsdui.coloredText('Properties', color: Colors.white),
       ),
       body: Material(
         color: Colors.blue[50],
         child: Padding(
           padding: const EdgeInsets.all(8),
           child: InteractiveViewer(
-            transformationController: fco.propertiesTreeTC,
+            transformationController: fsdui.propertiesTreeTC,
             alignment: Alignment.topLeft,
             constrained: false,
             child: SizedBox(
               width: kSidePanelWidth - 20,
               height: 1000,
-              child: PropertiesTreeView(
-                treeC: pTreeC,
-                sNode: selectedNode,
-              ),
+              child: PropertiesTreeView(treeC: pTreeC, sNode: selectedNode),
             ),
           ),
         ),

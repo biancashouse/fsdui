@@ -1,11 +1,11 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_ui_storage/firebase_ui_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/fancy_tree/tree_controller.dart';
-import 'package:flutter_content/src/snippet/fancy_tree/tree_indentation.dart';
-import 'package:flutter_content/src/snippet/fancy_tree/tree_view.dart';
-import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/fancy_tree/tree_controller.dart';
+import 'package:fsdui/src/snippet/fancy_tree/tree_indentation.dart';
+import 'package:fsdui/src/snippet/fancy_tree/tree_view.dart';
+import 'package:fsdui/src/snippet/snodes/widget/fs_folder_node.dart';
 import 'package:multi_split_view/multi_split_view.dart';
 
 import 'fs_file_upload_btn.dart';
@@ -35,21 +35,21 @@ class FSFoldersAndImagePickerState extends State<FSFoldersAndImagePicker> {
         ),
       );
     } catch (e) {
-      fco.logger.e('', error: e);
+      fsdui.logger.e('', error: e);
     }
   }
 
   @override
   void initState() {
     super.initState();
-    folderNode = fco.fsTreeC.roots.first; //fs root
+    folderNode = fsdui.fsTreeC.roots.first; //fs root
     fConfigureStorageUIForFolder = _fbStorageTreePossiblyCreate();
   }
 
   void refresh(Reference selectedFileRef) {
     setState(() {
-      fco.fsTreeC.rebuild();
-      fco.refresh('fs-browser');
+      fsdui.fsTreeC.rebuild();
+      fsdui.refresh('fs-browser');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Upload complete: ${selectedFileRef.fullPath}')),
       );
@@ -58,7 +58,7 @@ class FSFoldersAndImagePickerState extends State<FSFoldersAndImagePicker> {
 
   @override
   Widget build(BuildContext context) {
-    fco.logger.i('folder+images build');
+    fsdui.logger.i('folder+images build');
 
     return FutureBuilder<void>(
       future: fConfigureStorageUIForFolder,
@@ -74,8 +74,8 @@ class FSFoldersAndImagePickerState extends State<FSFoldersAndImagePicker> {
               resizeToAvoidBottomInset: false,
               appBar: AppBar(
                 backgroundColor: Colors.black,
-                title: fco.coloredText(
-                  'Firebase Storage Image Picker (${fco.folderPathRef('/').bucket})',
+                title: fsdui.coloredText(
+                  'Firebase Storage Image Picker (${fsdui.folderPathRef('/').bucket})',
                   fontSize: 16.0,
                   color: Colors.white,
                 ),
@@ -145,12 +145,12 @@ class FSFoldersAndImagePickerState extends State<FSFoldersAndImagePicker> {
   Widget fsFolderPane({required ValueChanged<FSFolderNode> onSelectionF}) {
     return TreeView<FSFolderNode>(
       // physics: const NeverScrollableScrollPhysics(),
-      treeController: fco.fsTreeC,
+      treeController: fsdui.fsTreeC,
       shrinkWrap: true,
       nodeBuilder: (BuildContext context, TreeEntry<FSFolderNode> entry) {
         return InkWell(
           onTap: () {
-            if (entry.hasChildren) fco.fsTreeC.toggleExpansion(entry.node);
+            if (entry.hasChildren) fsdui.fsTreeC.toggleExpansion(entry.node);
           },
           child: TreeIndentation(
             entry: entry,
@@ -171,7 +171,7 @@ class FSFoldersAndImagePickerState extends State<FSFoldersAndImagePicker> {
                         color: Colors.white,
                         size: 30,
                       ),
-                      fco.coloredText(
+                      fsdui.coloredText(
                         entry.node.ref.name.isEmpty ? '/' : entry.node.ref.name,
                         color: entry.node == folderNode
                             ? Colors.blue
@@ -229,7 +229,7 @@ class FSFilesGridView extends StatelessWidget {
           TextButton.icon(
             onPressed: () async {
               final Uri url = Uri.parse(
-                'https://console.cloud.google.com/storage/browser/${fco.firebaseOptions!.storageBucket}/${fco.appName}?project=bh-apps',
+                'https://console.cloud.google.com/storage/browser/${fsdui.firebaseOptions!.storageBucket}/${fsdui.appName}?project=bh-apps',
               );
               if (!await launchUrl(url)) {
                 throw Exception('Could not launch $url');

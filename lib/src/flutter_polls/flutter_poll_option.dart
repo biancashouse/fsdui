@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/bloc/poll_bloc.dart';
-import 'package:flutter_content/src/bloc/poll_event.dart';
-import 'package:flutter_content/src/bloc/poll_state.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/bloc/poll_bloc.dart';
+import 'package:fsdui/src/bloc/poll_event.dart';
+import 'package:fsdui/src/bloc/poll_state.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
@@ -26,7 +26,7 @@ class FlutterPollOption extends HookWidget {
     FlutterPollState? parentPollState = FlutterPoll.of(context);
 
     if (parentPollState == null) {
-      return fco.coloredText('Orphan poll option!', color: Colors.red);
+      return fsdui.coloredText('Orphan poll option!', color: Colors.red);
     }
 
     PollBloC pollBloc = parentPollState.pollBloc;
@@ -136,11 +136,11 @@ class FlutterPollOption extends HookWidget {
                       // }
 
                       if (!pollBloc.state.userAlreadyVoted()) {
-                        final String? vea = fco.localStorage.read('vea');
+                        final String? vea = fsdui.localStorage.read('vea');
                         if (vea == null) {
-                          final gcrServerUrl = fco.gcrServerUrl;
+                          final gcrServerUrl = fsdui.gcrServerUrl;
                           if (gcrServerUrl != null) {
-                            fco.showPasswordlessStepper(
+                            fsdui.showPasswordlessStepper(
                               targetGK: key as GlobalKey?,
                               gcrServerUrl: gcrServerUrl,
                               onSignedInF: (ea) {
@@ -154,7 +154,7 @@ class FlutterPollOption extends HookWidget {
                                
                             );
                           } else {
-                            fco.logger.d('missing gcr-bh-apps-dart');
+                            fsdui.logger.d('missing gcr-bh-apps-dart');
                           }
                         } else {
                           pollBloc.add(

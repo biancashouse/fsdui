@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 class ContainerStyleNameSuggestions extends StatelessWidget {
   final BuildContext anchorContext;
@@ -52,7 +52,7 @@ class ContainerStyleNameSuggestions extends StatelessWidget {
   }
 
   Widget _suggestedContainerStyleNameWidget(String suggestedContainerStyleName) {
-    ContainerStyleProperties? csProps = fco.namedContainerStyles[suggestedContainerStyleName];
+    ContainerStyleProperties? csProps = fsdui.namedContainerStyles[suggestedContainerStyleName];
     return csProps == null
     ? Icon(Icons.warning)
     : MouseRegion(

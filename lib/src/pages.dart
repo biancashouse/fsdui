@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 import 'package:go_router/go_router.dart';
 
 class Pages extends StatelessWidget {
@@ -8,8 +8,8 @@ class Pages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    fco.logger.d('pages build');
-    var pages = fco.pageList;
+    fsdui.logger.d('pages build');
+    var pages = fsdui.pageList;
     final scaffold = Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(title: Text('Available Pages in this web app')),
@@ -19,7 +19,7 @@ class Pages extends StatelessWidget {
         itemBuilder: (context, index) {
           final label = pages[index];
           String sandboxIndicator =
-              (fco.appInfo.anonymousUserEditablePages.contains(label))
+              (fsdui.appInfo.anonymousUserEditablePages.contains(label))
               ? ' *'
               : "";
           return Row(
@@ -29,13 +29,13 @@ class Pages extends StatelessWidget {
               if (label != '/')
                 IconButton(
                   onPressed: () async {
-                    fco.appInfo.snippetNames.remove(label);
-                    fco.appInfo.anonymousUserEditablePages.remove(label);
-                    fco.deleteSubRoute(path: label);
-                    await fco.modelRepo.saveAppInfo();
-                    await fco.modelRepo.deleteSnippet(label);
-                    fco.appInfo.removeFromCache(label);
-                    fco.capiBloc.add(CAPIEvent.forceRefresh());
+                    fsdui.appInfo.snippetNames.remove(label);
+                    fsdui.appInfo.anonymousUserEditablePages.remove(label);
+                    fsdui.deleteSubRoute(path: label);
+                    await fsdui.modelRepo.saveAppInfo();
+                    await fsdui.modelRepo.deleteSnippet(label);
+                    fsdui.appInfo.removeFromCache(label);
+                    fsdui.capiBloc.add(CAPIEvent.forceRefresh());
                   },
                   icon: Icon(Icons.delete, color: Colors.red),
                 ),
@@ -53,7 +53,7 @@ class Pages extends StatelessWidget {
 
     return BlocBuilder<CAPIBloC, CAPIState>(
       builder: (context, state) {
-        bool showPencil = !fco.canEditAnyContent();
+        bool showPencil = !fsdui.canEditAnyContent();
         return Stack(
           children: [
             scaffold,
@@ -64,7 +64,7 @@ class Pages extends StatelessWidget {
                   onPressed: () {
                     // ask user to sign in as editor
                     EditablePage.of(context)?.editorPasswordDialog();
-                    fco.capiBloc.add(CAPIEvent.forceRefresh());
+                    fsdui.capiBloc.add(CAPIEvent.forceRefresh());
                   },
                   icon: Icon(Icons.edit, color: Colors.white),
                 ),

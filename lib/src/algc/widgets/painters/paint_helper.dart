@@ -1,9 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/algc/model/m/flowchart_m.dart';
-import 'package:flutter_content/src/algc/model/m/step_m.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/algc/model/m/flowchart_m.dart';
+import 'package:fsdui/src/algc/model/m/step_m.dart';
 
 const bool DEBUGGING = false;
 const bool SHOW_HELPERS = false;
@@ -28,31 +28,31 @@ const Color showingTrashModeBg = Colors.white;
 final Color? showingCommentIconsBg = Colors.purple[50];
 
 //Paint normalfco.bgPaint() => fco.bgPaint(BLOC.nestingLevelcolor());
-Paint get showingInsertersBgPaint => fco.bgPaint(showingInsertersBg!);
+Paint get showingInsertersBgPaint => fsdui.bgPaint(showingInsertersBg!);
 
-Paint get showingMoversBgPaint => fco.bgPaint(showingMoversBg!);
+Paint get showingMoversBgPaint => fsdui.bgPaint(showingMoversBg!);
 
-Paint get showingTrashModeBgPaint => fco.bgPaint(showingTrashModeBg);
+Paint get showingTrashModeBgPaint => fsdui.bgPaint(showingTrashModeBg);
 
-Paint get showingCommentIconsBgPaint => fco.bgPaint(showingCommentIconsBg!);
+Paint get showingCommentIconsBgPaint => fsdui.bgPaint(showingCommentIconsBg!);
 
-Paint get greyBgPaint => fco.bgPaint(Colors.grey[200]!);
+Paint get greyBgPaint => fsdui.bgPaint(Colors.grey[200]!);
 
-Paint get greenBgPaint => fco.bgPaint(Colors.green);
+Paint get greenBgPaint => fsdui.bgPaint(Colors.green);
 
 void drawLine(FlowchartM theFlowchart, Offset from, Offset to,
     {required Canvas theCanvas, Color color = Colors.grey}) {
-  theCanvas.drawLine(from, to, fco.linePaint(color));
+  theCanvas.drawLine(from, to, fsdui.linePaint(color));
 }
 
 void drawThickLine(FlowchartM theFlowchart, Offset from, Offset to,
     {required Canvas theCanvas, Color color = Colors.grey}) {
-  theCanvas.drawLine(from, to, fco.thickLinePaint(color));
+  theCanvas.drawLine(from, to, fsdui.thickLinePaint(color));
 }
 
 void drawVeryThickLine(FlowchartM theFlowchart, Offset from, Offset to,
     {required Canvas theCanvas, Color color = Colors.grey}) {
-  theCanvas.drawLine(from, to, fco.veryThickLinePaint(color));
+  theCanvas.drawLine(from, to, fsdui.veryThickLinePaint(color));
 }
 
 void drawRect(FlowchartM theFlowchart, Rect theRect,
@@ -60,12 +60,12 @@ void drawRect(FlowchartM theFlowchart, Rect theRect,
     Color? theLineColor,
     Color? theBgColor,
     bool thicker = false}) {
-  theCanvas.drawRect(theRect, fco.bgPaint(theBgColor!));
+  theCanvas.drawRect(theRect, fsdui.bgPaint(theBgColor!));
   theCanvas.drawRect(
       theRect,
       thicker
-          ? fco.thickLinePaint(theLineColor!)
-          : fco.linePaint(theLineColor!));
+          ? fsdui.thickLinePaint(theLineColor!)
+          : fsdui.linePaint(theLineColor!));
 }
 
 // incl M and P around txt
@@ -408,8 +408,8 @@ double drawDecisionDiamond(StepM model,
   ];
   path.addPolygon(points, true);
 
-  theCanvas.drawPath(path, fco.bgPaint(model.shapeFillColor));
-  theCanvas.drawPath(path, fco.linePaint(model.shapeLineColor));
+  theCanvas.drawPath(path, fsdui.bgPaint(model.shapeFillColor));
+  theCanvas.drawPath(path, fsdui.linePaint(model.shapeLineColor));
 
   return diamondBottom;
 }
@@ -434,8 +434,8 @@ double drawCasePolygon(
   ];
   path.addPolygon(points, true);
 
-  theCanvas.drawPath(path, fco.bgPaint(model.shapeFillColor));
-  theCanvas.drawPath(path, fco.linePaint(model.shapeLineColor));
+  theCanvas.drawPath(path, fsdui.bgPaint(model.shapeFillColor));
+  theCanvas.drawPath(path, fsdui.linePaint(model.shapeLineColor));
 //    if (model.isInAMoveSelection())
 //      theCanvas.drawPath(path, highlightPaint);
 
@@ -495,14 +495,14 @@ void drawCircle(double x, double y, double r,
       Offset(x, y),
       r,
       fillColor != null
-          ? fco.bgPaint(fillColor)
-          : fco.bgPaint(model?.shapeFillColor ?? Colors.white));
+          ? fsdui.bgPaint(fillColor)
+          : fsdui.bgPaint(model?.shapeFillColor ?? Colors.white));
   theCanvas.drawCircle(
       Offset(x, y),
       r,
       lineColor != null
-          ? fco.linePaint(lineColor)
-          : fco.linePaint(model?.shapeLineColor ?? Colors.grey));
+          ? fsdui.linePaint(lineColor)
+          : fsdui.linePaint(model?.shapeLineColor ?? Colors.grey));
 }
 
 void drawSausage(FlowchartM? theFlowchart, Offset theCentreLeft,
@@ -537,25 +537,25 @@ void drawSausage(FlowchartM? theFlowchart, Offset theCentreLeft,
 void drawArc0To15(FlowchartM? theFlowchart, double x, double y, double r,
     {required Canvas theCanvas, Color color = Colors.grey}) {
   theCanvas.drawArc(Rect.fromCircle(center: Offset(x, y), radius: r),
-      3 * pi / 2, pi / 2, false, fco.linePaint(color));
+      3 * pi / 2, pi / 2, false, fsdui.linePaint(color));
 }
 
 void drawArc15To30(FlowchartM? theFlowchart, double x, double y, double r,
     {required Canvas theCanvas, Color color = Colors.grey}) {
   theCanvas.drawArc(Rect.fromCircle(center: Offset(x, y), radius: r), 0.0,
-      pi / 2, false, fco.linePaint(color));
+      pi / 2, false, fsdui.linePaint(color));
 }
 
 void drawArc30To45(FlowchartM? theFlowchart, double x, double y, double r,
     {required Canvas theCanvas, Color color = Colors.grey}) {
   theCanvas.drawArc(Rect.fromCircle(center: Offset(x, y), radius: r), pi / 2,
-      pi / 2, false, fco.linePaint(color));
+      pi / 2, false, fsdui.linePaint(color));
 }
 
 void drawArc45To00(FlowchartM? theFlowchart, double x, double y, double r,
     {required Canvas theCanvas, Color color = Colors.grey}) {
   theCanvas.drawArc(Rect.fromCircle(center: Offset(x, y), radius: r), pi,
-      pi / 2, false, fco.linePaint(color));
+      pi / 2, false, fsdui.linePaint(color));
 }
 
 void drawArc30To00(FlowchartM? theFlowchart, double x, double y, double r,

@@ -1,14 +1,14 @@
-import 'package:flutter_content/src/model/alignment_enum_model.dart';
-import 'package:flutter_content/src/model/color_model.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/container_style_properties.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
-import 'package:flutter_content/src/snippet/snode.dart';
-import 'package:flutter_content/src/snippet/snodes/abstract_sc_node.dart';
-import 'package:flutter_content/src/snippet/snodes/container_node.dart';
-import 'package:flutter_content/src/snippet/snodes/edgeinsets_node_value.dart';
-import 'package:flutter_content/src/snippet/snodes/row_node.dart';
-import 'package:flutter_content/src/snippet/snodes/text_node.dart';
-import 'package:flutter_content/src/snippet/snodes/upto6colors.dart';
+import 'package:fsdui/src/model/alignment_enum_model.dart';
+import 'package:fsdui/src/model/color_model.dart';
+import 'package:fsdui/src/snippet/pnodes/groups/container_style_properties.dart';
+import 'package:fsdui/src/snippet/pnodes/groups/text_style_properties.dart';
+import 'package:fsdui/src/snippet/snode.dart';
+import 'package:fsdui/src/snippet/snodes/abstract_sc_node.dart';
+import 'package:fsdui/src/snippet/snodes/container_node.dart';
+import 'package:fsdui/src/snippet/snodes/edgeinsets_node_value.dart';
+import 'package:fsdui/src/snippet/snodes/row_node.dart';
+import 'package:fsdui/src/snippet/snodes/text_node.dart';
+import 'package:fsdui/src/snippet/snodes/upto6colors.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // IMPORTANT: Import all your *.mapper.dart files here for initialization.

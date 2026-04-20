@@ -3,10 +3,10 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
-import 'package:flutter_content/src/snippet/snodes/button_style_hook.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/src/snippet/pnodes/groups/button_style_properties.dart';
+import 'package:fsdui/src/snippet/snodes/button_style_hook.dart';
 
 part 'icon_button_node.mapper.dart';
 
@@ -19,6 +19,7 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
   double? iconSize;
 
   IconButtonNode({
+    super.name,
     this.iconCodePoint,
     this.iconFontFamily,
     this.iconFontPackage,
@@ -91,7 +92,7 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
     
     // ButtonStyle? btnStyle = buttonStyle?.toButtonStyle(context);
     // possible handler
-    void Function(BuildContext)? f = onTapHandlerName != null ? fco.namedHandler(onTapHandlerName!) : null;
+    void Function(BuildContext)? f = onTapHandlerName != null ? fsdui.namedHandler(onTapHandlerName!) : null;
     setParent(parentNode);
 
     final gk = createNodeWidgetGK();
@@ -103,7 +104,7 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
       // key: cid != null ? fco.setCalloutGk(cid!, GlobalKey()) : null,
       onPressed: ()=>onPressed(context, gk),
       style: btnStyle,
-      icon: child?.buildFlutterWidget(context, this) ?? const Icon(Icons.warning, color: Colors.red),
+      icon: child?.build(context, this) ?? const Icon(Icons.warning, color: Colors.red),
     );
 
     // possiblyHighlightSelectedNode(scName);

@@ -1,11 +1,11 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/color_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/color_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 
-// import 'package:flutter_content/src/snippet/snodes/appbar_with_menubar_node.dart';
-// import 'package:flutter_content/src/snippet/snodes/appbar_with_tabbar_node.dart';
+// import 'package:fsdui/src/snippet/snodes/appbar_with_menubar_node.dart';
+// import 'package:fsdui/src/snippet/snodes/appbar_with_tabbar_node.dart';
 
 part 'scaffold_node.mapper.dart';
 
@@ -20,6 +20,7 @@ class ScaffoldNode extends CL with ScaffoldNodeMappable {
   // int numTabs;
 
   ScaffoldNode({
+    super.name,
     this.bgColor,
     required this.appBar,
     required this.body,
@@ -70,7 +71,7 @@ class ScaffoldNode extends CL with ScaffoldNodeMappable {
       backgroundColor: bgColor?.flutterValue,
       appBar: appBarProp,
       // guaranteed the widget is actually an AppBar
-      body: body.child != null ? body.buildFlutterWidget(context, this) : null,
+      body: body.child != null ? body.build(context, this) : null,
     );
 
     // try {

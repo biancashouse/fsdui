@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/property_callout_button.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/editors/property_callout_button.dart';
 
 class PropertyButtonEnum extends StatelessWidget {
   final String label;
@@ -36,7 +36,7 @@ class PropertyButtonEnum extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                (fco.coloredText(
+                (fsdui.coloredText(
                   label.isNotEmpty ? '$label: ' : '',
                   color: Colors.white,
                 )),

@@ -1,10 +1,10 @@
 // ignore_for_file: constant_identifier_names
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/snodes/text_style_hook.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/src/snippet/snodes/text_style_hook.dart';
 
 part 'sliver_appbar_node.mapper.dart';
 
@@ -21,6 +21,7 @@ class SliverAppBarNode extends AppBarNode with SliverAppBarNodeMappable {
   NamedSC? flexibleSpace;
 
   SliverAppBarNode({
+    super.name,
     this.collapsedHeight,
     this.expandedHeight,
     this.flexibleSpace,
@@ -80,9 +81,9 @@ class SliverAppBarNode extends AppBarNode with SliverAppBarNodeMappable {
       var actionWidgets = actions.toWidgetProperty(context, this);
       Widget? titleWidget;
       if (flexibleSpace == null) {
-        titleWidget = title.buildFlutterWidget(context, this);
+        titleWidget = title.build(context, this);
       }
-      var flexibleSpaceWidget = flexibleSpace?.buildFlutterWidget(context, this);
+      var flexibleSpaceWidget = flexibleSpace?.build(context, this);
 
       // if (hasTabBar()) {
       //   toolbarHeight = kToolbarHeight;
@@ -143,7 +144,7 @@ class SliverAppBarNode extends AppBarNode with SliverAppBarNodeMappable {
         }
         return sliverAppBar;
       } catch (e) {
-        fco.logger.i('SliverAppBarNode.toWidget() failed!');
+        fsdui.logger.i('SliverAppBarNode.toWidget() failed!');
         return Material(
           textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
           child: SingleChildScrollView(
@@ -152,7 +153,7 @@ class SliverAppBarNode extends AppBarNode with SliverAppBarNodeMappable {
               children: [
                 Icon(Icons.error, color: Colors.red),
                 const Gap(10),
-                fco.coloredText(e.toString()),
+                fsdui.coloredText(e.toString()),
               ],
             ),
           ),

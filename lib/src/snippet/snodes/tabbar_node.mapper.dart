@@ -26,8 +26,17 @@ class TabBarNodeMapper extends SubClassMapperBase<TabBarNode> {
   @override
   final String id = 'TabBarNode';
 
-  static String _$name(TabBarNode v) => v.name;
-  static const Field<TabBarNode, String> _f$name = Field('name', _$name);
+  static String? _$name(TabBarNode v) => v.name;
+  static const Field<TabBarNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
+  static String _$tabBarName(TabBarNode v) => v.tabBarName;
+  static const Field<TabBarNode, String> _f$tabBarName = Field(
+    'tabBarName',
+    _$tabBarName,
+  );
   static ColorModel? _$bgColor(TabBarNode v) => v.bgColor;
   static const Field<TabBarNode, ColorModel> _f$bgColor = Field(
     'bgColor',
@@ -81,6 +90,12 @@ class TabBarNodeMapper extends SubClassMapperBase<TabBarNode> {
     _$uid,
     mode: FieldMode.member,
   );
+  static List<String>? _$tags(TabBarNode v) => v.tags;
+  static const Field<TabBarNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(TabBarNode v) =>
       v.treeNodeGK;
   static const Field<TabBarNode, GlobalKey<State<StatefulWidget>>>
@@ -129,6 +144,7 @@ class TabBarNodeMapper extends SubClassMapperBase<TabBarNode> {
   @override
   final MappableFields<TabBarNode> fields = const {
     #name: _f$name,
+    #tabBarName: _f$tabBarName,
     #bgColor: _f$bgColor,
     #labelTSPropGroup: _f$labelTSPropGroup,
     #selectedLabelColor: _f$selectedLabelColor,
@@ -138,6 +154,7 @@ class TabBarNodeMapper extends SubClassMapperBase<TabBarNode> {
     #selection: _f$selection,
     #children: _f$children,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -164,6 +181,7 @@ class TabBarNodeMapper extends SubClassMapperBase<TabBarNode> {
   static TabBarNode _instantiate(DecodingData data) {
     return TabBarNode(
       name: data.dec(_f$name),
+      tabBarName: data.dec(_f$tabBarName),
       bgColor: data.dec(_f$bgColor),
       labelTSPropGroup: data.dec(_f$labelTSPropGroup),
       selectedLabelColor: data.dec(_f$selectedLabelColor),
@@ -246,6 +264,7 @@ abstract class TabBarNodeCopyWith<$R, $In extends TabBarNode, $Out>
   @override
   $R call({
     String? name,
+    String? tabBarName,
     ColorModel? bgColor,
     TextStyleProperties? labelTSPropGroup,
     ColorModel? selectedLabelColor,
@@ -295,7 +314,8 @@ class _TabBarNodeCopyWithImpl<$R, $Out>
       );
   @override
   $R call({
-    String? name,
+    Object? name = $none,
+    String? tabBarName,
     Object? bgColor = $none,
     TextStyleProperties? labelTSPropGroup,
     Object? selectedLabelColor = $none,
@@ -306,7 +326,8 @@ class _TabBarNodeCopyWithImpl<$R, $Out>
     List<SNode>? children,
   }) => $apply(
     FieldCopyWithData({
-      if (name != null) #name: name,
+      if (name != $none) #name: name,
+      if (tabBarName != null) #tabBarName: tabBarName,
       if (bgColor != $none) #bgColor: bgColor,
       if (labelTSPropGroup != null) #labelTSPropGroup: labelTSPropGroup,
       if (selectedLabelColor != $none) #selectedLabelColor: selectedLabelColor,
@@ -321,6 +342,7 @@ class _TabBarNodeCopyWithImpl<$R, $Out>
   @override
   TabBarNode $make(CopyWithData data) => TabBarNode(
     name: data.get(#name, or: $value.name),
+    tabBarName: data.get(#tabBarName, or: $value.tabBarName),
     bgColor: data.get(#bgColor, or: $value.bgColor),
     labelTSPropGroup: data.get(#labelTSPropGroup, or: $value.labelTSPropGroup),
     selectedLabelColor: data.get(

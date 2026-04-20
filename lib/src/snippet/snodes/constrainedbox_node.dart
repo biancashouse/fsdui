@@ -1,8 +1,8 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'constrainedbox_node.mapper.dart';
 
@@ -14,6 +14,7 @@ class ConstrainedBoxNode extends SC with ConstrainedBoxNodeMappable {
   double? maxHeight;
 
   ConstrainedBoxNode({
+    super.name,
     this.minWidth,
     this.minHeight,
     this.maxWidth,
@@ -81,7 +82,7 @@ class ConstrainedBoxNode extends SC with ConstrainedBoxNodeMappable {
           maxWidth: maxWidth != null ? maxWidth! : double.infinity,
           maxHeight: maxHeight != null ? maxHeight! : double.infinity,
         ),
-        child: child?.buildFlutterWidget(context, this),
+        child: child?.build(context, this),
       );
     } catch (e) {
       print(e);

@@ -1,12 +1,12 @@
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:flutter_content/src/snippet/snodes/edgeinsets_node_value.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_corner.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration_shape.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/outlined_border_properties.dart';
-import 'package:flutter_content/src/snippet/snodes/upto6colors.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/up_to_6_colors_hook.dart';
-import 'package:flutter_content/src/model/alignment_enum_model.dart';
-import 'package:flutter_content/src/typedefs.dart';
+import 'package:fsdui/src/snippet/snodes/edgeinsets_node_value.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_corner.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_decoration_shape.dart';
+import 'package:fsdui/src/snippet/pnodes/groups/outlined_border_properties.dart';
+import 'package:fsdui/src/snippet/snodes/upto6colors.dart';
+import 'package:fsdui/src/snippet/pnodes/groups/up_to_6_colors_hook.dart';
+import 'package:fsdui/src/model/alignment_enum_model.dart';
+import 'package:fsdui/src/typedefs.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 

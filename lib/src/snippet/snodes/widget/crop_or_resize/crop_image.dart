@@ -5,7 +5,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 import 'package:image/image.dart' as im;
 
 import 'draggable_corner2.dart';
@@ -28,10 +28,10 @@ mixin ImageCaptureMixin {
     ui.Image canvasImage = await bytesToUiImage(originalImage);
     // centre callout
     Offset calloutPos = Offset(
-      (fco.scrW - calloutSize.width) / 2,
-      (fco.scrH - calloutSize.height) / 2,
+      (fsdui.scrW - calloutSize.width) / 2,
+      (fsdui.scrH - calloutSize.height) / 2,
     );
-    fco.showOverlay(
+    fsdui.showOverlay(
       calloutConfig: CalloutConfig(
         cId: 'cropper',
         initialCalloutPos: calloutPos,
@@ -322,12 +322,12 @@ class ImageCropperResizerState extends State<ImageCropperResizer>
                 ),
                 onPressed: () async {
                   await _saveEdit();
-                  fco.removeParentCallout(context);
+                  fsdui.removeParentCallout(context);
                 },
                 icon: Icon(Icons.check, size: 32, color: Colors.lime),
                 label: Offstage(),
               ),
-              fco.gap(10),
+              fsdui.gap(10),
               ElevatedButton.icon(
                 style: ButtonStyle(
                   padding: WidgetStateProperty.all<EdgeInsets>(
@@ -335,7 +335,7 @@ class ImageCropperResizerState extends State<ImageCropperResizer>
                   ),
                 ),
                 onPressed: () async {
-                  fco.removeParentCallout(context);
+                  fsdui.removeParentCallout(context);
                 },
                 icon: Icon(Icons.close, size: 32, color: Colors.red),
                 label: Offstage(),
@@ -394,7 +394,7 @@ class ImageCropperResizerState extends State<ImageCropperResizer>
               //     }
               //   },
               // ),
-              fco.gap(10),
+              fsdui.gap(10),
               ElevatedButton(
                 onPressed: () {
                   setState(() {
@@ -416,7 +416,7 @@ class ImageCropperResizerState extends State<ImageCropperResizer>
                   child: Text('100%', style: TextStyle(fontSize: 18)),
                 ),
               ),
-              fco.gap(10),
+              fsdui.gap(10),
               ElevatedButton.icon(
                 style: ButtonStyle(
                   padding: WidgetStateProperty.all<EdgeInsets>(
@@ -437,7 +437,7 @@ class ImageCropperResizerState extends State<ImageCropperResizer>
                 icon: Icon(Icons.zoom_in, size: 30),
                 label: Offstage(),
               ),
-              fco.gap(10),
+              fsdui.gap(10),
               ElevatedButton.icon(
                 style: ButtonStyle(
                   padding: WidgetStateProperty.all<EdgeInsets>(
@@ -467,7 +467,7 @@ class ImageCropperResizerState extends State<ImageCropperResizer>
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              fco.gap(10),
+              fsdui.gap(10),
               Text(
                 'zoom: ${zoom.toStringAsFixed(2)}',
                 style: TextStyle(
@@ -484,7 +484,7 @@ class ImageCropperResizerState extends State<ImageCropperResizer>
 
   Future _saveEdit() async {
     if (image != null) {
-      fco.showCircularProgressIndicator(true, reason: 'Cropped/Zoomed Image');
+      fsdui.showCircularProgressIndicator(true, reason: 'Cropped/Zoomed Image');
       try {
         // do the crop
         var pictureRecorder = ui.PictureRecorder();
@@ -513,28 +513,28 @@ class ImageCropperResizerState extends State<ImageCropperResizer>
             panOffset.dy.abs() > 5 ||
             image!.width * zoom > uncroppedRect.width ||
             image!.height * zoom > uncroppedRect.height) {
-          var compressedImageBytes = await fco.compressImage(
+          var compressedImageBytes = await fsdui.compressImage(
             imgBytes,
             min(widget.paperW, img.width.toDouble()),
             .85 /*quality*/,
           );
-          ui.Image compressedImg = await fco.bytesToUiImage(
+          ui.Image compressedImg = await fsdui.bytesToUiImage(
             compressedImageBytes,
           );
-          fco.logger.i(
+          fsdui.logger.i(
             'scaled down size (${compressedImg.width} v ${compressedImg.height}) storage: ${compressedImageBytes.toList().length} bytes',
           );
           widget.changedF.call(compressedImageBytes.buffer.asUint8List());
         }
       } catch (e) {
-        fco.logger.i('save crop failed!');
+        fsdui.logger.i('save crop failed!');
       }
-      fco.logger.i('hiding progress bar...');
-      fco.showCircularProgressIndicator(
+      fsdui.logger.i('hiding progress bar...');
+      fsdui.showCircularProgressIndicator(
         false,
         reason: 'Cropped/Zoomed an Image',
       );
-      fco.logger.i('hid progress bar');
+      fsdui.logger.i('hid progress bar');
     } else {
       widget.changedF.call(null);
     }

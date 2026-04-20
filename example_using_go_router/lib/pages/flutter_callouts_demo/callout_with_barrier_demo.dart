@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 /// it's important to add the mixin, because callouts are animated
 class BarrierDemo extends StatefulWidget {
@@ -23,10 +23,10 @@ class _BarrierDemoState extends State<BarrierDemo> {
     super.initState();
 
     /// auto show a callout pointing at the FAB
-    fco.afterNextBuildDo(() {
+    fsdui.afterNextBuildDo(() {
       // namedSC.jumpTo(150.0);
       // showOverlay requires a callout config + callout content + optionally, a target widget globalKey
-      fco.showOverlay(
+      fsdui.showOverlay(
         calloutConfig: _cc = _createFabCalloutConfig(),
         calloutContent: _createFabCalloutContent(),
         targetGK:  _gk,
@@ -181,7 +181,7 @@ class _BarrierDemoState extends State<BarrierDemo> {
     setState(() {
       showBarrier = !showBarrier;
       _cc.barrier = showBarrier ? _bc : null;
-      fco.rebuild('some-callout-id');
+      fsdui.rebuild('some-callout-id');
     });
   }
 
@@ -190,7 +190,7 @@ class _BarrierDemoState extends State<BarrierDemo> {
       if (_cc.barrier != null) {
         _cc.barrier!.excludeTargetFromBarrier =
             !_cc.barrier!.excludeTargetFromBarrier;
-        fco.rebuild('some-callout-id');
+        fsdui.rebuild('some-callout-id');
       }
     });
   }
@@ -199,19 +199,19 @@ class _BarrierDemoState extends State<BarrierDemo> {
     setState(() {
       if (_cc.barrier != null) {
         _cc.barrier!.roundExclusion = !_cc.barrier!.roundExclusion;
-        fco.rebuild('some-callout-id');
+        fsdui.rebuild('some-callout-id');
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    double fontSize = fco.scrW < 600 ? 12.0 : 18.0;
+    double fontSize = fsdui.scrW < 600 ? 12.0 : 18.0;
 
     return PopScope(
       canPop: true,
       onPopInvokedWithResult: (_, _) {
-        fco.dismissAll();
+        fsdui.dismissAll();
       },
       child: Scaffold(
         appBar: AppBar(

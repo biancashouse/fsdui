@@ -24,6 +24,12 @@ class SliverListListNodeMapper extends SubClassMapperBase<SliverListListNode> {
   @override
   final String id = 'SliverListListNode';
 
+  static String? _$name(SliverListListNode v) => v.name;
+  static const Field<SliverListListNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static List<SNode> _$children(SliverListListNode v) => v.children;
   static const Field<SliverListListNode, List<SNode>> _f$children = Field(
     'children',
@@ -33,6 +39,12 @@ class SliverListListNodeMapper extends SubClassMapperBase<SliverListListNode> {
   static const Field<SliverListListNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(SliverListListNode v) => v.tags;
+  static const Field<SliverListListNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(SliverListListNode v) =>
@@ -60,8 +72,10 @@ class SliverListListNodeMapper extends SubClassMapperBase<SliverListListNode> {
 
   @override
   final MappableFields<SliverListListNode> fields = const {
+    #name: _f$name,
     #children: _f$children,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -82,7 +96,10 @@ class SliverListListNodeMapper extends SubClassMapperBase<SliverListListNode> {
   ]);
 
   static SliverListListNode _instantiate(DecodingData data) {
-    return SliverListListNode(children: data.dec(_f$children));
+    return SliverListListNode(
+      name: data.dec(_f$name),
+      children: data.dec(_f$children),
+    );
   }
 
   @override
@@ -159,7 +176,7 @@ abstract class SliverListListNodeCopyWith<
   @override
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
-  $R call({List<SNode>? children});
+  $R call({String? name, List<SNode>? children});
   SliverListListNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -181,11 +198,17 @@ class _SliverListListNodeCopyWithImpl<$R, $Out>
         (v) => call(children: v),
       );
   @override
-  $R call({List<SNode>? children}) =>
-      $apply(FieldCopyWithData({if (children != null) #children: children}));
+  $R call({Object? name = $none, List<SNode>? children}) => $apply(
+    FieldCopyWithData({
+      if (name != $none) #name: name,
+      if (children != null) #children: children,
+    }),
+  );
   @override
-  SliverListListNode $make(CopyWithData data) =>
-      SliverListListNode(children: data.get(#children, or: $value.children));
+  SliverListListNode $make(CopyWithData data) => SliverListListNode(
+    name: data.get(#name, or: $value.name),
+    children: data.get(#children, or: $value.children),
+  );
 
   @override
   SliverListListNodeCopyWith<$R2, SliverListListNode, $Out2> $chain<$R2, $Out2>(

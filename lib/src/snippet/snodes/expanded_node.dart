@@ -1,9 +1,9 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/int_pnode.dart';
-import 'package:flutter_content/src/snippet/snodes/property_discriminator_fix_hook.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/src/snippet/pnodes/int_pnode.dart';
+import 'package:fsdui/src/snippet/snodes/property_discriminator_fix_hook.dart';
 
 import '../pnodes/enums/enum_flex_fit.dart';
 
@@ -11,7 +11,7 @@ part 'expanded_node.mapper.dart';
 
 @MappableClass(hook: PropertyDiscriminatorFixHook())
 class ExpandedNode extends FlexibleNode with ExpandedNodeMappable {
-  ExpandedNode({super.flex, super.child});
+  ExpandedNode({super.name, super.flex, super.child});
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
@@ -49,7 +49,7 @@ class ExpandedNode extends FlexibleNode with ExpandedNodeMappable {
         key: createNodeWidgetGK(),
         flex: flex,
         child:
-            child?.buildFlutterWidget(context, this) ??
+            child?.build(context, this) ??
             const Icon(Icons.square, color: Colors.red),
       );
     } catch (e) {

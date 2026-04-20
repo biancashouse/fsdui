@@ -1,7 +1,7 @@
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/pnodes/groups/button_style_properties.dart';
 
-extension ButtonStylesExtension on FlutterContentMixins {
+extension ButtonStylesExtension on FSDUI_Mixins {
   Map<ButtonStyleName, ButtonStyleProperties> cannedButtonStyles() => {
     "yellowOnBlack": ButtonStyleProperties(
       tsPropGroup: TextStyleProperties(),

@@ -24,6 +24,12 @@ class ConstrainedBoxNodeMapper extends SubClassMapperBase<ConstrainedBoxNode> {
   @override
   final String id = 'ConstrainedBoxNode';
 
+  static String? _$name(ConstrainedBoxNode v) => v.name;
+  static const Field<ConstrainedBoxNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static double? _$minWidth(ConstrainedBoxNode v) => v.minWidth;
   static const Field<ConstrainedBoxNode, double> _f$minWidth = Field(
     'minWidth',
@@ -60,6 +66,12 @@ class ConstrainedBoxNodeMapper extends SubClassMapperBase<ConstrainedBoxNode> {
     _$uid,
     mode: FieldMode.member,
   );
+  static List<String>? _$tags(ConstrainedBoxNode v) => v.tags;
+  static const Field<ConstrainedBoxNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(ConstrainedBoxNode v) =>
       v.treeNodeGK;
   static const Field<ConstrainedBoxNode, GlobalKey<State<StatefulWidget>>>
@@ -85,12 +97,14 @@ class ConstrainedBoxNodeMapper extends SubClassMapperBase<ConstrainedBoxNode> {
 
   @override
   final MappableFields<ConstrainedBoxNode> fields = const {
+    #name: _f$name,
     #minWidth: _f$minWidth,
     #minHeight: _f$minHeight,
     #maxWidth: _f$maxWidth,
     #maxHeight: _f$maxHeight,
     #child: _f$child,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -112,6 +126,7 @@ class ConstrainedBoxNodeMapper extends SubClassMapperBase<ConstrainedBoxNode> {
 
   static ConstrainedBoxNode _instantiate(DecodingData data) {
     return ConstrainedBoxNode(
+      name: data.dec(_f$name),
       minWidth: data.dec(_f$minWidth),
       minHeight: data.dec(_f$minHeight),
       maxWidth: data.dec(_f$maxWidth),
@@ -195,6 +210,7 @@ abstract class ConstrainedBoxNodeCopyWith<
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
   $R call({
+    String? name,
     double? minWidth,
     double? minHeight,
     double? maxWidth,
@@ -219,6 +235,7 @@ class _ConstrainedBoxNodeCopyWithImpl<$R, $Out>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
   $R call({
+    Object? name = $none,
     Object? minWidth = $none,
     Object? minHeight = $none,
     Object? maxWidth = $none,
@@ -226,6 +243,7 @@ class _ConstrainedBoxNodeCopyWithImpl<$R, $Out>
     Object? child = $none,
   }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (minWidth != $none) #minWidth: minWidth,
       if (minHeight != $none) #minHeight: minHeight,
       if (maxWidth != $none) #maxWidth: maxWidth,
@@ -235,6 +253,7 @@ class _ConstrainedBoxNodeCopyWithImpl<$R, $Out>
   );
   @override
   ConstrainedBoxNode $make(CopyWithData data) => ConstrainedBoxNode(
+    name: data.get(#name, or: $value.name),
     minWidth: data.get(#minWidth, or: $value.minWidth),
     minHeight: data.get(#minHeight, or: $value.minHeight),
     maxWidth: data.get(#maxWidth, or: $value.maxWidth),

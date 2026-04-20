@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/algc/model/m/comment_m.dart';
-import 'package:flutter_content/src/algc/model/m/flowchart_m.dart';
-import 'package:flutter_content/src/algc/model/m/step_m.dart';
-import 'package:flutter_content/src/algc/widgets/pkg_step_widget.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/algc/model/m/comment_m.dart';
+import 'package:fsdui/src/algc/model/m/flowchart_m.dart';
+import 'package:fsdui/src/algc/model/m/step_m.dart';
+import 'package:fsdui/src/algc/widgets/pkg_step_widget.dart';
 
 class TappableCommentBtn extends StatelessWidget {
   final FlowchartM flowchart;
@@ -85,13 +85,13 @@ class TappableCommentBtn extends StatelessWidget {
   }) {
     final commentSnippetWidget = BlocBuilder<CAPIBloC, CAPIState>(
       builder: (context, state) {
-        return comment.snippet!.child?.buildFlutterWidget(context, comment.snippet) ??
+        return comment.snippet!.buildFlutterWidget(context, comment.snippet) ??
             const Placeholder();
       },
     );
     int stepId = step?.id ??
         (isBeginStep ? FlowchartM.BEGIN_STEP_ID : FlowchartM.END_STEP_ID);
-    fco.showOverlay(
+    fsdui.showOverlay(
       onReadyF: onReadyF,
       calloutConfig: CalloutConfig(
         cId: 'comment-snippet',

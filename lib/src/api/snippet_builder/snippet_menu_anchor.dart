@@ -62,16 +62,16 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
                     : 'show Snippet menu\n"${snippetInfo.name}\n*** NOT PUBLISHED ***"',
                 child: InkWell(
                   onDoubleTap: () {
-                    if (fco.anyPresent([], startsWith: 'quill-toolbar-'))
+                    if (fsdui.anyPresent([], startsWith: 'quill-toolbar-'))
                       return;
                     snippetInfo
                         .currentVersionInCache()
                         ?.tappedToEditSnippetNode();
                   },
                   onTap: () {
-                    if (fco.anyPresent([], startsWith: 'quill-toolbar-')) {
-                      fco.dismissPartialMatching(startsWith: 'quill-toolbar-');
-                      fco.quillTextToolbarCIDVN.value = null;
+                    if (fsdui.anyPresent([], startsWith: 'quill-toolbar-')) {
+                      fsdui.dismissPartialMatching(startsWith: 'quill-toolbar-');
+                      fsdui.quillTextToolbarCIDVN.value = null;
                     }
                     if (controller.isOpen) {
                       controller.close();
@@ -114,14 +114,14 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              fco.coloredText(
+              fsdui.coloredText(
                 snippetInfo.editingVersionId != snippetInfo.publishedVersionId
                     ? 'This is NOT the published version!'
                     : 'This is the published version.',
                 color: Colors.white,
               ),
-              fco.coloredText(
-                snippetInfo.autoPublish ?? fco.appInfo.autoPublishDefault
+              fsdui.coloredText(
+                snippetInfo.autoPublish ?? fsdui.appInfo.autoPublishDefault
                     ? 'Changes to this snippet are automatically published'
                     : 'Changes are NOT automatically published',
                 color: Colors.white,
@@ -142,8 +142,8 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
               );
               // fco.afterNextBuildDo(() {
               // setup key handler to exit widget selection mode
-              fco.removeKeystrokeHandler('key-handler-exit-Select-Widget-Mode');
-              fco.registerKeystrokeHandler(
+              fsdui.removeKeystrokeHandler('key-handler-exit-Select-Widget-Mode');
+              fsdui.registerKeystrokeHandler(
                 'key-handler-exit-Select-Widget-Mode',
                 (KeyEvent event) {
                   if (event.logicalKey == LogicalKeyboardKey.escape) {
@@ -204,8 +204,8 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
               if (rootNode != null) {
                 // notify possible changes to the quill text (controller)
                 snippetInfo.notifyChange(rootNode);
-                fco.modelRepo.saveNewVersionOfSnippet(rootNode);
-                fco.forceRefresh();
+                fsdui.modelRepo.saveNewVersionOfSnippet(rootNode);
+                fsdui.forceRefresh();
               }
             },
             child: const Text('save pending change(s) to firestore'),
@@ -216,9 +216,9 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
           MenuItemButton(
             onPressed: () {
               _discardPendingChanges(snippetInfo);
-              fco.capiBloc.add(CAPIEvent.forceSnippetRefresh());
+              fsdui.capiBloc.add(CAPIEvent.forceSnippetRefresh());
             },
-            child: fco.coloredText(
+            child: fsdui.coloredText(
               'discard pending change(s)',
               color: Colors.red,
             ),
@@ -226,13 +226,13 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
         if (snippetInfo.editingVersionId != snippetInfo.publishedVersionId)
           _menuItemButtonWithPI(
             onPressed: () {
-              fco.capiBloc.add(
+              fsdui.capiBloc.add(
                 CAPIEvent.publishSnippet(
                   snippetName: snippetInfo.name,
                   versionId: snippetInfo.editingVersionId,
                 ),
               );
-              fco.afterNextBuildDo(() {
+              fsdui.afterNextBuildDo(() {
                 setState(() {
                   triangleColor = Colors.purpleAccent;
                 });
@@ -242,13 +242,13 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
           ),
         _menuItemButtonWithPI(
           onPressed: () {
-            fco.capiBloc.add(
+            fsdui.capiBloc.add(
               CAPIEvent.toggleAutoPublishingOfSnippet(
                 snippetName: snippetInfo.name,
               ),
             );
           },
-          child: snippetInfo.autoPublish ?? fco.appInfo.autoPublishDefault
+          child: snippetInfo.autoPublish ?? fsdui.appInfo.autoPublishDefault
               ? const Tooltip(
                   message: "don't auto-push changes.",
                   child: Text('stop auto-publishing changes to this snippet'),
@@ -260,7 +260,7 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
         ),
         _menuItemButtonWithPI(
           onPressed: () async {
-            fco.capiBloc.add(
+            fsdui.capiBloc.add(
               CAPIEvent.copySnippetJsonToClipboard(
                 rootNode: snippetInfo.currentVersionInCache()!,
               ),
@@ -270,7 +270,7 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
         ),
         _menuItemButtonWithPI(
           onPressed: () async {
-            fco.capiBloc.add(
+            fsdui.capiBloc.add(
               CAPIEvent.replaceSnippetFromJson(
                 snippetBeingReplaced: snippetInfo.name,
                 snippetJson: null,
@@ -283,7 +283,7 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
         if (!SNode.isHotspotCalloutContent(snippetInfo.name))
           _menuItemButtonWithPI(
             onPressed: () async {
-              fco.capiBloc.add(
+              fsdui.capiBloc.add(
                 CAPIEvent.toggleSnippetVisibility(
                   snippetName: snippetInfo.name,
                 ),
@@ -297,7 +297,7 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
           _menuItemButtonWithPI(
             onPressed: () async {
               VersionId? prevId = snippetInfo.previousVersionId();
-              revertToVersion(prevId, snippetInfo, fco.capiBloc.state);
+              revertToVersion(prevId, snippetInfo, fsdui.capiBloc.state);
             },
             child: Text('revert to previous version'),
           ),
@@ -305,7 +305,7 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
           _menuItemButtonWithPI(
             onPressed: () async {
               VersionId? nextId = snippetInfo.nextVersionId();
-              revertToVersion(nextId, snippetInfo, fco.capiBloc.state);
+              revertToVersion(nextId, snippetInfo, fsdui.capiBloc.state);
             },
             child: Text('revert to next version'),
           ),
@@ -334,14 +334,14 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
     newTreeC.roots.first.validateTree();
     newTreeC.expand(rootNode);
     newTreeC.rebuild();
-    if (fco.snippetBeingEdited != null) {
-      fco.snippetBeingEdited!
+    if (fsdui.snippetBeingEdited != null) {
+      fsdui.snippetBeingEdited!
         ..setRootNode(rootNode)
         ..selectedNode = rootNode
         ..showProperties = false
         ..treeC = newTreeC;
     }
-    fco.refreshAll();
+    fsdui.refreshAll();
   }
 
   MenuItemButton _menuItemButtonWithPI({
@@ -368,20 +368,20 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
     CAPIState state,
   ) {
     if (versionId == null) return;
-    fco.capiBloc.add(
+    fsdui.capiBloc.add(
       CAPIEvent.revertSnippet(
         snippetName: snippetInfo.name,
-        versionId: fco.removeNonNumeric(versionId),
+        versionId: fsdui.removeNonNumeric(versionId),
       ),
     );
-    fco.afterNextBuildDo(() async {
+    fsdui.afterNextBuildDo(() async {
       // current snippet version will now be changed to prevId
-      fco.logger.i('reverted to previous version.');
+      fsdui.logger.i('reverted to previous version.');
       // SNode.unhighlightSelectedNode();
       // var currPageState = fco.currentPageState;
       // currPageState?.unhideFAB();
-      fco.dismiss(HotspotTargetConfigToolbar.CID);
-      fco.appInfo.hideClipboard();
+      fsdui.dismiss(HotspotTargetConfigToolbar.CID);
+      fsdui.appInfo.hideClipboard();
       // exitEditModeF();
       // fco.capiBloc
       //     .add(const CAPIEvent.popSnippetEditor());
@@ -398,13 +398,13 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
         newTreeC.expand(revertedVersion);
         newTreeC.rebuild();
 
-        fco.snippetBeingEdited!
+        fsdui.snippetBeingEdited!
           ..setRootNode(revertedVersion)
           ..selectedNode = revertedVersion
           ..showProperties = false
           ..treeC = newTreeC;
 
-        fco.refreshAll();
+        fsdui.refreshAll();
       }
       return;
     });

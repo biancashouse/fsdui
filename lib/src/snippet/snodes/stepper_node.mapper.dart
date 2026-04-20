@@ -49,6 +49,12 @@ class StepperNodeMapper extends SubClassMapperBase<StepperNode> {
     _$uid,
     mode: FieldMode.member,
   );
+  static List<String>? _$tags(StepperNode v) => v.tags;
+  static const Field<StepperNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(StepperNode v) =>
       v.treeNodeGK;
   static const Field<StepperNode, GlobalKey<State<StatefulWidget>>>
@@ -76,6 +82,7 @@ class StepperNodeMapper extends SubClassMapperBase<StepperNode> {
     #name: _f$name,
     #children: _f$children,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,

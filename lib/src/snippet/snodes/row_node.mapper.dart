@@ -28,6 +28,12 @@ class RowNodeMapper extends SubClassMapperBase<RowNode> {
   @override
   final String id = 'RowNode';
 
+  static String? _$name(RowNode v) => v.name;
+  static const Field<RowNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static MainAxisAlignmentEnumModel? _$mainAxisAlignment(RowNode v) =>
       v.mainAxisAlignment;
   static const Field<RowNode, MainAxisAlignmentEnumModel> _f$mainAxisAlignment =
@@ -64,6 +70,12 @@ class RowNodeMapper extends SubClassMapperBase<RowNode> {
     _$uid,
     mode: FieldMode.member,
   );
+  static List<String>? _$tags(RowNode v) => v.tags;
+  static const Field<RowNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(RowNode v) =>
       v.treeNodeGK;
   static const Field<RowNode, GlobalKey<State<StatefulWidget>>> _f$treeNodeGK =
@@ -93,12 +105,14 @@ class RowNodeMapper extends SubClassMapperBase<RowNode> {
 
   @override
   final MappableFields<RowNode> fields = const {
+    #name: _f$name,
     #mainAxisAlignment: _f$mainAxisAlignment,
     #mainAxisSize: _f$mainAxisSize,
     #crossAxisAlignment: _f$crossAxisAlignment,
     #direction: _f$direction,
     #children: _f$children,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -122,6 +136,7 @@ class RowNodeMapper extends SubClassMapperBase<RowNode> {
 
   static RowNode _instantiate(DecodingData data) {
     return RowNode(
+      name: data.dec(_f$name),
       mainAxisAlignment: data.dec(_f$mainAxisAlignment),
       mainAxisSize: data.dec(_f$mainAxisSize),
       crossAxisAlignment: data.dec(_f$crossAxisAlignment),
@@ -191,6 +206,7 @@ abstract class RowNodeCopyWith<$R, $In extends RowNode, $Out>
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
   $R call({
+    String? name,
     MainAxisAlignmentEnumModel? mainAxisAlignment,
     MainAxisSizeEnum? mainAxisSize,
     CrossAxisAlignmentEnumModel? crossAxisAlignment,
@@ -217,6 +233,7 @@ class _RowNodeCopyWithImpl<$R, $Out>
       );
   @override
   $R call({
+    Object? name = $none,
     Object? mainAxisAlignment = $none,
     Object? mainAxisSize = $none,
     Object? crossAxisAlignment = $none,
@@ -224,6 +241,7 @@ class _RowNodeCopyWithImpl<$R, $Out>
     List<SNode>? children,
   }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (mainAxisAlignment != $none) #mainAxisAlignment: mainAxisAlignment,
       if (mainAxisSize != $none) #mainAxisSize: mainAxisSize,
       if (crossAxisAlignment != $none) #crossAxisAlignment: crossAxisAlignment,
@@ -233,6 +251,7 @@ class _RowNodeCopyWithImpl<$R, $Out>
   );
   @override
   RowNode $make(CopyWithData data) => RowNode(
+    name: data.get(#name, or: $value.name),
     mainAxisAlignment: data.get(
       #mainAxisAlignment,
       or: $value.mainAxisAlignment,

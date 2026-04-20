@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/snodes/widget/fs_folder_node.dart';
 
 late FirebaseApp fbApp;
 
@@ -77,13 +77,13 @@ class FireStoreModelRepository implements IModelRepository {
       // emulator if in non-prod mode
       if (useEmulator) {
         FirebaseFirestore.instance.settings = Settings(
-          host: '${fco.isAndroid ? "10.0.2.2" : "localhost"}:8080',
+          host: '${fsdui.isAndroid ? "10.0.2.2" : "localhost"}:8080',
           sslEnabled: false,
           persistenceEnabled: false,
         );
       }
     } catch (e) {
-      fco.logger.e('possiblyInitFireStoreRelatedAPIs', error: e);
+      fsdui.logger.e('possiblyInitFireStoreRelatedAPIs', error: e);
     }
 
     return fbApp;
@@ -101,7 +101,7 @@ class FireStoreModelRepository implements IModelRepository {
   //         fco.logger.d('${docSnapshot.id} => ${docSnapshot.data()}');
   //         Map<String, dynamic> data =
   //             docSnapshot.data() as Map<String, dynamic>;
-  //         return SnippetRootNodeMapper.fromMap(data);
+  //         return SNodeMapper.fromMap(data);
   //       }
   //     },
   //     onError: (e) => fco.logger.i("Error completing: $e"),
@@ -110,7 +110,7 @@ class FireStoreModelRepository implements IModelRepository {
   //   var snap = await versionedSnippetDocRef.get();
   //   if (snap.exists) {
   //     Map<String, dynamic> data = snap.data() as Map<String, dynamic>;
-  //     return SnippetRootNodeMapper.fromMap(data);
+  //     return SNodeMapper.fromMap(data);
   //   }
   //   return null;
   // }
@@ -120,7 +120,7 @@ class FireStoreModelRepository implements IModelRepository {
     required SnippetName snippetName,
   }) async {
     // return if already in cache
-    if (fco.appInfo.cachedSnippetInfo(snippetName) != null) {
+    if (fsdui.appInfo.cachedSnippetInfo(snippetName) != null) {
       return;
     }
 
@@ -134,9 +134,9 @@ class FireStoreModelRepository implements IModelRepository {
     try {
       snippetInfoData = snippetInfoDoc.data() as Map<String, dynamic>;
       snippetInfo = SnippetInfoModelMapper.fromMap(snippetInfoData);
-      fco.appInfo.cacheSnippetInfo(snippetName, snippetInfo);
+      fsdui.appInfo.cacheSnippetInfo(snippetName, snippetInfo);
     } catch (e) {
-      fco.logger.e(
+      fsdui.logger.e(
         'snippetInfo for $snippetName not cached! (MISSING?)',
         error: e,
       );
@@ -170,16 +170,16 @@ class FireStoreModelRepository implements IModelRepository {
 
   @override
   // SnippetInfo already loaded. If snippet version not in cache, gets from FB and adds to cache
-  Future<SnippetRootNode?> loadVersionFromFBIntoCache({
+  Future<SNode?> loadVersionFromFBIntoCache({
     required SnippetInfoModel snippetInfo,
     required VersionId versionId,
   }) async {
     // try to fetch the specified version from cache, otherwise try to fetch from FB
-    SnippetRootNode? version = snippetInfo.cachedVersion(versionId);
+    SNode? version = snippetInfo.cachedVersion(versionId);
 
     if (version != null) {
       // ALREADY IN CACHE
-      fco.logger.i(
+      fsdui.logger.i(
         '--- snippet (${snippetInfo.name}) version $versionId ------\n'
         '--- Already in Cache. -------------------------------------',
       );
@@ -207,13 +207,13 @@ class FireStoreModelRepository implements IModelRepository {
         try {
           data = versionDoc.data() as Map<String, dynamic>;
           // var childMap = data['child'];
-          version = SnippetRootNodeMapper.fromMap(data);
+          version = SNodeMapper.fromMap(data);
           // cache it
           snippetInfo.cacheVersion(versionId, version);
           // fco.logger.i(
           //     '--- ${snippetInfo.name} LOADED---');
         } catch (e) {
-          fco.logger.e('', error: e);
+          fsdui.logger.e('', error: e);
           print(data.toString());
           print(jsonEncode(data));
           print('');
@@ -223,7 +223,7 @@ class FireStoreModelRepository implements IModelRepository {
         }
       }
     } catch (e) {
-      fco.logger.e('', error: e);
+      fsdui.logger.e('', error: e);
     }
     // }
     return version;
@@ -240,10 +240,10 @@ class FireStoreModelRepository implements IModelRepository {
         final data = doc.data() as Map<String, dynamic>;
         return data['latest'];
       } catch (e) {
-        fco.logger.e('', error: e);
+        fsdui.logger.e('', error: e);
       }
     } else {
-      fco.logger.i("gcr-bh-apps-dart doc does not exist.");
+      fsdui.logger.i("gcr-bh-apps-dart doc does not exist.");
       return null;
     }
     return null;
@@ -263,10 +263,10 @@ class FireStoreModelRepository implements IModelRepository {
         print('getAppInfo() took: ${sw.elapsedMilliseconds}ms');
         return result;
       } catch (e) {
-        fco.logger.e('', error: e);
+        fsdui.logger.e('', error: e);
       }
     } else {
-      fco.logger.i("getAppInfo doc does not exist.");
+      fsdui.logger.i("getAppInfo doc does not exist.");
       return AppInfoModel();
     }
     return null;
@@ -274,21 +274,21 @@ class FireStoreModelRepository implements IModelRepository {
 
   @override
   Future<void> saveAppInfo() async {
-    if (fco.isGuestEditor()) return;
-    fco.logger.d('***********   saveAppInfo   ****************');
-    fco.appInfo.userTextStyles = fco.namedTextStyles;
-    fco.appInfo.userButtonStyles = fco.namedButtonStyles;
-    fco.appInfo.userContainerStyles = fco.namedContainerStyles;
+    if (fsdui.isGuestEditor()) return;
+    fsdui.logger.d('***********   saveAppInfo   ****************');
+    fsdui.appInfo.userTextStyles = fsdui.namedTextStyles;
+    fsdui.appInfo.userButtonStyles = fsdui.namedButtonStyles;
+    fsdui.appInfo.userContainerStyles = fsdui.namedContainerStyles;
     // admin - remove refs to snippets with names starting with T-
     // and then remove those snippets
-    for (var name in fco.appInfo.snippetNames) {
+    for (var name in fsdui.appInfo.snippetNames) {
       if (name.startsWith('T-')) {
-        fco.appInfo.snippetNames.remove(name);
+        fsdui.appInfo.snippetNames.remove(name);
         await deleteSnippet(name);
       }
     }
     // admin
-    var map = fco.appInfo.toMap();
+    var map = fsdui.appInfo.toMap();
     await appDocRef.set(map);
   }
 
@@ -296,7 +296,7 @@ class FireStoreModelRepository implements IModelRepository {
   Future<bool> saveBrandNewSnippet({
     required SnippetName snippetName,
     required VersionId versionId,
-    required SnippetRootNode initialVersion,
+    required SNode initialVersion,
   }) async => _saveSnippetVersion(
     snippetName: snippetName,
     newVersionId: versionId,
@@ -311,11 +311,11 @@ class FireStoreModelRepository implements IModelRepository {
   // }
 
   @override
-  Future<void> saveNewVersionOfSnippet(SnippetRootNode rootNode) async {
+  Future<void> saveNewVersionOfSnippet(SNode rootNode) async {
     final newVersionId = SnippetInfoModel.createNewVersion(rootNode);
 
     _saveSnippetVersion(
-      snippetName: rootNode.name,
+      snippetName: rootNode.name!,
       newVersionId: newVersionId,
       newVersion: rootNode,
     );
@@ -328,12 +328,12 @@ class FireStoreModelRepository implements IModelRepository {
   Future<bool> _saveSnippetVersion({
     required SnippetName snippetName,
     required VersionId newVersionId,
-    required SnippetRootNode newVersion,
+    required SNode newVersion,
   }) async {
     // guest editor, so pretend saved !
-    if (fco.isGuestEditor()) return true;
+    if (fsdui.isGuestEditor()) return true;
 
-    SnippetInfoModel? snippetInfo = fco.appInfo.cachedSnippetInfo(snippetName);
+    SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(snippetName);
     if (snippetInfo == null) return false;
 
     // create the actual version doc
@@ -346,12 +346,12 @@ class FireStoreModelRepository implements IModelRepository {
           .doc(newVersionId)
           .set(newVersion.toMap()..addAll({'name': snippetName}));
 
-      fco.logger.i(
+      fsdui.logger.i(
         '--- SAVED --------------------------------------------------',
       );
-      fco.logger.i('wrote snippet ($snippetName) version to FB:');
-      fco.logger.i('versionId: $newVersionId');
-      fco.logger.i(
+      fsdui.logger.i('wrote snippet ($snippetName) version to FB:');
+      fsdui.logger.i('versionId: $newVersionId');
+      fsdui.logger.i(
         '------------------------------------------------------------',
       );
 
@@ -361,7 +361,7 @@ class FireStoreModelRepository implements IModelRepository {
         snippetName: snippetName,
         newEditingVersionId: newVersionId,
         newPublishingVersionId:
-            snippetInfo.autoPublish ?? fco.appInfo.autoPublishDefault
+            snippetInfo.autoPublish ?? fsdui.appInfo.autoPublishDefault
             ? newVersionId
             : snippetInfo.publishedVersionId,
         newAutoPublish: snippetInfo.autoPublish,
@@ -374,7 +374,7 @@ class FireStoreModelRepository implements IModelRepository {
 
       return true;
     } catch (e) {
-      fco.logger.e('', error: e);
+      fsdui.logger.e('', error: e);
       return false;
     }
   }
@@ -382,7 +382,7 @@ class FireStoreModelRepository implements IModelRepository {
   // My method extended by Gemini to also remove the versions collection
   @override
   Future<void> deleteSnippet(final String snippetName) async {
-    if (fco.isGuestEditor()) return;
+    if (fsdui.isGuestEditor()) return;
     // Ensure consistent path format (remove leading '/' if present)
     String snippetId = snippetName.startsWith('/')
         ? snippetName.substring(1)
@@ -395,7 +395,7 @@ class FireStoreModelRepository implements IModelRepository {
       'versions',
     );
 
-    fco.logger.i(
+    fsdui.logger.i(
       'Attempting to delete snippet "$snippetId" and its versions...',
     );
 
@@ -411,22 +411,22 @@ class FireStoreModelRepository implements IModelRepository {
         }
         // Commit the batch deletion of versions
         await batch.commit();
-        fco.logger.i(
+        fsdui.logger.i(
           'Successfully deleted ${versionsSnapshot.docs.length} versions for snippet "$snippetId".',
         );
       } else {
-        fco.logger.i('No versions found for snippet "$snippetId" to delete.');
+        fsdui.logger.i('No versions found for snippet "$snippetId" to delete.');
       }
 
       // 3. Delete the main snippet document
       await snippetDocRef.delete();
-      fco.logger.i('Successfully deleted snippet document "$snippetId".');
+      fsdui.logger.i('Successfully deleted snippet document "$snippetId".');
 
       // Optional: Clean up local cache if you have one
       // SnippetInfoModel.removeFromCache(snippetId); // Example if you have such a static method
       // fco.appInfo.snippets.remove(snippetId); // Or however you manage this locally
     } catch (e, s) {
-      fco.logger.e(
+      fsdui.logger.e(
         'Error deleting snippet "$snippetId" or its versions: $e',
         stackTrace: s,
       );
@@ -440,7 +440,7 @@ class FireStoreModelRepository implements IModelRepository {
     final String snippetName,
     final List<VersionId> tbd,
   ) async {
-    if (fco.isGuestEditor()) return;
+    if (fsdui.isGuestEditor()) return;
     String sName = snippetName.startsWith('/')
         ? snippetName.substring(1)
         : snippetName;
@@ -461,7 +461,7 @@ class FireStoreModelRepository implements IModelRepository {
     );
     var snapshots = await versions.get();
     final WriteBatch batch = FirebaseFirestore.instance.batch();
-    SnippetInfoModel? snippetInfo = fco.appInfo.cachedSnippetInfo(snippetName);
+    SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(snippetName);
     if (snippetInfo == null) return;
     for (var doc in snapshots.docs) {
       var id = doc.id;
@@ -481,9 +481,9 @@ class FireStoreModelRepository implements IModelRepository {
     bool? newAutoPublish,
     List<VersionId>? newVersionIds,
   }) async {
-    if (fco.isGuestEditor()) return;
+    if (fsdui.isGuestEditor()) return;
 
-    SnippetInfoModel? snippetInfo = fco.appInfo.cachedSnippetInfo(snippetName);
+    SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(snippetName);
     if (snippetInfo == null) return;
 
     // set the snippet properties
@@ -514,12 +514,12 @@ class FireStoreModelRepository implements IModelRepository {
       snippetInfo.versionIds = newVersionIds;
     }
 
-    fco.logger.i('--- UPDATED SNIPPET INFO ------------------------------');
-    fco.logger.i('wrote snippet ($snippetName) properties to FB:');
-    fco.logger.i('editing: ${snippetInfo.editingVersionId}');
-    fco.logger.i('published: ${snippetInfo.publishedVersionId}');
-    fco.logger.i('autoPublish: ${snippetInfo.autoPublish}');
-    fco.logger.i(
+    fsdui.logger.i('--- UPDATED SNIPPET INFO ------------------------------');
+    fsdui.logger.i('wrote snippet ($snippetName) properties to FB:');
+    fsdui.logger.i('editing: ${snippetInfo.editingVersionId}');
+    fsdui.logger.i('published: ${snippetInfo.publishedVersionId}');
+    fsdui.logger.i('autoPublish: ${snippetInfo.autoPublish}');
+    fsdui.logger.i(
       '-------------------------------------------------------------',
     );
   }
@@ -529,7 +529,7 @@ class FireStoreModelRepository implements IModelRepository {
     required String pollName,
   }) async {
     DocumentSnapshot docSnap = await FirebaseFirestore.instance
-        .doc('/flutter-content/${fco.appName}/polls/$pollName')
+        .doc('/flutter-content/${fsdui.appName}/polls/$pollName')
         .get();
     if (docSnap.exists) {
       Map<String, dynamic> pollData = docSnap.data() as Map<String, dynamic>;
@@ -544,7 +544,7 @@ class FireStoreModelRepository implements IModelRepository {
             optionCountsMap[key] = intValue;
           } else {
             // Handle the case where the value cannot be converted to int
-            fco.logger.i(
+            fsdui.logger.i(
               "Warning: Value for key '$key' cannot be converted to int.",
             );
           }
@@ -552,7 +552,7 @@ class FireStoreModelRepository implements IModelRepository {
           optionCountsMap[key] = value.toInt();
         } else {
           // Handle the case where the value is of an unsupported type
-          fco.logger.i("Warning: Value for key '$key' is of unsupported type.");
+          fsdui.logger.i("Warning: Value for key '$key' is of unsupported type.");
         }
       });
       return optionCountsMap;
@@ -607,7 +607,7 @@ class FireStoreModelRepository implements IModelRepository {
   }) async {
     // get user's vote in this poll (if exists)
     DocumentSnapshot voterSnap = await FirebaseFirestore.instance
-        .doc('/flutter-content/${fco.appName}/polls/$pollName/voters/$voterId')
+        .doc('/flutter-content/${fsdui.appName}/polls/$pollName/voters/$voterId')
         .get();
     if (voterSnap.exists) {
       Map<String, dynamic> voterData = voterSnap.data() as Map<String, dynamic>;
@@ -629,7 +629,7 @@ class FireStoreModelRepository implements IModelRepository {
       // each document in the voter collection represents a user who voted. The doc cannot be empty, so its id is the EmailAddress a property is time of vote.
       CollectionReference
       pollOptionVotes = FirebaseFirestore.instance.collection(
-        '/flutter-content/${fco.appName}/polls/$pollName/options/$pollOptionId/voters',
+        '/flutter-content/${fsdui.appName}/polls/$pollName/options/$pollOptionId/voters',
       );
       QuerySnapshot snap = await pollOptionVotes.get();
       List<EmailAddress> optionVoters = [];
@@ -649,10 +649,10 @@ class FireStoreModelRepository implements IModelRepository {
     required PollOptionId optionId,
     required Map<PollOptionId, int> newOptionVoteCountMap,
   }) async {
-    if (fco.isGuestEditor()) return;
+    if (fsdui.isGuestEditor()) return;
     // check whether already voted
     final docPath =
-        '/flutter-content/${fco.appName}/polls/$pollName/voters/$voterId';
+        '/flutter-content/${fsdui.appName}/polls/$pollName/voters/$voterId';
     DocumentReference userVoteDocRef = FirebaseFirestore.instance.doc(docPath);
     DocumentSnapshot snap = await userVoteDocRef.get();
     if (!snap.exists) {
@@ -663,13 +663,13 @@ class FireStoreModelRepository implements IModelRepository {
       });
       // update the poll's record
       await FirebaseFirestore.instance
-          .doc('/flutter-content/${fco.appName}/polls/$pollName')
+          .doc('/flutter-content/${fsdui.appName}/polls/$pollName')
           .set({"option-vote-counts": newOptionVoteCountMap});
     } else {
       Map<String, dynamic> voterData = snap.data() as Map<String, dynamic>;
       Timestamp when = voterData['when'];
       PollOptionId votedFor = voterData['option-id'];
-      fco.logger.i('already voted for option $votedFor,  $when');
+      fsdui.logger.i('already voted for option $votedFor,  $when');
     }
   }
 
@@ -709,7 +709,7 @@ class FireStoreModelRepository implements IModelRepository {
 
   DocumentReference get appDocRef => FirebaseFirestore.instance
       .collection('/flutter-content')
-      .doc(fco.appName);
+      .doc(fsdui.appName);
 
 
   // @override

@@ -2,8 +2,8 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 
 import 'article_listview_node.dart' show ArticleListViewNode;
 
@@ -16,7 +16,7 @@ part 'listview_node.mapper.dart';
 class ListViewNode extends BoxScrollViewNode with ListViewNodeMappable {
   List<SNode> children;
 
-  ListViewNode({super.padding, super.shrinkWrap, required this.children});
+  ListViewNode({super.name, super.padding, super.shrinkWrap, required this.children});
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
@@ -33,7 +33,7 @@ class ListViewNode extends BoxScrollViewNode with ListViewNodeMappable {
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     setParent(parentNode);
     List<Widget> listViewChildren = children
-        .map((childNode) => childNode.buildFlutterWidget(context, this))
+        .map((childNode) => childNode.build(context, this))
         .toList();
     return ListView(
       key: createNodeWidgetGK(),

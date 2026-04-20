@@ -26,6 +26,12 @@ class CustomScrollViewNodeMapper
   @override
   final String id = 'CustomScrollViewNode';
 
+  static String? _$name(CustomScrollViewNode v) => v.name;
+  static const Field<CustomScrollViewNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static List<SNode> _$slivers(CustomScrollViewNode v) => v.slivers;
   static const Field<CustomScrollViewNode, List<SNode>> _f$slivers = Field(
     'slivers',
@@ -49,6 +55,12 @@ class CustomScrollViewNodeMapper
   static const Field<CustomScrollViewNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(CustomScrollViewNode v) => v.tags;
+  static const Field<CustomScrollViewNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(
@@ -83,10 +95,12 @@ class CustomScrollViewNodeMapper
 
   @override
   final MappableFields<CustomScrollViewNode> fields = const {
+    #name: _f$name,
     #slivers: _f$slivers,
     #scrollDirection: _f$scrollDirection,
     #shrinkWrap: _f$shrinkWrap,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -110,6 +124,7 @@ class CustomScrollViewNodeMapper
 
   static CustomScrollViewNode _instantiate(DecodingData data) {
     return CustomScrollViewNode(
+      name: data.dec(_f$name),
       slivers: data.dec(_f$slivers),
       scrollDirection: data.dec(_f$scrollDirection),
       shrinkWrap: data.dec(_f$shrinkWrap),
@@ -188,7 +203,12 @@ abstract class CustomScrollViewNodeCopyWith<
     implements ScrollViewNodeCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get slivers;
   @override
-  $R call({List<SNode>? slivers, AxisEnum? scrollDirection, bool? shrinkWrap});
+  $R call({
+    String? name,
+    List<SNode>? slivers,
+    AxisEnum? scrollDirection,
+    bool? shrinkWrap,
+  });
   CustomScrollViewNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -211,11 +231,13 @@ class _CustomScrollViewNodeCopyWithImpl<$R, $Out>
       );
   @override
   $R call({
+    Object? name = $none,
     List<SNode>? slivers,
     AxisEnum? scrollDirection,
     Object? shrinkWrap = $none,
   }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (slivers != null) #slivers: slivers,
       if (scrollDirection != null) #scrollDirection: scrollDirection,
       if (shrinkWrap != $none) #shrinkWrap: shrinkWrap,
@@ -223,6 +245,7 @@ class _CustomScrollViewNodeCopyWithImpl<$R, $Out>
   );
   @override
   CustomScrollViewNode $make(CopyWithData data) => CustomScrollViewNode(
+    name: data.get(#name, or: $value.name),
     slivers: data.get(#slivers, or: $value.slivers),
     scrollDirection: data.get(#scrollDirection, or: $value.scrollDirection),
     shrinkWrap: data.get(#shrinkWrap, or: $value.shrinkWrap),

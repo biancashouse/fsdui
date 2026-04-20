@@ -1,9 +1,9 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
 
 import 'iframe/iframe.dart';
 
@@ -20,6 +20,7 @@ class IFrameNode extends CL with IFrameNodeMappable {
   double iframeHeight;
 
   IFrameNode({
+    super.name,
     // this.name = '',
     this.src,
     this.iframeWidth = 800, // not 595?
@@ -122,7 +123,7 @@ class IFrameNode extends CL with IFrameNodeMappable {
   //     ];
 
   @override
-  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
+  Widget build(BuildContext context, SNode? parentNode,
       ) {
     try {
       setParent(parentNode); // propagating parents down from root
@@ -165,10 +166,10 @@ class IFrameNode extends CL with IFrameNodeMappable {
   // : Row(
   //     children: [
   //       Icon(Icons.code)
-  //       Image.asset("${pkg_flutter_content}images/google-icons/docs.png", height: 64),
-  //       Image.asset("${pkg_flutter_content}images/google-icons/sheets.png", height: 64),
-  //       Image.asset("${pkg_flutter_content}images/google-icons/slides.png", height: 64),
-  //       Image.asset("${pkg_flutter_content}images/google-icons/forms.png", height: 64),
+  //       Image.asset("${pkg_fsdui}images/google-icons/docs.png", height: 64),
+  //       Image.asset("${pkg_fsdui}images/google-icons/sheets.png", height: 64),
+  //       Image.asset("${pkg_fsdui}images/google-icons/slides.png", height: 64),
+  //       Image.asset("${pkg_fsdui}images/google-icons/forms.png", height: 64),
   //     ],
   //   );
 

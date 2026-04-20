@@ -1,10 +1,10 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_cross_axis_alignment.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_alignment.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_size.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/enum_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_cross_axis_alignment.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_main_axis_alignment.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_main_axis_size.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../pnodes/fyi_pnodes.dart';
@@ -29,6 +29,7 @@ class FlexNode extends MC with FlexNodeMappable {
   bool? wrapInExpanded;
 
   FlexNode({
+    super.name,
     required this.direction,
     this.mainAxisAlignment,
     this.mainAxisSize,
@@ -128,7 +129,7 @@ class FlexNode extends MC with FlexNodeMappable {
       // first get flex children widgets
       // print('getting flex child widgets...');
       List<Widget> flexChildWidgets = children
-          .map((childNode) => childNode.buildFlutterWidget(context, this))
+          .map((childNode) => childNode.build(context, this))
           .toList();
 
       // print('getting flex widget...');

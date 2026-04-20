@@ -8,8 +8,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-// (Optional) If your main app is in lib/main.dart, you might import it
-// import 'package:your_app_name/main.dart';
+// (Optional) If your main app is in lib/migrate_snippets.dart, you might import it
+// import 'package:your_app_name/migrate_snippets.dart';
 
 // Define a simple widget for testing purposes
 class MyApp extends StatelessWidget {

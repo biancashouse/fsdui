@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/color_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/property_button_search_text_styles.dart';
-import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_font_style.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_font_weight.dart';
-import 'package:flutter_content/src/snippet/pnodes/font_family_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/text_styles/style_name_editor.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/color_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/editors/property_button_search_text_styles.dart';
+import 'package:fsdui/src/snippet/pnodes/enum_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_font_style.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_font_weight.dart';
+import 'package:fsdui/src/snippet/pnodes/font_family_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/src/text_styles/style_name_editor.dart';
 
 class TextStyleWithoutColorPNode /*Group*/ extends PNode /*Group*/ {
   final TextStyleProperties textStyleProperties;
@@ -50,7 +50,7 @@ class TextStyleWithoutColorPNode /*Group*/ extends PNode /*Group*/ {
         fontFamily: textStyleProperties.fontFamily,
         onFontFamilyChange: (newValue) {
           textStyleProperties.fontFamily = newValue;
-          fco.forceRefresh();
+          fsdui.forceRefresh();
           onGroupChange.call(textStyleProperties, true);
         },
       ),
@@ -121,7 +121,7 @@ class TextStyleWithoutColorPNode /*Group*/ extends PNode /*Group*/ {
 
   @override
   String propertyLabel() {
-    var textStyleName = fco.findTextStyleName(fco.appInfo, textStyleProperties);
+    var textStyleName = fsdui.findTextStyleName(fsdui.appInfo, textStyleProperties);
     return textStyleName != null ? '$name: $textStyleName' : name;
   }
 }
@@ -216,9 +216,9 @@ class TextStyleSavePNode extends PNode {
           if (tsName.isNotEmpty) {
             TextStyleProperties? tsGroup = snode.textStyleProperties();
             if (tsGroup != null) {
-              fco.namedTextStyles[tsName] = tsGroup.clone();
-              await fco.modelRepo.saveAppInfo();
-              fco.showToast(
+              fsdui.namedTextStyles[tsName] = tsGroup.clone();
+              await fsdui.modelRepo.saveAppInfo();
+              fsdui.showToast(
                 textColor: Colors.blue,
                 bgColor: Colors.yellow,
                 msg: "Text Style '$tsName' saved",

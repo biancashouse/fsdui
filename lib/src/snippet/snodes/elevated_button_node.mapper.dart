@@ -25,6 +25,12 @@ class ElevatedButtonNodeMapper extends SubClassMapperBase<ElevatedButtonNode> {
   @override
   final String id = 'ElevatedButtonNode';
 
+  static String? _$name(ElevatedButtonNode v) => v.name;
+  static const Field<ElevatedButtonNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static String? _$destinationRoutePathSnippetName(ElevatedButtonNode v) =>
       v.destinationRoutePathSnippetName;
   static const Field<ElevatedButtonNode, String>
@@ -55,6 +61,12 @@ class ElevatedButtonNodeMapper extends SubClassMapperBase<ElevatedButtonNode> {
     _$uid,
     mode: FieldMode.member,
   );
+  static List<String>? _$tags(ElevatedButtonNode v) => v.tags;
+  static const Field<ElevatedButtonNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(ElevatedButtonNode v) =>
       v.treeNodeGK;
   static const Field<ElevatedButtonNode, GlobalKey<State<StatefulWidget>>>
@@ -80,11 +92,13 @@ class ElevatedButtonNodeMapper extends SubClassMapperBase<ElevatedButtonNode> {
 
   @override
   final MappableFields<ElevatedButtonNode> fields = const {
+    #name: _f$name,
     #destinationRoutePathSnippetName: _f$destinationRoutePathSnippetName,
     #bsPropGroup: _f$bsPropGroup,
     #onTapHandlerName: _f$onTapHandlerName,
     #child: _f$child,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -107,6 +121,7 @@ class ElevatedButtonNodeMapper extends SubClassMapperBase<ElevatedButtonNode> {
 
   static ElevatedButtonNode _instantiate(DecodingData data) {
     return ElevatedButtonNode(
+      name: data.dec(_f$name),
       destinationRoutePathSnippetName: data.dec(
         _f$destinationRoutePathSnippetName,
       ),
@@ -198,6 +213,7 @@ abstract class ElevatedButtonNodeCopyWith<
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
   $R call({
+    String? name,
     String? destinationRoutePathSnippetName,
     ButtonStyleProperties? bsPropGroup,
     String? onTapHandlerName,
@@ -229,12 +245,14 @@ class _ElevatedButtonNodeCopyWithImpl<$R, $Out>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
   $R call({
+    Object? name = $none,
     Object? destinationRoutePathSnippetName = $none,
     ButtonStyleProperties? bsPropGroup,
     Object? onTapHandlerName = $none,
     Object? child = $none,
   }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (destinationRoutePathSnippetName != $none)
         #destinationRoutePathSnippetName: destinationRoutePathSnippetName,
       if (bsPropGroup != null) #bsPropGroup: bsPropGroup,
@@ -244,6 +262,7 @@ class _ElevatedButtonNodeCopyWithImpl<$R, $Out>
   );
   @override
   ElevatedButtonNode $make(CopyWithData data) => ElevatedButtonNode(
+    name: data.get(#name, or: $value.name),
     destinationRoutePathSnippetName: data.get(
       #destinationRoutePathSnippetName,
       or: $value.destinationRoutePathSnippetName,

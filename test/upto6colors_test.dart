@@ -1,4 +1,4 @@
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

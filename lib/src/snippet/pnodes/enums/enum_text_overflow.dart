@@ -1,7 +1,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/editors/property_button_enum.dart';
 
 // const AlignmentEnumModel(this.flutterValue);
 //
@@ -59,7 +59,7 @@ enum TextOverflowEnum  {
   //   };
   // }
 
-  Widget toMenuItem() => fco.coloredText(name, color: Colors.white);
+  Widget toMenuItem() => fsdui.coloredText(name, color: Colors.white);
 
   static TextOverflowEnum? of(int? index) => index != null ? TextOverflowEnum.values.elementAtOrNull(index) : null;
 }

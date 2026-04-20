@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart'; // For SNode
+import 'package:fsdui/fsdui.dart'; // For SNode
 
 // The data needed for each drawn border
 class NodeRenderData {

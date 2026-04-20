@@ -1,9 +1,9 @@
 // import 'package:flutter/material.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:flutter_content/flutter_content.dart';
-// import 'package:flutter_content/src/bloc/capi_bloc.dart';
-// import 'package:flutter_content/src/target_config/content/play_content_callout.dart';
-// import 'package:flutter_content/src/model/model.dart';
+// import 'package:fsdui/fsdui.dart';
+// import 'package:fsdui/src/bloc/capi_bloc.dart';
+// import 'package:fsdui/src/target_config/content/play_content_callout.dart';
+// import 'package:fsdui/src/model/model.dart';
 //
 //
 // bool isShowingPointyCallout() => fco.anyPresent([CAPI.ARROW_TYPE_CALLOUT.feature()]);

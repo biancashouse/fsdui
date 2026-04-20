@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 import '../../fancy_tree/tree_controller.dart';
 
@@ -46,8 +46,8 @@ class DirectoryTreeNodeWidget extends StatelessWidget {
   }
 
   Widget _name(BuildContext context) {
-    SnippetBuilderState? snippet = SnippetBuilder.of(context);
-    String snippetName = snippet?.widget.snippetName ?? '???!!!';
+    SnippetBuilderState spState = context as SnippetBuilderState;
+    String snippetName = spState.snippetName ?? 'missing ???!!!';
     return GestureDetector(
       onTap: () {
         // expand or collapse
@@ -67,8 +67,8 @@ class DirectoryTreeNodeWidget extends StatelessWidget {
                 ? Colors.amber : Colors.amber.withValues(alpha:.5)),
                 TextButton(
                   onPressed: () {
-                    if (snippet?.mounted ?? false) {
-                      fco.capiBloc.add(CAPIEvent.selectedDirectoryOrNode(snippetName: snippetName, selectedNode: entry.node));
+                    if (spState.mounted ?? false) {
+                      fsdui.capiBloc.add(CAPIEvent.selectedDirectoryOrNode(snippetName: snippetName, selectedNode: entry.node));
                     }
                   },
                   child: _text(),
@@ -77,31 +77,31 @@ class DirectoryTreeNodeWidget extends StatelessWidget {
             )
           : InkWell(
               onTap: () {
-                fco.capiBloc.add(CAPIEvent.selectedDirectoryOrNode(snippetName: snippetName, selectedNode: entry.node));
+                fsdui.capiBloc.add(CAPIEvent.selectedDirectoryOrNode(snippetName: snippetName, selectedNode: entry.node));
               },
-              child: (entry.node as FileNode).buildFlutterWidget(context, entry.node),
+              child: (entry.node as FileNode).build(context, entry.node),
             ),
     );
   }
 
   Widget _text() {
-    String displayedNodeName = entry.node is SnippetRootNode && ((entry.node as SnippetRootNode).name.isNotEmpty)
-        ? (entry.node as SnippetRootNode).name
+    String displayedNodeName = entry.node.isASnippetRoot && (entry.node.name!.isNotEmpty)
+        ? entry.node.name!
         : entry.node is DirectoryNode && (entry.node as DirectoryNode).name!.isNotEmpty
             ? (entry.node as DirectoryNode).name!
             : entry.node is DirectoryNode && (entry.node as DirectoryNode).name!.isEmpty
                 ? 'directory name ?'
-                : entry.node is FileNode && (entry.node as FileNode).name.isEmpty
+                : entry.node is FileNode && (entry.node as FileNode).fileName.isEmpty
                     ? 'file name ?'
                     : entry.node is FileNode && (entry.node as FileNode).src.isEmpty
                         ? 'src ?'
                         : entry.node is FileNode
-                            ? (entry.node as FileNode).name
+                            ? (entry.node as FileNode).fileName
                             : entry.node.toString();
 
     // TreeEntry<Node>? parentEntry = widget.entry.parent;
     // String dirName = (treeController.rootNode(entry) as DirectoryNode).name;
-    return fco.coloredText(
+    return fsdui.coloredText(
       displayedNodeName, color:Colors.blue
     );
   }

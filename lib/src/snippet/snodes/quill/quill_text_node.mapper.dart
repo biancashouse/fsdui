@@ -23,6 +23,12 @@ class QuillTextNodeMapper extends SubClassMapperBase<QuillTextNode> {
   @override
   final String id = 'QuillTextNode';
 
+  static String? _$name(QuillTextNode v) => v.name;
+  static const Field<QuillTextNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static String _$deltaJsonString(QuillTextNode v) => v.deltaJsonString;
   static const Field<QuillTextNode, String> _f$deltaJsonString = Field(
     'deltaJsonString',
@@ -34,6 +40,12 @@ class QuillTextNodeMapper extends SubClassMapperBase<QuillTextNode> {
   static const Field<QuillTextNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(QuillTextNode v) => v.tags;
+  static const Field<QuillTextNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(QuillTextNode v) =>
@@ -61,8 +73,10 @@ class QuillTextNodeMapper extends SubClassMapperBase<QuillTextNode> {
 
   @override
   final MappableFields<QuillTextNode> fields = const {
+    #name: _f$name,
     #deltaJsonString: _f$deltaJsonString,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -83,7 +97,10 @@ class QuillTextNodeMapper extends SubClassMapperBase<QuillTextNode> {
   ]);
 
   static QuillTextNode _instantiate(DecodingData data) {
-    return QuillTextNode(deltaJsonString: data.dec(_f$deltaJsonString));
+    return QuillTextNode(
+      name: data.dec(_f$name),
+      deltaJsonString: data.dec(_f$deltaJsonString),
+    );
   }
 
   @override
@@ -149,7 +166,7 @@ extension QuillTextNodeValueCopy<$R, $Out>
 abstract class QuillTextNodeCopyWith<$R, $In extends QuillTextNode, $Out>
     implements CLCopyWith<$R, $In, $Out> {
   @override
-  $R call({String? deltaJsonString});
+  $R call({String? name, String? deltaJsonString});
   QuillTextNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -162,13 +179,15 @@ class _QuillTextNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<QuillTextNode> $mapper =
       QuillTextNodeMapper.ensureInitialized();
   @override
-  $R call({String? deltaJsonString}) => $apply(
+  $R call({Object? name = $none, String? deltaJsonString}) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (deltaJsonString != null) #deltaJsonString: deltaJsonString,
     }),
   );
   @override
   QuillTextNode $make(CopyWithData data) => QuillTextNode(
+    name: data.get(#name, or: $value.name),
     deltaJsonString: data.get(#deltaJsonString, or: $value.deltaJsonString),
   );
 

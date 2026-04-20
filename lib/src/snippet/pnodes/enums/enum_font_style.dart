@@ -2,8 +2,8 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/editors/property_button_enum.dart';
 
 part 'enum_font_style.mapper.dart';
 
@@ -39,7 +39,7 @@ enum FontStyleEnum   {
         calloutSize: const Size(170, 50),
       );
 
-  Widget toMenuItem() => fco.coloredText(name, color: Colors.white);
+  Widget toMenuItem() => fsdui.coloredText(name, color: Colors.white);
 
   static FontStyleEnum? of(int? index) => index != null ? FontStyleEnum.values.elementAtOrNull(index) : null;
 

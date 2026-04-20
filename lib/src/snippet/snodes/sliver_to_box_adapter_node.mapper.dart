@@ -25,6 +25,12 @@ class SliverToBoxAdapterNodeMapper
   @override
   final String id = 'SliverToBoxAdapterNode';
 
+  static String? _$name(SliverToBoxAdapterNode v) => v.name;
+  static const Field<SliverToBoxAdapterNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static SNode? _$child(SliverToBoxAdapterNode v) => v.child;
   static const Field<SliverToBoxAdapterNode, SNode> _f$child = Field(
     'child',
@@ -35,6 +41,12 @@ class SliverToBoxAdapterNodeMapper
   static const Field<SliverToBoxAdapterNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(SliverToBoxAdapterNode v) => v.tags;
+  static const Field<SliverToBoxAdapterNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(
@@ -63,8 +75,10 @@ class SliverToBoxAdapterNodeMapper
 
   @override
   final MappableFields<SliverToBoxAdapterNode> fields = const {
+    #name: _f$name,
     #child: _f$child,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -85,7 +99,10 @@ class SliverToBoxAdapterNodeMapper
   ]);
 
   static SliverToBoxAdapterNode _instantiate(DecodingData data) {
-    return SliverToBoxAdapterNode(child: data.dec(_f$child));
+    return SliverToBoxAdapterNode(
+      name: data.dec(_f$name),
+      child: data.dec(_f$child),
+    );
   }
 
   @override
@@ -161,7 +178,7 @@ abstract class SliverToBoxAdapterNodeCopyWith<
   @override
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({SNode? child});
+  $R call({String? name, SNode? child});
   SliverToBoxAdapterNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -180,11 +197,17 @@ class _SliverToBoxAdapterNodeCopyWithImpl<$R, $Out>
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
-  $R call({Object? child = $none}) =>
-      $apply(FieldCopyWithData({if (child != $none) #child: child}));
+  $R call({Object? name = $none, Object? child = $none}) => $apply(
+    FieldCopyWithData({
+      if (name != $none) #name: name,
+      if (child != $none) #child: child,
+    }),
+  );
   @override
-  SliverToBoxAdapterNode $make(CopyWithData data) =>
-      SliverToBoxAdapterNode(child: data.get(#child, or: $value.child));
+  SliverToBoxAdapterNode $make(CopyWithData data) => SliverToBoxAdapterNode(
+    name: data.get(#name, or: $value.name),
+    child: data.get(#child, or: $value.child),
+  );
 
   @override
   SliverToBoxAdapterNodeCopyWith<$R2, SliverToBoxAdapterNode, $Out2>

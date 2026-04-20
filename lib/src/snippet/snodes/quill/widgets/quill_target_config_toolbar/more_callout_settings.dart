@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/model/quill_target_model.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/property_button_bool.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/property_button_number_T.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/model/quill_target_model.dart';
+import 'package:fsdui/src/snippet/pnodes/editors/property_button_bool.dart';
+import 'package:fsdui/src/snippet/pnodes/editors/property_button_number_T.dart';
 
 class MoreCalloutConfigSettings extends StatelessWidget {
   final QuillTargetModel tc;
@@ -27,7 +27,7 @@ class MoreCalloutConfigSettings extends StatelessWidget {
   }) {
     // GlobalKey? targetGK = tc.gk;
 
-    fco.showOverlay(
+    fsdui.showOverlay(
       // targetGK: targetGK,
       calloutContent: MoreCalloutConfigSettings(tc: tc, parentNode: parentNode),
       calloutConfig: CalloutConfig(
@@ -58,7 +58,7 @@ class MoreCalloutConfigSettings extends StatelessWidget {
     );
   }
 
-  static bool isShowing() => fco.anyPresent(["more-cc-settings"]);
+  static bool isShowing() => fsdui.anyPresent(["more-cc-settings"]);
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +150,7 @@ class MoreCalloutConfigSettings extends StatelessWidget {
                     onChangedF: (String newValue) {
                       tc.setCalloutStarPoints(int.tryParse(newValue));
                       onTargetConfigChange?.call(tc);
-                      fco.dismiss("more-cc-settings");
+                      fsdui.dismiss("more-cc-settings");
                       tc.closeThenReopenConfigToolbar(
                         parentNode: parentNode,
                         sc: sc,

@@ -24,6 +24,12 @@ class PageViewNodeMapper extends SubClassMapperBase<PageViewNode> {
   @override
   final String id = 'PageViewNode';
 
+  static String? _$name(PageViewNode v) => v.name;
+  static const Field<PageViewNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static List<SNode> _$children(PageViewNode v) => v.children;
   static const Field<PageViewNode, List<SNode>> _f$children = Field(
     'children',
@@ -33,6 +39,12 @@ class PageViewNodeMapper extends SubClassMapperBase<PageViewNode> {
   static const Field<PageViewNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(PageViewNode v) => v.tags;
+  static const Field<PageViewNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(PageViewNode v) =>
@@ -58,8 +70,10 @@ class PageViewNodeMapper extends SubClassMapperBase<PageViewNode> {
 
   @override
   final MappableFields<PageViewNode> fields = const {
+    #name: _f$name,
     #children: _f$children,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -106,7 +120,7 @@ abstract class PageViewNodeCopyWith<$R, $In extends PageViewNode, $Out>
   @override
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
-  $R call({List<SNode>? children});
+  $R call({String? name, List<SNode>? children});
   PageViewNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 

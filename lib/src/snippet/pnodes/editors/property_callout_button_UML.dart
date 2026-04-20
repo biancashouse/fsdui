@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/uml_msv.dart';
+import 'package:fsdui/src/snippet/pnodes/editors/uml_msv.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 class PropertyButtonUML extends HookWidget {
   final String? diagramText;
@@ -54,8 +54,8 @@ class PropertyButtonUML extends HookWidget {
       // ),
       decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
       targetPointerType: TargetPointerType.none(),
-      initialCalloutW: fco.scrW * .95,
-      initialCalloutH: fco.scrH * .95,
+      initialCalloutW: fsdui.scrW * .95,
+      initialCalloutH: fsdui.scrH * .95,
       onAcceptedF: () {},
       onResizeF: (Size newSize) {},
       onDragF: (Offset newOffset) {},
@@ -69,6 +69,6 @@ class PropertyButtonUML extends HookWidget {
       },
     );
 
-    fco.showOverlay(calloutConfig: teCC, calloutContent: calloutContent);
+    fsdui.showOverlay(calloutConfig: teCC, calloutContent: calloutContent);
   }
 }

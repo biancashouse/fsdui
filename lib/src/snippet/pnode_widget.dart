@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/button_style_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/container_style_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
-import 'package:flutter_content/src/snippet/pnodes/text_style_pnodes.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/button_style_pnodes.dart';
+import 'package:fsdui/src/snippet/pnodes/container_style_pnodes.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/src/snippet/pnodes/groups/button_style_properties.dart';
+import 'package:fsdui/src/snippet/pnodes/text_style_pnodes.dart';
 
 import 'fancy_tree/tree_controller.dart';
 
@@ -27,7 +27,7 @@ class PNodeWidget extends StatefulWidget {
 }
 
 class _PNodeWidgetState extends State<PNodeWidget> {
-  CAPIBloC get bloc => fco.capiBloc;
+  CAPIBloC get bloc => fsdui.capiBloc;
 
   PNode get propertyNode => widget.entry.node;
 
@@ -146,7 +146,7 @@ class _PNodeWidgetState extends State<PNodeWidget> {
             });
           });
         },
-        child: fco.coloredText(propertyNode.propertyLabel(), color: Colors.purple),
+        child: fsdui.coloredText(propertyNode.propertyLabel(), color: Colors.purple),
         // // if textStyleName is not null, means display a button to the right of the group label
         // child: !_propertyNodeIsATextStyleGroup()
         //     ? fco.coloredText(propertyNode.name, color: Colors.purple)
@@ -221,10 +221,10 @@ class _PNodeWidgetState extends State<PNodeWidget> {
   Widget _propertyButton(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        fco.logger.i('_propertyButton.tap');
+        fsdui.logger.i('_propertyButton.tap');
       },
       onDoubleTap: () {
-        fco.logger.i('_propertyButton.double-tap');
+        fsdui.logger.i('_propertyButton.double-tap');
         // revert to original value
         propertyNode.revertToOriginalValue();
         widget.treeC.rebuild();

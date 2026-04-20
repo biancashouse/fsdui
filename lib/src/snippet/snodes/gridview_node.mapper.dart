@@ -26,6 +26,12 @@ class GridViewNodeMapper extends SubClassMapperBase<GridViewNode> {
   @override
   final String id = 'GridViewNode';
 
+  static String? _$name(GridViewNode v) => v.name;
+  static const Field<GridViewNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static double? _$mainAxisSpacing(GridViewNode v) => v.mainAxisSpacing;
   static const Field<GridViewNode, double> _f$mainAxisSpacing = Field(
     'mainAxisSpacing',
@@ -74,6 +80,12 @@ class GridViewNodeMapper extends SubClassMapperBase<GridViewNode> {
     _$uid,
     mode: FieldMode.member,
   );
+  static List<String>? _$tags(GridViewNode v) => v.tags;
+  static const Field<GridViewNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(GridViewNode v) =>
       v.treeNodeGK;
   static const Field<GridViewNode, GlobalKey<State<StatefulWidget>>>
@@ -103,6 +115,7 @@ class GridViewNodeMapper extends SubClassMapperBase<GridViewNode> {
 
   @override
   final MappableFields<GridViewNode> fields = const {
+    #name: _f$name,
     #mainAxisSpacing: _f$mainAxisSpacing,
     #crossAxisSpacing: _f$crossAxisSpacing,
     #crossAxisCount: _f$crossAxisCount,
@@ -111,6 +124,7 @@ class GridViewNodeMapper extends SubClassMapperBase<GridViewNode> {
     #scrollDirection: _f$scrollDirection,
     #shrinkWrap: _f$shrinkWrap,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -134,6 +148,7 @@ class GridViewNodeMapper extends SubClassMapperBase<GridViewNode> {
 
   static GridViewNode _instantiate(DecodingData data) {
     return GridViewNode(
+      name: data.dec(_f$name),
       mainAxisSpacing: data.dec(_f$mainAxisSpacing),
       crossAxisSpacing: data.dec(_f$crossAxisSpacing),
       crossAxisCount: data.dec(_f$crossAxisCount),
@@ -211,6 +226,7 @@ abstract class GridViewNodeCopyWith<$R, $In extends GridViewNode, $Out>
   EdgeInsetsValueCopyWith<$R, EdgeInsetsValue, EdgeInsetsValue>? get padding;
   @override
   $R call({
+    String? name,
     double? mainAxisSpacing,
     double? crossAxisSpacing,
     int? crossAxisCount,
@@ -242,6 +258,7 @@ class _GridViewNodeCopyWithImpl<$R, $Out>
       $value.padding?.copyWith.$chain((v) => call(padding: v));
   @override
   $R call({
+    Object? name = $none,
     Object? mainAxisSpacing = $none,
     Object? crossAxisSpacing = $none,
     Object? crossAxisCount = $none,
@@ -251,6 +268,7 @@ class _GridViewNodeCopyWithImpl<$R, $Out>
     Object? shrinkWrap = $none,
   }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (mainAxisSpacing != $none) #mainAxisSpacing: mainAxisSpacing,
       if (crossAxisSpacing != $none) #crossAxisSpacing: crossAxisSpacing,
       if (crossAxisCount != $none) #crossAxisCount: crossAxisCount,
@@ -262,6 +280,7 @@ class _GridViewNodeCopyWithImpl<$R, $Out>
   );
   @override
   GridViewNode $make(CopyWithData data) => GridViewNode(
+    name: data.get(#name, or: $value.name),
     mainAxisSpacing: data.get(#mainAxisSpacing, or: $value.mainAxisSpacing),
     crossAxisSpacing: data.get(#crossAxisSpacing, or: $value.crossAxisSpacing),
     crossAxisCount: data.get(#crossAxisCount, or: $value.crossAxisCount),

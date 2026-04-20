@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/property_callout_button.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/editors/property_callout_button.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PropertyButtonFontFamily extends StatefulWidget {
@@ -58,7 +58,7 @@ class _PropertyButtonFontFamilyState extends State<PropertyButtonFontFamily> {
     }
 
     // get list of font families
-    final fontFamilyLabels = fco.googleFontNames..sort;
+    final fontFamilyLabels = fsdui.googleFontNames..sort;
     final fontFamilyTiles = fontFamilyLabels.map((family) {
       try {
         final listTile = ListTile(
@@ -78,7 +78,7 @@ class _PropertyButtonFontFamilyState extends State<PropertyButtonFontFamily> {
           // toggleable: true,
           onTap: () {
             widget.onChangeF.call(family);
-            fco.dismiss('font-family');
+            fsdui.dismiss('font-family');
           },
         );
         return listTile;
@@ -102,7 +102,7 @@ class _PropertyButtonFontFamilyState extends State<PropertyButtonFontFamily> {
           ),
         );
       },
-      calloutSize: Size(240, 50.0 * fco.googleFontNames.length),
+      calloutSize: Size(240, 50.0 * fsdui.googleFontNames.length),
     );
   }
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/border_side_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_outlined_border.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/outlined_border_properties.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/border_side_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/enum_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_outlined_border.dart';
+import 'package:fsdui/src/snippet/pnodes/groups/outlined_border_properties.dart';
 
 class OutlinedBorderPNode /*Group*/ extends PNode /*Group*/ {
   OutlinedBorderProperties? outlinedGroup;

@@ -2,10 +2,10 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
-import 'package:flutter_content/src/snippet/snodes/button_style_hook.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/src/snippet/pnodes/groups/button_style_properties.dart';
+import 'package:fsdui/src/snippet/snodes/button_style_hook.dart';
 
 part 'menu_item_button_node.mapper.dart';
 
@@ -14,6 +14,7 @@ class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
   // String itemLabel;
 
   MenuItemButtonNode({
+    super.name,
     // this.itemLabel = '',
     super.destinationRoutePathSnippetName,
     // super.template,
@@ -82,8 +83,8 @@ class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
                 onPressed(context, gk);
               }
             },
-            style: fco.buttonStyle(30),
-            child: child?.buildFlutterWidget(context, this),
+            style: fsdui.buttonStyle(30),
+            child: child?.build(context, this),
           );
     } catch (e) {
       return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());

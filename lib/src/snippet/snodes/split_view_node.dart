@@ -2,10 +2,10 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/bool_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/bool_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/enum_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:multi_split_view/multi_split_view.dart';
 
 part 'split_view_node.mapper.dart';
@@ -16,6 +16,7 @@ class SplitViewNode extends MC with SplitViewNodeMappable {
   bool resizeable;
 
   SplitViewNode({
+    super.name,
     this.axis = AxisEnum.horizontal,
     this.resizeable = true,
     required super.children,
@@ -93,7 +94,7 @@ class SplitViewNode extends MC with SplitViewNodeMappable {
               .children
               .map(
                 (child) => Area(builder: (ctx, area) {
-                  return child.buildFlutterWidget(context, this);
+                  return child.build(context, this);
                 }),
               )
               .toList();
@@ -120,7 +121,7 @@ class SplitViewNode extends MC with SplitViewNodeMappable {
 
   @override
   Widget? widgetLogo() => Image.asset(
-    fco.asset('lib/assets/images/pub.dev.png'),
+    fsdui.asset('lib/assets/images/pub.dev.png'),
     width: 16,
   );
 

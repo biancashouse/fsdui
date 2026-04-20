@@ -2,9 +2,9 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
 
 part 'submenu_button_node.mapper.dart';
 
@@ -16,6 +16,7 @@ class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
   List<SNode> menuChildren;
 
   SubmenuButtonNode({
+    super.name,
     this.itemLabel = 'label?',
     // this.child,
     required this.menuChildren,
@@ -65,7 +66,7 @@ class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
     //possiblyHighlightSelectedNode(scName);
     return SubmenuButton(
       key: createNodeWidgetGK(),
-      style: fco.buttonStyle(36),
+      style: fsdui.buttonStyle(36),
       menuStyle: MenuStyle(
         backgroundColor: WidgetStateProperty.resolveWith<Color?>(
           (Set<WidgetState> states) {
@@ -77,7 +78,7 @@ class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
         ),
       ),
       menuChildren:
-          super.children.map((child) => child.buildFlutterWidget(context, this)).toList(),
+          super.children.map((child) => child.build(context, this)).toList(),
       // child: child == null ? Text(itemLabel??'label?') : child?.toWidget(context, this),
       child: Text(itemLabel),
     );

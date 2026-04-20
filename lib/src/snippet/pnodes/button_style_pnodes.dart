@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/border_side_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/color_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/property_button_search_button_styles.dart';
-import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_outlined_border.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
-import 'package:flutter_content/src/snippet/pnodes/text_style_pnodes.dart';
-import 'package:flutter_content/src/text_styles/style_name_editor.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/border_side_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/color_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/editors/property_button_search_button_styles.dart';
+import 'package:fsdui/src/snippet/pnodes/enum_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_outlined_border.dart';
+import 'package:fsdui/src/snippet/pnodes/groups/button_style_properties.dart';
+import 'package:fsdui/src/snippet/pnodes/text_style_pnodes.dart';
+import 'package:fsdui/src/text_styles/style_name_editor.dart';
 
 class ButtonStylePNode /*Group*/ extends PNode /*Group*/ {
   ButtonStyleProperties buttonStyleGroup;
@@ -199,7 +199,7 @@ class ButtonStylePNode /*Group*/ extends PNode /*Group*/ {
 
   @override
   String propertyLabel() {
-    var buttonStyleName = fco.findButtonStyleName(fco.appInfo, buttonStyleGroup);
+    var buttonStyleName = fsdui.findButtonStyleName(fsdui.appInfo, buttonStyleGroup);
     return buttonStyleName != null ? '$name: $buttonStyleName' : name;
   }
 }
@@ -272,9 +272,9 @@ class ButtonStyleSavePNode extends PNode {
           if (bsName.isNotEmpty) {
             ButtonStyleProperties? bsGroup = snode.buttonStyleProperties();
             if (bsGroup != null) {
-              fco.namedButtonStyles[bsName] = bsGroup.clone();
-              await fco.modelRepo.saveAppInfo();
-              fco.showToast(
+              fsdui.namedButtonStyles[bsName] = bsGroup.clone();
+              await fsdui.modelRepo.saveAppInfo();
+              fsdui.showToast(
                 msg: "Button Style '$bsName' saved",
                 textColor: Colors.yellow,
                 bgColor: Colors.blue,

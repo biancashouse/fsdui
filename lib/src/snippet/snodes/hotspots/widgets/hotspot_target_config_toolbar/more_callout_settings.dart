@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/property_button_bool.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/property_button_number_T.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/editors/property_button_bool.dart';
+import 'package:fsdui/src/snippet/pnodes/editors/property_button_number_T.dart';
 
 class MoreCalloutConfigSettings extends StatefulWidget {
   final HotspotTargetModel tc;
@@ -27,7 +27,7 @@ class MoreCalloutConfigSettings extends StatefulWidget {
   }) {
     // GlobalKey? targetGK = tc.gk;
 
-    fco.showOverlay(
+    fsdui.showOverlay(
       // targetGK: targetGK,
       calloutContent: MoreCalloutConfigSettings(tc, wrapperState),
       calloutConfig: CalloutConfig(
@@ -58,13 +58,13 @@ class MoreCalloutConfigSettings extends StatefulWidget {
     );
   }
 
-  static bool isShowing() => fco.anyPresent(["more-cc-settings"]);
+  static bool isShowing() => fsdui.anyPresent(["more-cc-settings"]);
 }
 
 class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
   HotspotTargetModel get tc => widget.tc;
 
-  CAPIBloC get bloc => fco.capiBloc;
+  CAPIBloC get bloc => fsdui.capiBloc;
 
   @override
   void initState() {
@@ -98,7 +98,7 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
                       tc.calloutBorderRadius = double.tryParse(newValue) ?? 0;
                       tc.calloutConfig?.decorationBorderRadius = tc.calloutBorderRadius;
                       tc.saveParentSnippet(widget.wrapperState.widget.parentNode.rootNodeOfSnippet());
-                      fco.dismiss("more-cc-settings");
+                      fsdui.dismiss("more-cc-settings");
                       tc.closeThenReopenContentCallout(
                         widget.wrapperState,
                       );
@@ -129,7 +129,7 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
                           double.tryParse(newValue) ?? 0;
                       tc.calloutConfig?.decorationBorderThickness = tc.calloutBorderThickness;
                       tc.saveParentSnippet(widget.wrapperState.widget.parentNode.rootNodeOfSnippet());
-                      fco.dismiss("more-cc-settings");
+                      fsdui.dismiss("more-cc-settings");
                       tc.closeThenReopenContentCallout(
                         widget.wrapperState,
                       );
@@ -155,7 +155,7 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
                     onChangedF: (String newValue) {
                       tc.setCalloutStarPoints(int.tryParse(newValue));
                       tc.saveParentSnippet(widget.wrapperState.widget.parentNode.rootNodeOfSnippet());
-                      fco.dismiss("more-cc-settings");
+                      fsdui.dismiss("more-cc-settings");
                       tc.closeThenReopenContentCallout(
                         widget.wrapperState,
                       );
@@ -179,7 +179,7 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
                 onChanged: (newValue) {
                   tc.canResizeH = newValue;
                   tc.saveParentSnippet(widget.wrapperState.widget.parentNode.rootNodeOfSnippet());
-                  fco.dismiss("more-cc-settings");
+                  fsdui.dismiss("more-cc-settings");
                   tc.closeThenReopenContentCallout(
                     widget.wrapperState,
                   );
@@ -198,7 +198,7 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
                 onChanged: (newValue) {
                   tc.canResizeV = newValue;
                   tc.saveParentSnippet(widget.wrapperState.widget.parentNode.rootNodeOfSnippet());
-                  fco.dismiss("more-cc-settings");
+                  fsdui.dismiss("more-cc-settings");
                   tc.closeThenReopenContentCallout(
                     widget.wrapperState,
                   );
@@ -217,7 +217,7 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
                 onChanged: (newValue) {
                   tc.followScroll = newValue;
                   tc.saveParentSnippet(widget.wrapperState.widget.parentNode.rootNodeOfSnippet());
-                  fco.dismiss("more-cc-settings");
+                  fsdui.dismiss("more-cc-settings");
                   tc.closeThenReopenContentCallout(
                     widget.wrapperState,
                   );

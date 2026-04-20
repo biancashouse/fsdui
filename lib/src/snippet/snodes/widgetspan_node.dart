@@ -1,8 +1,8 @@
 // ignore_for_file: constant_identifier_names
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'widgetspan_node.mapper.dart';
 
@@ -11,6 +11,7 @@ class WidgetSpanNode extends InlineSpanNode with WidgetSpanNodeMappable {
   SNode? child;
 
   WidgetSpanNode({
+    super.name,
     this.child,
   });
 
@@ -29,12 +30,12 @@ class WidgetSpanNode extends InlineSpanNode with WidgetSpanNodeMappable {
     try {
       return WidgetSpan(
         child: child != null
-            ? child!.buildFlutterWidget(context, this)
-            : fco.boxChild(
+            ? child!.build(context, this)
+            : fsdui.boxChild(
                 child: const Text("missing child!"), bgColor: Colors.red),
       );
     } catch (e) {
-      fco.logger.i('cannot render $FLUTTER_TYPE!');
+      fsdui.logger.i('cannot render $FLUTTER_TYPE!');
       return WidgetSpan(
           child: Error(
               key: createNodeWidgetGK(), FLUTTER_TYPE, errorMsg: e.toString()));
@@ -49,7 +50,7 @@ class WidgetSpanNode extends InlineSpanNode with WidgetSpanNodeMappable {
     return '''WidgetSpan(
       child: ${child != null}
       ? ${child!.toSource(context)}
-      : ${fco.boxChild(child: const Text("missing child!"), bgColor: Colors.red)},
+      : ${fsdui.boxChild(child: const Text("missing child!"), bgColor: Colors.red)},
   )''';
   }
 

@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart'
-    show fco, FlutterContentApp;
+import 'package:fsdui/fsdui.dart'
+    show fsdui, FlutterContentApp;
 import 'bh-apps.firebase_options.dart';
 import 'mapper_tests.dart';
 import 'page_home.dart';
@@ -17,7 +17,7 @@ void disableOverflowErrors() {
         );
 
     if (isOverflowError) {
-      fco.logger.d(details.toString());
+      fsdui.logger.d(details.toString());
     } else {
       FlutterError.presentError(details);
     }
@@ -27,7 +27,7 @@ void disableOverflowErrors() {
 void main({bool useEmulator = false}) {
   runZonedGuarded<Future<void>>(
     () async {
-      fco.initializeMappers();
+      fsdui.initializeMappers();
       WidgetsFlutterBinding.ensureInitialized();
 
       // if (fco.isMac || fco.isWindows) {
@@ -63,7 +63,7 @@ void main({bool useEmulator = false}) {
             home: Page_Home(),
             materialAppThemeF: () => ThemeData(
               colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-              primaryColor: fco.FUCHSIA_X,
+              primaryColor: fsdui.FUCHSIA_X,
               primarySwatch: Colors.purple,
             ),
             fbOptions: BH_APPS_DefaultFirebaseOptions.currentPlatform,

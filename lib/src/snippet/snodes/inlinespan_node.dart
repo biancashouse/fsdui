@@ -1,6 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 part 'inlinespan_node.mapper.dart';
 
@@ -10,7 +10,7 @@ const List<Type> inlinespanSubClasses = [TextSpanNode, WidgetSpanNode];
   hook: PropertyRenameHook('is', 'DK:is'), // 'first_name' -> JSON key, 'firstName' -> Dart field name
 )
 abstract class InlineSpanNode extends SNode with InlineSpanNodeMappable {
-  InlineSpanNode();
+  InlineSpanNode({super.name});
 
   InlineSpan toInlineSpan(BuildContext context) {
     // superclasses must override

@@ -37,7 +37,6 @@ class SCMapper extends SubClassMapperBase<SC> {
       SliverFloatingHeaderNodeMapper.ensureInitialized();
       SliverResizingHeaderNodeMapper.ensureInitialized();
       SliverToBoxAdapterNodeMapper.ensureInitialized();
-      SnippetRootNodeMapper.ensureInitialized();
       TabNodeMapper.ensureInitialized();
       TargetsWrapperNodeMapper.ensureInitialized();
       SNodeMapper.ensureInitialized();
@@ -48,11 +47,13 @@ class SCMapper extends SubClassMapperBase<SC> {
   @override
   final String id = 'SC';
 
+  static String? _$name(SC v) => v.name;
+  static const Field<SC, String> _f$name = Field('name', _$name, opt: true);
   static SNode? _$child(SC v) => v.child;
   static const Field<SC, SNode> _f$child = Field('child', _$child, opt: true);
 
   @override
-  final MappableFields<SC> fields = const {#child: _f$child};
+  final MappableFields<SC> fields = const {#name: _f$name, #child: _f$child};
 
   @override
   final String discriminatorKey = 'DK:snode';
@@ -96,7 +97,7 @@ abstract class SCCopyWith<$R, $In extends SC, $Out>
     implements SNodeCopyWith<$R, $In, $Out> {
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({SNode? child});
+  $R call({String? name, SNode? child});
   SCCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 

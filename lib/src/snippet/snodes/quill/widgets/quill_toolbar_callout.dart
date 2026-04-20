@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/model/quill_target_model.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
-import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/colour_picker_tool.dart';
-import 'package:flutter_content/src/snippet/snodes/quill/widgets/timestamp_embed.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/model/quill_target_model.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
+import 'package:fsdui/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/colour_picker_tool.dart';
+import 'package:fsdui/src/snippet/snodes/quill/widgets/timestamp_embed.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 
 class QuillToolbarOverlay extends StatelessWidget {
@@ -331,7 +331,7 @@ class QuillToolbarOverlay extends StatelessWidget {
   }
 
   QuillTargetModel? _createQuillTarget() {
-    if (!fco.canEditAnyContent()) return null;
+    if (!fsdui.canEditAnyContent()) return null;
 
     TargetId newTargetId = DateTime.now().millisecondsSinceEpoch;
     return QuillTargetModel(
@@ -355,22 +355,22 @@ class QuillToolbarOverlay extends StatelessWidget {
   static const cid_linkEditor = 'link-editor';
 
   void _showLinkDialog(QuillController controller) {
-    fco.registerKeystrokeHandler(cid_linkEditor, (KeyEvent event) {
+    fsdui.registerKeystrokeHandler(cid_linkEditor, (KeyEvent event) {
       if (event.logicalKey == LogicalKeyboardKey.escape) {
-        fco.dismiss(cid_linkEditor);
+        fsdui.dismiss(cid_linkEditor);
       }
       if (event.logicalKey == LogicalKeyboardKey.enter) {
         return true;
       }
       return false;
     });
-    fco.showOverlay(
+    fsdui.showOverlay(
       calloutContent: Column(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          fco.purpleText('Create a link', fontSize: 24, family: 'Merriweather'),
+          fsdui.purpleText('Create a link', fontSize: 24, family: 'Merriweather'),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             width: 480,
@@ -381,14 +381,14 @@ class QuillToolbarOverlay extends StatelessWidget {
               originalS: '',
               onTextChangedF: (String s) async {},
               onEscapedF: (_) {
-                fco.dismiss(cid_linkEditor);
+                fsdui.dismiss(cid_linkEditor);
               },
               dontAutoFocus: false,
               onEditingCompleteF: (s) async {
                 // if (!s.startsWith('http://')) return;
                 String uri = s.replaceAll(' ', '-').toLowerCase();
                 controller.formatSelection(LinkAttribute(uri));
-                fco.dismiss(cid_linkEditor);
+                fsdui.dismiss(cid_linkEditor);
                 return;
               },
             ),
@@ -403,7 +403,7 @@ class QuillToolbarOverlay extends StatelessWidget {
         barrier: CalloutBarrierConfig(
           opacity: .5,
           onTappedF: () async {
-            fco.dismiss(cid_linkEditor);
+            fsdui.dismiss(cid_linkEditor);
           },
         ),
         initialCalloutW: 500,
@@ -412,7 +412,7 @@ class QuillToolbarOverlay extends StatelessWidget {
         decorationFillColors: ColorOrGradient.color(Colors.white),
 
         onDismissedF: () {
-          fco.removeKeystrokeHandler(cid_linkEditor);
+          fsdui.removeKeystrokeHandler(cid_linkEditor);
         },
       ),
       // targetGkF: ()=> fco.authIconGK,

@@ -1,14 +1,10 @@
 // ignore_for_file: camel_case_types
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_content/flutter_content.dart';
-
-// import 'package:flutter_content/src/api/snippet_builder/context_extension.dart';
+import 'package:fsdui/fsdui.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
-import 'versions_menu_anchor_with_edit_menu_item.dart'
+import 'snippet_menu_anchor.dart'
     show SnippetMenuAnchor, AnchorWidgetEnum;
 
 const BODY_PLACEHOLDER = 'body-placeholder';
@@ -16,11 +12,8 @@ const BODY_PLACEHOLDER = 'body-placeholder';
 class SnippetBuilder extends StatefulWidget {
   // final String? panelName;
 
-  // from canned snippet
-  final String? snippetName;
-
-  // or by providing tree of nodes
-  final SnippetRootNode? templateSnippet;
+  // original snippet (tree of nodes) - root node will have the snippet name
+  final SNode initialValue;
 
   final Map<String, void Function(BuildContext)>? handlers;
 
@@ -33,8 +26,7 @@ class SnippetBuilder extends StatefulWidget {
   final VoidCallback? onLayoutDone;
 
   const SnippetBuilder({
-    this.snippetName,
-    this.templateSnippet,
+    required this.initialValue,
     this.handlers,
     this.onScrollF,
     this.justPlaying = false,
@@ -43,38 +35,18 @@ class SnippetBuilder extends StatefulWidget {
     super.key,
   });
 
-  static SnippetBuilderState? of(BuildContext context) =>
-      context.findAncestorStateOfType<SnippetBuilderState>();
+  // static SnippetBuilderState? of(BuildContext context) =>
+  //     context.findAncestorStateOfType<SnippetBuilderState>();
 
   @override
   State<SnippetBuilder> createState() => SnippetBuilderState();
-
-  // static SnippetRootNode createSnippetFromTemplateNodes(SnippetRootNode rootNode, String snippetName) {
-  //   rootNode.validateTree();
-  //   rootNode.name = snippetName;
-  //   return rootNode;
-  // }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(StringProperty('sName', snippetName, defaultValue: ''));
-  }
 }
 
 class SnippetBuilderState extends State<SnippetBuilder>
     with TickerProviderStateMixin {
+  late String snippetName;
   Map<String, TabBarNode> tabBars = {};
-
-  // will be supplied directly as snippetName arg or supplied via the template
-  String snippetName() {
-    final name = widget.snippetName ?? widget.templateSnippet?.name;
-    if (name == null || name.isEmpty) {
-      throw Exception('SnippetBuilderState.snippetName() is null!');
-    }
-    return name;
-  }
-
+  
   // ZoomerState? get parentTSState => Zoomer.of(context);
 
   // int countTabs() {
@@ -88,9 +60,15 @@ class SnippetBuilderState extends State<SnippetBuilder>
   void initState() {
     super.initState();
 
+    snippetName = widget.initialValue.name!;
+
+    // register snippetBuilderState i.o.t. access its state
+    fsdui.snippetBuilderStates[snippetName] = this;
+    print('fsdui.snippetBuilderStates[$snippetName] = $this');
+    
     widget.handlers?.forEach((key, value) {
-      fco.registerHandler(key, value);
-      fco.logger.i("registered handler '$key'");
+      fsdui.registerHandler(key, value);
+      fsdui.logger.i("registered handler '$key'");
     });
 
     // removed snippet place naming functionality - use tab bar instead
@@ -98,6 +76,12 @@ class SnippetBuilderState extends State<SnippetBuilder>
     //     !fco.placeNames.contains(widget.panelName)) {
     //   fco.placeNames.add(widget.panelName!);
     // }
+  }
+
+  @override
+  void dispose() {
+    // fsdui.snippetBuilderStates.remove(snippetName);
+    super.dispose();
   }
 
   // removed snippet place naming functionality - use tab bar instead
@@ -115,10 +99,9 @@ class SnippetBuilderState extends State<SnippetBuilder>
 
   @override
   Widget build(BuildContext context) {
-    final name = snippetName();
-    final notifier = fco.appInfo.cachedSnippetInfo(name)?.getChangeNotifier();
+    final notifier = fsdui.appInfo.cachedSnippetInfo(snippetName)?.getChangeNotifier();
 
-    return fco.canEditAnyContent() && notifier != null
+    return fsdui.canEditAnyContent() && notifier != null
         ? ValueListenableBuilder<String>(
             // must assume snippetInfo will be in cache
             valueListenable: notifier,
@@ -186,64 +169,51 @@ class SnippetBuilderState extends State<SnippetBuilder>
             builder: (context) {
               // optimise by first checking whether already in memory
               // can avoid unnecessary futurebuilder
-              var appInfo = fco.appInfo;
-              bool snippetExists = appInfo.snippetNames.contains(snippetName());
-              // must supply a template when if snippet does not exist
-              if (!snippetExists && widget.templateSnippet == null) {
-                return _stackWidget(
-                  SnippetRootNode(
-                    name: snippetName(),
-                    child: TextNode(
-                      text: 'Must supply a template for a new snippet!',
-                      tsPropGroup: TextStyleProperties(),
-                    ),
-                  ),
-                  updatedSnippetJson,
-                );
-              }
+              var appInfo = fsdui.appInfo;
+              bool snippetExists = appInfo.snippetNames.contains(snippetName);
               if (!snippetExists) {
                 // SNIPPET DOES NOT YET EXIST - use template to create
                 // first version as a clone of the template
-                fco.pageList.add(widget.templateSnippet!.name);
+                fsdui.pageList.add(widget.initialValue.name!);
                 VersionId newVersionId = SnippetInfoModel.createNewVersion(
-                  widget.templateSnippet!,
+                  widget.initialValue,
                 );
                 print(
-                  'SnippetBuilder() created a brand new snippet from a template (${widget.templateSnippet!.name}',
+                  'SnippetBuilder() created a brand new snippet from a template (${widget.initialValue.name}',
                 );
-                fco.modelRepo
+                fsdui.modelRepo
                     .saveBrandNewSnippet(
-                      snippetName: widget.templateSnippet!.name,
+                      snippetName: widget.initialValue.name!,
                       versionId: newVersionId,
-                      initialVersion: widget.templateSnippet!,
+                      initialVersion: widget.initialValue,
                     )
                     .then((b) {
-                      fco.modelRepo.saveAppInfo();
+                      fsdui.modelRepo.saveAppInfo();
                     });
 
                 return _stackWidget(
-                  widget.templateSnippet!,
+                  widget.initialValue,
                   updatedSnippetJson,
                 );
               }
 
               // ALREADY EXIST - SNIPPET MAY BE IN CACHE (avoid Future)
-              SnippetInfoModel? snippetInfo = fco.appInfo.cachedSnippetInfo(
-                snippetName(),
+              SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(
+                snippetName,
               );
               if (snippetInfo != null) {
                 // SNIPPET EXISTS, TRY TO GET FROM SNIPPET CACHE
                 // A SNIPPET INFO ALWAYS HAS AT LEAST 1 VERSION
-                SnippetRootNode? snippet = snippetInfo.currentVersionInCache();
+                SNode? snippet = snippetInfo.currentVersionInCache();
                 if (snippet != null) {
                   return _stackWidget(snippet, updatedSnippetJson);
                 }
               }
 
               // EXISTS, BUT NOT PRESENT IN CACHE, so go fetch...
-              return FutureBuilder<SnippetRootNode?>(
-                future: SnippetRootNode.loadSnippetFromCacheOrFromFB(
-                  snippetName: snippetName(),
+              return FutureBuilder<SNode?>(
+                future: SNode.loadSnippetFromCacheOrFromFB(
+                  snippetName: snippetName,
                 ),
                 builder: (futureContext, snapshot) {
                   if (snapshot.connectionState != ConnectionState.done) {
@@ -260,12 +230,12 @@ class SnippetBuilderState extends State<SnippetBuilder>
                       color: Colors.red,
                       size: 18,
                       errorMsg:
-                          "${snippetName()}: ${snapshot.error.toString()}",
+                          "${snippetName}: ${snapshot.error.toString()}",
                       key: GlobalKey(),
                     );
                   }
 
-                  SnippetRootNode snippet = snapshot.data!;
+                  SNode snippet = snapshot.data!;
 
                   return _stackWidget(snippet, updatedSnippetJson);
                 },
@@ -279,7 +249,7 @@ class SnippetBuilderState extends State<SnippetBuilder>
     // );
   }
 
-  Widget _stackWidget(SnippetRootNode snippet, String updatedSnippetJson) {
+  Widget _stackWidget(SNode snippet, String updatedSnippetJson) {
     // triggers AFTER layout of this widget
     WidgetsBinding.instance.addPostFrameCallback((_) {
       widget.onLayoutDone?.call();
@@ -288,25 +258,28 @@ class SnippetBuilderState extends State<SnippetBuilder>
     late List<Widget> stackChildren;
 
     try {
-      stackChildren = [snippet.buildFlutterWidget(context, null)];
+      stackChildren = [snippet.build(context, null)];
     } catch (e) {
       stackChildren = [Icon(Icons.error, size: 40, color: Colors.purpleAccent)];
     }
 
-    SnippetInfoModel snippetInfo = fco.appInfo.cachedSnippetInfo(
-      snippetName(),
+    SnippetInfoModel snippetInfo = fsdui.appInfo.cachedSnippetInfo(
+      snippetName,
     )!;
 
-    bool isPublishedVersion = fco.isEditingVersionPublished(snippetName());
+    bool isPublishedVersion = fsdui.isEditingVersionPublished(snippetName);
 
     Color triangleColor = Colors.purpleAccent; // in edit mode
     if (!isPublishedVersion) triangleColor = Colors.deepOrange;
-    if (snippetInfo.changesPending(updatedSnippetJson))
+    if (snippetInfo.changesPending(updatedSnippetJson)) {
       triangleColor = Colors.yellowAccent;
+    }
 
     // orange indicator when not signed in and
     // showing an unpublished snippet
-    if (!widget.justPlaying && !isPublishedVersion && !fco.canEditAnyContent()) {
+    if (!widget.justPlaying &&
+        !isPublishedVersion &&
+        !fsdui.canEditAnyContent()) {
       stackChildren.add(
         Align(
           alignment: Alignment.topLeft,
@@ -321,10 +294,10 @@ class SnippetBuilderState extends State<SnippetBuilder>
 
     // show menu anchor if signed in and not selecting a
     // widget not editing a snippety
-    if (fco.canEditAnyContent() &&
+    if (fsdui.canEditAnyContent() &&
         bloc.dontShowTappableBorderRects() &&
         bloc.aSnippetIsNotBeingEdited() &&
-        !fco.anyPresent([], startsWith: 'quill-toolbar-')) {
+        !fsdui.anyPresent([], startsWith: 'quill-toolbar-')) {
       stackChildren.add(
         Align(
           alignment: Alignment.topRight,
@@ -343,11 +316,11 @@ class SnippetBuilderState extends State<SnippetBuilder>
     // show menu anchor for a hotspot's content
     // cId as a number means it's a hotspot content callout
     if (!widget.justPlaying &&
-        fco.canEditAnyContent() &&
+        fsdui.canEditAnyContent() &&
         bloc.dontShowTappableBorderRects() &&
         bloc.aSnippetIsNotBeingEdited() &&
         pageIsEditable &&
-        SnippetRootNode.isHotspotCalloutContent(snippetName())) {
+        SNode.isHotspotCalloutContent(snippetName)) {
       stackChildren.add(
         Align(
           alignment: Alignment.topRight,
@@ -380,7 +353,7 @@ class SnippetBuilderState extends State<SnippetBuilder>
 //     return;
 //   }
 //
-//   fco.capiBloc.add(CAPIEvent.enterSelectWidgetMode(snippetName: widget.snippetName ?? widget.snippetRootNode!.name));
+//   fco.capiBloc.add(CAPIEvent.enterSelectWidgetMode(snippetName: snippetName ?? widget.snippetRootNode!.name));
 // }
 
 // _renderSnippet(context) {

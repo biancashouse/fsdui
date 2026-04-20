@@ -2,11 +2,11 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_flex_fit.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/int_pnode.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/enum_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_flex_fit.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/src/snippet/pnodes/int_pnode.dart';
 
 part 'flexible_node.mapper.dart';
 
@@ -22,7 +22,7 @@ class FlexibleNode extends SC with FlexibleNodeMappable {
   int flex;
   FlexFitEnum fit;
 
-  FlexibleNode({this.flex = 1, this.fit = FlexFitEnum.loose, super.child});
+  FlexibleNode({super.name, this.flex = 1, this.fit = FlexFitEnum.loose, super.child});
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
@@ -69,7 +69,7 @@ class FlexibleNode extends SC with FlexibleNodeMappable {
         flex: flex,
         fit: fit.flutterValue,
         child:
-            child?.buildFlutterWidget(context, this) ??
+            child?.build(context, this) ??
             const Icon(Icons.square, color: Colors.red),
       );
     } catch (e) {

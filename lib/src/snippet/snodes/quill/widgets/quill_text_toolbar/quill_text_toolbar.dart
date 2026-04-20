@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 import 'package:flutter/material.dart';
 
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/model/quill_target_model.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/model/quill_target_model.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:google_fonts/google_fonts.dart' show GoogleFonts;
 
@@ -27,7 +27,7 @@ class QuillTextToolbar extends StatefulWidget {
     required FocusNode focusNode,
     required QuillController controller,
   }) {
-    fco.showOverlay(
+    fsdui.showOverlay(
       onReadyF: () {},
       calloutConfig: CalloutConfig(
         cId: parentSNode.quillTextToolbarCID,
@@ -39,9 +39,9 @@ class QuillTextToolbar extends StatefulWidget {
         decorationBorderRadius: 16,
         animatePointer: false,
         targetPointerType: TargetPointerType.none(),
-        initialCalloutPos: OffsetModel.fromOffset(fco.quillTextToolbarPos()),
+        initialCalloutPos: OffsetModel.fromOffset(fsdui.quillTextToolbarPos()),
         onDragEndedF: (newPos) {
-          fco.setQuillTextToolbarPos(newPos);
+          fsdui.setQuillTextToolbarPos(newPos);
         },
         dragHandleHeight: 30,
         followScroll: false,
@@ -144,11 +144,11 @@ class QuillTextToolbarState extends State<QuillTextToolbar> {
             final rootNode = widget.parentSNode.rootNodeOfSnippet();
             if (rootNode != null) {
               // notify possible changes to the quill text (controller)
-              fco.appInfo.cachedSnippetInfo(rootNode.name)?.notifyChange(rootNode);
+              fsdui.appInfo.cachedSnippetInfo(rootNode.name!)?.notifyChange(rootNode);
             }
-            fco.removeParentCallout(context);
+            fsdui.removeParentCallout(context);
             // fco.dismiss(widget.parentSNode.quillTextToolbarCID, skipOnDismiss: true);
-            fco.quillTextToolbarCIDVN.value = null;
+            fsdui.quillTextToolbarCIDVN.value = null;
           },
         ),
         const VerticalDivider(color: Colors.white, width: 2),
@@ -159,19 +159,19 @@ class QuillTextToolbarState extends State<QuillTextToolbar> {
 
   Widget toolbarVFlipIcon() => IconButton(
     onPressed: () {
-      fco.dismiss(widget.parentSNode.quillTextToolbarCID, skipOnDismiss: true);
-      fco.quillTextToolbarAtTopOfScreen = !fco.quillTextToolbarAtTopOfScreen;
+      fsdui.dismiss(widget.parentSNode.quillTextToolbarCID, skipOnDismiss: true);
+      fsdui.quillTextToolbarAtTopOfScreen = !fsdui.quillTextToolbarAtTopOfScreen;
       QuillTextToolbar.show(
         parentSNode: widget.parentSNode,
         focusNode: widget.focusNode,
         controller: widget.controller,
       );
     },
-    tooltip: fco.quillTextToolbarAtTopOfScreen
+    tooltip: fsdui.quillTextToolbarAtTopOfScreen
         ? 'move toolbar down'
         : 'move toolbar up',
     icon: Icon(
-      fco.quillTextToolbarAtTopOfScreen
+      fsdui.quillTextToolbarAtTopOfScreen
           ? Icons.arrow_downward
           : Icons.arrow_upward,
       color: Colors.white,
@@ -220,13 +220,13 @@ class QuillTextToolbarState extends State<QuillTextToolbar> {
           var snippet = widget.parentSNode.rootNodeOfSnippet();
           if (snippet != null) {
             // fco.modelRepo.saveNewVersionOfSnippet(snippet);
-            fco.appInfo.cachedSnippetInfo(snippet.name)?.notifyChange(snippet);
+            fsdui.appInfo.cachedSnippetInfo(snippet.name!)?.notifyChange(snippet);
           }
         },
       );
 
   QuillTargetModel? _createQuillTarget() {
-    if (!fco.canEditAnyContent()) return null;
+    if (!fsdui.canEditAnyContent()) return null;
 
     TargetId newTargetId = DateTime.now().millisecondsSinceEpoch;
     return QuillTargetModel(

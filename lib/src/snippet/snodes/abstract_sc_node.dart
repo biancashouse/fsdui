@@ -1,5 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 part 'abstract_sc_node.mapper.dart';
 
@@ -9,7 +9,7 @@ part 'abstract_sc_node.mapper.dart';
 abstract class SC extends SNode with SCMappable {
   SNode? child;
 
-  SC({this.child});
+  SC({super.name, this.child});
 
   @override
   bool canAppendAChild() => child == null;

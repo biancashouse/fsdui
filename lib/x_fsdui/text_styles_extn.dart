@@ -1,6 +1,6 @@
 import 'package:fsdui/fsdui.dart';
 
-extension TextStylesExtension on FlutterContentMixins {
+extension TextStylesExtension on FSDUI_Mixins {
   Map<TextStyleName, TextStyleProperties> cannedTextStyles() => {
     "white14":
     TextStyleProperties(color: ColorModel.white(), fontSize: 14),

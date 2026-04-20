@@ -25,6 +25,12 @@ class PinnedHeaderSliverNodeMapper
   @override
   final String id = 'PinnedHeaderSliverNode';
 
+  static String? _$name(PinnedHeaderSliverNode v) => v.name;
+  static const Field<PinnedHeaderSliverNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static SNode? _$child(PinnedHeaderSliverNode v) => v.child;
   static const Field<PinnedHeaderSliverNode, SNode> _f$child = Field(
     'child',
@@ -35,6 +41,12 @@ class PinnedHeaderSliverNodeMapper
   static const Field<PinnedHeaderSliverNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(PinnedHeaderSliverNode v) => v.tags;
+  static const Field<PinnedHeaderSliverNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(
@@ -63,8 +75,10 @@ class PinnedHeaderSliverNodeMapper
 
   @override
   final MappableFields<PinnedHeaderSliverNode> fields = const {
+    #name: _f$name,
     #child: _f$child,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -85,7 +99,10 @@ class PinnedHeaderSliverNodeMapper
   ]);
 
   static PinnedHeaderSliverNode _instantiate(DecodingData data) {
-    return PinnedHeaderSliverNode(child: data.dec(_f$child));
+    return PinnedHeaderSliverNode(
+      name: data.dec(_f$name),
+      child: data.dec(_f$child),
+    );
   }
 
   @override
@@ -161,7 +178,7 @@ abstract class PinnedHeaderSliverNodeCopyWith<
   @override
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({SNode? child});
+  $R call({String? name, SNode? child});
   PinnedHeaderSliverNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -180,11 +197,17 @@ class _PinnedHeaderSliverNodeCopyWithImpl<$R, $Out>
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
-  $R call({Object? child = $none}) =>
-      $apply(FieldCopyWithData({if (child != $none) #child: child}));
+  $R call({Object? name = $none, Object? child = $none}) => $apply(
+    FieldCopyWithData({
+      if (name != $none) #name: name,
+      if (child != $none) #child: child,
+    }),
+  );
   @override
-  PinnedHeaderSliverNode $make(CopyWithData data) =>
-      PinnedHeaderSliverNode(child: data.get(#child, or: $value.child));
+  PinnedHeaderSliverNode $make(CopyWithData data) => PinnedHeaderSliverNode(
+    name: data.get(#name, or: $value.name),
+    child: data.get(#child, or: $value.child),
+  );
 
   @override
   PinnedHeaderSliverNodeCopyWith<$R2, PinnedHeaderSliverNode, $Out2>

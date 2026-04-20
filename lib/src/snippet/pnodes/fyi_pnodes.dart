@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 class FYIPNode extends PNode {
   final String? label;
@@ -40,7 +40,7 @@ class FYIPNode extends PNode {
             Gap(10),
             Expanded(
               // no label implies show the button
-              child: fco.coloredText(label!,
+              child: fsdui.coloredText(label!,
                   color: Colors.yellow,
                   fontStyle: FontStyle.italic,
                   maxLines: 6),
@@ -48,7 +48,7 @@ class FYIPNode extends PNode {
           ],
         ),
         children: [
-          if (msg != null) fco.coloredText(msg!, color: Colors.yellow, maxLines: 6),
+          if (msg != null) fsdui.coloredText(msg!, color: Colors.yellow, maxLines: 6),
           if (webLink != null) Gap(10),
           if (webLink != null)
             ElevatedButton(

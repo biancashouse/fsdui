@@ -2,15 +2,15 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/bool_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/int_pnode.dart';
-import 'package:flutter_content/src/snippet/snodes/storage_image_node.dart';
-// import 'package:flutter_content/src/carousel_slider_4.2.1x/carousel_options.dart';
-// import 'package:flutter_content/src/carousel_slider_4.2.1x/carousel_slider.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/bool_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/enum_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/src/snippet/pnodes/int_pnode.dart';
+import 'package:fsdui/src/snippet/snodes/storage_image_node.dart';
+// import 'package:fsdui/src/carousel_slider_4.2.1x/carousel_options.dart';
+// import 'package:fsdui/src/carousel_slider_4.2.1x/carousel_slider.dart';
 
 part 'carousel_node.mapper.dart';
 
@@ -35,6 +35,7 @@ class CarouselNode extends MC with CarouselNodeMappable {
   AxisEnum axis;
 
   CarouselNode({
+    super.name,
     this.autoPlay = true,
     this.autoPlayIntervalSecs = 2,
     this.enlargeCenterPage = true,
@@ -111,7 +112,7 @@ class CarouselNode extends MC with CarouselNodeMappable {
                             image: DecorationImage(
                                 image: AssetImage(
                                   name,
-                                  package: 'flutter_content',
+                                  package: 'fsdui',
                                 ),
                                 fit: BoxFit.fill),
                           ),
@@ -121,9 +122,9 @@ class CarouselNode extends MC with CarouselNodeMappable {
               : super
                   .children
                   .map((SNode node) => node is AssetImageNode
-                      ? node.buildFlutterWidget(context, this)
+                      ? node.build(context, this)
                       : node is StorageImageNode
-                          ? node.buildFlutterWidget(context, this)
+                          ? node.build(context, this)
                           : const Placeholder(
                               child: Text('not an asset image!'),
                             ))
@@ -183,7 +184,7 @@ class CarouselNode extends MC with CarouselNodeMappable {
 
   @override
   Widget? widgetLogo() => Image.asset(
-    fco.asset('lib/assets/images/pub.dev.png'),
+    fsdui.asset('lib/assets/images/pub.dev.png'),
     width: 16,
   );
 

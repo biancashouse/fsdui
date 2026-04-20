@@ -4,7 +4,7 @@ import 'package:fsdui/src/pages.dart';
 import 'package:fsdui/src/route_observer.dart';
 import 'package:go_router/go_router.dart';
 
-extension RoutesExtension on FlutterContentMixins {
+extension RoutesExtension on FSDUI_Mixins {
   // extract go routes
   void parseRouteConfig(List<String> names, List<RouteBase> routes) {
     for (var route in routes) {
@@ -75,7 +75,7 @@ extension RoutesExtension on FlutterContentMixins {
 
     routingConfigVN = ValueNotifier<RoutingConfig>(routingConfig);
     router = GoRouter.routingConfig(
-      navigatorKey: fco.globalNavigatorKey,
+      navigatorKey: fsdui.globalNavigatorKey,
       debugLogDiagnostics: false,
       initialLocation: initialRoutePath,
       routingConfig: routingConfigVN,
@@ -91,14 +91,14 @@ extension RoutesExtension on FlutterContentMixins {
 
         // implicit built-in page
         if (matchedLocation == '/pages') {
-          if (fco.canEditAnyContent()) {
+          if (fsdui.canEditAnyContent()) {
             return Pages();
           } else {
             return AlertDialog(
               title: Container(
                 alignment: Alignment.center,
                 padding: EdgeInsets.all(40),
-                child: fco.coloredText(
+                child: fsdui.coloredText(
                   'Viewing the Page list:\nYou must be signed in as an editor !',
                   color: Colors.red,
                 ),

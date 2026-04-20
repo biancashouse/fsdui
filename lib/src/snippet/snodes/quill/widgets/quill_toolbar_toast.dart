@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/model/quill_target_model.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
-import 'package:flutter_content/src/snippet/snodes/quill/widgets/quill_align_button.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/model/quill_target_model.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
+import 'package:fsdui/src/snippet/snodes/quill/widgets/quill_align_button.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:google_fonts/google_fonts.dart' show GoogleFonts;
 
@@ -35,12 +35,12 @@ class QuillToolbarToast extends StatelessWidget {
     required FocusNode focusNode, // We only need the focusNode
     required ValueNotifier<bool> isDirty,
   }) {
-    fco.showToastOverlay(
+    fsdui.showToastOverlay(
       skipAnimation: true,
       calloutConfig: CalloutConfig(
         gravity: Alignment.topLeft,
         cId: 'quill-toolbar-toast',
-        initialCalloutW: fco.scrW - 50,
+        initialCalloutW: fsdui.scrW - 50,
         initialCalloutH: 120,
         decorationFillColors: ColorOrGradient.color(Colors.black),
         decorationBorderThickness: 3,
@@ -80,7 +80,7 @@ class QuillToolbarToast extends StatelessWidget {
       mainAxisSize: MainAxisSize.max,
       children: [
         SizedBox(
-          width: fco.scrW - 50,
+          width: fsdui.scrW - 50,
           child: Wrap(
             runAlignment: WrapAlignment.start,
             crossAxisAlignment: WrapCrossAlignment.start,
@@ -135,7 +135,7 @@ class QuillToolbarToast extends StatelessWidget {
           ),
         ),
         SizedBox(
-          width: fco.scrW - 50,
+          width: fsdui.scrW - 50,
           child: Wrap(
             children: [
               QuillToolbarColorButton(
@@ -240,7 +240,7 @@ class QuillToolbarToast extends StatelessWidget {
           ),
         ),
         SizedBox(
-          width: fco.scrW - 50,
+          width: fsdui.scrW - 50,
           child: Wrap(
             children: [
               SizedBox(
@@ -299,8 +299,8 @@ class QuillToolbarToast extends StatelessWidget {
       null,
     );
 
-    fco.afterNextBuildDo(() {
-      fco.dismiss('quill-popup-buttons');
+    fsdui.afterNextBuildDo(() {
+      fsdui.dismiss('quill-popup-buttons');
     });
 
     final newJson = jsonEncode(controller.document.toDelta().toJson());
@@ -309,7 +309,7 @@ class QuillToolbarToast extends StatelessWidget {
   }
 
   QuillTargetModel? _createQuillTarget() {
-    if (!fco.canEditAnyContent()) return null;
+    if (!fsdui.canEditAnyContent()) return null;
 
     TargetId newTargetId = DateTime.now().millisecondsSinceEpoch;
     return QuillTargetModel(

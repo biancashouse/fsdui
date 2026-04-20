@@ -1,7 +1,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/editors/property_button_enum.dart';
 
 // const AlignmentEnumModel(this.flutterValue);
 //
@@ -59,12 +59,12 @@ enum TextAlignEnum   {
 
   Widget _toIcon() {
     return switch (this) {
-      TextAlignEnum.left => fco.whiteIcon(Icons.format_align_left),
-      TextAlignEnum.start => fco.whiteIcon(Icons.format_align_left),
-      TextAlignEnum.center => fco.whiteIcon(Icons.format_align_center),
-      TextAlignEnum.right => fco.whiteIcon(Icons.format_align_right),
-      TextAlignEnum.end => fco.whiteIcon(Icons.format_align_right),
-      TextAlignEnum.justify => fco.whiteIcon(Icons.format_align_justify),
+      TextAlignEnum.left => fsdui.whiteIcon(Icons.format_align_left),
+      TextAlignEnum.start => fsdui.whiteIcon(Icons.format_align_left),
+      TextAlignEnum.center => fsdui.whiteIcon(Icons.format_align_center),
+      TextAlignEnum.right => fsdui.whiteIcon(Icons.format_align_right),
+      TextAlignEnum.end => fsdui.whiteIcon(Icons.format_align_right),
+      TextAlignEnum.justify => fsdui.whiteIcon(Icons.format_align_justify),
     };
   }
 

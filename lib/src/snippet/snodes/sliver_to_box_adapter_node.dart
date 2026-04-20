@@ -2,14 +2,15 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'sliver_to_box_adapter_node.mapper.dart';
 
 @MappableClass()
 class SliverToBoxAdapterNode extends SC with SliverToBoxAdapterNodeMappable {
   SliverToBoxAdapterNode({
+    super.name,
     super.child,
   });
 
@@ -32,7 +33,7 @@ class SliverToBoxAdapterNode extends SC with SliverToBoxAdapterNodeMappable {
       setParent(parentNode);
       return SliverToBoxAdapter(
             key: createNodeWidgetGK(),
-            child: child?.buildFlutterWidget(context, this),
+            child: child?.build(context, this),
           );
   }
 }

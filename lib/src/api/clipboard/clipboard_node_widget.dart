@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/fancy_tree/tree_controller.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/fancy_tree/tree_controller.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 
@@ -19,21 +19,23 @@ class ClipboardNodeWidget extends StatelessWidget {
     this.onClipboard = false,
   });
 
-  CAPIBloC get bloc => fco.capiBloc;
+  CAPIBloC get bloc => fsdui.capiBloc;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CAPIBloC, CAPIState>(
       builder: (context, state) {
-        bool selected = fco.snippetBeingEdited?.selectedNode == entry.node;
+        bool selected = fsdui.snippetBeingEdited?.selectedNode == entry.node;
         ThemeData themeData = Theme.of(context);
         // TreeEntry<Node>? parentEntry = entry.parent;
 
-        String displayedNodeName = entry.node is SnippetRootNode && (entry.node as SnippetRootNode).name.isNotEmpty
-            ? (entry.node as SnippetRootNode).name
+        SNode entryNode = entry.node as SNode;
+
+        String displayedNodeName = entryNode.isASnippetRoot
+            ? (entry.node as SNode).name!
             : (entry.node as SNode).toString();
 
-        Size textSize = fco.calculateTextSize(
+        Size textSize = fsdui.calculateTextSize(
           text: displayedNodeName,
           numLines: 1,
           style: DefaultTextStyle.of(context).style,
@@ -55,7 +57,7 @@ class ClipboardNodeWidget extends StatelessWidget {
                 style: GoogleFonts.getFont(
                   'Roboto Mono',
                   textStyle: themeData.textTheme.labelMedium,
-                  color: entry.node is SnippetRootNode
+                  color: entryNode.isASnippetRoot
                       ? Colors.white
                       : Colors.black,
                   fontWeight: selected ? FontWeight.bold : FontWeight.normal,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class MouseInfoViewer extends HookWidget {
@@ -52,7 +52,7 @@ class MouseInfoViewer extends HookWidget {
           final bool showOnLeft = cursorX > screenWidth / 2;
           final bool showAbove = cursorY > screenHeight / 2;
 
-          final scrollConfig = fco.findAncestorScrollConfig(
+          final scrollConfig = fsdui.findAncestorScrollConfig(
             context,
           );
           final scrollOffset = scrollConfig?.controller?.offset ?? 0.0;

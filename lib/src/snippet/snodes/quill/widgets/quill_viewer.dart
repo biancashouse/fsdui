@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/snodes/quill/widgets/help_icon_embed.dart';
-import 'package:flutter_content/src/snippet/snodes/quill/widgets/timestamp_embed.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/snodes/quill/widgets/help_icon_embed.dart';
+import 'package:fsdui/src/snippet/snodes/quill/widgets/timestamp_embed.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:go_router/go_router.dart';

@@ -25,6 +25,12 @@ class ContainerNodeMapper extends SubClassMapperBase<ContainerNode> {
   @override
   final String id = 'ContainerNode';
 
+  static String? _$name(ContainerNode v) => v.name;
+  static const Field<ContainerNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static ContainerStyleProperties _$csPropGroup(ContainerNode v) =>
       v.csPropGroup;
   static const Field<ContainerNode, ContainerStyleProperties> _f$csPropGroup =
@@ -39,6 +45,12 @@ class ContainerNodeMapper extends SubClassMapperBase<ContainerNode> {
   static const Field<ContainerNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(ContainerNode v) => v.tags;
+  static const Field<ContainerNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(ContainerNode v) =>
@@ -66,9 +78,11 @@ class ContainerNodeMapper extends SubClassMapperBase<ContainerNode> {
 
   @override
   final MappableFields<ContainerNode> fields = const {
+    #name: _f$name,
     #csPropGroup: _f$csPropGroup,
     #child: _f$child,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -90,6 +104,7 @@ class ContainerNodeMapper extends SubClassMapperBase<ContainerNode> {
 
   static ContainerNode _instantiate(DecodingData data) {
     return ContainerNode(
+      name: data.dec(_f$name),
       csPropGroup: data.dec(_f$csPropGroup),
       child: data.dec(_f$child),
     );
@@ -166,7 +181,7 @@ abstract class ContainerNodeCopyWith<$R, $In extends ContainerNode, $Out>
   @override
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({ContainerStyleProperties? csPropGroup, SNode? child});
+  $R call({String? name, ContainerStyleProperties? csPropGroup, SNode? child});
   ContainerNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -190,15 +205,20 @@ class _ContainerNodeCopyWithImpl<$R, $Out>
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
-  $R call({ContainerStyleProperties? csPropGroup, Object? child = $none}) =>
-      $apply(
-        FieldCopyWithData({
-          if (csPropGroup != null) #csPropGroup: csPropGroup,
-          if (child != $none) #child: child,
-        }),
-      );
+  $R call({
+    Object? name = $none,
+    ContainerStyleProperties? csPropGroup,
+    Object? child = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (name != $none) #name: name,
+      if (csPropGroup != null) #csPropGroup: csPropGroup,
+      if (child != $none) #child: child,
+    }),
+  );
   @override
   ContainerNode $make(CopyWithData data) => ContainerNode(
+    name: data.get(#name, or: $value.name),
     csPropGroup: data.get(#csPropGroup, or: $value.csPropGroup),
     child: data.get(#child, or: $value.child),
   );

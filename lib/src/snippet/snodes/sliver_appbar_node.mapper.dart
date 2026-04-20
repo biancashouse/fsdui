@@ -28,6 +28,12 @@ class SliverAppBarNodeMapper extends SubClassMapperBase<SliverAppBarNode> {
   @override
   final String id = 'SliverAppBarNode';
 
+  static String? _$name(SliverAppBarNode v) => v.name;
+  static const Field<SliverAppBarNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static double? _$collapsedHeight(SliverAppBarNode v) => v.collapsedHeight;
   static const Field<SliverAppBarNode, double> _f$collapsedHeight = Field(
     'collapsedHeight',
@@ -94,6 +100,12 @@ class SliverAppBarNodeMapper extends SubClassMapperBase<SliverAppBarNode> {
     _$uid,
     mode: FieldMode.member,
   );
+  static List<String>? _$tags(SliverAppBarNode v) => v.tags;
+  static const Field<SliverAppBarNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(SliverAppBarNode v) =>
       v.treeNodeGK;
   static const Field<SliverAppBarNode, GlobalKey<State<StatefulWidget>>>
@@ -151,6 +163,7 @@ class SliverAppBarNodeMapper extends SubClassMapperBase<SliverAppBarNode> {
 
   @override
   final MappableFields<SliverAppBarNode> fields = const {
+    #name: _f$name,
     #collapsedHeight: _f$collapsedHeight,
     #expandedHeight: _f$expandedHeight,
     #flexibleSpace: _f$flexibleSpace,
@@ -163,6 +176,7 @@ class SliverAppBarNodeMapper extends SubClassMapperBase<SliverAppBarNode> {
     #bottom: _f$bottom,
     #actions: _f$actions,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -190,6 +204,7 @@ class SliverAppBarNodeMapper extends SubClassMapperBase<SliverAppBarNode> {
 
   static SliverAppBarNode _instantiate(DecodingData data) {
     return SliverAppBarNode(
+      name: data.dec(_f$name),
       collapsedHeight: data.dec(_f$collapsedHeight),
       expandedHeight: data.dec(_f$expandedHeight),
       flexibleSpace: data.dec(_f$flexibleSpace),
@@ -284,6 +299,7 @@ abstract class SliverAppBarNodeCopyWith<$R, $In extends SliverAppBarNode, $Out>
   NamedMCCopyWith<$R, NamedMC, NamedMC> get actions;
   @override
   $R call({
+    String? name,
     double? collapsedHeight,
     double? expandedHeight,
     NamedSC? flexibleSpace,
@@ -336,6 +352,7 @@ class _SliverAppBarNodeCopyWithImpl<$R, $Out>
       $value.actions.copyWith.$chain((v) => call(actions: v));
   @override
   $R call({
+    Object? name = $none,
     Object? collapsedHeight = $none,
     Object? expandedHeight = $none,
     Object? flexibleSpace = $none,
@@ -349,6 +366,7 @@ class _SliverAppBarNodeCopyWithImpl<$R, $Out>
     NamedMC? actions,
   }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (collapsedHeight != $none) #collapsedHeight: collapsedHeight,
       if (expandedHeight != $none) #expandedHeight: expandedHeight,
       if (flexibleSpace != $none) #flexibleSpace: flexibleSpace,
@@ -364,6 +382,7 @@ class _SliverAppBarNodeCopyWithImpl<$R, $Out>
   );
   @override
   SliverAppBarNode $make(CopyWithData data) => SliverAppBarNode(
+    name: data.get(#name, or: $value.name),
     collapsedHeight: data.get(#collapsedHeight, or: $value.collapsedHeight),
     expandedHeight: data.get(#expandedHeight, or: $value.expandedHeight),
     flexibleSpace: data.get(#flexibleSpace, or: $value.flexibleSpace),

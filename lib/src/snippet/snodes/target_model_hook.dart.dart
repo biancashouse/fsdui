@@ -1,7 +1,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/model/alignment_model.dart';
-import 'package:flutter_content/src/model/size_model.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/model/alignment_model.dart';
+import 'package:fsdui/src/model/size_model.dart';
 
 // 1. Define the custom MapHook
 class TargetModelHook extends MappingHook {

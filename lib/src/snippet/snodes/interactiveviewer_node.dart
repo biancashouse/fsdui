@@ -2,9 +2,9 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'interactiveviewer_node.mapper.dart';
 
@@ -15,6 +15,7 @@ class InteractiveViewerNode extends SC with InteractiveViewerNodeMappable {
   bool? scaleEnabled;
 
   InteractiveViewerNode({
+    super.name,
     super.child,
     this.maxScale,
     this.minScale,
@@ -79,7 +80,7 @@ class InteractiveViewerNode extends SC with InteractiveViewerNodeMappable {
       minScale: minScale ?? 0.8,
       maxScale: maxScale ?? 2.5,
       child:
-          child?.buildFlutterWidget(context, this) ??
+          child?.build(context, this) ??
           Icon(Icons.warning, color: Colors.yellow),
     );
     // } catch (e) {

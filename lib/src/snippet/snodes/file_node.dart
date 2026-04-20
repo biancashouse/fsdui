@@ -1,7 +1,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
 
 part 'file_node.mapper.dart';
 
@@ -22,20 +22,20 @@ Widget driveFileIcon(String src) {
 }
 
 String get googleDocsIconSrc =>
-    fco.asset('lib/assets/images/google-icons/docs.png');
+    fsdui.asset('lib/assets/images/google-icons/docs.png');
 
 String get googleSheetsIconSrc =>
-    fco.asset('lib/assets/images/google-icons/sheets.png');
+    fsdui.asset('lib/assets/images/google-icons/sheets.png');
 
 String get googleSlidesIconSrc =>
-    fco.asset('lib/assets/images/google-icons/slides.png');
+    fsdui.asset('lib/assets/images/google-icons/slides.png');
 
 String get googleFormsIconSrc =>
-    fco.asset('lib/assets/images/google-icons/forms.png');
+    fsdui.asset('lib/assets/images/google-icons/forms.png');
 
 @MappableClass()
 class FileNode extends CL with FileNodeMappable {
-  String name;
+  String fileName;
   String src;
 
   // Color? color;
@@ -43,7 +43,8 @@ class FileNode extends CL with FileNodeMappable {
   // BlendMode? colorBlendMode;
 
   FileNode({
-    required this.name,
+    super.name,
+    required this.fileName,
     required this.src,
   });
 
@@ -51,10 +52,10 @@ class FileNode extends CL with FileNodeMappable {
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
         StringPNode(
           snode: this,
-          name: 'name',
-          stringValue: name,
+          name: 'fileName',
+          stringValue: fileName,
           onStringChange: (newValue) =>
-              refreshWithUpdate(context,() => name = newValue??''),
+              refreshWithUpdate(context,() => fileName = newValue??''),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
         ),
@@ -104,7 +105,7 @@ class FileNode extends CL with FileNodeMappable {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const Gap(10),
-                fco.coloredText(name.isEmpty ? 'filename?' : name,
+                fsdui.coloredText(fileName.isEmpty ? 'filename?' : fileName,
                     color: Colors.blue),
                 const Gap(10),
                 driveFileIcon(src),
@@ -139,7 +140,7 @@ class FileNode extends CL with FileNodeMappable {
 
   @override
   Widget? widgetLogo() => Image.asset(
-    fco.asset('lib/assets/images/pub.dev.png'),
+    fsdui.asset('lib/assets/images/pub.dev.png'),
     width: 16,
   );
 

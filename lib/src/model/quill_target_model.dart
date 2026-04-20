@@ -2,9 +2,9 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/model/size_model.dart';
-import 'package:flutter_content/src/snippet/snodes/quill/widgets/quill_target_config_toolbar/quill_target_config_toolbar.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/model/size_model.dart';
+import 'package:fsdui/src/snippet/snodes/quill/widgets/quill_target_config_toolbar/quill_target_config_toolbar.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../snippet/pnodes/enums/enum_target_pointer_type.dart';
@@ -63,19 +63,19 @@ class QuillTargetModel extends TargetConfigModel with QuillTargetModelMappable {
       targetPointerType: TargetPointerType.none(),
       // starts at screen bottom
       initialCalloutPos: OffsetModel.fromOffset(
-        Offset(fco.scrW / 2 - 350, fco.scrH - 90),
+        Offset(fsdui.scrW / 2 - 350, fsdui.scrH - 90),
       ),
       onDragEndedF: (newPos) {
-        fco.setCalloutConfigToolbarPos(newPos);
+        fsdui.setCalloutConfigToolbarPos(newPos);
       },
       dragHandleHeight: 30,
       followScroll: false,
       onDismissedF: () {
-        fco.unhide(parentNode.quillTextToolbarCID);
+        fsdui.unhide(parentNode.quillTextToolbarCID);
       },
     );
 
-    fco.showOverlay(
+    fsdui.showOverlay(
       onReadyF: () {},
       calloutConfig: toolbarCC,
       calloutContent: QuillTargetConfigToolbar(
@@ -92,14 +92,12 @@ class QuillTargetModel extends TargetConfigModel with QuillTargetModelMappable {
     );
   }
 
-  CalloutConfig createCalloutConfig(
-    {
+  CalloutConfig createCalloutConfig({
     // required QuillTextNode parentQuillTextNode,
     // ScrollConfig? scrollConfig,
     required bool justPlaying,
     void Function(QuillTargetModel)? onTargetConfigChange,
-    }
-  ) {
+  }) {
     double minHeight = 0;
 
     // final snippetBeingEdited = fco.snippetBeingEdited != null;
@@ -172,22 +170,20 @@ class QuillTargetModel extends TargetConfigModel with QuillTargetModelMappable {
       //   );
       // },
       frameTarget: false,
-      barrier: justPlaying ? CalloutBarrierConfig(
-        color: Colors.black,
-        opacity: .8,
-        excludeTargetFromBarrier: true,
-        roundExclusion: true,
-        dismissible: true,
-      ) : null,
+      barrier: justPlaying
+          ? CalloutBarrierConfig(
+              color: Colors.black,
+              opacity: .8,
+              excludeTargetFromBarrier: true,
+              roundExclusion: true,
+              dismissible: true,
+            )
+          : null,
     );
   }
 
   Widget content({required bool justPlaying}) => SnippetBuilder(
-    snippetName: contentCId,
-    templateSnippet: SnippetRootNode(
-      name: contentCId,
-      child: PlaceholderNode(),
-    ),
+    initialValue: PlaceholderNode(name: contentCId),
     justPlaying: justPlaying,
   );
 
@@ -203,7 +199,7 @@ class QuillTargetModel extends TargetConfigModel with QuillTargetModelMappable {
   // );
 
   Widget possiblyEditableContent({required bool justPlaying}) =>
-      fco.canEditAnyContent() && !justPlaying
+      fsdui.canEditAnyContent() && !justPlaying
       ? content(justPlaying: justPlaying)
       : content(justPlaying: justPlaying);
 
@@ -339,7 +335,7 @@ class QuillTargetModel extends TargetConfigModel with QuillTargetModelMappable {
     ScrollConfig? sc,
     void Function(QuillTargetModel)? onTargetConfigChange,
   }) async {
-    fco.dismiss(QuillTargetConfigToolbar.CID, skipOnDismiss: true);
+    fsdui.dismiss(QuillTargetConfigToolbar.CID, skipOnDismiss: true);
     showConfigToolbar(
       parentNode: parentNode,
       scrollConfig: sc,

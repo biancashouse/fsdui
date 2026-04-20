@@ -29,6 +29,12 @@ class AppBarNodeMapper extends SubClassMapperBase<AppBarNode> {
   @override
   final String id = 'AppBarNode';
 
+  static String? _$name(AppBarNode v) => v.name;
+  static const Field<AppBarNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static ColorModel? _$bgColor(AppBarNode v) => v.bgColor;
   static const Field<AppBarNode, ColorModel> _f$bgColor = Field(
     'bgColor',
@@ -92,6 +98,12 @@ class AppBarNodeMapper extends SubClassMapperBase<AppBarNode> {
     _$uid,
     mode: FieldMode.member,
   );
+  static List<String>? _$tags(AppBarNode v) => v.tags;
+  static const Field<AppBarNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(AppBarNode v) =>
       v.treeNodeGK;
   static const Field<AppBarNode, GlobalKey<State<StatefulWidget>>>
@@ -115,6 +127,7 @@ class AppBarNodeMapper extends SubClassMapperBase<AppBarNode> {
 
   @override
   final MappableFields<AppBarNode> fields = const {
+    #name: _f$name,
     #bgColor: _f$bgColor,
     #fgColor: _f$fgColor,
     #toolbarHeight: _f$toolbarHeight,
@@ -127,6 +140,7 @@ class AppBarNodeMapper extends SubClassMapperBase<AppBarNode> {
     #shadowColor: _f$shadowColor,
     #scrolledUnderElevation: _f$scrolledUnderElevation,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -150,6 +164,7 @@ class AppBarNodeMapper extends SubClassMapperBase<AppBarNode> {
 
   static AppBarNode _instantiate(DecodingData data) {
     return AppBarNode(
+      name: data.dec(_f$name),
       bgColor: data.dec(_f$bgColor),
       fgColor: data.dec(_f$fgColor),
       toolbarHeight: data.dec(_f$toolbarHeight),
@@ -234,6 +249,7 @@ abstract class AppBarNodeCopyWith<$R, $In extends AppBarNode, $Out>
   NamedMCCopyWith<$R, NamedMC, NamedMC> get actions;
   @override
   $R call({
+    String? name,
     ColorModel? bgColor,
     ColorModel? fgColor,
     double? toolbarHeight,
@@ -278,6 +294,7 @@ class _AppBarNodeCopyWithImpl<$R, $Out>
       $value.actions.copyWith.$chain((v) => call(actions: v));
   @override
   $R call({
+    Object? name = $none,
     Object? bgColor = $none,
     Object? fgColor = $none,
     Object? toolbarHeight = $none,
@@ -288,6 +305,7 @@ class _AppBarNodeCopyWithImpl<$R, $Out>
     NamedMC? actions,
   }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (bgColor != $none) #bgColor: bgColor,
       if (fgColor != $none) #fgColor: fgColor,
       if (toolbarHeight != $none) #toolbarHeight: toolbarHeight,
@@ -300,6 +318,7 @@ class _AppBarNodeCopyWithImpl<$R, $Out>
   );
   @override
   AppBarNode $make(CopyWithData data) => AppBarNode(
+    name: data.get(#name, or: $value.name),
     bgColor: data.get(#bgColor, or: $value.bgColor),
     fgColor: data.get(#fgColor, or: $value.fgColor),
     toolbarHeight: data.get(#toolbarHeight, or: $value.toolbarHeight),

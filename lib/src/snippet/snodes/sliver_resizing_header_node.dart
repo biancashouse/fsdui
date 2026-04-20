@@ -2,14 +2,15 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'sliver_resizing_header_node.mapper.dart';
 
 @MappableClass()
 class SliverResizingHeaderNode extends SC with SliverResizingHeaderNodeMappable {
   SliverResizingHeaderNode({
+    super.name,
     super.child,
   });
 
@@ -32,7 +33,7 @@ class SliverResizingHeaderNode extends SC with SliverResizingHeaderNodeMappable 
       setParent(parentNode);
       return SliverResizingHeader(
             key: createNodeWidgetGK(),
-            child: child?.buildFlutterWidget(context, this),
+            child: child?.build(context, this),
           );
   }
 }

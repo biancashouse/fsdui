@@ -5,7 +5,7 @@ import 'dart:math';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 import 'package:intl/intl.dart';
 
 class DateRange {
@@ -58,7 +58,7 @@ class _DateRangeButtonState extends State<DateRangeButton> {
   @override
   void dispose() {
     if (!mounted) return;
-    fco.logger.i('*** disposing DateRangeButton');
+    fsdui.logger.i('*** disposing DateRangeButton');
     super.dispose();
   }
 
@@ -88,7 +88,7 @@ class _DateRangeButtonState extends State<DateRangeButton> {
         padding: const EdgeInsets.all(15),
         child: ElevatedButton(
           onPressed: () {
-            fco.unhideParentCallout(ctx, animateSeparation: true);
+            fsdui.unhideParentCallout(ctx, animateSeparation: true);
           },
           child: widget.from != widget.until
               // ? Text('From ${timeago.format(dialogCalendarPickerValue.value[0]!)} ${dialogCalendarPickerValue.value[0]!} \nUntil ${timeago.format(dialogCalendarPickerValue.value[1]!)} ${dialogCalendarPickerValue.value[1]!}')
@@ -251,14 +251,14 @@ class _DateRangeButtonState extends State<DateRangeButton> {
               value: value,
               config: config.copyWith(openedFromDialog: false),
               onCancelTapped: () {
-                fco.hideParentCallout(context);
+                fsdui.hideParentCallout(context);
               },
               onOkTapped: () {
-                fco.hideParentCallout(context);
+                fsdui.hideParentCallout(context);
               },
               onValueChanged: (List<DateTime?> newDTs) {
                 // ignore: avoid_print
-                fco.logger.i(_getValueText(
+                fsdui.logger.i(_getValueText(
                   config.calendarType,
                   newDTs,
                 ));

@@ -31,6 +31,12 @@ class ButtonNodeMapper extends SubClassMapperBase<ButtonNode> {
   @override
   final String id = 'ButtonNode';
 
+  static String? _$name(ButtonNode v) => v.name;
+  static const Field<ButtonNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static String? _$destinationRoutePathSnippetName(ButtonNode v) =>
       v.destinationRoutePathSnippetName;
   static const Field<ButtonNode, String> _f$destinationRoutePathSnippetName =
@@ -63,6 +69,12 @@ class ButtonNodeMapper extends SubClassMapperBase<ButtonNode> {
     _$uid,
     mode: FieldMode.member,
   );
+  static List<String>? _$tags(ButtonNode v) => v.tags;
+  static const Field<ButtonNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(ButtonNode v) =>
       v.treeNodeGK;
   static const Field<ButtonNode, GlobalKey<State<StatefulWidget>>>
@@ -86,11 +98,13 @@ class ButtonNodeMapper extends SubClassMapperBase<ButtonNode> {
 
   @override
   final MappableFields<ButtonNode> fields = const {
+    #name: _f$name,
     #destinationRoutePathSnippetName: _f$destinationRoutePathSnippetName,
     #bsPropGroup: _f$bsPropGroup,
     #onTapHandlerName: _f$onTapHandlerName,
     #child: _f$child,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -150,6 +164,7 @@ abstract class ButtonNodeCopyWith<$R, $In extends ButtonNode, $Out>
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
   $R call({
+    String? name,
     String? destinationRoutePathSnippetName,
     ButtonStyleProperties? bsPropGroup,
     String? onTapHandlerName,

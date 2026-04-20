@@ -2,11 +2,11 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_text_align.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/text_style_pnodes.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/enum_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_text_align.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/src/snippet/pnodes/text_style_pnodes.dart';
 
 
 part 'default_text_style_node.mapper.dart';
@@ -19,6 +19,7 @@ class DefaultTextStyleNode extends SC with DefaultTextStyleNodeMappable {
   // bool softWrap;
 
   DefaultTextStyleNode({
+    super.name,
     required this.tsPropGroup,
     this.textAlign,
     // this.softWrap = true,
@@ -34,7 +35,7 @@ class DefaultTextStyleNode extends SC with DefaultTextStyleNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) {
-    var textStyleName = fco.findTextStyleName(fco.appInfo, tsPropGroup);
+    var textStyleName = fsdui.findTextStyleName(fsdui.appInfo, tsPropGroup);
     textStyleName = textStyleName != null ? ': $textStyleName' : '';
     return [
       FlutterDocPNode(
@@ -77,7 +78,7 @@ class DefaultTextStyleNode extends SC with DefaultTextStyleNodeMappable {
   // }
 
   @override
-  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
+  Widget build(BuildContext context, SNode? parentNode,
       ) {
     try {
       setParent(parentNode);
@@ -88,7 +89,7 @@ class DefaultTextStyleNode extends SC with DefaultTextStyleNodeMappable {
               key: createNodeWidgetGK(),
               style: tsPropGroup.toTextStyle(context),
               textAlign: textAlign?.flutterValue,
-              child: child!.buildFlutterWidget(context, this),
+              child: child!.build(context, this),
             )
           : const Offstage();
     } catch (e) {

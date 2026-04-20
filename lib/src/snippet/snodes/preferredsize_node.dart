@@ -1,8 +1,8 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'preferredsize_node.mapper.dart';
 
@@ -12,6 +12,7 @@ class PreferredSizeNode extends SC with PreferredSizeNodeMappable {
   double height;
 
   PreferredSizeNode({
+    super.name,
     required this.width,
     required this.height,
     super.child,
@@ -52,7 +53,7 @@ class PreferredSizeNode extends SC with PreferredSizeNodeMappable {
       // key: targetGK,
       key: createNodeWidgetGK(),
       preferredSize: Size(width, height),
-      child: child?.buildFlutterWidget(context, this) ??
+      child: child?.build(context, this) ??
           Error(
               key: createNodeWidgetGK(),
               FLUTTER_TYPE,

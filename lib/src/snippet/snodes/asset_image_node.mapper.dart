@@ -25,6 +25,12 @@ class AssetImageNodeMapper extends SubClassMapperBase<AssetImageNode> {
   @override
   final String id = 'AssetImageNode';
 
+  static String? _$name(AssetImageNode v) => v.name;
+  static const Field<AssetImageNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static String? _$assetPath(AssetImageNode v) => v.assetPath;
   static const Field<AssetImageNode, String> _f$assetPath = Field(
     'assetPath',
@@ -56,6 +62,12 @@ class AssetImageNodeMapper extends SubClassMapperBase<AssetImageNode> {
     _$uid,
     mode: FieldMode.member,
   );
+  static List<String>? _$tags(AssetImageNode v) => v.tags;
+  static const Field<AssetImageNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(AssetImageNode v) =>
       v.treeNodeGK;
   static const Field<AssetImageNode, GlobalKey<State<StatefulWidget>>>
@@ -81,11 +93,13 @@ class AssetImageNodeMapper extends SubClassMapperBase<AssetImageNode> {
 
   @override
   final MappableFields<AssetImageNode> fields = const {
+    #name: _f$name,
     #assetPath: _f$assetPath,
     #fit: _f$fit,
     #alignment: _f$alignment,
     #scale: _f$scale,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -109,6 +123,7 @@ class AssetImageNodeMapper extends SubClassMapperBase<AssetImageNode> {
 
   static AssetImageNode _instantiate(DecodingData data) {
     return AssetImageNode(
+      name: data.dec(_f$name),
       assetPath: data.dec(_f$assetPath),
       fit: data.dec(_f$fit),
       alignment: data.dec(_f$alignment),
@@ -180,6 +195,7 @@ abstract class AssetImageNodeCopyWith<$R, $In extends AssetImageNode, $Out>
     implements CLCopyWith<$R, $In, $Out> {
   @override
   $R call({
+    String? name,
     String? assetPath,
     BoxFitEnum? fit,
     AlignmentEnum? alignment,
@@ -200,12 +216,14 @@ class _AssetImageNodeCopyWithImpl<$R, $Out>
       AssetImageNodeMapper.ensureInitialized();
   @override
   $R call({
+    Object? name = $none,
     Object? assetPath = $none,
     Object? fit = $none,
     Object? alignment = $none,
     double? scale,
   }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (assetPath != $none) #assetPath: assetPath,
       if (fit != $none) #fit: fit,
       if (alignment != $none) #alignment: alignment,
@@ -214,6 +232,7 @@ class _AssetImageNodeCopyWithImpl<$R, $Out>
   );
   @override
   AssetImageNode $make(CopyWithData data) => AssetImageNode(
+    name: data.get(#name, or: $value.name),
     assetPath: data.get(#assetPath, or: $value.assetPath),
     fit: data.get(#fit, or: $value.fit),
     alignment: data.get(#alignment, or: $value.alignment),

@@ -2,13 +2,13 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_text_align.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/text_style_pnodes.dart';
-import 'package:flutter_content/src/snippet/snodes/text_style_hook.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/enum_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_text_align.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/text_style_pnodes.dart';
+import 'package:fsdui/src/snippet/snodes/text_style_hook.dart';
 
 
 part 'text_node.mapper.dart';
@@ -33,6 +33,7 @@ class TextNode extends CL with TextNodeMappable {
   TextAlignEnum? textAlign;
 
   TextNode({
+    super.name,
     this.text = '',
     this.webLink,
     required this.tsPropGroup,
@@ -323,7 +324,7 @@ class TextNode extends CL with TextNodeMappable {
   //     ];
 
   @override
-  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
+  Widget build(BuildContext context, SNode? parentNode,
       ) {
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
@@ -349,7 +350,7 @@ class TextNode extends CL with TextNodeMappable {
             )
           : t;
     } catch (e) {
-      fco.logger.i('cannot render $FLUTTER_TYPE!');
+      fsdui.logger.i('cannot render $FLUTTER_TYPE!');
       return Error(
           key: createNodeWidgetGK(), FLUTTER_TYPE, errorMsg: e.toString());
     }

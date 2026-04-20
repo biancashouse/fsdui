@@ -23,12 +23,24 @@ class GapNodeMapper extends SubClassMapperBase<GapNode> {
   @override
   final String id = 'GapNode';
 
+  static String? _$name(GapNode v) => v.name;
+  static const Field<GapNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static double _$gap(GapNode v) => v.gap;
   static const Field<GapNode, double> _f$gap = Field('gap', _$gap);
   static String _$uid(GapNode v) => v.uid;
   static const Field<GapNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(GapNode v) => v.tags;
+  static const Field<GapNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(GapNode v) =>
@@ -54,8 +66,10 @@ class GapNodeMapper extends SubClassMapperBase<GapNode> {
 
   @override
   final MappableFields<GapNode> fields = const {
+    #name: _f$name,
     #gap: _f$gap,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -76,7 +90,7 @@ class GapNodeMapper extends SubClassMapperBase<GapNode> {
   ]);
 
   static GapNode _instantiate(DecodingData data) {
-    return GapNode(gap: data.dec(_f$gap));
+    return GapNode(name: data.dec(_f$name), gap: data.dec(_f$gap));
   }
 
   @override
@@ -137,7 +151,7 @@ extension GapNodeValueCopy<$R, $Out> on ObjectCopyWith<$R, GapNode, $Out> {
 abstract class GapNodeCopyWith<$R, $In extends GapNode, $Out>
     implements CLCopyWith<$R, $In, $Out> {
   @override
-  $R call({double? gap});
+  $R call({String? name, double? gap});
   GapNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -150,11 +164,17 @@ class _GapNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<GapNode> $mapper =
       GapNodeMapper.ensureInitialized();
   @override
-  $R call({double? gap}) =>
-      $apply(FieldCopyWithData({if (gap != null) #gap: gap}));
+  $R call({Object? name = $none, double? gap}) => $apply(
+    FieldCopyWithData({
+      if (name != $none) #name: name,
+      if (gap != null) #gap: gap,
+    }),
+  );
   @override
-  GapNode $make(CopyWithData data) =>
-      GapNode(gap: data.get(#gap, or: $value.gap));
+  GapNode $make(CopyWithData data) => GapNode(
+    name: data.get(#name, or: $value.name),
+    gap: data.get(#gap, or: $value.gap),
+  );
 
   @override
   GapNodeCopyWith<$R2, GapNode, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>

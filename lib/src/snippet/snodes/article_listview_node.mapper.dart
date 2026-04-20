@@ -26,6 +26,12 @@ class ArticleListViewNodeMapper
   @override
   final String id = 'ArticleListViewNode';
 
+  static String? _$name(ArticleListViewNode v) => v.name;
+  static const Field<ArticleListViewNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static EdgeInsetsValue? _$padding(ArticleListViewNode v) => v.padding;
   static const Field<ArticleListViewNode, EdgeInsetsValue> _f$padding = Field(
     'padding',
@@ -47,6 +53,12 @@ class ArticleListViewNodeMapper
   static const Field<ArticleListViewNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(ArticleListViewNode v) => v.tags;
+  static const Field<ArticleListViewNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(
@@ -87,10 +99,12 @@ class ArticleListViewNodeMapper
 
   @override
   final MappableFields<ArticleListViewNode> fields = const {
+    #name: _f$name,
     #padding: _f$padding,
     #shrinkWrap: _f$shrinkWrap,
     #children: _f$children,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -115,6 +129,7 @@ class ArticleListViewNodeMapper
 
   static ArticleListViewNode _instantiate(DecodingData data) {
     return ArticleListViewNode(
+      name: data.dec(_f$name),
       padding: data.dec(_f$padding),
       shrinkWrap: data.dec(_f$shrinkWrap),
       children: data.dec(_f$children),
@@ -196,7 +211,12 @@ abstract class ArticleListViewNodeCopyWith<
   @override
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
-  $R call({EdgeInsetsValue? padding, bool? shrinkWrap, List<SNode>? children});
+  $R call({
+    String? name,
+    EdgeInsetsValue? padding,
+    bool? shrinkWrap,
+    List<SNode>? children,
+  });
   ArticleListViewNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -222,11 +242,13 @@ class _ArticleListViewNodeCopyWithImpl<$R, $Out>
       );
   @override
   $R call({
+    Object? name = $none,
     Object? padding = $none,
     Object? shrinkWrap = $none,
     List<SNode>? children,
   }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (padding != $none) #padding: padding,
       if (shrinkWrap != $none) #shrinkWrap: shrinkWrap,
       if (children != null) #children: children,
@@ -234,6 +256,7 @@ class _ArticleListViewNodeCopyWithImpl<$R, $Out>
   );
   @override
   ArticleListViewNode $make(CopyWithData data) => ArticleListViewNode(
+    name: data.get(#name, or: $value.name),
     padding: data.get(#padding, or: $value.padding),
     shrinkWrap: data.get(#shrinkWrap, or: $value.shrinkWrap),
     children: data.get(#children, or: $value.children),

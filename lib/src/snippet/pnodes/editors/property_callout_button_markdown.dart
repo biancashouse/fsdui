@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 import 'markdown_msv.dart';
 
@@ -24,7 +24,7 @@ class PropertyButtonMarkdown extends StatelessWidget {
             onTap: () {
               showMarkdownEditor(originalMarkdown, onChangeF);
             },
-            child: fco.coloredText('tap here to edit the markdown', color: Colors.white),
+            child: fsdui.coloredText('tap here to edit the markdown', color: Colors.white),
             // child: Container(
             //   alignment: Alignment.topLeft,
             //   key: widget.propertyBtnGK,
@@ -43,11 +43,11 @@ class PropertyButtonMarkdown extends StatelessWidget {
     barrier: CalloutBarrierConfig(
         opacity: .25,
         onTappedF: () {
-          fco.dismiss('markdown-te');
+          fsdui.dismiss('markdown-te');
         }),
     decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
-    initialCalloutW: fco.scrW * .8,
-    initialCalloutH: fco.scrH * .8,
+    initialCalloutW: fsdui.scrW * .8,
+    initialCalloutH: fsdui.scrH * .8,
     onDismissedF: () {},
     onAcceptedF: () {},
     resizeableH: true,
@@ -62,7 +62,7 @@ class PropertyButtonMarkdown extends StatelessWidget {
     onChangeF: onChangeF,
   );
 
-  fco.showOverlay(
+  fsdui.showOverlay(
   calloutConfig: teCC,
   calloutContent: calloutContent,
   );

@@ -26,6 +26,12 @@ class ListViewNodeMapper extends SubClassMapperBase<ListViewNode> {
   @override
   final String id = 'ListViewNode';
 
+  static String? _$name(ListViewNode v) => v.name;
+  static const Field<ListViewNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static EdgeInsetsValue? _$padding(ListViewNode v) => v.padding;
   static const Field<ListViewNode, EdgeInsetsValue> _f$padding = Field(
     'padding',
@@ -47,6 +53,12 @@ class ListViewNodeMapper extends SubClassMapperBase<ListViewNode> {
   static const Field<ListViewNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(ListViewNode v) => v.tags;
+  static const Field<ListViewNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(ListViewNode v) =>
@@ -84,10 +96,12 @@ class ListViewNodeMapper extends SubClassMapperBase<ListViewNode> {
 
   @override
   final MappableFields<ListViewNode> fields = const {
+    #name: _f$name,
     #padding: _f$padding,
     #shrinkWrap: _f$shrinkWrap,
     #children: _f$children,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -112,6 +126,7 @@ class ListViewNodeMapper extends SubClassMapperBase<ListViewNode> {
 
   static ListViewNode _instantiate(DecodingData data) {
     return ListViewNode(
+      name: data.dec(_f$name),
       padding: data.dec(_f$padding),
       shrinkWrap: data.dec(_f$shrinkWrap),
       children: data.dec(_f$children),
@@ -184,7 +199,12 @@ abstract class ListViewNodeCopyWith<$R, $In extends ListViewNode, $Out>
   EdgeInsetsValueCopyWith<$R, EdgeInsetsValue, EdgeInsetsValue>? get padding;
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
-  $R call({EdgeInsetsValue? padding, bool? shrinkWrap, List<SNode>? children});
+  $R call({
+    String? name,
+    EdgeInsetsValue? padding,
+    bool? shrinkWrap,
+    List<SNode>? children,
+  });
   ListViewNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -208,11 +228,13 @@ class _ListViewNodeCopyWithImpl<$R, $Out>
       );
   @override
   $R call({
+    Object? name = $none,
     Object? padding = $none,
     Object? shrinkWrap = $none,
     List<SNode>? children,
   }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (padding != $none) #padding: padding,
       if (shrinkWrap != $none) #shrinkWrap: shrinkWrap,
       if (children != null) #children: children,
@@ -220,6 +242,7 @@ class _ListViewNodeCopyWithImpl<$R, $Out>
   );
   @override
   ListViewNode $make(CopyWithData data) => ListViewNode(
+    name: data.get(#name, or: $value.name),
     padding: data.get(#padding, or: $value.padding),
     shrinkWrap: data.get(#shrinkWrap, or: $value.shrinkWrap),
     children: data.get(#children, or: $value.children),

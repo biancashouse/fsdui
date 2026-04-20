@@ -24,6 +24,12 @@ class MenuBarNodeMapper extends SubClassMapperBase<MenuBarNode> {
   @override
   final String id = 'MenuBarNode';
 
+  static String? _$name(MenuBarNode v) => v.name;
+  static const Field<MenuBarNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static double? _$width(MenuBarNode v) => v.width;
   static const Field<MenuBarNode, double> _f$width = Field(
     'width',
@@ -45,6 +51,12 @@ class MenuBarNodeMapper extends SubClassMapperBase<MenuBarNode> {
   static const Field<MenuBarNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(MenuBarNode v) => v.tags;
+  static const Field<MenuBarNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(MenuBarNode v) =>
@@ -70,10 +82,12 @@ class MenuBarNodeMapper extends SubClassMapperBase<MenuBarNode> {
 
   @override
   final MappableFields<MenuBarNode> fields = const {
+    #name: _f$name,
     #width: _f$width,
     #height: _f$height,
     #children: _f$children,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -95,6 +109,7 @@ class MenuBarNodeMapper extends SubClassMapperBase<MenuBarNode> {
 
   static MenuBarNode _instantiate(DecodingData data) {
     return MenuBarNode(
+      name: data.dec(_f$name),
       width: data.dec(_f$width),
       height: data.dec(_f$height),
       children: data.dec(_f$children),
@@ -164,7 +179,7 @@ abstract class MenuBarNodeCopyWith<$R, $In extends MenuBarNode, $Out>
   @override
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
-  $R call({double? width, double? height, List<SNode>? children});
+  $R call({String? name, double? width, double? height, List<SNode>? children});
   MenuBarNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -185,11 +200,13 @@ class _MenuBarNodeCopyWithImpl<$R, $Out>
       );
   @override
   $R call({
+    Object? name = $none,
     Object? width = $none,
     Object? height = $none,
     List<SNode>? children,
   }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (width != $none) #width: width,
       if (height != $none) #height: height,
       if (children != null) #children: children,
@@ -197,6 +214,7 @@ class _MenuBarNodeCopyWithImpl<$R, $Out>
   );
   @override
   MenuBarNode $make(CopyWithData data) => MenuBarNode(
+    name: data.get(#name, or: $value.name),
     width: data.get(#width, or: $value.width),
     height: data.get(#height, or: $value.height),
     children: data.get(#children, or: $value.children),

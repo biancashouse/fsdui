@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/api/editable_page/snippet_editor_side_panel.dart';
-import 'package:flutter_content/src/api/editable_page/tappable_node_borders.dart';
-import 'package:flutter_content/src/snippet/snode_widget.dart';
-import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/api/editable_page/snippet_editor_side_panel.dart';
+import 'package:fsdui/src/api/editable_page/tappable_node_borders.dart';
+import 'package:fsdui/src/snippet/snode_widget.dart';
+import 'package:fsdui/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
 
 class EditablePage extends StatefulWidget {
   final RoutePath routePath;
@@ -43,7 +43,7 @@ class EditablePageState extends State<EditablePage> {
   @override
   void initState() {
     super.initState();
-    fco.currentEditablePagePath = widget.routePath;
+    fsdui.currentEditablePagePath = widget.routePath;
   }
 
   @override
@@ -54,17 +54,17 @@ class EditablePageState extends State<EditablePage> {
 
   // also allow for a selected node
   void _populateNodeBorderRects() {
-    if (fco.capiBloc.state.activeSnippetName == null &&
-        fco.capiBloc.aSnippetIsNotBeingEdited()) {
+    if (fsdui.capiBloc.state.activeSnippetName == null &&
+        fsdui.capiBloc.aSnippetIsNotBeingEdited()) {
       return;
     }
     List<SNode> nodes = [];
-    SnippetRootNode? rootNode;
+    SNode? rootNode;
     // not yet editing, show all widget borderRects
-    SnippetInfoModel? snippetInfo = fco.appInfo.cachedSnippetInfo(
-      fco.capiBloc.state.activeSnippetName != null
-          ? fco.capiBloc.state.activeSnippetName!
-          : fco.capiBloc.state.snippetBeingEdited?.getRootNode().name ?? '???',
+    SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(
+      fsdui.capiBloc.state.activeSnippetName != null
+          ? fsdui.capiBloc.state.activeSnippetName!
+          : fsdui.capiBloc.state.snippetBeingEdited?.getRootNode().name ?? '???',
     );
     rootNode = snippetInfo?.currentVersionInCache();
     // traverse node
@@ -93,18 +93,20 @@ class EditablePageState extends State<EditablePage> {
     return BlocConsumer<CAPIBloC, CAPIState>(
       listenWhen: (prev, curr) =>
           prev.activeSnippetName != curr.activeSnippetName ||
-          (prev.snippetBeingEdited == null) != (curr.snippetBeingEdited == null) ||
+          (prev.snippetBeingEdited == null) !=
+              (curr.snippetBeingEdited == null) ||
           prev.snippetBeingEdited?.selectedNode !=
               curr.snippetBeingEdited?.selectedNode,
       listener: (lcontext, state) {
-        if (state.activeSnippetName != null && state.snippetBeingEdited == null) {
+        if (state.activeSnippetName != null &&
+            state.snippetBeingEdited == null) {
           // entered node selection mode
           _needsToPopulateRects = true;
         } else if (state.snippetBeingEdited != null &&
             state.activeSnippetName == null) {
           // entered editing mode — show panel overlay and populate rects
           SnippetEditorSidePanel.showSidePanelOverlay(context);
-          fco.afterNextBuildDo(() {
+          fsdui.afterNextBuildDo(() {
             _needsToPopulateRects = true;
           });
         } else if (state.snippetBeingEdited == null &&
@@ -113,23 +115,28 @@ class EditablePageState extends State<EditablePage> {
           SnippetEditorSidePanel.hideSidePanelOverlay();
         } else if (state.snippetBeingEdited?.selectedNode != null) {
           // node selected within editing — refresh border rects
-          if (fco.anyPresent(['quill-te', 'uml-te', 'markdown-te'])) return;
-          fco.dismissAll();
-          fco.afterNextBuildDo(() {
+          if (fsdui.anyPresent(['quill-te', 'uml-te', 'markdown-te'])) return;
+          fsdui.dismissAll();
+          fsdui.afterNextBuildDo(() {
             _needsToPopulateRects = true;
           });
         }
       },
       buildWhen: (previous, current) {
         if (_needsToPopulateRects) return true;
-        if (previous.activeSnippetName != current.activeSnippetName) return true;
+        if (previous.activeSnippetName != current.activeSnippetName)
+          return true;
         if ((previous.snippetBeingEdited == null) !=
-            (current.snippetBeingEdited == null)) return true;
+            (current.snippetBeingEdited == null))
+          return true;
         // update border rects on selection change
         if (previous.snippetBeingEdited?.selectedNode !=
-            current.snippetBeingEdited?.selectedNode) return true;
-        if ((previous.isSignedInAsSuperEditor != current.isSignedInAsSuperEditor) &&
-            !fco.canEditAnyContent()) return true;
+            current.snippetBeingEdited?.selectedNode)
+          return true;
+        if ((previous.isSignedInAsSuperEditor !=
+                current.isSignedInAsSuperEditor) &&
+            !fsdui.canEditAnyContent())
+          return true;
         if (current.onlyTargetsWrappers) return false;
         return false;
       },
@@ -143,25 +150,25 @@ class EditablePageState extends State<EditablePage> {
           },
           child: Material(child: _pageStack(bloc)),
         );
-        return fco.isAndroid
-            ? fco.androidAwareBuild(context, builtWidget)
+        return fsdui.isAndroid
+            ? fsdui.androidAwareBuild(context, builtWidget)
             : builtWidget;
       },
     );
   }
 
   void _tappedToEditSnippetAndSelectNode(SNode node) {
-    SnippetRootNode? rootNode = node.rootNodeOfSnippet();
+    SNode? rootNode = node.rootNodeOfSnippet();
     if (rootNode == null) return;
     SnippetName? snippetName = rootNode.name;
     // maybe a page snippet, so check name in appInfo: maybe prefix with /
     // var names = fco.appInfo.snippetNames;
-    if (fco.appInfo.snippetNames.contains('/$snippetName')) {
+    if (fsdui.appInfo.snippetNames.contains('/$snippetName')) {
       snippetName = '/$snippetName';
     }
 
-    if (SnippetRootNode.isHotspotCalloutContent(snippetName)) {
-      final cc = fco.findOE(snippetName)?.calloutConfig;
+    if (SNode.isHotspotCalloutContent(snippetName!)) {
+      final cc = fsdui.findOE(snippetName)?.calloutConfig;
       cc?.rebuild(() {
         cc
           ..barrier = null
@@ -173,13 +180,13 @@ class EditablePageState extends State<EditablePage> {
   }
 
   void pushThenShowNamedSnippetWithNodeSelected(
-    SnippetRootNode rootNode,
+    SNode rootNode,
     SNode selectedNode, {
     HotspotTargetModel? targetBeingConfigured,
   }) {
-    var snippetRootContext = rootNode.child?.nodeWidgetGK?.currentContext;
+    var snippetRootContext = rootNode.nodeWidgetGK?.currentContext;
     if (snippetRootContext == null) {
-      fco.showToast(
+      fsdui.showToast(
         msg: "This node is not visible right now",
         bgColor: Colors.white,
         textColor: Colors.red,
@@ -194,12 +201,12 @@ class EditablePageState extends State<EditablePage> {
         selectedNode: selectedNode,
       ),
     );
-    fco.afterNextBuildDo(() {
-      if (fco.snippetBeingEdited != null) {
-        if (!fco.appInfo.clipboardIsEmpty) {
-          fco.appInfo.showFloatingClipboard();
+    fsdui.afterNextBuildDo(() {
+      if (fsdui.snippetBeingEdited != null) {
+        if (!fsdui.appInfo.clipboardIsEmpty) {
+          fsdui.appInfo.showFloatingClipboard();
         }
-        fco.hide(HotspotTargetConfigToolbar.CID);
+        fsdui.hide(HotspotTargetConfigToolbar.CID);
       }
 
       // point out the selected node widget
@@ -230,7 +237,8 @@ class EditablePageState extends State<EditablePage> {
   Widget _pageStack(CAPIBloC bloc) {
     final showSnippet =
         bloc.showTappableBorderRects() || bloc.aSnippetIsBeingEdited();
-    final snippetName = bloc.state.activeSnippetName ??
+    final snippetName =
+        bloc.state.activeSnippetName ??
         bloc.state.snippetBeingEdited?.getRootNode().name;
 
     return Stack(
@@ -238,11 +246,16 @@ class EditablePageState extends State<EditablePage> {
         if (!showSnippet) Zoomer(key: zoomerGk, child: widget.child),
         if (showSnippet)
           SnippetBuilder(
-            snippetName: snippetName,
+            // the snippet should already exist in the cache at this point
+            initialValue: TextNode(
+              name: snippetName,
+              text: 'Missing Snippet: $snippetName !',
+              tsPropGroup: TextStyleProperties(color: ColorModel.red())
+            ),
             onLayoutDone: () {
               if (_needsToPopulateRects && mounted) {
                 if (bloc.showTappableBorderRects()) {
-                  fco.showToast(
+                  fsdui.showToast(
                     msg: 'tap a node to start editing,\n<Esc> to cancel',
                     removeAfterMs: 5000,
                     bgColor: Colors.purpleAccent.withValues(alpha: .8),
@@ -264,9 +277,9 @@ class EditablePageState extends State<EditablePage> {
             renderData: borderRects,
             onNodeTapped: (node) {
               if (bloc.aSnippetIsBeingEdited()) {
-                fco.dismiss('pink-overlay');
+                fsdui.dismiss('pink-overlay');
                 bloc.add(CAPIEvent.selectNode(node: node));
-                fco.afterNextBuildDo(() => SNodeWidget.pointOutSelectedNode());
+                fsdui.afterNextBuildDo(() => SNodeWidget.pointOutSelectedNode());
               } else {
                 if (node is QuillTextNode || node is MarkdownNode) return;
                 _tappedToEditSnippetAndSelectNode(node);
@@ -280,7 +293,7 @@ class EditablePageState extends State<EditablePage> {
   static final String cid_EditorPassword = "editor-password";
 
   void editorPasswordDialog() {
-    fco.registerKeystrokeHandler(cid_EditorPassword, (KeyEvent event) {
+    fsdui.registerKeystrokeHandler(cid_EditorPassword, (KeyEvent event) {
       // final key = event.logicalKey.keyLabel;
 
       // if (event is KeyDownEvent) {
@@ -292,13 +305,13 @@ class EditablePageState extends State<EditablePage> {
       // }
 
       if (event.logicalKey == LogicalKeyboardKey.escape) {
-        fco.dismiss(cid_EditorPassword);
+        fsdui.dismiss(cid_EditorPassword);
       }
 
       return false;
     });
     // final gk = GlobalKey();
-    fco.showOverlay(
+    fsdui.showOverlay(
       calloutContent: Card(
         color: Colors.white,
         elevation: 4,
@@ -311,7 +324,7 @@ class EditablePageState extends State<EditablePage> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              fco.purpleText(
+              fsdui.purpleText(
                 "Editor Access\n",
                 fontSize: 24,
                 family: 'Merriweather',
@@ -322,27 +335,20 @@ class EditablePageState extends State<EditablePage> {
                 prompt: () => 'password',
                 originalS: '',
                 onTextChangedF: (String s) async {
-                  if (fco.appInfo.superEditorPasswords.contains(s)) {
-                    fco.dismissAll();
-                    fco.capiBloc.add(
-                      CAPIEvent.signedInAsSuperEditor(),
-                    );
-                  }
-                  else if (fco.appInfo.articleEditorPasswords.contains(s)) {
-                    fco.dismissAll();
-                    fco.capiBloc.add(
-                      CAPIEvent.signedInAsArticleEditor(),
-                    );
-                  }
-                  else if (s == 'GUEST') {
-                    fco.dismissAll();
-                    fco.capiBloc.add(
-                      CAPIEvent.signedInAsGuestEditor(),
-                    );
+                  // print(s);
+                  if (fsdui.appInfo.superEditorPasswords.contains(s)) {
+                    fsdui.dismissAll();
+                    fsdui.capiBloc.add(CAPIEvent.signedInAsSuperEditor());
+                  } else if (fsdui.appInfo.articleEditorPasswords.contains(s)) {
+                    fsdui.dismissAll();
+                    fsdui.capiBloc.add(CAPIEvent.signedInAsArticleEditor());
+                  } else if (s == 'GUEST') {
+                    fsdui.dismissAll();
+                    fsdui.capiBloc.add(CAPIEvent.signedInAsGuestEditor());
                   }
                 },
                 onEscapedF: (_) {
-                  fco.dismiss(cid_EditorPassword);
+                  fsdui.dismiss(cid_EditorPassword);
                 },
                 dontAutoFocus: false,
                 isPassword: true,
@@ -370,7 +376,7 @@ class EditablePageState extends State<EditablePage> {
                       style: TextStyle(fontWeight: FontWeight.normal),
                     ),
                     TextSpan(
-                      text: 'flutter_content',
+                      text: 'fsdui',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextSpan(
@@ -395,7 +401,7 @@ class EditablePageState extends State<EditablePage> {
         barrier: CalloutBarrierConfig(
           opacity: .5,
           onTappedF: () async {
-            fco.dismiss(cid_EditorPassword);
+            fsdui.dismiss(cid_EditorPassword);
           },
         ),
         // initialCalloutW: 300,
@@ -404,7 +410,7 @@ class EditablePageState extends State<EditablePage> {
         // // arrowType: ArrowTypeEnumModel.THIN_REVERSED,
         // decorationFillColors: ColorOrGradient.color(Colors.white),
         onDismissedF: () {
-          fco.removeKeystrokeHandler(cid_EditorPassword);
+          fsdui.removeKeystrokeHandler(cid_EditorPassword);
         },
       ),
       // targetGkF: ()=> fco.authIconGK,
@@ -416,20 +422,20 @@ class EditablePageState extends State<EditablePage> {
   static final String cid_editablePageName = "user-editable-page-name";
 
   void showPageNameDialog() {
-    fco.registerKeystrokeHandler(cid_editablePageName, (KeyEvent event) {
+    fsdui.registerKeystrokeHandler(cid_editablePageName, (KeyEvent event) {
       if (event.logicalKey == LogicalKeyboardKey.escape) {
-        fco.dismiss(cid_editablePageName);
+        fsdui.dismiss(cid_editablePageName);
       }
       return false;
     });
-    fco.showOverlay(
+    fsdui.showOverlay(
       calloutContent: Column(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          fco.purpleText(
-            fco.canEditAnyContent()
+          fsdui.purpleText(
+            fsdui.canEditAnyContent()
                 ? 'Create an editable Page'
                 : 'Create your own editable Page',
             fontSize: 24,
@@ -445,32 +451,32 @@ class EditablePageState extends State<EditablePage> {
               originalS: '',
               onTextChangedF: (String s) async {},
               onEscapedF: (_) {
-                fco.dismiss(cid_editablePageName);
+                fsdui.dismiss(cid_editablePageName);
               },
               dontAutoFocus: false,
               onEditingCompleteF: (s) async {
                 String pageName = s.replaceAll(' ', '-').toLowerCase();
                 pageName = pageName.startsWith('/') ? pageName : '/$pageName';
                 // add to appInfo
-                if (!fco.canEditAnyContent() &&
-                    !fco.appInfo.anonymousUserEditablePages.contains(
+                if (!fsdui.canEditAnyContent() &&
+                    !fsdui.appInfo.anonymousUserEditablePages.contains(
                       pageName,
                     )) {
                   // jsArray issue
-                  List<String> newList = fco.appInfo.anonymousUserEditablePages
+                  List<String> newList = fsdui.appInfo.anonymousUserEditablePages
                       .toList();
                   newList.add(pageName);
-                  fco.appInfo.anonymousUserEditablePages = newList;
-                  await fco.modelRepo.saveAppInfo();
-                  fco.afterNextBuildDo(() {
-                    fco.dismiss(cid_editablePageName);
-                    fco.addSubRoute(newPath: pageName);
-                    fco.afterMsDelayDo(1000, () {
-                      fco.router?.go(pageName);
+                  fsdui.appInfo.anonymousUserEditablePages = newList;
+                  await fsdui.modelRepo.saveAppInfo();
+                  fsdui.afterNextBuildDo(() {
+                    fsdui.dismiss(cid_editablePageName);
+                    fsdui.addSubRoute(newPath: pageName);
+                    fsdui.afterMsDelayDo(1000, () {
+                      fsdui.router?.go(pageName);
                     });
                   });
-                } else if (fco.canEditAnyContent() &&
-                    !fco.appInfo.snippetNames.contains(pageName)) {
+                } else if (fsdui.canEditAnyContent() &&
+                    !fsdui.appInfo.snippetNames.contains(pageName)) {
                   // fco.dismiss('exit-editMode');
                   // bool userCanEdit = canEditContent.isTrue;
                   final snippetName = pageName;
@@ -487,10 +493,10 @@ class EditablePageState extends State<EditablePage> {
                   //   );
                   //   fco.router.go(pageName);
                   // });
-                  fco.dismiss(cid_editablePageName);
-                  fco.addSubRoute(newPath: snippetName);
-                  fco.afterMsDelayDo(1000, () {
-                    fco.router?.go(pageName);
+                  fsdui.dismiss(cid_editablePageName);
+                  fsdui.addSubRoute(newPath: snippetName);
+                  fsdui.afterMsDelayDo(1000, () {
+                    fsdui.router?.go(pageName);
                   });
                 } else {
                   if (context.mounted) {
@@ -511,7 +517,7 @@ class EditablePageState extends State<EditablePage> {
         barrier: CalloutBarrierConfig(
           opacity: .5,
           onTappedF: () async {
-            fco.dismiss(cid_editablePageName);
+            fsdui.dismiss(cid_editablePageName);
           },
         ),
         initialCalloutW: 500,
@@ -519,7 +525,7 @@ class EditablePageState extends State<EditablePage> {
         decorationBorderRadius: 12,
         decorationFillColors: ColorOrGradient.color(Colors.white),
         onDismissedF: () {
-          fco.removeKeystrokeHandler(cid_editablePageName);
+          fsdui.removeKeystrokeHandler(cid_editablePageName);
         },
       ),
       // targetGkF: ()=> fco.authIconGK,

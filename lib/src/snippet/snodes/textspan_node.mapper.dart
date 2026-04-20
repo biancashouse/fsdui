@@ -25,6 +25,12 @@ class TextSpanNodeMapper extends SubClassMapperBase<TextSpanNode> {
   @override
   final String id = 'TextSpanNode';
 
+  static String? _$name(TextSpanNode v) => v.name;
+  static const Field<TextSpanNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static String? _$text(TextSpanNode v) => v.text;
   static const Field<TextSpanNode, String> _f$text = Field(
     'text',
@@ -53,6 +59,12 @@ class TextSpanNodeMapper extends SubClassMapperBase<TextSpanNode> {
   static const Field<TextSpanNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(TextSpanNode v) => v.tags;
+  static const Field<TextSpanNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(TextSpanNode v) =>
@@ -86,11 +98,13 @@ class TextSpanNodeMapper extends SubClassMapperBase<TextSpanNode> {
 
   @override
   final MappableFields<TextSpanNode> fields = const {
+    #name: _f$name,
     #text: _f$text,
     #webLink: _f$webLink,
     #tsPropGroup: _f$tsPropGroup,
     #children: _f$children,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -114,6 +128,7 @@ class TextSpanNodeMapper extends SubClassMapperBase<TextSpanNode> {
 
   static TextSpanNode _instantiate(DecodingData data) {
     return TextSpanNode(
+      name: data.dec(_f$name),
       text: data.dec(_f$text),
       webLink: data.dec(_f$webLink),
       tsPropGroup: data.dec(_f$tsPropGroup),
@@ -193,6 +208,7 @@ abstract class TextSpanNodeCopyWith<$R, $In extends TextSpanNode, $Out>
   get children;
   @override
   $R call({
+    String? name,
     String? text,
     String? webLink,
     TextStyleProperties? tsPropGroup,
@@ -228,12 +244,14 @@ class _TextSpanNodeCopyWithImpl<$R, $Out>
       : null;
   @override
   $R call({
+    Object? name = $none,
     Object? text = $none,
     Object? webLink = $none,
     TextStyleProperties? tsPropGroup,
     Object? children = $none,
   }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (text != $none) #text: text,
       if (webLink != $none) #webLink: webLink,
       if (tsPropGroup != null) #tsPropGroup: tsPropGroup,
@@ -242,6 +260,7 @@ class _TextSpanNodeCopyWithImpl<$R, $Out>
   );
   @override
   TextSpanNode $make(CopyWithData data) => TextSpanNode(
+    name: data.get(#name, or: $value.name),
     text: data.get(#text, or: $value.text),
     webLink: data.get(#webLink, or: $value.webLink),
     tsPropGroup: data.get(#tsPropGroup, or: $value.tsPropGroup),

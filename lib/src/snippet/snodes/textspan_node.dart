@@ -3,11 +3,11 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/text_style_pnodes.dart';
-import 'package:flutter_content/src/snippet/snodes/text_style_hook.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/text_style_pnodes.dart';
+import 'package:fsdui/src/snippet/snodes/text_style_hook.dart';
 
 part 'textspan_node.mapper.dart';
 
@@ -23,6 +23,7 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
   List<InlineSpanNode>? children;
 
   TextSpanNode({
+    super.name,
     this.text,
     this.webLink,
     // this.isRootTextSpan = false,
@@ -39,7 +40,7 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) {
-    var textStyleName = fco.findTextStyleName(fco.appInfo, tsPropGroup);
+    var textStyleName = fsdui.findTextStyleName(fsdui.appInfo, tsPropGroup);
     textStyleName = textStyleName != null ? ': $textStyleName' : '';
     return [
       FlutterDocPNode(
@@ -117,7 +118,7 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
       }
       return TextSpan(
         text: text ?? "",
-        recognizer: webLink != null && (fco.snippetBeingEdited == null) ? WebLinkTapGestureRecognizer(webLink!) : null,
+        recognizer: webLink != null && (fsdui.snippetBeingEdited == null) ? WebLinkTapGestureRecognizer(webLink!) : null,
         style: ts,
         children: children
             ?.map<InlineSpan>(
@@ -125,7 +126,7 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
             .toList(),
       );
     } catch (e) {
-      fco.logger.i('cannot render $FLUTTER_TYPE!');
+      fsdui.logger.i('cannot render $FLUTTER_TYPE!');
       return WidgetSpan(
           child: Error(
               key: createNodeWidgetGK(), FLUTTER_TYPE, errorMsg: e.toString()));

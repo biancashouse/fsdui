@@ -25,6 +25,12 @@ class TabNodeMapper extends SubClassMapperBase<TabNode> {
   @override
   final String id = 'TabNode';
 
+  static String? _$name(TabNode v) => v.name;
+  static const Field<TabNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static String _$text(TabNode v) => v.text;
   static const Field<TabNode, String> _f$text = Field(
     'text',
@@ -62,6 +68,12 @@ class TabNodeMapper extends SubClassMapperBase<TabNode> {
     _$uid,
     mode: FieldMode.member,
   );
+  static List<String>? _$tags(TabNode v) => v.tags;
+  static const Field<TabNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(TabNode v) =>
       v.treeNodeGK;
   static const Field<TabNode, GlobalKey<State<StatefulWidget>>> _f$treeNodeGK =
@@ -85,12 +97,14 @@ class TabNodeMapper extends SubClassMapperBase<TabNode> {
 
   @override
   final MappableFields<TabNode> fields = const {
+    #name: _f$name,
     #text: _f$text,
     #icon: _f$icon,
     #iconMargin: _f$iconMargin,
     #height: _f$height,
     #child: _f$child,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -112,6 +126,7 @@ class TabNodeMapper extends SubClassMapperBase<TabNode> {
 
   static TabNode _instantiate(DecodingData data) {
     return TabNode(
+      name: data.dec(_f$name),
       text: data.dec(_f$text),
       icon: data.dec(_f$icon),
       iconMargin: data.dec(_f$iconMargin),
@@ -182,6 +197,7 @@ abstract class TabNodeCopyWith<$R, $In extends TabNode, $Out>
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
   $R call({
+    String? name,
     String? text,
     Widget? icon,
     EdgeInsetsValue? iconMargin,
@@ -208,6 +224,7 @@ class _TabNodeCopyWithImpl<$R, $Out>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
   $R call({
+    Object? name = $none,
     String? text,
     Object? icon = $none,
     Object? iconMargin = $none,
@@ -215,6 +232,7 @@ class _TabNodeCopyWithImpl<$R, $Out>
     Object? child = $none,
   }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (text != null) #text: text,
       if (icon != $none) #icon: icon,
       if (iconMargin != $none) #iconMargin: iconMargin,
@@ -224,6 +242,7 @@ class _TabNodeCopyWithImpl<$R, $Out>
   );
   @override
   TabNode $make(CopyWithData data) => TabNode(
+    name: data.get(#name, or: $value.name),
     text: data.get(#text, or: $value.text),
     icon: data.get(#icon, or: $value.icon),
     iconMargin: data.get(#iconMargin, or: $value.iconMargin),

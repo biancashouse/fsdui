@@ -47,6 +47,12 @@ class PlaceholderNodeMapper extends SubClassMapperBase<PlaceholderNode> {
     _$uid,
     mode: FieldMode.member,
   );
+  static List<String>? _$tags(PlaceholderNode v) => v.tags;
+  static const Field<PlaceholderNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(PlaceholderNode v) =>
       v.treeNodeGK;
   static const Field<PlaceholderNode, GlobalKey<State<StatefulWidget>>>
@@ -76,6 +82,7 @@ class PlaceholderNodeMapper extends SubClassMapperBase<PlaceholderNode> {
     #width: _f$width,
     #height: _f$height,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,

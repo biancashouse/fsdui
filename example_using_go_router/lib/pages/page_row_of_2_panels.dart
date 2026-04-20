@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 class Page_RowOf2Panels extends StatelessWidget {
   const Page_RowOf2Panels({super.key});
@@ -14,25 +14,28 @@ class Page_RowOf2Panels extends StatelessWidget {
           Expanded(
             child: SnippetBuilder(
               // panelName: 'panel1',
-              templateSnippet: SnippetRootNode(
+              initialValue: PaddingNode(
                 name: 'panels-demo1-panel1',
-                child: PaddingNode(
-                  padding: EdgeInsetsValue(top: 30, left: 30, bottom: 30, right: 30),
-                  child: AssetImageNode(assetPath: 'assets/images/flowers.jpg'),
+                padding: EdgeInsetsValue(
+                  top: 30,
+                  left: 30,
+                  bottom: 30,
+                  right: 30,
                 ),
+                child: AssetImageNode(assetPath: 'assets/images/flowers.jpg'),
               ),
             ),
           ),
           Expanded(
             child: SnippetBuilder(
               // panelName: 'panel2',
-              templateSnippet: SnippetRootNode(
+              initialValue: CarouselNode(
                 name: 'panels-demo2-panel2',
-                child: CarouselNode(children: [
+                children: [
                   AssetImageNode(assetPath: 'assets/images/frog.jpg'),
                   AssetImageNode(assetPath: 'assets/images/hummingbird.jpg'),
                   AssetImageNode(assetPath: 'assets/images/indian-chat.jpg'),
-                ]),
+                ],
               ),
             ),
           ),
@@ -40,5 +43,4 @@ class Page_RowOf2Panels extends StatelessWidget {
       ),
     );
   }
-
 }

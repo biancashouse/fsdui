@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/property_callout_button.dart';
-import 'package:flutter_content/src/text_styles/text_style_search_anchor.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/editors/property_callout_button.dart';
+import 'package:fsdui/src/text_styles/text_style_search_anchor.dart';
 
 class PropertyButtonTextStyleNameSearch extends StatelessWidget {
   final CalloutId cId;
@@ -53,19 +53,19 @@ class PropertyButtonTextStyleNameSearch extends StatelessWidget {
       initialCalloutAlignment: Alignment.center,
       initialTargetAlignment: Alignment.center,
       calloutContents: (ctx) {
-        TextStyleNameSearchAnchor anchor = fco.textStyleNameAnchor ??
+        TextStyleNameSearchAnchor anchor = fsdui.textStyleNameAnchor ??
             TextStyleNameSearchAnchor(
               parentCId: cId,
               textStyle: textStyle,
               onHoveredF: (selectedSuggestion) {
                 TextStyleProperties tsProps =
-                    fco.namedTextStyles[selectedSuggestion]?.clone() ??
+                    fsdui.namedTextStyles[selectedSuggestion]?.clone() ??
                         TextStyleProperties();
                 onHoveredF(tsProps);
               },
               onSelectionF: (selectedSuggestion) {
                 TextStyleProperties tsProps =
-                    fco.namedTextStyles[selectedSuggestion]?.clone() ??
+                    fsdui.namedTextStyles[selectedSuggestion]?.clone() ??
                         TextStyleProperties();
                 // if (!tsProps.same(originalTextStyle)) {
                 //   fco.logger.d('PropertyButtonTextStyleNameSearch.onChange()');

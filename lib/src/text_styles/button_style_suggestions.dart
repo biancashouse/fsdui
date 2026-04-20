@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 class ButtonStyleNameSuggestions extends StatelessWidget {
   final BuildContext anchorContext;
@@ -64,7 +64,7 @@ class ButtonStyleNameSuggestions extends StatelessWidget {
             onPressed: () {
               onSelectionF(suggestedButtonStyleName);
             },
-            style: fco.namedButtonStyles[suggestedButtonStyleName]?.toButtonStyle(anchorContext),
+            style: fsdui.namedButtonStyles[suggestedButtonStyleName]?.toButtonStyle(anchorContext),
             child: Text(suggestedButtonStyleName),
           ),
         ),

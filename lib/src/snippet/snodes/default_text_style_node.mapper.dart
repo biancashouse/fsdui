@@ -27,6 +27,12 @@ class DefaultTextStyleNodeMapper
   @override
   final String id = 'DefaultTextStyleNode';
 
+  static String? _$name(DefaultTextStyleNode v) => v.name;
+  static const Field<DefaultTextStyleNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static TextStyleProperties _$tsPropGroup(DefaultTextStyleNode v) =>
       v.tsPropGroup;
   static const Field<DefaultTextStyleNode, TextStyleProperties> _f$tsPropGroup =
@@ -47,6 +53,12 @@ class DefaultTextStyleNodeMapper
   static const Field<DefaultTextStyleNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(DefaultTextStyleNode v) => v.tags;
+  static const Field<DefaultTextStyleNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(
@@ -75,10 +87,12 @@ class DefaultTextStyleNodeMapper
 
   @override
   final MappableFields<DefaultTextStyleNode> fields = const {
+    #name: _f$name,
     #tsPropGroup: _f$tsPropGroup,
     #textAlign: _f$textAlign,
     #child: _f$child,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -100,6 +114,7 @@ class DefaultTextStyleNodeMapper
 
   static DefaultTextStyleNode _instantiate(DecodingData data) {
     return DefaultTextStyleNode(
+      name: data.dec(_f$name),
       tsPropGroup: data.dec(_f$tsPropGroup),
       textAlign: data.dec(_f$textAlign),
       child: data.dec(_f$child),
@@ -182,6 +197,7 @@ abstract class DefaultTextStyleNodeCopyWith<
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
   $R call({
+    String? name,
     TextStyleProperties? tsPropGroup,
     TextAlignEnum? textAlign,
     SNode? child,
@@ -208,11 +224,13 @@ class _DefaultTextStyleNodeCopyWithImpl<$R, $Out>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
   $R call({
+    Object? name = $none,
     TextStyleProperties? tsPropGroup,
     Object? textAlign = $none,
     Object? child = $none,
   }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (tsPropGroup != null) #tsPropGroup: tsPropGroup,
       if (textAlign != $none) #textAlign: textAlign,
       if (child != $none) #child: child,
@@ -220,6 +238,7 @@ class _DefaultTextStyleNodeCopyWithImpl<$R, $Out>
   );
   @override
   DefaultTextStyleNode $make(CopyWithData data) => DefaultTextStyleNode(
+    name: data.get(#name, or: $value.name),
     tsPropGroup: data.get(#tsPropGroup, or: $value.tsPropGroup),
     textAlign: data.get(#textAlign, or: $value.textAlign),
     child: data.get(#child, or: $value.child),

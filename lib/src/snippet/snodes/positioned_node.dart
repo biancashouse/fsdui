@@ -1,8 +1,8 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'positioned_node.mapper.dart';
 
@@ -14,6 +14,7 @@ class PositionedNode extends SC with PositionedNodeMappable {
   double? right;
 
   PositionedNode({
+    super.name,
     this.top,
     this.left,
     this.bottom,
@@ -75,7 +76,7 @@ class PositionedNode extends SC with PositionedNodeMappable {
       right: right,
       child: Tooltip(
         message: "Positioned(missing child!)",
-        child: child?.buildFlutterWidget(context, this) ??
+        child: child?.build(context, this) ??
             const Icon(
               Icons.warning,
               color: Colors.deepOrange,

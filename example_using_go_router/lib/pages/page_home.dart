@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 class Page_Home extends StatefulWidget {
   const Page_Home({super.key});
@@ -12,7 +12,7 @@ class Page_Home extends StatefulWidget {
 class _Page_HomeState extends State<Page_Home> {
   @override
   void initState() {
-    fco.afterNextBuildDo(() {
+    fsdui.afterNextBuildDo(() {
       // var pagePath = EditablePage.scName(context);
       // namedSC = NamedScrollController(pagePath, Axis.vertical);
 
@@ -27,7 +27,7 @@ class _Page_HomeState extends State<Page_Home> {
         animatePointer: true,
       );
 
-      fco.namedCallbacks['sample-popup'] = (context, gk) => fco.showOverlay(
+      fsdui.namedCallbacks['sample-popup'] = (context, gk) => fsdui.showOverlay(
         calloutConfig: cc,
         calloutContent: const Padding(
           padding: EdgeInsets.all(8.0),
@@ -48,7 +48,7 @@ class _Page_HomeState extends State<Page_Home> {
   @override
   Widget build(BuildContext context) {
     // final vea = fco.localStorage.getString('vea') ?? 'anon';
-    final vea = fco.localStorage.read('vea') ?? 'anon';
+    final vea = fsdui.localStorage.read('vea') ?? 'anon';
     final title = vea != 'anon'
         ? "flutter content demo (signed in as $vea)"
         : "flutter content demo";
@@ -67,10 +67,8 @@ class _Page_HomeState extends State<Page_Home> {
 
     final uniqueTabBarName = DateTime.now().millisecondsSinceEpoch.toString();
     SnippetBuilder sp = SnippetBuilder(
-      // panelName: 'demo-buttons',
-      templateSnippet: SnippetRootNode(
-        name: 'home-scaffold-with-tabs',
-        child: ScaffoldNode(
+      initialValue:  ScaffoldNode(
+          name: 'home-scaffold-with-tabs',
           appBar: NamedPS(
             propertyName: 'appBar',
             child: AppBarNode(
@@ -89,7 +87,7 @@ class _Page_HomeState extends State<Page_Home> {
               bottom: NamedPS(
                 propertyName: 'bottom',
                 child: TabBarNode(
-                  name: uniqueTabBarName,
+                  tabBarName: uniqueTabBarName,
                   labelTSPropGroup: TextStyleProperties(),
                   children: [
                     TextNode(text: 'tab 1', tsPropGroup: TextStyleProperties()),
@@ -106,7 +104,6 @@ class _Page_HomeState extends State<Page_Home> {
               children: [PlaceholderNode(), PlaceholderNode()],
             ),
           ),
-        ),
       ),
 
       // snippetRootNode: SnippetRootNode(
@@ -121,7 +118,7 @@ class _Page_HomeState extends State<Page_Home> {
       builder: (BuildContext context, st) => Scaffold(
         appBar: AppBar(
           title: Text(title),
-          actions: [fco.NavigationDD(pencilIconColor: Colors.red)],
+          actions: [fsdui.NavigationDD(pencilIconColor: Colors.red)],
         ),
         body: Center(
           // Center is a layout widget. It takes a single child and positions it

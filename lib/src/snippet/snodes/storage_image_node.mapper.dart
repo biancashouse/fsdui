@@ -25,6 +25,12 @@ class StorageImageNodeMapper extends SubClassMapperBase<StorageImageNode> {
   @override
   final String id = 'StorageImageNode';
 
+  static String? _$name(StorageImageNode v) => v.name;
+  static const Field<StorageImageNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static String? _$fsFullPath(StorageImageNode v) => v.fsFullPath;
   static const Field<StorageImageNode, String> _f$fsFullPath = Field(
     'fsFullPath',
@@ -67,6 +73,12 @@ class StorageImageNodeMapper extends SubClassMapperBase<StorageImageNode> {
     _$uid,
     mode: FieldMode.member,
   );
+  static List<String>? _$tags(StorageImageNode v) => v.tags;
+  static const Field<StorageImageNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(StorageImageNode v) =>
       v.treeNodeGK;
   static const Field<StorageImageNode, GlobalKey<State<StatefulWidget>>>
@@ -92,6 +104,7 @@ class StorageImageNodeMapper extends SubClassMapperBase<StorageImageNode> {
 
   @override
   final MappableFields<StorageImageNode> fields = const {
+    #name: _f$name,
     #fsFullPath: _f$fsFullPath,
     #fit: _f$fit,
     #alignment: _f$alignment,
@@ -99,6 +112,7 @@ class StorageImageNodeMapper extends SubClassMapperBase<StorageImageNode> {
     #height: _f$height,
     #scale: _f$scale,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -122,6 +136,7 @@ class StorageImageNodeMapper extends SubClassMapperBase<StorageImageNode> {
 
   static StorageImageNode _instantiate(DecodingData data) {
     return StorageImageNode(
+      name: data.dec(_f$name),
       fsFullPath: data.dec(_f$fsFullPath),
       fit: data.dec(_f$fit),
       alignment: data.dec(_f$alignment),
@@ -195,6 +210,7 @@ abstract class StorageImageNodeCopyWith<$R, $In extends StorageImageNode, $Out>
     implements CLCopyWith<$R, $In, $Out> {
   @override
   $R call({
+    String? name,
     String? fsFullPath,
     BoxFitEnum? fit,
     AlignmentEnum? alignment,
@@ -217,6 +233,7 @@ class _StorageImageNodeCopyWithImpl<$R, $Out>
       StorageImageNodeMapper.ensureInitialized();
   @override
   $R call({
+    Object? name = $none,
     Object? fsFullPath = $none,
     Object? fit = $none,
     Object? alignment = $none,
@@ -225,6 +242,7 @@ class _StorageImageNodeCopyWithImpl<$R, $Out>
     Object? scale = $none,
   }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (fsFullPath != $none) #fsFullPath: fsFullPath,
       if (fit != $none) #fit: fit,
       if (alignment != $none) #alignment: alignment,
@@ -235,6 +253,7 @@ class _StorageImageNodeCopyWithImpl<$R, $Out>
   );
   @override
   StorageImageNode $make(CopyWithData data) => StorageImageNode(
+    name: data.get(#name, or: $value.name),
     fsFullPath: data.get(#fsFullPath, or: $value.fsFullPath),
     fit: data.get(#fit, or: $value.fit),
     alignment: data.get(#alignment, or: $value.alignment),

@@ -1,6 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_outlined_border.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_outlined_border.dart';
 
 import 'border_side_properties.dart';
 

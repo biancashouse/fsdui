@@ -1,3 +1,3 @@
 # example wesite
 
-A sample usage of the flutter_content pkg.
+A sample usage of the fsdui pkg.

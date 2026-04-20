@@ -1,7 +1,7 @@
 // import 'package:dart_mappable/dart_mappable.dart';
 // import 'package:flutter/material.dart';
-// import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
-// import 'package:flutter_content/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
+// import 'package:fsdui/src/snippet/pnodes/enums/enum_alignment.dart';
+// import 'package:fsdui/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
 //
 // part 'callout_config_properties.mapper.dart';
 //

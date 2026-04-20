@@ -56,7 +56,7 @@ import 'package:fsdui/src/snippet/snodes/intrinsic_height_node.dart';
 import 'package:fsdui/src/snippet/snodes/intrinsic_width_node.dart';
 import 'package:fsdui/src/snippet/snodes/article_listview_node.dart';
 import 'package:fsdui/src/snippet/snodes/listview_node.dart';
-import 'package:fsdui/src/snippet/snodes/markdown_node.dart';
+import 'package:fsdui/src/snippet/snodes/markdown/markdown_node.dart';
 import 'package:fsdui/src/snippet/snodes/menu_bar_node.dart';
 import 'package:fsdui/src/snippet/snodes/menu_item_button_node.dart';
 import 'package:fsdui/src/snippet/snodes/abstract_mc_node.dart';
@@ -108,6 +108,7 @@ import 'package:fsdui/x_fsdui/text_styles_extn.dart';
 // import 'package:fsdui/src/snippet/snodes/widget/fs_folder_node.dart';
 import 'package:go_router/go_router.dart';
 
+import 'fsdui.dart' show SnippetBuilderState;
 import 'src/bloc/capi_bloc.dart';
 import 'src/bloc/capi_event.dart';
 import 'src/model/app_info_model.dart';
@@ -265,7 +266,7 @@ export 'src/snippet/snodes/hotspots/widgets/targets_wrapper.dart';
 export 'src/snippet/snodes/icon_button_node.dart';
 export 'src/snippet/snodes/iframe_node.dart';
 export 'src/snippet/snodes/inlinespan_node.dart';
-export 'src/snippet/snodes/markdown_node.dart';
+export 'src/snippet/snodes/markdown/markdown_node.dart';
 export 'src/snippet/snodes/menu_bar_node.dart';
 export 'src/snippet/snodes/menu_item_button_node.dart';
 export 'src/snippet/snodes/abstract_mc_node.dart';
@@ -337,7 +338,7 @@ export 'x_fsdui/text_styles_extn.dart';
 export 'src/snippet/pnodes/groups/text_style_properties.dart';
 
 // global instance singleton
-FlutterContentMixins fco = FlutterContentMixins._();
+FSDUI_Mixins fsdui = FSDUI_Mixins._();
 
 late Logger _logger;
 late Logger _loggerNs;
@@ -356,7 +357,7 @@ const String CUTOUT_OVERLAY_NON_TAPPABLE = 'cutout-overlay-non-tappable';
 // const String NODE_PROPERTY_CALLOUT_BUTTON = "NodePropertyCalloutButton";
 
 /// this is a global container
-class FlutterContentMixins
+class FSDUI_Mixins
     with
         MeasuringMixin,
         CalloutMixin,
@@ -371,7 +372,7 @@ class FlutterContentMixins
         GotitsMixin,
         PasswordlessMixin,
         NavMixin {
-  FlutterContentMixins._() {
+  FSDUI_Mixins._() {
     _logger = Logger(
       filter: MyLogFilter(),
       printer: PrettyPrinter(colors: true, printEmojis: false),
@@ -520,8 +521,8 @@ class FlutterContentMixins
   var themeModeNotifier = ValueNotifier<ThemeMode>(ThemeMode.light);
 
   bool canEditAnyContent() {
-    String? currentPagePath = fco.currentEditablePagePath;
-    bool isGuestPage = fco.appInfo.anonymousUserEditablePages.contains(
+    String? currentPagePath = fsdui.currentEditablePagePath;
+    bool isGuestPage = fsdui.appInfo.anonymousUserEditablePages.contains(
       currentPagePath,
     );
     return capiBloc.state.isSignedInAsSuperEditor || isGuestPage;
@@ -538,6 +539,8 @@ class FlutterContentMixins
   GoRouter? router;
 
   List<String> pageList = [];
+
+  Map<String, SnippetBuilderState> snippetBuilderStates = {};
 
   late TapGestureRecognizer webLinkF;
 
@@ -719,7 +722,7 @@ class FlutterContentMixins
   // }
 
   bool isEditingVersionPublished(SnippetName name) {
-    var snippetInfo = fco.appInfo.cachedSnippetInfo(name);
+    var snippetInfo = fsdui.appInfo.cachedSnippetInfo(name);
     return snippetInfo?.publishedVersionId == snippetInfo?.editingVersionId;
   }
 
@@ -762,7 +765,7 @@ class FlutterContentMixins
   // set when user taps a snippet triangle
   // final inEditMode = ValueNotifier<bool>(false);
 
-  void forceRefresh({bool onlyTargetsWrappers = false}) => fco.capiBloc.add(
+  void forceRefresh({bool onlyTargetsWrappers = false}) => fsdui.capiBloc.add(
     CAPIEvent.forceRefresh(onlyTargetsWrappers: onlyTargetsWrappers),
   );
 
@@ -846,7 +849,7 @@ class FlutterContentMixins
   // void pushPage({required String routeName, required String path}) {}
 
   Reference folderPathRef(String folderPath) =>
-      FirebaseStorage.instance.ref('/${fco.appName}$folderPath');
+      FirebaseStorage.instance.ref('/${fsdui.appName}$folderPath');
 
   final GksByFeature _calloutGkMap = {};
 
@@ -872,6 +875,11 @@ class FlutterContentMixins
   //   _targetGK[targetId] = gk;
   //   return gk;
   // }
+
+  String asset(String name) {
+    // only need to specify the asset pkg when used by a client project; i.e. not within the fsdui project itself
+    return fca.skipAssetPkgName ? name : 'packages/fsdui/$name';
+  }
 
   // stolen from quill, because not exported
   Color hexToColor(String? hexString) {

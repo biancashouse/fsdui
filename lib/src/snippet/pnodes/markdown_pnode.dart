@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 import 'editors/property_callout_button_markdown.dart';
 
 class MarkdownPNode extends PNode {
@@ -34,7 +34,7 @@ class MarkdownPNode extends PNode {
       // textInputType: const TextInputType.numberWithOptions(decimal: true),
       calloutButtonSize: calloutButtonSize,
       onChangeF: (s) {
-        fco.dismiss('te');
+        fsdui.dismiss('te');
         onStringChange(stringValue = s);
       },
     );

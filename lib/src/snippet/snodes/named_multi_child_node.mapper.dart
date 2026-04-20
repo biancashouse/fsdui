@@ -24,6 +24,12 @@ class NamedMCMapper extends SubClassMapperBase<NamedMC> {
   @override
   final String id = 'NamedMC';
 
+  static String? _$name(NamedMC v) => v.name;
+  static const Field<NamedMC, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static String _$propertyName(NamedMC v) => v.propertyName;
   static const Field<NamedMC, String> _f$propertyName = Field(
     'propertyName',
@@ -38,6 +44,12 @@ class NamedMCMapper extends SubClassMapperBase<NamedMC> {
   static const Field<NamedMC, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(NamedMC v) => v.tags;
+  static const Field<NamedMC, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(NamedMC v) =>
@@ -63,9 +75,11 @@ class NamedMCMapper extends SubClassMapperBase<NamedMC> {
 
   @override
   final MappableFields<NamedMC> fields = const {
+    #name: _f$name,
     #propertyName: _f$propertyName,
     #children: _f$children,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -87,6 +101,7 @@ class NamedMCMapper extends SubClassMapperBase<NamedMC> {
 
   static NamedMC _instantiate(DecodingData data) {
     return NamedMC(
+      name: data.dec(_f$name),
       propertyName: data.dec(_f$propertyName),
       children: data.dec(_f$children),
     );
@@ -152,7 +167,7 @@ abstract class NamedMCCopyWith<$R, $In extends NamedMC, $Out>
   @override
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
-  $R call({String? propertyName, List<SNode>? children});
+  $R call({String? name, String? propertyName, List<SNode>? children});
   NamedMCCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -172,14 +187,20 @@ class _NamedMCCopyWithImpl<$R, $Out>
         (v) => call(children: v),
       );
   @override
-  $R call({String? propertyName, List<SNode>? children}) => $apply(
+  $R call({
+    Object? name = $none,
+    String? propertyName,
+    List<SNode>? children,
+  }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (propertyName != null) #propertyName: propertyName,
       if (children != null) #children: children,
     }),
   );
   @override
   NamedMC $make(CopyWithData data) => NamedMC(
+    name: data.get(#name, or: $value.name),
     propertyName: data.get(#propertyName, or: $value.propertyName),
     children: data.get(#children, or: $value.children),
   );
