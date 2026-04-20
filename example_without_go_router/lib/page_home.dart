@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 class Page_Home extends StatelessWidget {
   const Page_Home({super.key});
@@ -9,9 +9,8 @@ class Page_Home extends StatelessWidget {
   Widget build(BuildContext context) {
     final uniqueTabBarName = DateTime.now().millisecondsSinceEpoch.toString();
     SnippetBuilder sp = SnippetBuilder(
-      templateSnippet: SnippetRootNode(
-        name: 'home-scaffold-with-tabs',
-        child: ScaffoldNode(
+      initialValue: ScaffoldNode(
+          name: 'home-scaffold-with-tabs',
           appBar: NamedPS(
             propertyName: 'appBar',
             child: AppBarNode(
@@ -31,7 +30,7 @@ class Page_Home extends StatelessWidget {
               bottom: NamedPS(
                 propertyName: 'bottom',
                 child: TabBarNode(
-                  name: uniqueTabBarName,
+                  tabBarName: uniqueTabBarName,
                   labelTSPropGroup: TextStyleProperties(),
                   children: [
                     TextNode(text: 'Tab 1', tsPropGroup: TextStyleProperties()),
@@ -64,7 +63,6 @@ class Page_Home extends StatelessWidget {
             ),
           ),
         ),
-      ),
 
       // snippetRootNode: SnippetRootNode(
       //   name: 'we-create-flutter-apps-and-packages',
@@ -78,7 +76,7 @@ class Page_Home extends StatelessWidget {
       builder: (BuildContext context, st) => Scaffold(
         appBar: AppBar(
           title: Text('flutter_callouts demo'),
-          actions: [fco.NavigationDD(pencilIconColor: Colors.red)],
+          actions: [fsdui.NavigationDD(pencilIconColor: Colors.red)],
         ),
         body: SingleChildScrollView(
           child: Column(

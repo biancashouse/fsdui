@@ -25,6 +25,12 @@ class FilledButtonNodeMapper extends SubClassMapperBase<FilledButtonNode> {
   @override
   final String id = 'FilledButtonNode';
 
+  static String? _$name(FilledButtonNode v) => v.name;
+  static const Field<FilledButtonNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static String? _$destinationRoutePathSnippetName(FilledButtonNode v) =>
       v.destinationRoutePathSnippetName;
   static const Field<FilledButtonNode, String>
@@ -55,6 +61,12 @@ class FilledButtonNodeMapper extends SubClassMapperBase<FilledButtonNode> {
     _$uid,
     mode: FieldMode.member,
   );
+  static List<String>? _$tags(FilledButtonNode v) => v.tags;
+  static const Field<FilledButtonNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(FilledButtonNode v) =>
       v.treeNodeGK;
   static const Field<FilledButtonNode, GlobalKey<State<StatefulWidget>>>
@@ -80,11 +92,13 @@ class FilledButtonNodeMapper extends SubClassMapperBase<FilledButtonNode> {
 
   @override
   final MappableFields<FilledButtonNode> fields = const {
+    #name: _f$name,
     #destinationRoutePathSnippetName: _f$destinationRoutePathSnippetName,
     #bsPropGroup: _f$bsPropGroup,
     #onTapHandlerName: _f$onTapHandlerName,
     #child: _f$child,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -107,6 +121,7 @@ class FilledButtonNodeMapper extends SubClassMapperBase<FilledButtonNode> {
 
   static FilledButtonNode _instantiate(DecodingData data) {
     return FilledButtonNode(
+      name: data.dec(_f$name),
       destinationRoutePathSnippetName: data.dec(
         _f$destinationRoutePathSnippetName,
       ),
@@ -189,6 +204,7 @@ abstract class FilledButtonNodeCopyWith<$R, $In extends FilledButtonNode, $Out>
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
   $R call({
+    String? name,
     String? destinationRoutePathSnippetName,
     ButtonStyleProperties? bsPropGroup,
     String? onTapHandlerName,
@@ -220,12 +236,14 @@ class _FilledButtonNodeCopyWithImpl<$R, $Out>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
   $R call({
+    Object? name = $none,
     Object? destinationRoutePathSnippetName = $none,
     ButtonStyleProperties? bsPropGroup,
     Object? onTapHandlerName = $none,
     Object? child = $none,
   }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (destinationRoutePathSnippetName != $none)
         #destinationRoutePathSnippetName: destinationRoutePathSnippetName,
       if (bsPropGroup != null) #bsPropGroup: bsPropGroup,
@@ -235,6 +253,7 @@ class _FilledButtonNodeCopyWithImpl<$R, $Out>
   );
   @override
   FilledButtonNode $make(CopyWithData data) => FilledButtonNode(
+    name: data.get(#name, or: $value.name),
     destinationRoutePathSnippetName: data.get(
       #destinationRoutePathSnippetName,
       or: $value.destinationRoutePathSnippetName,

@@ -1,7 +1,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'named_preferredsize_single_child_node.mapper.dart';
 
@@ -11,6 +11,7 @@ class NamedPS extends SC
   String propertyName;
 
   NamedPS({
+    super.name,
     required this.propertyName,
     super.child,
   });
@@ -30,7 +31,7 @@ class NamedPS extends SC
     BuildContext context,
     SNode? parentNode) {
     try {
-      var psChildWidget = child?.buildFlutterWidget(context, this);
+      var psChildWidget = child?.build(context, this);
       setParent(parentNode);
       if (psChildWidget is! PreferredSizeWidget) {
         return PreferredSize(

@@ -2,12 +2,12 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/stepper/stepper_with_controller.dart';
-import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_stepper_type.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/stepper/stepper_with_controller.dart';
+import 'package:fsdui/src/snippet/pnodes/enum_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_stepper_type.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
 
 part 'stepper_node.mapper.dart';
 
@@ -53,7 +53,7 @@ class StepperNode extends MC with StepperNodeMappable {
       ];
 
   @override
-  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
+  Widget build(BuildContext context, SNode? parentNode,
       ) {
     try {
       setParent(parentNode);
@@ -100,7 +100,7 @@ class StepperNode extends MC with StepperNodeMappable {
 
   @override
   Widget? widgetLogo() => Image.asset(
-    fco.asset('lib/assets/images/pub.dev.png'),
+    fsdui.asset('lib/assets/images/pub.dev.png'),
     width: 16,
   );
 

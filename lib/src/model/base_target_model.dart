@@ -1,11 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'alignment_model.dart';
 import 'size_model.dart';
 
 abstract class TargetConfigModel {
@@ -102,21 +101,21 @@ abstract class TargetConfigModel {
   void setCalloutStarPoints(int? newValue) => starPoints = newValue;
 
   void removeContentCallout({bool skipOnDismiss = false}) =>
-      fco.dismiss(contentCId, skipOnDismiss: skipOnDismiss);
+      fsdui.dismiss(contentCId, skipOnDismiss: skipOnDismiss);
 
-  bool isShowingContentCallout() => fco.anyPresent([contentCId]);
+  bool isShowingContentCallout() => fsdui.anyPresent([contentCId]);
 
-  void hideContentCallout() => fco.hide(contentCId);
+  void hideContentCallout() => fsdui.hide(contentCId);
 
-  void unhideContentCallout() => fco.unhide(contentCId);
+  void unhideContentCallout() => fsdui.unhide(contentCId);
 
-  void refreshContentCallout() => fco.rebuild(contentCId);
+  void refreshContentCallout() => fsdui.rebuild(contentCId);
 
-  void saveParentSnippet(SnippetRootNode? rootNode) {
+  void saveParentSnippet(SNode? rootNode) {
     if (rootNode != null) {
-      fco.dismissAll(onlyToasts: true);
+      fsdui.dismissAll(onlyToasts: true);
       // HydratedBloc.storage.write('flutter-content', rootNode.toJson());
-      fco.showToast(
+      fsdui.showToast(
         removeAfterMs: 1500,
         msg: 'saving changes...',
         gravity: Alignment.topCenter,
@@ -124,8 +123,8 @@ abstract class TargetConfigModel {
         textColor: Colors.black,
       );
       // fco.modelRepo.saveNewVersionOfSnippet(rootNode);
-      fco.appInfo.cachedSnippetInfo(rootNode.name)?.notifyChange(rootNode);
-      fco.dismissToast(Alignment.topCenter);
+      fsdui.appInfo.cachedSnippetInfo(rootNode.name!)?.notifyChange(rootNode);
+      fsdui.dismissToast(Alignment.topCenter);
     }
   }
 }

@@ -1,10 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_content/src/algc/model/m/step_m.dart';
-import 'package:flutter_content/src/algc/widgets/painters/paint_helper.dart';
+import 'package:fsdui/src/algc/model/m/step_m.dart';
+import 'package:fsdui/src/algc/widgets/painters/paint_helper.dart';
 
-import '../../../../flutter_content.dart';
+import '../../../../fsdui.dart';
 
 class StepPainter extends CustomPainter with WidgetHelperMixin {
   final StepM model;

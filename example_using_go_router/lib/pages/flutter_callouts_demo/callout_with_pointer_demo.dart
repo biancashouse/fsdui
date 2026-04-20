@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 /// it's important to add the mixin, because callouts are animated
 class PointerDemo extends StatefulWidget {
@@ -26,16 +26,16 @@ class _PointerDemoState extends State<PointerDemo> {
   void initState() {
     super.initState();
 
-    fco.afterNextBuildDo(() {
+    fsdui.afterNextBuildDo(() {
       // namedSC.jumpTo(150.0);
       // showOverlay requires a callout config + callout content + optionally, a target widget globalKey
-      fco.showOverlay(
+      fsdui.showOverlay(
         calloutConfig: _cc = _createCalloutConfig1(),
         calloutContent: _createCalloutContent1(),
         targetGK: _gk,
       );
 
-      fco.showOverlay(
+      fsdui.showOverlay(
         calloutConfig: _createCalloutConfig2(),
         calloutContent: _createCalloutContent2(),
         targetGK: _gk,
@@ -49,7 +49,7 @@ class _PointerDemoState extends State<PointerDemo> {
   }
 
   void _onTappedBarrier() {
-    fco.showOverlay(
+    fsdui.showOverlay(
       calloutConfig: CalloutConfig(
         cId: 'tapped-barrier',
         elevation: 6,
@@ -64,8 +64,8 @@ class _PointerDemoState extends State<PointerDemo> {
                 backgroundColor: WidgetStateProperty.all(Colors.black),
               ),
               onPressed: () {
-                fco.dismiss('some-callout-id');
-                fco.dismiss('tapped-barrier');
+                fsdui.dismiss('some-callout-id');
+                fsdui.dismiss('tapped-barrier');
               },
               child: Padding(
                 padding: const EdgeInsets.all(18.0),
@@ -99,10 +99,10 @@ class _PointerDemoState extends State<PointerDemo> {
     return CalloutConfig(
       cId: 'some-callout-id',
       // -- initial pos and animation ---------------------------------
-      initialTargetAlignment: fco.isAndroid
+      initialTargetAlignment: fsdui.isAndroid
           ? Alignment.topCenter
           : Alignment.centerLeft,
-      initialCalloutAlignment: fco.isAndroid
+      initialCalloutAlignment: fsdui.isAndroid
           ? Alignment.bottomCenter
           : Alignment.centerRight,
       // initialCalloutPos:
@@ -302,7 +302,7 @@ class _PointerDemoState extends State<PointerDemo> {
     decoration: BoxDecoration(color: Colors.red),
     child: Padding(
       padding: const EdgeInsets.all(8.0),
-      child: fco.coloredText('Also pointing out the icon widget.\n\n'
+      child: fsdui.coloredText('Also pointing out the icon widget.\n\n'
           'Arrow is red, and this callout content\n'
           'is in a decorated (red) container', color: Colors.white),
     ),
@@ -312,7 +312,7 @@ class _PointerDemoState extends State<PointerDemo> {
     setState(() {
       _showBarrier = !_showBarrier;
       _cc.barrier = _showBarrier ? _barrierC : null;
-      fco.rebuild('some-callout-id');
+      fsdui.rebuild('some-callout-id');
     });
   }
 
@@ -321,7 +321,7 @@ class _PointerDemoState extends State<PointerDemo> {
       if (_cc.barrier != null) {
         _cc.barrier!.excludeTargetFromBarrier =
             !_cc.barrier!.excludeTargetFromBarrier;
-        fco.rebuild('some-callout-id');
+        fsdui.rebuild('some-callout-id');
       }
     });
   }
@@ -330,7 +330,7 @@ class _PointerDemoState extends State<PointerDemo> {
     setState(() {
       if (_cc.barrier != null) {
         _cc.barrier!.roundExclusion = !_cc.barrier!.roundExclusion;
-        fco.rebuild('some-callout-id');
+        fsdui.rebuild('some-callout-id');
       }
     });
   }
@@ -348,8 +348,8 @@ class _PointerDemoState extends State<PointerDemo> {
       } else {
         _cc.decorationBorderColors = null;
       }
-      fco.dismiss('some-callout-id');
-      fco.showOverlay(
+      fsdui.dismiss('some-callout-id');
+      fsdui.showOverlay(
         calloutConfig: _cc,
         calloutContent: _createCalloutContent1(),
         targetGK: _gk,
@@ -362,8 +362,8 @@ class _PointerDemoState extends State<PointerDemo> {
       _cc.animatePointer = !(_cc.animatePointer ?? false);
       // because animate requires a controller created in its intState, we simply recreate the callout rather just rebuild
       // TODO may refine later
-      fco.dismiss('some-callout-id');
-      fco.showOverlay(
+      fsdui.dismiss('some-callout-id');
+      fsdui.showOverlay(
         calloutConfig: _cc,
         calloutContent: _createCalloutContent1(),
         targetGK: _gk,
@@ -374,9 +374,9 @@ class _PointerDemoState extends State<PointerDemo> {
   void toggleLineLabel(bool newVal) {
     setState(() {
       _showLineLabel = newVal;
-      fco.dismiss('some-callout-id');
+      fsdui.dismiss('some-callout-id');
       _cc.lineLabelBuilder = newVal ? ()=>Text('line label') : null;
-      fco.showOverlay(
+      fsdui.showOverlay(
         calloutConfig: _cc,
         calloutContent: _createCalloutContent1(),
         targetGK: _gk,
@@ -389,7 +389,7 @@ class _PointerDemoState extends State<PointerDemo> {
     return PopScope(
       canPop: true,
       onPopInvokedWithResult: (_, _) {
-        fco.dismissAll();
+        fsdui.dismissAll();
       },
       child: Scaffold(
         appBar: AppBar(title: Text('flutter_callouts target pointer demo')),

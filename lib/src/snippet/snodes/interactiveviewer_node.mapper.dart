@@ -25,6 +25,12 @@ class InteractiveViewerNodeMapper
   @override
   final String id = 'InteractiveViewerNode';
 
+  static String? _$name(InteractiveViewerNode v) => v.name;
+  static const Field<InteractiveViewerNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static SNode? _$child(InteractiveViewerNode v) => v.child;
   static const Field<InteractiveViewerNode, SNode> _f$child = Field(
     'child',
@@ -55,6 +61,12 @@ class InteractiveViewerNodeMapper
     _$uid,
     mode: FieldMode.member,
   );
+  static List<String>? _$tags(InteractiveViewerNode v) => v.tags;
+  static const Field<InteractiveViewerNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(
     InteractiveViewerNode v,
   ) => v.treeNodeGK;
@@ -81,11 +93,13 @@ class InteractiveViewerNodeMapper
 
   @override
   final MappableFields<InteractiveViewerNode> fields = const {
+    #name: _f$name,
     #child: _f$child,
     #maxScale: _f$maxScale,
     #minScale: _f$minScale,
     #scaleEnabled: _f$scaleEnabled,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -107,6 +121,7 @@ class InteractiveViewerNodeMapper
 
   static InteractiveViewerNode _instantiate(DecodingData data) {
     return InteractiveViewerNode(
+      name: data.dec(_f$name),
       child: data.dec(_f$child),
       maxScale: data.dec(_f$maxScale),
       minScale: data.dec(_f$minScale),
@@ -188,6 +203,7 @@ abstract class InteractiveViewerNodeCopyWith<
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
   $R call({
+    String? name,
     SNode? child,
     double? maxScale,
     double? minScale,
@@ -211,12 +227,14 @@ class _InteractiveViewerNodeCopyWithImpl<$R, $Out>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
   $R call({
+    Object? name = $none,
     Object? child = $none,
     Object? maxScale = $none,
     Object? minScale = $none,
     Object? scaleEnabled = $none,
   }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (child != $none) #child: child,
       if (maxScale != $none) #maxScale: maxScale,
       if (minScale != $none) #minScale: minScale,
@@ -225,6 +243,7 @@ class _InteractiveViewerNodeCopyWithImpl<$R, $Out>
   );
   @override
   InteractiveViewerNode $make(CopyWithData data) => InteractiveViewerNode(
+    name: data.get(#name, or: $value.name),
     child: data.get(#child, or: $value.child),
     maxScale: data.get(#maxScale, or: $value.maxScale),
     minScale: data.get(#minScale, or: $value.minScale),

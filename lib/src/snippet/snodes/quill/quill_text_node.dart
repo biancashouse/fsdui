@@ -3,11 +3,11 @@
 import 'dart:convert';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/model/quill_target_model.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-// import 'package:flutter_content/src/snippet/pnodes/quill_text_pnode.dart';
-import 'package:flutter_content/src/snippet/snodes/quill/widgets/quill_viewer.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/model/quill_target_model.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+// import 'package:fsdui/src/snippet/pnodes/quill_text_pnode.dart';
+import 'package:fsdui/src/snippet/snodes/quill/widgets/quill_viewer.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 
 import 'widgets/focus_aware_quill_editor.dart';
@@ -26,7 +26,7 @@ const k_sampleDeltaJsonString = '''
 class QuillTextNode extends CL with QuillTextNodeMappable {
   String deltaJsonString;
 
-  QuillTextNode({this.deltaJsonString = k_sampleDeltaJsonString});
+  QuillTextNode({super.name, this.deltaJsonString = k_sampleDeltaJsonString});
 
   CalloutId get quillTextToolbarCID => 'quill-toolbar-$uid';
 
@@ -66,7 +66,7 @@ class QuillTextNode extends CL with QuillTextNodeMappable {
     var gk = createNodeWidgetGK();
 
     Widget editor;
-    if (fco.canEditAnyContent() && fco.snippetBeingEdited == null && !fco.capiBloc.showTappableBorderRects()) {
+    if (fsdui.canEditAnyContent() && fsdui.snippetBeingEdited == null && !fsdui.capiBloc.showTappableBorderRects()) {
       editor = Material(
         child: FocusAwareQuillEditor(
           key: gk,

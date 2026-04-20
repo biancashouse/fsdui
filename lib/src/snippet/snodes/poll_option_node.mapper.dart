@@ -23,12 +23,24 @@ class PollOptionNodeMapper extends SubClassMapperBase<PollOptionNode> {
   @override
   final String id = 'PollOptionNode';
 
+  static String? _$name(PollOptionNode v) => v.name;
+  static const Field<PollOptionNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static String _$text(PollOptionNode v) => v.text;
   static const Field<PollOptionNode, String> _f$text = Field('text', _$text);
   static String _$uid(PollOptionNode v) => v.uid;
   static const Field<PollOptionNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(PollOptionNode v) => v.tags;
+  static const Field<PollOptionNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(PollOptionNode v) =>
@@ -56,8 +68,10 @@ class PollOptionNodeMapper extends SubClassMapperBase<PollOptionNode> {
 
   @override
   final MappableFields<PollOptionNode> fields = const {
+    #name: _f$name,
     #text: _f$text,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -78,7 +92,7 @@ class PollOptionNodeMapper extends SubClassMapperBase<PollOptionNode> {
   ]);
 
   static PollOptionNode _instantiate(DecodingData data) {
-    return PollOptionNode(text: data.dec(_f$text));
+    return PollOptionNode(name: data.dec(_f$name), text: data.dec(_f$text));
   }
 
   @override
@@ -144,7 +158,7 @@ extension PollOptionNodeValueCopy<$R, $Out>
 abstract class PollOptionNodeCopyWith<$R, $In extends PollOptionNode, $Out>
     implements CLCopyWith<$R, $In, $Out> {
   @override
-  $R call({String? text});
+  $R call({String? name, String? text});
   PollOptionNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -159,11 +173,17 @@ class _PollOptionNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<PollOptionNode> $mapper =
       PollOptionNodeMapper.ensureInitialized();
   @override
-  $R call({String? text}) =>
-      $apply(FieldCopyWithData({if (text != null) #text: text}));
+  $R call({Object? name = $none, String? text}) => $apply(
+    FieldCopyWithData({
+      if (name != $none) #name: name,
+      if (text != null) #text: text,
+    }),
+  );
   @override
-  PollOptionNode $make(CopyWithData data) =>
-      PollOptionNode(text: data.get(#text, or: $value.text));
+  PollOptionNode $make(CopyWithData data) => PollOptionNode(
+    name: data.get(#name, or: $value.name),
+    text: data.get(#text, or: $value.text),
+  );
 
   @override
   PollOptionNodeCopyWith<$R2, PollOptionNode, $Out2> $chain<$R2, $Out2>(

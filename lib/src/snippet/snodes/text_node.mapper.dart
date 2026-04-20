@@ -25,6 +25,12 @@ class TextNodeMapper extends SubClassMapperBase<TextNode> {
   @override
   final String id = 'TextNode';
 
+  static String? _$name(TextNode v) => v.name;
+  static const Field<TextNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static String _$text(TextNode v) => v.text;
   static const Field<TextNode, String> _f$text = Field(
     'text',
@@ -56,6 +62,12 @@ class TextNodeMapper extends SubClassMapperBase<TextNode> {
     _$uid,
     mode: FieldMode.member,
   );
+  static List<String>? _$tags(TextNode v) => v.tags;
+  static const Field<TextNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(TextNode v) =>
       v.treeNodeGK;
   static const Field<TextNode, GlobalKey<State<StatefulWidget>>> _f$treeNodeGK =
@@ -79,11 +91,13 @@ class TextNodeMapper extends SubClassMapperBase<TextNode> {
 
   @override
   final MappableFields<TextNode> fields = const {
+    #name: _f$name,
     #text: _f$text,
     #webLink: _f$webLink,
     #tsPropGroup: _f$tsPropGroup,
     #textAlign: _f$textAlign,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -105,6 +119,7 @@ class TextNodeMapper extends SubClassMapperBase<TextNode> {
 
   static TextNode _instantiate(DecodingData data) {
     return TextNode(
+      name: data.dec(_f$name),
       text: data.dec(_f$text),
       webLink: data.dec(_f$webLink),
       tsPropGroup: data.dec(_f$tsPropGroup),
@@ -173,6 +188,7 @@ abstract class TextNodeCopyWith<$R, $In extends TextNode, $Out>
   get tsPropGroup;
   @override
   $R call({
+    String? name,
     String? text,
     String? webLink,
     TextStyleProperties? tsPropGroup,
@@ -195,12 +211,14 @@ class _TextNodeCopyWithImpl<$R, $Out>
       $value.tsPropGroup.copyWith.$chain((v) => call(tsPropGroup: v));
   @override
   $R call({
+    Object? name = $none,
     String? text,
     Object? webLink = $none,
     TextStyleProperties? tsPropGroup,
     Object? textAlign = $none,
   }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (text != null) #text: text,
       if (webLink != $none) #webLink: webLink,
       if (tsPropGroup != null) #tsPropGroup: tsPropGroup,
@@ -209,6 +227,7 @@ class _TextNodeCopyWithImpl<$R, $Out>
   );
   @override
   TextNode $make(CopyWithData data) => TextNode(
+    name: data.get(#name, or: $value.name),
     text: data.get(#text, or: $value.text),
     webLink: data.get(#webLink, or: $value.webLink),
     tsPropGroup: data.get(#tsPropGroup, or: $value.tsPropGroup),

@@ -1,7 +1,7 @@
 // ignore_for_file: camel_case_types
 
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 class Zoomer extends StatefulWidget {
   final Widget child;
@@ -18,11 +18,11 @@ class Zoomer extends StatefulWidget {
 
   static ZoomerState? of(BuildContext context) {
     if (!context.mounted) {
-      fco.logger.i('context not mounted!');
+      fsdui.logger.i('context not mounted!');
     }
     var result = context.findAncestorStateOfType<ZoomerState>();
     if (result == null) {
-      fco.logger.i('Zoomer not found!');
+      fsdui.logger.i('Zoomer not found!');
     }
     return result;
   }

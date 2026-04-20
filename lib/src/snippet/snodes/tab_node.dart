@@ -2,9 +2,9 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
 
 part 'tab_node.mapper.dart';
 
@@ -25,6 +25,7 @@ class TabNode extends SC with TabNodeMappable {
   double? height;
 
   TabNode({
+    super.name,
     this.text = '',
     this.icon,
     this.iconMargin,
@@ -89,7 +90,7 @@ class TabNode extends SC with TabNodeMappable {
       icon: icon,
       iconMargin: iconMargin?.toEdgeInsets(),
       height: height,
-      child: child?.buildFlutterWidget(context, this),
+      child: child?.build(context, this),
     );
   }
 

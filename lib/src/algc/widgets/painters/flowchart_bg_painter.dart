@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/algc/model/m/flowchart_m.dart';
-import 'package:flutter_content/src/algc/widgets/painters/paint_helper.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/algc/model/m/flowchart_m.dart';
+import 'package:fsdui/src/algc/widgets/painters/paint_helper.dart';
 
 class FlowchartBgPainter extends CustomPainter {
   final FlowchartM fbe;
@@ -12,7 +12,7 @@ class FlowchartBgPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     Paint bgPaint;
 
-    bgPaint = fbe.isVersionLatest ? fco.whiteBgPaint : greyBgPaint;
+    bgPaint = fbe.isVersionLatest ? fsdui.whiteBgPaint : greyBgPaint;
 
     Rect innerRect = Rect.fromPoints(
       const Offset(0.0, 0.0),

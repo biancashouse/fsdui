@@ -23,14 +23,29 @@ class FileNodeMapper extends SubClassMapperBase<FileNode> {
   @override
   final String id = 'FileNode';
 
-  static String _$name(FileNode v) => v.name;
-  static const Field<FileNode, String> _f$name = Field('name', _$name);
+  static String? _$name(FileNode v) => v.name;
+  static const Field<FileNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
+  static String _$fileName(FileNode v) => v.fileName;
+  static const Field<FileNode, String> _f$fileName = Field(
+    'fileName',
+    _$fileName,
+  );
   static String _$src(FileNode v) => v.src;
   static const Field<FileNode, String> _f$src = Field('src', _$src);
   static String _$uid(FileNode v) => v.uid;
   static const Field<FileNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(FileNode v) => v.tags;
+  static const Field<FileNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(FileNode v) =>
@@ -57,8 +72,10 @@ class FileNodeMapper extends SubClassMapperBase<FileNode> {
   @override
   final MappableFields<FileNode> fields = const {
     #name: _f$name,
+    #fileName: _f$fileName,
     #src: _f$src,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -79,7 +96,11 @@ class FileNodeMapper extends SubClassMapperBase<FileNode> {
   ]);
 
   static FileNode _instantiate(DecodingData data) {
-    return FileNode(name: data.dec(_f$name), src: data.dec(_f$src));
+    return FileNode(
+      name: data.dec(_f$name),
+      fileName: data.dec(_f$fileName),
+      src: data.dec(_f$src),
+    );
   }
 
   @override
@@ -140,7 +161,7 @@ extension FileNodeValueCopy<$R, $Out> on ObjectCopyWith<$R, FileNode, $Out> {
 abstract class FileNodeCopyWith<$R, $In extends FileNode, $Out>
     implements CLCopyWith<$R, $In, $Out> {
   @override
-  $R call({String? name, String? src});
+  $R call({String? name, String? fileName, String? src});
   FileNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -153,15 +174,17 @@ class _FileNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<FileNode> $mapper =
       FileNodeMapper.ensureInitialized();
   @override
-  $R call({String? name, String? src}) => $apply(
+  $R call({Object? name = $none, String? fileName, String? src}) => $apply(
     FieldCopyWithData({
-      if (name != null) #name: name,
+      if (name != $none) #name: name,
+      if (fileName != null) #fileName: fileName,
       if (src != null) #src: src,
     }),
   );
   @override
   FileNode $make(CopyWithData data) => FileNode(
     name: data.get(#name, or: $value.name),
+    fileName: data.get(#fileName, or: $value.fileName),
     src: data.get(#src, or: $value.src),
   );
 

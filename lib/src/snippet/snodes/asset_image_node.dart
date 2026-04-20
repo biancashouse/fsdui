@@ -2,12 +2,12 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/measuring/size_aware_widget.dart';
-import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_boxfit.dart';
-import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/measuring/size_aware_widget.dart';
+import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/enum_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_boxfit.dart';
+import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'asset_image_node.mapper.dart';
@@ -24,6 +24,7 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
   // BlendMode? colorBlendMode;
 
   AssetImageNode({
+    super.name,
     this.assetPath,
     this.fit,
     this.alignment,
@@ -146,7 +147,7 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
   //                       // scale: scale,
   //                       fit: fit?.flutterValue,
   //                       alignment: alignment?.flutterValue ?? Alignment.center,
-  //                       // package: 'flutter_content',
+  //                       // package: 'fsdui',
   //                     ),
   //                   );
   //               }

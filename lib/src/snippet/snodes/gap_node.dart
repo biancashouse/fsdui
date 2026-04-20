@@ -1,8 +1,8 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'gap_node.mapper.dart';
 
@@ -11,6 +11,7 @@ class GapNode extends CL with GapNodeMappable {
   double gap;
 
   GapNode({
+    super.name,
     required this.gap,
   });
 
@@ -45,7 +46,7 @@ class GapNode extends CL with GapNodeMappable {
   //     ];
 
   @override
-  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
+  Widget build(BuildContext context, SNode? parentNode,
       ) {
     setParent(parentNode); // propagating parents down from root
     //ScrollControllerName? scName = EditablePage.name(context);
@@ -66,7 +67,7 @@ class GapNode extends CL with GapNodeMappable {
 
   @override
   Widget? widgetLogo() => Icon(Icons.square_outlined,
-            color: fco.selectedNode == this ? Colors.black : Colors.grey);
+            color: fsdui.selectedNode == this ? Colors.black : Colors.grey);
 
   static const String FLUTTER_TYPE = "Gap";
 }

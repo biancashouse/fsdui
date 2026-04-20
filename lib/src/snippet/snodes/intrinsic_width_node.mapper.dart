@@ -24,6 +24,12 @@ class IntrinsicWidthNodeMapper extends SubClassMapperBase<IntrinsicWidthNode> {
   @override
   final String id = 'IntrinsicWidthNode';
 
+  static String? _$name(IntrinsicWidthNode v) => v.name;
+  static const Field<IntrinsicWidthNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static SNode? _$child(IntrinsicWidthNode v) => v.child;
   static const Field<IntrinsicWidthNode, SNode> _f$child = Field(
     'child',
@@ -34,6 +40,12 @@ class IntrinsicWidthNodeMapper extends SubClassMapperBase<IntrinsicWidthNode> {
   static const Field<IntrinsicWidthNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(IntrinsicWidthNode v) => v.tags;
+  static const Field<IntrinsicWidthNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(IntrinsicWidthNode v) =>
@@ -61,8 +73,10 @@ class IntrinsicWidthNodeMapper extends SubClassMapperBase<IntrinsicWidthNode> {
 
   @override
   final MappableFields<IntrinsicWidthNode> fields = const {
+    #name: _f$name,
     #child: _f$child,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -83,7 +97,10 @@ class IntrinsicWidthNodeMapper extends SubClassMapperBase<IntrinsicWidthNode> {
   ]);
 
   static IntrinsicWidthNode _instantiate(DecodingData data) {
-    return IntrinsicWidthNode(child: data.dec(_f$child));
+    return IntrinsicWidthNode(
+      name: data.dec(_f$name),
+      child: data.dec(_f$child),
+    );
   }
 
   @override
@@ -160,7 +177,7 @@ abstract class IntrinsicWidthNodeCopyWith<
   @override
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({SNode? child});
+  $R call({String? name, SNode? child});
   IntrinsicWidthNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -178,11 +195,17 @@ class _IntrinsicWidthNodeCopyWithImpl<$R, $Out>
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
-  $R call({Object? child = $none}) =>
-      $apply(FieldCopyWithData({if (child != $none) #child: child}));
+  $R call({Object? name = $none, Object? child = $none}) => $apply(
+    FieldCopyWithData({
+      if (name != $none) #name: name,
+      if (child != $none) #child: child,
+    }),
+  );
   @override
-  IntrinsicWidthNode $make(CopyWithData data) =>
-      IntrinsicWidthNode(child: data.get(#child, or: $value.child));
+  IntrinsicWidthNode $make(CopyWithData data) => IntrinsicWidthNode(
+    name: data.get(#name, or: $value.name),
+    child: data.get(#child, or: $value.child),
+  );
 
   @override
   IntrinsicWidthNodeCopyWith<$R2, IntrinsicWidthNode, $Out2> $chain<$R2, $Out2>(

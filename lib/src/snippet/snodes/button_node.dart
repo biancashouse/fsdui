@@ -1,11 +1,11 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/button_style_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
-import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
-import 'package:flutter_content/src/snippet/snodes/button_style_hook.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/button_style_pnodes.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/src/snippet/pnodes/groups/button_style_properties.dart';
+import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
+import 'package:fsdui/src/snippet/snodes/button_style_hook.dart';
 
 part 'button_node.mapper.dart';
 
@@ -32,6 +32,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   // CalloutConfig? calloutConfig;
 
   ButtonNode({
+    super.name,
     // this.destinationPanelOrPlaceholderName,
     // this.destinationSnippetName,
     this.destinationRoutePathSnippetName,
@@ -89,7 +90,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
                     : "/$newValue"),
               );
             },
-            options: fco.pageList,
+            options: fsdui.pageList,
             calloutButtonSize: const Size(240, 70),
             calloutWidth: 280,
           ),
@@ -139,7 +140,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
           });
         },
       ),
-      if (fco.handlers().isNotEmpty)
+      if (fsdui.handlers().isNotEmpty)
         StringPNode(
           snode: this,
           name: 'onTapHandlerName',
@@ -165,7 +166,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
     
   ) {
     if (onTapHandlerName != null) {
-      fco.namedCallbacks[onTapHandlerName!]?.call(context, gk);
+      fsdui.namedCallbacks[onTapHandlerName!]?.call(context, gk);
     }
     // else if (cid != null) {
     //   // possible callout

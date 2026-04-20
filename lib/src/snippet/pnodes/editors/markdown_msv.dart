@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/markdown_editor/markdown_editor.dart';
-// import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:markdown_editor_live/markdown_editor_live.dart';
 import 'package:multi_split_view/multi_split_view.dart';
 import 'package:markdown_widget/markdown_widget.dart';
 
@@ -36,5 +34,5 @@ class MarkdownMSV extends StatelessWidget {
   }
 
   Widget _markdownEditorArea(String rawMarkdownText, onChangeF) =>
-      MarkdownEditor(originalMarkdown: rawMarkdownText, onChangeF: (s) {onChangeF.call(s);});
+      MarkdownEditor(initialValue: rawMarkdownText, onChanged: (s) {onChangeF.call(s);});
 }

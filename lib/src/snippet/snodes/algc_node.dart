@@ -3,9 +3,9 @@ import 'dart:convert';
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/algc/widgets/flowchart_widget.dart';
-import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/algc/widgets/flowchart_widget.dart';
+import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
 import 'package:http/http.dart' as http;
 
 part 'algc_node.mapper.dart';
@@ -17,6 +17,7 @@ class AlgCNode extends CL with AlgCNodeMappable {
   String? flowchartJsonString;
 
   AlgCNode({
+    super.name,
     this.fbUid,
     this.fId,
     this.flowchartJsonString,
@@ -72,7 +73,7 @@ class AlgCNode extends CL with AlgCNodeMappable {
       ];
 
   @override
-  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
+  Widget build(BuildContext context, SNode? parentNode,
       ) {
     setParent(parentNode); // propagating parents down from root
 
@@ -142,7 +143,7 @@ class AlgCNode extends CL with AlgCNodeMappable {
     final bodyMap = {"user-id": fbUID, "fid": fid};
     final body = json.encode(bodyMap);
     final response = await http.Client().post(
-      Uri.parse('${fco.gcrServerUrl}/algc/bytes'),
+      Uri.parse('${fsdui.gcrServerUrl}/algc/bytes'),
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -158,7 +159,7 @@ class AlgCNode extends CL with AlgCNodeMappable {
 
   @override
   Widget? widgetLogo() => Image.asset(
-        fco.asset('lib/assets/images/pub.dev.png'),
+        fsdui.asset('lib/assets/images/pub.dev.png'),
         width: 16,
       );
 

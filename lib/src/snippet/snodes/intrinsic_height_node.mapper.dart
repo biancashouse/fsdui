@@ -25,6 +25,12 @@ class IntrinsicHeightNodeMapper
   @override
   final String id = 'IntrinsicHeightNode';
 
+  static String? _$name(IntrinsicHeightNode v) => v.name;
+  static const Field<IntrinsicHeightNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static SNode? _$child(IntrinsicHeightNode v) => v.child;
   static const Field<IntrinsicHeightNode, SNode> _f$child = Field(
     'child',
@@ -35,6 +41,12 @@ class IntrinsicHeightNodeMapper
   static const Field<IntrinsicHeightNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(IntrinsicHeightNode v) => v.tags;
+  static const Field<IntrinsicHeightNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(
@@ -63,8 +75,10 @@ class IntrinsicHeightNodeMapper
 
   @override
   final MappableFields<IntrinsicHeightNode> fields = const {
+    #name: _f$name,
     #child: _f$child,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -85,7 +99,10 @@ class IntrinsicHeightNodeMapper
   ]);
 
   static IntrinsicHeightNode _instantiate(DecodingData data) {
-    return IntrinsicHeightNode(child: data.dec(_f$child));
+    return IntrinsicHeightNode(
+      name: data.dec(_f$name),
+      child: data.dec(_f$child),
+    );
   }
 
   @override
@@ -161,7 +178,7 @@ abstract class IntrinsicHeightNodeCopyWith<
   @override
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({SNode? child});
+  $R call({String? name, SNode? child});
   IntrinsicHeightNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -179,11 +196,17 @@ class _IntrinsicHeightNodeCopyWithImpl<$R, $Out>
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
-  $R call({Object? child = $none}) =>
-      $apply(FieldCopyWithData({if (child != $none) #child: child}));
+  $R call({Object? name = $none, Object? child = $none}) => $apply(
+    FieldCopyWithData({
+      if (name != $none) #name: name,
+      if (child != $none) #child: child,
+    }),
+  );
   @override
-  IntrinsicHeightNode $make(CopyWithData data) =>
-      IntrinsicHeightNode(child: data.get(#child, or: $value.child));
+  IntrinsicHeightNode $make(CopyWithData data) => IntrinsicHeightNode(
+    name: data.get(#name, or: $value.name),
+    child: data.get(#child, or: $value.child),
+  );
 
   @override
   IntrinsicHeightNodeCopyWith<$R2, IntrinsicHeightNode, $Out2>

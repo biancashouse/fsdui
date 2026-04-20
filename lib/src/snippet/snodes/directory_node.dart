@@ -1,12 +1,12 @@
 // ignore_for_file: constant_identifier_names
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/fancy_tree/tree_controller.dart';
-import 'package:flutter_content/src/snippet/fancy_tree/tree_indentation.dart';
-import 'package:flutter_content/src/snippet/fancy_tree/tree_view.dart';
-import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
-import 'package:flutter_content/src/snippet/snodes/widget/directory_tree_node_widget.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/fancy_tree/tree_controller.dart';
+import 'package:fsdui/src/snippet/fancy_tree/tree_indentation.dart';
+import 'package:fsdui/src/snippet/fancy_tree/tree_view.dart';
+import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
+import 'package:fsdui/src/snippet/snodes/widget/directory_tree_node_widget.dart';
 
 part 'directory_node.mapper.dart';
 
@@ -38,16 +38,16 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     try {
-      SnippetBuilderState? ss = SnippetBuilder.of(context);
-      if (!(ss?.mounted ?? false)) {
-        return Error(
-          key: createNodeWidgetGK(),
-          "FlowchartWidget",
-          color: Colors.green,
-          size: 16,
-          errorMsg: "SnippetPanel.of(context) not mounted!",
-        );
-      }
+      // SnippetBuilderState? ss = SnippetBuilder.of(context);
+      // if (!(ss?.mounted ?? false)) {
+      //   return Error(
+      //     key: createNodeWidgetGK(),
+      //     "FlowchartWidget",
+      //     color: Colors.green,
+      //     size: 16,
+      //     errorMsg: "SnippetPanel.of(context) not mounted!",
+      //   );
+      // }
 
       // TreeController<Node> treeC = FCO.capiBloc.state.directoryTreeCMap[ss!.widget.sName] = TreeController<Node>(
       SnippetTreeController treeC = SnippetTreeController(
@@ -122,7 +122,7 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
                   Text(childNode.name ?? ''),
                 ],
               )
-            : (childNode as FileNode).buildFlutterWidget(context, this);
+            : (childNode as FileNode).build(context, this);
       }).toList(),
     );
   }
@@ -130,7 +130,6 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
   @override
   String toString() => FLUTTER_TYPE;
 
-  @override
   bool get is3rdParty => true;
 
   static const String FLUTTER_TYPE = "Directory";

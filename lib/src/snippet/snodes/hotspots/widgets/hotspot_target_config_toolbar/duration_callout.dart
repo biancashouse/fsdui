@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/model/base_target_model.dart';
-import 'package:flutter_content/src/model/quill_target_model.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/model/base_target_model.dart';
+import 'package:fsdui/src/model/quill_target_model.dart';
 
 import 'numeric_keypad.dart';
 
-bool isShowingTargetDurationCallout() => fco.anyPresent(["duration"]);
+bool isShowingTargetDurationCallout() => fsdui.anyPresent(["duration"]);
 
 void removeTargetDurationCallout() {
-  if (fco.anyPresent(["duration"])) {
-    fco.logger.i("removeStartTimeCallout");
-    fco.dismiss("duration");
+  if (fsdui.anyPresent(["duration"])) {
+    fsdui.logger.i("removeStartTimeCallout");
+    fsdui.dismiss("duration");
   }
 }
 
@@ -19,7 +19,7 @@ Future<void> showTargetDurationCallout({
   required TargetConfigModel tc,
   void Function(QuillTargetModel)? onTargetConfigChange,
 }) async {
-  fco.showOverlay(
+  fsdui.showOverlay(
     // targetGK: targetGK,
     calloutContent: NumericKeypad(
       label: 'onscreen duration (ms)',
@@ -28,7 +28,7 @@ Future<void> showTargetDurationCallout({
         tc.calloutDurationMs = int.tryParse(s) ?? 0;
         // only used by quill embeds
         onTargetConfigChange?.call(tc as QuillTargetModel);
-        fco.dismiss("duration");
+        fsdui.dismiss("duration");
       },
     ),
     calloutConfig: CalloutConfig(

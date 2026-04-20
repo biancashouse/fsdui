@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/fancy_tree/tree_controller.dart';
-import 'package:flutter_content/src/snippet/fancy_tree/tree_indentation.dart';
-import 'package:flutter_content/src/snippet/fancy_tree/tree_view.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/fancy_tree/tree_controller.dart';
+import 'package:fsdui/src/snippet/fancy_tree/tree_indentation.dart';
+import 'package:fsdui/src/snippet/fancy_tree/tree_view.dart';
 
 import 'clipboard_node_widget.dart';
 
@@ -15,8 +15,8 @@ class ClipboardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CAPIBloC bloc = fco.capiBloc;
-    SNode? clipboard = fco.appInfo.clipboard;
+    CAPIBloC bloc = fsdui.capiBloc;
+    SNode? clipboard = fsdui.appInfo.clipboard;
     if (clipboard == null) return const Offstage();
     SnippetTreeController clipboardTreeC = SnippetTreeController(
       roots: [clipboard],
@@ -66,7 +66,7 @@ class ClipboardView extends StatelessWidget {
             child: IconButton(
               tooltip: 'clear the clipboard',
               onPressed: () {
-                fco.hide("floating-clipboard");
+                fsdui.hide("floating-clipboard");
                 bloc.add(CAPIEvent.clearClipboard());
               },
               icon: const Icon(

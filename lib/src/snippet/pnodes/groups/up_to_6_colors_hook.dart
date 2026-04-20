@@ -3,7 +3,7 @@
 import 'dart:ui';
 
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 class UpTo6ColorsHook extends MappingHook {
   const UpTo6ColorsHook();

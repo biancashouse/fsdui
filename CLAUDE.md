@@ -39,7 +39,7 @@ Each SNode implements `toWidget()`, `propertyNodes()` (returns PNodes for editin
 
 **`PNode`** (`lib/src/snippet/pnode.dart`) — Property nodes represent editable properties of an SNode. ~108 types in `lib/src/snippet/pnodes/`. Three style groups aggregate related PNodes: `TextStyleProperties`, `ButtonStyleProperties`, `ContainerStyleProperties`.
 
-**`fco`** (`lib/flutter_content.dart`) — Global singleton of `FlutterContentMixins`. Acts as service locator: `fco.capiBloc`, `fco.appInfo`, `fco.modelRepo`, `fco.selectedNode`, `fco.showToast(...)`, etc. Composed from ~15 mixins.
+**`fco`** (`lib/fsdui.dart`) — Global singleton of `FlutterContentMixins`. Acts as service locator: `fco.capiBloc`, `fco.appInfo`, `fco.modelRepo`, `fco.selectedNode`, `fco.showToast(...)`, etc. Composed from ~15 mixins.
 
 **`CAPIBloC`** (`lib/src/bloc/capi_bloc.dart`) — Central BLoC managing all editor state: active snippet, selected node, undo/redo stack, authentication. Fire events via `fco.capiBloc.add(CAPIEvent.selectNode(node: node))`.
 
@@ -61,6 +61,6 @@ All `SNode`, `PNode`, and model classes use `dart_mappable`. Each annotated clas
 
 1. Create `lib/src/snippet/snodes/my_widget_node.dart` — extend `CL`, `SC`, or `MC`, annotate with `@MappableClass`, add `part 'my_widget_node.mapper.dart'`.
 2. Add to the appropriate list in `snode.dart`: `childlessSubClasses`, `singleChildSubClasses`, or `multiChildSubClasses`.
-3. Export from `lib/flutter_content.dart`.
+3. Export from `lib/fsdui.dart`.
 4. Add to the `menuAnchorWidgets_*` methods in `snode.dart` so it appears in the editor menus.
 5. Run `build_runner`.

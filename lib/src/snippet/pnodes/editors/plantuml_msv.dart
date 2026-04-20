@@ -9,8 +9,8 @@
 //         KeepOriginalNameUploadPolicy;
 // import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
-// import 'package:flutter_content/flutter_content.dart';
-// import 'package:flutter_content/src/snippet/snodes/widget/fs_uint8list_upload_btn.dart';
+// import 'package:fsdui/fsdui.dart';
+// import 'package:fsdui/src/snippet/snodes/widget/fs_uint8list_upload_btn.dart';
 // import 'package:http/http.dart' as http;
 // import 'package:multi_split_view/multi_split_view.dart';
 //

@@ -24,6 +24,12 @@ class SizedBoxNodeMapper extends SubClassMapperBase<SizedBoxNode> {
   @override
   final String id = 'SizedBoxNode';
 
+  static String? _$name(SizedBoxNode v) => v.name;
+  static const Field<SizedBoxNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static double? _$width(SizedBoxNode v) => v.width;
   static const Field<SizedBoxNode, double> _f$width = Field(
     'width',
@@ -54,6 +60,12 @@ class SizedBoxNodeMapper extends SubClassMapperBase<SizedBoxNode> {
     _$uid,
     mode: FieldMode.member,
   );
+  static List<String>? _$tags(SizedBoxNode v) => v.tags;
+  static const Field<SizedBoxNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(SizedBoxNode v) =>
       v.treeNodeGK;
   static const Field<SizedBoxNode, GlobalKey<State<StatefulWidget>>>
@@ -77,11 +89,13 @@ class SizedBoxNodeMapper extends SubClassMapperBase<SizedBoxNode> {
 
   @override
   final MappableFields<SizedBoxNode> fields = const {
+    #name: _f$name,
     #width: _f$width,
     #height: _f$height,
     #expand: _f$expand,
     #child: _f$child,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -103,6 +117,7 @@ class SizedBoxNodeMapper extends SubClassMapperBase<SizedBoxNode> {
 
   static SizedBoxNode _instantiate(DecodingData data) {
     return SizedBoxNode(
+      name: data.dec(_f$name),
       width: data.dec(_f$width),
       height: data.dec(_f$height),
       expand: data.dec(_f$expand),
@@ -175,7 +190,13 @@ abstract class SizedBoxNodeCopyWith<$R, $In extends SizedBoxNode, $Out>
   @override
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({double? width, double? height, bool? expand, SNode? child});
+  $R call({
+    String? name,
+    double? width,
+    double? height,
+    bool? expand,
+    SNode? child,
+  });
   SizedBoxNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -192,12 +213,14 @@ class _SizedBoxNodeCopyWithImpl<$R, $Out>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
   $R call({
+    Object? name = $none,
     Object? width = $none,
     Object? height = $none,
     Object? expand = $none,
     Object? child = $none,
   }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (width != $none) #width: width,
       if (height != $none) #height: height,
       if (expand != $none) #expand: expand,
@@ -206,6 +229,7 @@ class _SizedBoxNodeCopyWithImpl<$R, $Out>
   );
   @override
   SizedBoxNode $make(CopyWithData data) => SizedBoxNode(
+    name: data.get(#name, or: $value.name),
     width: data.get(#width, or: $value.width),
     height: data.get(#height, or: $value.height),
     expand: data.get(#expand, or: $value.expand),

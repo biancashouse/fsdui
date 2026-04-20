@@ -2,8 +2,8 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/main_axis_size_editor.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/editors/main_axis_size_editor.dart';
 
 part 'enum_main_axis_size.mapper.dart';
 
@@ -31,7 +31,7 @@ enum MainAxisSizeEnum {
         },
       );
 
-  Widget toMenuItem() => fco.coloredText(name, color: Colors.white);
+  Widget toMenuItem() => fsdui.coloredText(name, color: Colors.white);
 
   static MainAxisSizeEnum? of(int? index) => index != null ? MainAxisSizeEnum.values.elementAtOrNull(index) : null;
 }

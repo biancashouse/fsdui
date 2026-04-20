@@ -4,11 +4,11 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_ui_storage/firebase_ui_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_boxfit.dart';
-import 'package:flutter_content/src/snippet/pnodes/fs_image_path_node.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/enum_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_boxfit.dart';
+import 'package:fsdui/src/snippet/pnodes/fs_image_path_node.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'storage_image_node.mapper.dart';
@@ -41,6 +41,7 @@ class StorageImageNode extends CL with StorageImageNodeMappable {
   AlignmentEnum? alignment;
 
   StorageImageNode({
+    super.name,
     this.fsFullPath,
     this.fit,
     this.alignment,
@@ -65,7 +66,7 @@ class StorageImageNode extends CL with StorageImageNodeMappable {
         context,
         () => fsFullPath =
             newValue ??
-            'gs://${fco.firebaseOptions!.storageBucket}/flutter-content-pkg/missing-image.png',
+            'gs://${fsdui.firebaseOptions!.storageBucket}/flutter-content-pkg/missing-image.png',
       ),
       calloutButtonSize: const Size(280, 70),
     ),
@@ -130,7 +131,7 @@ class StorageImageNode extends CL with StorageImageNodeMappable {
         alignment: alignment?.alignment ?? Alignment.center,
         ref: FirebaseStorage.instance.ref(
           fsFullPath ??
-              'gs://${fco.firebaseOptions!.storageBucket}/flutter-content-pkg/missing-image.png',
+              'gs://${fsdui.firebaseOptions!.storageBucket}/flutter-content-pkg/missing-image.png',
         ),
       );
       return widget;
@@ -147,7 +148,7 @@ class StorageImageNode extends CL with StorageImageNodeMappable {
 
   @override
   Widget? widgetLogo() =>
-      Image.asset(fco.asset('lib/assets/images/pub.dev.png'), width: 16);
+      Image.asset(fsdui.asset('lib/assets/images/pub.dev.png'), width: 16);
 
   @override
   String toString() => FLUTTER_TYPE;

@@ -20,7 +20,7 @@ title: "[]{#_srql1m9xlux9 .anchor}Flutter Content Publishing"
 |                                   |                                   |
 +-----------------------------------+-----------------------------------+
 
-The **flutter_content** package has a dart API, a large collection of
+The **fsdui** package has a dart API, a large collection of
 widgets, and an accompanying ***devtools***-like UI for editing and
 publishing content in your flutter apps...
 

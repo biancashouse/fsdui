@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 class PropertyCalloutButton extends StatelessWidget {
   final CalloutId cId;
@@ -65,7 +65,7 @@ class PropertyCalloutButton extends StatelessWidget {
         opacity: .1,
         onTappedF: () async {
           // FCO.capiBloc.selectedNode?.hidePropertiesWhileDragging = false;
-          fco.dismiss(cId);
+          fsdui.dismiss(cId);
         },
       ),
       // containsTextField: true,
@@ -79,7 +79,7 @@ class PropertyCalloutButton extends StatelessWidget {
     // experiment
     return GestureDetector(
       onTap: (){
-        fco.showOverlay(
+        fsdui.showOverlay(
           calloutConfig: config,
           calloutContent: calloutContents(context),
           wrapInPointerInterceptor: true,
@@ -96,7 +96,7 @@ class PropertyCalloutButton extends StatelessWidget {
             // padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
             color: calloutButtonColor,
             alignment: alignment.alignment,
-            child: labelWidget ?? (label != null ? fco.coloredText(label!, color: Colors.white, ) : const Offstage()),
+            child: labelWidget ?? (label != null ? fsdui.coloredText(label!, color: Colors.white, ) : const Offstage()),
           ),
         ),
       ),
@@ -109,7 +109,7 @@ class PropertyCalloutButton extends StatelessWidget {
       targetChangedNotifier: notifier,
       targetBuilderF: (ctx) => GestureDetector(
         onTap: (){
-          fco.unhideParentCallout(ctx, animateSeparation: false);
+          fsdui.unhideParentCallout(ctx, animateSeparation: false);
         },
         child: MouseRegion(
           cursor: SystemMouseCursors.click,
@@ -122,7 +122,7 @@ class PropertyCalloutButton extends StatelessWidget {
               // padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
               color: calloutButtonColor,
               alignment: alignment.alignment,
-              child: labelWidget ?? (label != null ? fco.coloredText(label!, color: Colors.white, ) : const Offstage()),
+              child: labelWidget ?? (label != null ? fsdui.coloredText(label!, color: Colors.white, ) : const Offstage()),
             ),
           ),
         ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 class GoRouterObserver extends NavigatorObserver {
   @override
@@ -10,8 +10,8 @@ class GoRouterObserver extends NavigatorObserver {
   @override
   void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
     // fco.dismissAll();
-    if (fco.snippetBeingEdited != null) {
-      fco.capiBloc.add(PopSnippetEditor());
+    if (fsdui.snippetBeingEdited != null) {
+      fsdui.capiBloc.add(PopSnippetEditor());
     }
   }
 
@@ -19,8 +19,8 @@ class GoRouterObserver extends NavigatorObserver {
   void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) {
     // fco.logger.d('MyTest didRemove: $route');
     // fco.dismissAll();
-    if (fco.snippetBeingEdited != null) {
-      fco.capiBloc.add(PopSnippetEditor());
+    if (fsdui.snippetBeingEdited != null) {
+      fsdui.capiBloc.add(PopSnippetEditor());
     }
   }
 

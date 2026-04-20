@@ -1,8 +1,8 @@
-name: flutter_content
+name: fsdui
 description: Point stuff out for your users => Target, Transform, Configure Callouts, Record to JSON in Dev, and Play in Producton
 version: 6.0.0
 maintainer: Ian White
-homepage: https://github.com/biancashouse/flutter_content
+homepage: https://github.com/biancashouse/fsdui
 issue_tracker: https://github.com/flutter/flutter/issues?q=is%3Aissue+is%3Aopen+label%3A%22p%3A+flutter_adaptive_scaffold%22
 repository: https://github.com/biancashouse/flutter-content
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -131,7 +131,7 @@ dependencies:
 
 #  markdown: ^7.3.0
 #  flutter_markdown: ^0.7.2+1
-  markdown_widget: ^2.3.2+8
+#  markdown_widget: ^2.3.2+8
 #  flutter_markdown_plus: ^1.0.3
 #  font_awesome_flutter: ^10.8.0
 #  markdown_toolbar: ^0.5.0
@@ -144,6 +144,7 @@ dependencies:
 
   flutter_callouts:
     path: ../flutter_callouts
+  markdown_editor_live: ^0.6.0
 
 dev_dependencies:
   flutter_test:
@@ -178,5 +179,5 @@ flutter:
 
 cider:
   link_template:
-    tag: https://github.com/flutter_content/project/releases/tag/%tag% # initial release link template
-    diff: https://github.com/flutter_content/project/compare/%from%...%to% # subsequent releases link template
+    tag: https://github.com/fsdui/project/releases/tag/%tag% # initial release link template
+    diff: https://github.com/fsdui/project/compare/%from%...%to% # subsequent releases link template

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/text_styles/style_name_editor.dart';
-import 'package:flutter_content/src/text_styles/text_style_suggestions.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/text_styles/style_name_editor.dart';
+import 'package:fsdui/src/text_styles/text_style_suggestions.dart';
 
 class TextStyleNameSearchAnchor extends StatefulWidget {
   final CalloutId? parentCId;
@@ -23,11 +23,11 @@ class TextStyleNameSearchAnchor extends StatefulWidget {
 
   static TextStyleNameSearchAnchorState? of(BuildContext context) {
     if (!context.mounted) {
-      fco.logger.i('context not mounted!');
+      fsdui.logger.i('context not mounted!');
     }
     var result = context.findAncestorStateOfType<TextStyleNameSearchAnchorState>();
     if (result == null) {
-      fco.logger.i('SearchAnchor not found!');
+      fsdui.logger.i('SearchAnchor not found!');
     }
     return result;
   }
@@ -50,7 +50,7 @@ class TextStyleNameSearchAnchorState extends State<TextStyleNameSearchAnchor> {
   void initState() {
     super.initState();
     madeASelection = false;
-    originalStyleName = fco.findTextStyleName(fco.appInfo, widget.textStyle);
+    originalStyleName = fsdui.findTextStyleName(fsdui.appInfo, widget.textStyle);
     searchStringTEC = TextEditingController(text: originalStyleName);
   }
 
@@ -65,7 +65,7 @@ class TextStyleNameSearchAnchorState extends State<TextStyleNameSearchAnchor> {
 
   @override
   Widget build(BuildContext context) {
-    fco.afterMsDelayDo(50, () {
+    fsdui.afterMsDelayDo(50, () {
       focusNode.requestFocus();
     });
     return TapRegion(
@@ -95,7 +95,7 @@ class TextStyleNameSearchAnchorState extends State<TextStyleNameSearchAnchor> {
 
   void showSuggestionsOverlay() {
     if (entry == null) {
-      fco.logger.d('showSuggestionsOverlay()');
+      fsdui.logger.d('showSuggestionsOverlay()');
       final renderBox = context.findRenderObject() as RenderBox;
       final offset = renderBox.localToGlobal(Offset.zero);
       entry = OverlayEntry(builder: (_) {
@@ -110,17 +110,17 @@ class TextStyleNameSearchAnchorState extends State<TextStyleNameSearchAnchor> {
             child: TextStyleNameSuggestions(
               anchorContext: context,
               searchString: searchStringTEC.text, //widget.textStyle.lastSearchString??'',
-              suggestions: fco.namedTextStyles.keys.toList(),
+              suggestions: fsdui.namedTextStyles.keys.toList(),
               onHoverF: (hoveredTextStyleName) {
                 if (widget.textStyle.lastHoveredSuggestion != hoveredTextStyleName) {
                   widget.debouncer.run(() {
-                    if (widget.parentCId == null || fco.anyPresent([
+                    if (widget.parentCId == null || fsdui.anyPresent([
                       widget.parentCId!
                     ])) {
                       setState(() {
-                        fco.logger.d('onHoverF - suggestedTextStyleName = $hoveredTextStyleName');
+                        fsdui.logger.d('onHoverF - suggestedTextStyleName = $hoveredTextStyleName');
                         widget.textStyle.lastHoveredSuggestion = hoveredTextStyleName;
-                        fco.afterNextBuildDo(() {
+                        fsdui.afterNextBuildDo(() {
                           widget.onHoveredF(hoveredTextStyleName);
                         });
                       });
@@ -130,14 +130,14 @@ class TextStyleNameSearchAnchorState extends State<TextStyleNameSearchAnchor> {
               },
               onSelectionF: (selectedTextStyleName) {
                 setState(() {
-                  fco.logger.d('onSelectionF - suggestedTextStyleName = $selectedTextStyleName');
+                  fsdui.logger.d('onSelectionF - suggestedTextStyleName = $selectedTextStyleName');
                   madeASelection = true;
                   widget.debouncer.cancel();
                   // widget.searchStringTEC.text = suggestedTextStyleName;
                   widget.onSelectionF(selectedTextStyleName);
                   dismissSuggestionsOverlay();
                   if (widget.parentCId != null) {
-                    fco.dismiss(widget.parentCId!);
+                    fsdui.dismiss(widget.parentCId!);
                   }
                 });
               },
@@ -147,7 +147,7 @@ class TextStyleNameSearchAnchorState extends State<TextStyleNameSearchAnchor> {
       });
       Overlay.of(context).insert(entry!);
     } else {
-      fco.logger.d('showSuggestionsOverlay() SKIPPED');
+      fsdui.logger.d('showSuggestionsOverlay() SKIPPED');
     }
   }
 

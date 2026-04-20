@@ -1,9 +1,9 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/bool_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/bool_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'sizedbox_node.mapper.dart';
 
@@ -13,7 +13,7 @@ class SizedBoxNode extends SC with SizedBoxNodeMappable {
   double? height;
   bool? expand;
 
-  SizedBoxNode({this.width, this.height, this.expand, super.child});
+  SizedBoxNode({super.name, this.width, this.height, this.expand, super.child});
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
@@ -76,14 +76,14 @@ class SizedBoxNode extends SC with SizedBoxNodeMappable {
       return expand??false
           ? SizedBox.expand(
         key: createNodeWidgetGK(),
-        child: child?.buildFlutterWidget(context, this),
+        child: child?.build(context, this),
       )
           : SizedBox(
         // key: targetGK,
         key: createNodeWidgetGK(),
         width: width,
         height: height,
-        child: child?.buildFlutterWidget(context, this),
+        child: child?.build(context, this),
       );
     } catch (e) {
       print(e);

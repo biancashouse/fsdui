@@ -160,7 +160,7 @@
                       "flex": 2,
                       "fit": "loose",
                       "child": {
-                        "deltaJsonString": "[{\"insert\":\"We also make it easy for you to create and publish content in your apps via our \",\"attributes\":{\"size\":\"huge\"}},{\"insert\":\"flutter_content\",\"attributes\":{\"size\":\"huge\",\"color\":\"#FF2196F3\",\"bold\":true,\"link\":\"http://biancashouse.com/flutter-content-demo\"}},{\"insert\":\" package. \",\"attributes\":{\"size\":\"huge\"}},{\"insert\":\"(In fact, this website is built from these packages.)\",\"attributes\":{\"size\":\"large\"}},{\"insert\":\"\\n\"}]",
+                        "deltaJsonString": "[{\"insert\":\"We also make it easy for you to create and publish content in your apps via our \",\"attributes\":{\"size\":\"huge\"}},{\"insert\":\"fsdui\",\"attributes\":{\"size\":\"huge\",\"color\":\"#FF2196F3\",\"bold\":true,\"link\":\"http://biancashouse.com/flutter-content-demo\"}},{\"insert\":\" package. \",\"attributes\":{\"size\":\"huge\"}},{\"insert\":\"(In fact, this website is built from these packages.)\",\"attributes\":{\"size\":\"large\"}},{\"insert\":\"\\n\"}]",
                         "DK:snode": "CL",
                         "DK:cl": "QuillTextNode"
                       },

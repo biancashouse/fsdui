@@ -23,6 +23,12 @@ class AlgCNodeMapper extends SubClassMapperBase<AlgCNode> {
   @override
   final String id = 'AlgCNode';
 
+  static String? _$name(AlgCNode v) => v.name;
+  static const Field<AlgCNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static String? _$fbUid(AlgCNode v) => v.fbUid;
   static const Field<AlgCNode, String> _f$fbUid = Field(
     'fbUid',
@@ -41,6 +47,12 @@ class AlgCNodeMapper extends SubClassMapperBase<AlgCNode> {
   static const Field<AlgCNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(AlgCNode v) => v.tags;
+  static const Field<AlgCNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(AlgCNode v) =>
@@ -66,10 +78,12 @@ class AlgCNodeMapper extends SubClassMapperBase<AlgCNode> {
 
   @override
   final MappableFields<AlgCNode> fields = const {
+    #name: _f$name,
     #fbUid: _f$fbUid,
     #fId: _f$fId,
     #flowchartJsonString: _f$flowchartJsonString,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -91,6 +105,7 @@ class AlgCNodeMapper extends SubClassMapperBase<AlgCNode> {
 
   static AlgCNode _instantiate(DecodingData data) {
     return AlgCNode(
+      name: data.dec(_f$name),
       fbUid: data.dec(_f$fbUid),
       fId: data.dec(_f$fId),
       flowchartJsonString: data.dec(_f$flowchartJsonString),
@@ -155,7 +170,12 @@ extension AlgCNodeValueCopy<$R, $Out> on ObjectCopyWith<$R, AlgCNode, $Out> {
 abstract class AlgCNodeCopyWith<$R, $In extends AlgCNode, $Out>
     implements CLCopyWith<$R, $In, $Out> {
   @override
-  $R call({String? fbUid, String? fId, String? flowchartJsonString});
+  $R call({
+    String? name,
+    String? fbUid,
+    String? fId,
+    String? flowchartJsonString,
+  });
   AlgCNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -169,11 +189,13 @@ class _AlgCNodeCopyWithImpl<$R, $Out>
       AlgCNodeMapper.ensureInitialized();
   @override
   $R call({
+    Object? name = $none,
     Object? fbUid = $none,
     Object? fId = $none,
     Object? flowchartJsonString = $none,
   }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (fbUid != $none) #fbUid: fbUid,
       if (fId != $none) #fId: fId,
       if (flowchartJsonString != $none)
@@ -182,6 +204,7 @@ class _AlgCNodeCopyWithImpl<$R, $Out>
   );
   @override
   AlgCNode $make(CopyWithData data) => AlgCNode(
+    name: data.get(#name, or: $value.name),
     fbUid: data.get(#fbUid, or: $value.fbUid),
     fId: data.get(#fId, or: $value.fId),
     flowchartJsonString: data.get(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 import 'hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
 
@@ -25,7 +25,7 @@ class TargetCover extends StatelessWidget {
     //   HotspotCalloutConfigToolbar.CID,
     // ], includeHidden: true);
 
-    return fco.aSnippetIsBeingEdited || !fco.canEditAnyContent()
+    return fsdui.aSnippetIsBeingEdited || !fsdui.canEditAnyContent()
         ? CircleAvatar(
             backgroundColor: const Color.fromRGBO(0, 0, 0, .01),
             radius: tc.targetRadius(wrapperState),
@@ -44,24 +44,24 @@ class TargetCover extends StatelessWidget {
   }
 
   void _targetCoverTapped(BuildContext context) {
-    if (fco.snippetBeingEdited != null) {
+    if (fsdui.snippetBeingEdited != null) {
       return;
     }
 
-    if (tc.hasABtn() && !fco.anyPresent([HotspotTargetConfigToolbar.CID])) {
-      fco.showToast(
+    if (tc.hasABtn() && !fsdui.anyPresent([HotspotTargetConfigToolbar.CID])) {
+      fsdui.showToast(
         textColor: Colors.purple,
         bgColor: Colors.lightGreenAccent,
         msg:
             "\nTap this target's hotspot instead\n(or double-tap to configure it's callout)\n",
         removeAfterMs: 5000,
-        width: fco.scrW * .4,
+        width: fsdui.scrW * .4,
       );
       return;
     }
 
-    if (fco.anyPresent([tc.contentCId]) && fco.canEditAnyContent()) {
-      fco.dismiss(tc.contentCId);
+    if (fsdui.anyPresent([tc.contentCId]) && fsdui.canEditAnyContent()) {
+      fsdui.dismiss(tc.contentCId);
     } else {
       wrapperState.widget.parentNode.playList.toList()
         ..clear()
@@ -71,7 +71,7 @@ class TargetCover extends StatelessWidget {
   }
 
   void _targetCoverDoubleTapped(BuildContext context) {
-    if (fco.snippetBeingEdited != null) return;
+    if (fsdui.snippetBeingEdited != null) return;
     wrapperState.setPlayingOrEditingTc(
       tc,
       () => TargetsWrapper.configureTarget(context, tc, wrapperState),

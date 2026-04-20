@@ -2,14 +2,14 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/bool_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_text_align.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_text_direction.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_text_overflow.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/bool_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/enum_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_text_align.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_text_direction.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_text_overflow.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'rich_text_node.mapper.dart';
 
@@ -23,6 +23,7 @@ class RichTextNode extends CL with RichTextNodeMappable {
   InlineSpanNode text; //child
 
   RichTextNode({
+    super.name,
     this.textAlign,
     this.textDirection,
     this.softWrap,
@@ -95,7 +96,7 @@ class RichTextNode extends CL with RichTextNodeMappable {
       );
       return rt;
     } catch (e) {
-      fco.logger.i('cannot render $FLUTTER_TYPE!');
+      fsdui.logger.i('cannot render $FLUTTER_TYPE!');
       return Error(key: createNodeWidgetGK(), FLUTTER_TYPE,
           color: Colors.red, size: 16, errorMsg: e.toString());
     }

@@ -1,11 +1,11 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/bool_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/edge_insets_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/bool_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/edge_insets_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/enum_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'singlechildscrollview_node.mapper.dart';
@@ -18,6 +18,7 @@ class SingleChildScrollViewNode extends SC
   EdgeInsetsValue? padding;
 
   SingleChildScrollViewNode({
+    super.name,
     this.scrollDirection,
     this.padding,
       // if not supplied, creates its own named scroll controller
@@ -80,7 +81,7 @@ class SingleChildScrollViewNode extends SC
         // controller: sc,
         // key: targetGK,
         padding: padding?.toEdgeInsets(),
-        child: child?.buildFlutterWidget(context, this),
+        child: child?.build(context, this),
       );
     } catch (e) {
       return Error(

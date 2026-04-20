@@ -3,10 +3,10 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
-import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/colour_picker_tool.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/editors/property_button_enum.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
+import 'package:fsdui/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/colour_picker_tool.dart';
 
 import 'duration_callout.dart';
 import 'more_callout_settings.dart';
@@ -60,7 +60,7 @@ class HotspotTargetConfigToolbarState
           if (widget.tc.hasABtn())
             Column(
               children: [
-                fco.coloredText('zoom', color: Colors.white70),
+                fsdui.coloredText('zoom', color: Colors.white70),
                 Tooltip(
                   message: 'edit the zoom...',
                   child: SizedBox(
@@ -103,7 +103,7 @@ class HotspotTargetConfigToolbarState
             const VerticalDivider(color: Colors.white, width: 2),
           Column(
             children: [
-              fco.coloredText('target size', color: Colors.white70),
+              fsdui.coloredText('target size', color: Colors.white70),
               Tooltip(
                 message: 'resize the circular target radius...',
                 child: SizedBox(
@@ -208,9 +208,9 @@ class HotspotTargetConfigToolbarState
                   // fco.afterNextBuildDo(() {
                   //   widget.onParentBarrierTappedF.call();
                   //   fco.refreshOverlay(widget.tc.snippetName, f: () {});
-                  fco.dismiss('color-picker');
+                  fsdui.dismiss('color-picker');
                   // widget.tc.closeThenReopenContentCallout(widget.wrapperState);
-                  fco.refresh(widget.tc.contentCId);
+                  fsdui.refresh(widget.tc.contentCId);
                 },
               );
 
@@ -258,7 +258,7 @@ class HotspotTargetConfigToolbarState
                   .toList(),
               originalEnumIndex: widget.tc.calloutDecorationShapeEnum?.index,
               onChangeF: (newIndex) {
-                fco.dismiss('shape');
+                fsdui.dismiss('shape');
                 widget.tc.calloutDecorationShapeEnum =
                     DecorationShapeEnum.of(newIndex) ??
                     DecorationShapeEnum.rectangle;
@@ -270,14 +270,14 @@ class HotspotTargetConfigToolbarState
                   color1: ColorModel.grey(),
                 );
                 widget.tc.calloutBorderThickness = 2;
-                SnippetRootNode? rootNode = widget
+                SNode? rootNode = widget
                     .wrapperState
                     .widget
                     .parentNode
                     .rootNodeOfSnippet();
                 if (rootNode == null) return;
                 // fco.modelRepo.saveNewVersionOfSnippet(rootNode);
-                fco.appInfo.cachedSnippetInfo(rootNode.name)?.notifyChange(rootNode);
+                fsdui.appInfo.cachedSnippetInfo(rootNode.name!)?.notifyChange(rootNode);
                 widget.tc.closeThenReopenContentCallout(widget.wrapperState);
                 // fco.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
                 // fco.afterNextBuildDo(() {
@@ -312,12 +312,12 @@ class HotspotTargetConfigToolbarState
             tooltip: 'delete this target.',
             icon: const Icon(Icons.delete, color: Colors.orangeAccent),
             onPressed: () {
-              SnippetRootNode? rootNode = widget.wrapperState.widget.parentNode
+              SNode? rootNode = widget.wrapperState.widget.parentNode
                   .rootNodeOfSnippet();
               if (rootNode == null) return;
               widget.wrapperState.widget.parentNode.targets.remove(widget.tc);
               // fco.modelRepo.saveNewVersionOfSnippet(rootNode);
-              fco.appInfo.cachedSnippetInfo(rootNode.name)?.notifyChange(rootNode);
+              fsdui.appInfo.cachedSnippetInfo(rootNode.name!)?.notifyChange(rootNode);
 
               // fco.cacheAndSaveANewSnippetVersion(
               //   snippetName: rootNode.name, // widget.tc.snippetName,
@@ -344,13 +344,13 @@ class HotspotTargetConfigToolbarState
 
   Widget toolbarVFlipIcon() => IconButton(
     onPressed: () {
-      fco.dismiss(HotspotTargetConfigToolbar.CID, skipOnDismiss: true);
-      fco.calloutConfigToolbarAtTopOfScreen =
-          !fco.calloutConfigToolbarAtTopOfScreen;
+      fsdui.dismiss(HotspotTargetConfigToolbar.CID, skipOnDismiss: true);
+      fsdui.calloutConfigToolbarAtTopOfScreen =
+          !fsdui.calloutConfigToolbarAtTopOfScreen;
       widget.tc.showConfigToolbar(widget.wrapperState);
     },
     icon: Icon(
-      fco.calloutConfigToolbarAtTopOfScreen
+      fsdui.calloutConfigToolbarAtTopOfScreen
           ? Icons.arrow_downward
           : Icons.arrow_upward,
       color: Colors.white70,
@@ -400,7 +400,7 @@ class HotspotTargetConfigToolbarState
   void showTargetColorTool({required ColorPickedCallback onColorPickedF}) {
     // GlobalKey? targetGK = widget.tc.gk;
 
-    fco.showOverlay(
+    fsdui.showOverlay(
       // targetGK: targetGK,
       calloutConfig: CalloutConfig(
         cId: 'color-picker',

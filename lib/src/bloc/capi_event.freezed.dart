@@ -61,7 +61,7 @@ extension CAPIEventPatterns on CAPIEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( SignedInAsSuperEditor value)?  signedInAsSuperEditor,TResult Function( SignedInAsArticleEditor value)?  signedInAsArticleEditor,TResult Function( SignedInAsGuestEditor value)?  signedInAsGuestEditor,TResult Function( SignedOut value)?  signedOut,TResult Function( OverrideTargetGK value)?  overrideTargetGK,TResult Function( ForceRefresh value)?  forceRefresh,TResult Function( ToggleSnippetVisibility value)?  toggleSnippetVisibility,TResult Function( ClearClipboard value)?  clearClipboard,TResult Function( PublishSnippet value)?  publishSnippet,TResult Function( RevertSnippet value)?  revertSnippet,TResult Function( DeletePage value)?  deletePage,TResult Function( ToggleAutoPublishingOfSnippet value)?  toggleAutoPublishingOfSnippet,TResult Function( AutoPublishDefault value)?  autoPublishDefault,TResult Function( SetPanelSnippet value)?  setPanelOrPlaceholderSnippet,TResult Function( EnterSelectWidgetMode value)?  enterNodeSelectionMode,TResult Function( UpdateTappableRects value)?  updateTappableRects,TResult Function( ExitSelectWidgetMode value)?  exitNodeSelectionMode,TResult Function( PushSnippetEditor value)?  pushSnippetEditor,TResult Function( ChangedSnippet value)?  changedSnippet,TResult Function( PopSnippetEditor value)?  popSnippetEditor,TResult Function( ShowDirectoryTree value)?  showDirectoryTree,TResult Function( RemoveDirectoryTree value)?  removeDirectoryTree,TResult Function( SelectNode value)?  selectNode,TResult Function( ClearNodeSelection value)?  clearNodeSelection,TResult Function( SaveNodeAsSnippet value)?  saveNodeAsSnippet,TResult Function( ReplaceSelectionWith value)?  replaceSelectionWith,TResult Function( WrapSelectionWith value)?  wrapSelectionWith,TResult Function( AppendChild value)?  appendChild,TResult Function( AddSiblingBefore value)?  addSiblingBefore,TResult Function( AddSiblingAfter value)?  addSiblingAfter,TResult Function( PasteReplacement value)?  pasteReplacement,TResult Function( PasteChild value)?  pasteChild,TResult Function( PasteSiblingBefore value)?  pasteSiblingBefore,TResult Function( PasteSiblingAfter value)?  pasteSiblingAfter,TResult Function( DeleteNodeTapped value)?  deleteNodeTapped,TResult Function( CompleteDeletion value)?  completeDeletion,TResult Function( CopySnippetJsonToClipboard value)?  copySnippetJsonToClipboard,TResult Function( ReplaceSnippetFromJson value)?  replaceSnippetFromJson,TResult Function( CopyNode value)?  copyNode,TResult Function( CutNode value)?  cutNode,TResult Function( SelectedDirectoryOrNode value)?  selectedDirectoryOrNode,TResult Function( ImageChanged value)?  imageChanged,TResult Function( Undo value)?  undo,TResult Function( Redo value)?  redo,TResult Function( ForceSnippetRefresh value)?  forceSnippetRefresh,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( SignedInAsSuperEditor value)?  signedInAsSuperEditor,TResult Function( SignedInAsArticleEditor value)?  signedInAsArticleEditor,TResult Function( SignedInAsGuestEditor value)?  signedInAsGuestEditor,TResult Function( SignedOut value)?  signedOut,TResult Function( OverrideTargetGK value)?  overrideTargetGK,TResult Function( ForceRefresh value)?  forceRefresh,TResult Function( ToggleSnippetVisibility value)?  toggleSnippetVisibility,TResult Function( ClearClipboard value)?  clearClipboard,TResult Function( PublishSnippet value)?  publishSnippet,TResult Function( RevertSnippet value)?  revertSnippet,TResult Function( DeletePage value)?  deletePage,TResult Function( ToggleAutoPublishingOfSnippet value)?  toggleAutoPublishingOfSnippet,TResult Function( AutoPublishDefault value)?  autoPublishDefault,TResult Function( SetPanelSnippet value)?  setPanelOrPlaceholderSnippet,TResult Function( EnterSelectWidgetMode value)?  enterNodeSelectionMode,TResult Function( UpdateTappableRects value)?  updateTappableRects,TResult Function( ExitSelectWidgetMode value)?  exitNodeSelectionMode,TResult Function( PushSnippetEditor value)?  pushSnippetEditor,TResult Function( ChangedSnippet value)?  changedSnippet,TResult Function( PopSnippetEditor value)?  popSnippetEditor,TResult Function( ShowDirectoryTree value)?  showDirectoryTree,TResult Function( RemoveDirectoryTree value)?  removeDirectoryTree,TResult Function( SelectNode value)?  selectNode,TResult Function( ClearNodeSelection value)?  clearNodeSelection,TResult Function( SaveNodeAsSnippet value)?  saveNodeAsSnippet,TResult Function( ReplaceSelectionWith value)?  replaceSelectionWith,TResult Function( WrapSelectionWith value)?  wrapSelectionWith,TResult Function( AppendChild value)?  appendChild,TResult Function( PrependArticle value)?  prependArticle,TResult Function( AddSiblingBefore value)?  addSiblingBefore,TResult Function( AddSiblingAfter value)?  addSiblingAfter,TResult Function( PasteReplacement value)?  pasteReplacement,TResult Function( PasteChild value)?  pasteChild,TResult Function( PasteSiblingBefore value)?  pasteSiblingBefore,TResult Function( PasteSiblingAfter value)?  pasteSiblingAfter,TResult Function( DeleteNodeTapped value)?  deleteNodeTapped,TResult Function( CompleteDeletion value)?  completeDeletion,TResult Function( CopySnippetJsonToClipboard value)?  copySnippetJsonToClipboard,TResult Function( ReplaceSnippetFromJson value)?  replaceSnippetFromJson,TResult Function( CopyNode value)?  copyNode,TResult Function( CutNode value)?  cutNode,TResult Function( SelectedDirectoryOrNode value)?  selectedDirectoryOrNode,TResult Function( ImageChanged value)?  imageChanged,TResult Function( Undo value)?  undo,TResult Function( Redo value)?  redo,TResult Function( ForceSnippetRefresh value)?  forceSnippetRefresh,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case SignedInAsSuperEditor() when signedInAsSuperEditor != null:
@@ -92,7 +92,8 @@ return clearNodeSelection(_that);case SaveNodeAsSnippet() when saveNodeAsSnippet
 return saveNodeAsSnippet(_that);case ReplaceSelectionWith() when replaceSelectionWith != null:
 return replaceSelectionWith(_that);case WrapSelectionWith() when wrapSelectionWith != null:
 return wrapSelectionWith(_that);case AppendChild() when appendChild != null:
-return appendChild(_that);case AddSiblingBefore() when addSiblingBefore != null:
+return appendChild(_that);case PrependArticle() when prependArticle != null:
+return prependArticle(_that);case AddSiblingBefore() when addSiblingBefore != null:
 return addSiblingBefore(_that);case AddSiblingAfter() when addSiblingAfter != null:
 return addSiblingAfter(_that);case PasteReplacement() when pasteReplacement != null:
 return pasteReplacement(_that);case PasteChild() when pasteChild != null:
@@ -127,7 +128,7 @@ return forceSnippetRefresh(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( SignedInAsSuperEditor value)  signedInAsSuperEditor,required TResult Function( SignedInAsArticleEditor value)  signedInAsArticleEditor,required TResult Function( SignedInAsGuestEditor value)  signedInAsGuestEditor,required TResult Function( SignedOut value)  signedOut,required TResult Function( OverrideTargetGK value)  overrideTargetGK,required TResult Function( ForceRefresh value)  forceRefresh,required TResult Function( ToggleSnippetVisibility value)  toggleSnippetVisibility,required TResult Function( ClearClipboard value)  clearClipboard,required TResult Function( PublishSnippet value)  publishSnippet,required TResult Function( RevertSnippet value)  revertSnippet,required TResult Function( DeletePage value)  deletePage,required TResult Function( ToggleAutoPublishingOfSnippet value)  toggleAutoPublishingOfSnippet,required TResult Function( AutoPublishDefault value)  autoPublishDefault,required TResult Function( SetPanelSnippet value)  setPanelOrPlaceholderSnippet,required TResult Function( EnterSelectWidgetMode value)  enterNodeSelectionMode,required TResult Function( UpdateTappableRects value)  updateTappableRects,required TResult Function( ExitSelectWidgetMode value)  exitNodeSelectionMode,required TResult Function( PushSnippetEditor value)  pushSnippetEditor,required TResult Function( ChangedSnippet value)  changedSnippet,required TResult Function( PopSnippetEditor value)  popSnippetEditor,required TResult Function( ShowDirectoryTree value)  showDirectoryTree,required TResult Function( RemoveDirectoryTree value)  removeDirectoryTree,required TResult Function( SelectNode value)  selectNode,required TResult Function( ClearNodeSelection value)  clearNodeSelection,required TResult Function( SaveNodeAsSnippet value)  saveNodeAsSnippet,required TResult Function( ReplaceSelectionWith value)  replaceSelectionWith,required TResult Function( WrapSelectionWith value)  wrapSelectionWith,required TResult Function( AppendChild value)  appendChild,required TResult Function( AddSiblingBefore value)  addSiblingBefore,required TResult Function( AddSiblingAfter value)  addSiblingAfter,required TResult Function( PasteReplacement value)  pasteReplacement,required TResult Function( PasteChild value)  pasteChild,required TResult Function( PasteSiblingBefore value)  pasteSiblingBefore,required TResult Function( PasteSiblingAfter value)  pasteSiblingAfter,required TResult Function( DeleteNodeTapped value)  deleteNodeTapped,required TResult Function( CompleteDeletion value)  completeDeletion,required TResult Function( CopySnippetJsonToClipboard value)  copySnippetJsonToClipboard,required TResult Function( ReplaceSnippetFromJson value)  replaceSnippetFromJson,required TResult Function( CopyNode value)  copyNode,required TResult Function( CutNode value)  cutNode,required TResult Function( SelectedDirectoryOrNode value)  selectedDirectoryOrNode,required TResult Function( ImageChanged value)  imageChanged,required TResult Function( Undo value)  undo,required TResult Function( Redo value)  redo,required TResult Function( ForceSnippetRefresh value)  forceSnippetRefresh,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( SignedInAsSuperEditor value)  signedInAsSuperEditor,required TResult Function( SignedInAsArticleEditor value)  signedInAsArticleEditor,required TResult Function( SignedInAsGuestEditor value)  signedInAsGuestEditor,required TResult Function( SignedOut value)  signedOut,required TResult Function( OverrideTargetGK value)  overrideTargetGK,required TResult Function( ForceRefresh value)  forceRefresh,required TResult Function( ToggleSnippetVisibility value)  toggleSnippetVisibility,required TResult Function( ClearClipboard value)  clearClipboard,required TResult Function( PublishSnippet value)  publishSnippet,required TResult Function( RevertSnippet value)  revertSnippet,required TResult Function( DeletePage value)  deletePage,required TResult Function( ToggleAutoPublishingOfSnippet value)  toggleAutoPublishingOfSnippet,required TResult Function( AutoPublishDefault value)  autoPublishDefault,required TResult Function( SetPanelSnippet value)  setPanelOrPlaceholderSnippet,required TResult Function( EnterSelectWidgetMode value)  enterNodeSelectionMode,required TResult Function( UpdateTappableRects value)  updateTappableRects,required TResult Function( ExitSelectWidgetMode value)  exitNodeSelectionMode,required TResult Function( PushSnippetEditor value)  pushSnippetEditor,required TResult Function( ChangedSnippet value)  changedSnippet,required TResult Function( PopSnippetEditor value)  popSnippetEditor,required TResult Function( ShowDirectoryTree value)  showDirectoryTree,required TResult Function( RemoveDirectoryTree value)  removeDirectoryTree,required TResult Function( SelectNode value)  selectNode,required TResult Function( ClearNodeSelection value)  clearNodeSelection,required TResult Function( SaveNodeAsSnippet value)  saveNodeAsSnippet,required TResult Function( ReplaceSelectionWith value)  replaceSelectionWith,required TResult Function( WrapSelectionWith value)  wrapSelectionWith,required TResult Function( AppendChild value)  appendChild,required TResult Function( PrependArticle value)  prependArticle,required TResult Function( AddSiblingBefore value)  addSiblingBefore,required TResult Function( AddSiblingAfter value)  addSiblingAfter,required TResult Function( PasteReplacement value)  pasteReplacement,required TResult Function( PasteChild value)  pasteChild,required TResult Function( PasteSiblingBefore value)  pasteSiblingBefore,required TResult Function( PasteSiblingAfter value)  pasteSiblingAfter,required TResult Function( DeleteNodeTapped value)  deleteNodeTapped,required TResult Function( CompleteDeletion value)  completeDeletion,required TResult Function( CopySnippetJsonToClipboard value)  copySnippetJsonToClipboard,required TResult Function( ReplaceSnippetFromJson value)  replaceSnippetFromJson,required TResult Function( CopyNode value)  copyNode,required TResult Function( CutNode value)  cutNode,required TResult Function( SelectedDirectoryOrNode value)  selectedDirectoryOrNode,required TResult Function( ImageChanged value)  imageChanged,required TResult Function( Undo value)  undo,required TResult Function( Redo value)  redo,required TResult Function( ForceSnippetRefresh value)  forceSnippetRefresh,}){
 final _that = this;
 switch (_that) {
 case SignedInAsSuperEditor():
@@ -158,7 +159,8 @@ return clearNodeSelection(_that);case SaveNodeAsSnippet():
 return saveNodeAsSnippet(_that);case ReplaceSelectionWith():
 return replaceSelectionWith(_that);case WrapSelectionWith():
 return wrapSelectionWith(_that);case AppendChild():
-return appendChild(_that);case AddSiblingBefore():
+return appendChild(_that);case PrependArticle():
+return prependArticle(_that);case AddSiblingBefore():
 return addSiblingBefore(_that);case AddSiblingAfter():
 return addSiblingAfter(_that);case PasteReplacement():
 return pasteReplacement(_that);case PasteChild():
@@ -192,7 +194,7 @@ return forceSnippetRefresh(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( SignedInAsSuperEditor value)?  signedInAsSuperEditor,TResult? Function( SignedInAsArticleEditor value)?  signedInAsArticleEditor,TResult? Function( SignedInAsGuestEditor value)?  signedInAsGuestEditor,TResult? Function( SignedOut value)?  signedOut,TResult? Function( OverrideTargetGK value)?  overrideTargetGK,TResult? Function( ForceRefresh value)?  forceRefresh,TResult? Function( ToggleSnippetVisibility value)?  toggleSnippetVisibility,TResult? Function( ClearClipboard value)?  clearClipboard,TResult? Function( PublishSnippet value)?  publishSnippet,TResult? Function( RevertSnippet value)?  revertSnippet,TResult? Function( DeletePage value)?  deletePage,TResult? Function( ToggleAutoPublishingOfSnippet value)?  toggleAutoPublishingOfSnippet,TResult? Function( AutoPublishDefault value)?  autoPublishDefault,TResult? Function( SetPanelSnippet value)?  setPanelOrPlaceholderSnippet,TResult? Function( EnterSelectWidgetMode value)?  enterNodeSelectionMode,TResult? Function( UpdateTappableRects value)?  updateTappableRects,TResult? Function( ExitSelectWidgetMode value)?  exitNodeSelectionMode,TResult? Function( PushSnippetEditor value)?  pushSnippetEditor,TResult? Function( ChangedSnippet value)?  changedSnippet,TResult? Function( PopSnippetEditor value)?  popSnippetEditor,TResult? Function( ShowDirectoryTree value)?  showDirectoryTree,TResult? Function( RemoveDirectoryTree value)?  removeDirectoryTree,TResult? Function( SelectNode value)?  selectNode,TResult? Function( ClearNodeSelection value)?  clearNodeSelection,TResult? Function( SaveNodeAsSnippet value)?  saveNodeAsSnippet,TResult? Function( ReplaceSelectionWith value)?  replaceSelectionWith,TResult? Function( WrapSelectionWith value)?  wrapSelectionWith,TResult? Function( AppendChild value)?  appendChild,TResult? Function( AddSiblingBefore value)?  addSiblingBefore,TResult? Function( AddSiblingAfter value)?  addSiblingAfter,TResult? Function( PasteReplacement value)?  pasteReplacement,TResult? Function( PasteChild value)?  pasteChild,TResult? Function( PasteSiblingBefore value)?  pasteSiblingBefore,TResult? Function( PasteSiblingAfter value)?  pasteSiblingAfter,TResult? Function( DeleteNodeTapped value)?  deleteNodeTapped,TResult? Function( CompleteDeletion value)?  completeDeletion,TResult? Function( CopySnippetJsonToClipboard value)?  copySnippetJsonToClipboard,TResult? Function( ReplaceSnippetFromJson value)?  replaceSnippetFromJson,TResult? Function( CopyNode value)?  copyNode,TResult? Function( CutNode value)?  cutNode,TResult? Function( SelectedDirectoryOrNode value)?  selectedDirectoryOrNode,TResult? Function( ImageChanged value)?  imageChanged,TResult? Function( Undo value)?  undo,TResult? Function( Redo value)?  redo,TResult? Function( ForceSnippetRefresh value)?  forceSnippetRefresh,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( SignedInAsSuperEditor value)?  signedInAsSuperEditor,TResult? Function( SignedInAsArticleEditor value)?  signedInAsArticleEditor,TResult? Function( SignedInAsGuestEditor value)?  signedInAsGuestEditor,TResult? Function( SignedOut value)?  signedOut,TResult? Function( OverrideTargetGK value)?  overrideTargetGK,TResult? Function( ForceRefresh value)?  forceRefresh,TResult? Function( ToggleSnippetVisibility value)?  toggleSnippetVisibility,TResult? Function( ClearClipboard value)?  clearClipboard,TResult? Function( PublishSnippet value)?  publishSnippet,TResult? Function( RevertSnippet value)?  revertSnippet,TResult? Function( DeletePage value)?  deletePage,TResult? Function( ToggleAutoPublishingOfSnippet value)?  toggleAutoPublishingOfSnippet,TResult? Function( AutoPublishDefault value)?  autoPublishDefault,TResult? Function( SetPanelSnippet value)?  setPanelOrPlaceholderSnippet,TResult? Function( EnterSelectWidgetMode value)?  enterNodeSelectionMode,TResult? Function( UpdateTappableRects value)?  updateTappableRects,TResult? Function( ExitSelectWidgetMode value)?  exitNodeSelectionMode,TResult? Function( PushSnippetEditor value)?  pushSnippetEditor,TResult? Function( ChangedSnippet value)?  changedSnippet,TResult? Function( PopSnippetEditor value)?  popSnippetEditor,TResult? Function( ShowDirectoryTree value)?  showDirectoryTree,TResult? Function( RemoveDirectoryTree value)?  removeDirectoryTree,TResult? Function( SelectNode value)?  selectNode,TResult? Function( ClearNodeSelection value)?  clearNodeSelection,TResult? Function( SaveNodeAsSnippet value)?  saveNodeAsSnippet,TResult? Function( ReplaceSelectionWith value)?  replaceSelectionWith,TResult? Function( WrapSelectionWith value)?  wrapSelectionWith,TResult? Function( AppendChild value)?  appendChild,TResult? Function( PrependArticle value)?  prependArticle,TResult? Function( AddSiblingBefore value)?  addSiblingBefore,TResult? Function( AddSiblingAfter value)?  addSiblingAfter,TResult? Function( PasteReplacement value)?  pasteReplacement,TResult? Function( PasteChild value)?  pasteChild,TResult? Function( PasteSiblingBefore value)?  pasteSiblingBefore,TResult? Function( PasteSiblingAfter value)?  pasteSiblingAfter,TResult? Function( DeleteNodeTapped value)?  deleteNodeTapped,TResult? Function( CompleteDeletion value)?  completeDeletion,TResult? Function( CopySnippetJsonToClipboard value)?  copySnippetJsonToClipboard,TResult? Function( ReplaceSnippetFromJson value)?  replaceSnippetFromJson,TResult? Function( CopyNode value)?  copyNode,TResult? Function( CutNode value)?  cutNode,TResult? Function( SelectedDirectoryOrNode value)?  selectedDirectoryOrNode,TResult? Function( ImageChanged value)?  imageChanged,TResult? Function( Undo value)?  undo,TResult? Function( Redo value)?  redo,TResult? Function( ForceSnippetRefresh value)?  forceSnippetRefresh,}){
 final _that = this;
 switch (_that) {
 case SignedInAsSuperEditor() when signedInAsSuperEditor != null:
@@ -223,7 +225,8 @@ return clearNodeSelection(_that);case SaveNodeAsSnippet() when saveNodeAsSnippet
 return saveNodeAsSnippet(_that);case ReplaceSelectionWith() when replaceSelectionWith != null:
 return replaceSelectionWith(_that);case WrapSelectionWith() when wrapSelectionWith != null:
 return wrapSelectionWith(_that);case AppendChild() when appendChild != null:
-return appendChild(_that);case AddSiblingBefore() when addSiblingBefore != null:
+return appendChild(_that);case PrependArticle() when prependArticle != null:
+return prependArticle(_that);case AddSiblingBefore() when addSiblingBefore != null:
 return addSiblingBefore(_that);case AddSiblingAfter() when addSiblingAfter != null:
 return addSiblingAfter(_that);case PasteReplacement() when pasteReplacement != null:
 return pasteReplacement(_that);case PasteChild() when pasteChild != null:
@@ -257,7 +260,7 @@ return forceSnippetRefresh(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  signedInAsSuperEditor,TResult Function()?  signedInAsArticleEditor,TResult Function()?  signedInAsGuestEditor,TResult Function()?  signedOut,TResult Function( String wName,  int index,  GlobalKey gk)?  overrideTargetGK,TResult Function( bool onlyTargetsWrappers)?  forceRefresh,TResult Function( SnippetName? snippetName)?  toggleSnippetVisibility,TResult Function()?  clearClipboard,TResult Function( SnippetName snippetName,  VersionId versionId)?  publishSnippet,TResult Function( SnippetName snippetName,  VersionId versionId)?  revertSnippet,TResult Function( String pathName)?  deletePage,TResult Function( SnippetName snippetName)?  toggleAutoPublishingOfSnippet,TResult Function( bool b)?  autoPublishDefault,TResult Function( SnippetName snippetName,  PanelName panelName)?  setPanelOrPlaceholderSnippet,TResult Function( SnippetName snippetName)?  enterNodeSelectionMode,TResult Function()?  updateTappableRects,TResult Function()?  exitNodeSelectionMode,TResult Function( SnippetRootNode rootNode,  SNode? selectedNode)?  pushSnippetEditor,TResult Function()?  changedSnippet,TResult Function( bool save)?  popSnippetEditor,TResult Function()?  showDirectoryTree,TResult Function( bool save)?  removeDirectoryTree,TResult Function( SNode node)?  selectNode,TResult Function()?  clearNodeSelection,TResult Function( SNode node,  String newSnippetName)?  saveNodeAsSnippet,TResult Function( Type? type,  SnippetName? snippetName,  SNode? testNode)?  replaceSelectionWith,TResult Function( Type? type,  SnippetName? snippetName,  SNode? testNode)?  wrapSelectionWith,TResult Function( Type? type,  SNode? testNode,  SnippetName? snippetName,  Type? widgetSpanChildType,  SNode? testWidgetSpanChildNode)?  appendChild,TResult Function( Type? type,  SnippetName? snippetName,  SNode? testNode)?  addSiblingBefore,TResult Function( Type? type,  SnippetName? snippetName,  SNode? testNode)?  addSiblingAfter,TResult Function( Type? widgetSpanChildType)?  pasteReplacement,TResult Function( Type? widgetSpanChildType,  SNode? testWidgetSpanChildNode)?  pasteChild,TResult Function()?  pasteSiblingBefore,TResult Function()?  pasteSiblingAfter,TResult Function()?  deleteNodeTapped,TResult Function()?  completeDeletion,TResult Function( SnippetRootNode rootNode)?  copySnippetJsonToClipboard,TResult Function( String snippetBeingReplaced,  String? snippetJson)?  replaceSnippetFromJson,TResult Function( SNode node)?  copyNode,TResult Function( SNode node)?  cutNode,TResult Function( SnippetName snippetName,  SNode? selectedNode)?  selectedDirectoryOrNode,TResult Function( Uint8List? newBytes)?  imageChanged,TResult Function()?  undo,TResult Function()?  redo,TResult Function()?  forceSnippetRefresh,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  signedInAsSuperEditor,TResult Function()?  signedInAsArticleEditor,TResult Function()?  signedInAsGuestEditor,TResult Function()?  signedOut,TResult Function( String wName,  int index,  GlobalKey gk)?  overrideTargetGK,TResult Function( bool onlyTargetsWrappers)?  forceRefresh,TResult Function( SnippetName? snippetName)?  toggleSnippetVisibility,TResult Function()?  clearClipboard,TResult Function( SnippetName snippetName,  VersionId versionId)?  publishSnippet,TResult Function( SnippetName snippetName,  VersionId versionId)?  revertSnippet,TResult Function( String pathName)?  deletePage,TResult Function( SnippetName snippetName)?  toggleAutoPublishingOfSnippet,TResult Function( bool b)?  autoPublishDefault,TResult Function( SnippetName snippetName,  PanelName panelName)?  setPanelOrPlaceholderSnippet,TResult Function( SnippetName snippetName)?  enterNodeSelectionMode,TResult Function()?  updateTappableRects,TResult Function()?  exitNodeSelectionMode,TResult Function( SNode rootNode,  SNode? selectedNode)?  pushSnippetEditor,TResult Function()?  changedSnippet,TResult Function( bool save)?  popSnippetEditor,TResult Function()?  showDirectoryTree,TResult Function( bool save)?  removeDirectoryTree,TResult Function( SNode node)?  selectNode,TResult Function()?  clearNodeSelection,TResult Function( SNode node,  String newSnippetName)?  saveNodeAsSnippet,TResult Function( Type? type,  SNode? testNode)?  replaceSelectionWith,TResult Function( Type? type,  SNode? testNode)?  wrapSelectionWith,TResult Function( Type? type,  SNode? testNode)?  appendChild,TResult Function( ArticleListViewNode listNode,  Type? type,  SNode? testNode)?  prependArticle,TResult Function( Type? type,  SNode? testNode)?  addSiblingBefore,TResult Function( Type? type,  SNode? testNode)?  addSiblingAfter,TResult Function()?  pasteReplacement,TResult Function()?  pasteChild,TResult Function()?  pasteSiblingBefore,TResult Function()?  pasteSiblingAfter,TResult Function()?  deleteNodeTapped,TResult Function()?  completeDeletion,TResult Function( SNode rootNode)?  copySnippetJsonToClipboard,TResult Function( String snippetBeingReplaced,  String? snippetJson)?  replaceSnippetFromJson,TResult Function( SNode node)?  copyNode,TResult Function( SNode node)?  cutNode,TResult Function( SnippetName snippetName,  SNode? selectedNode)?  selectedDirectoryOrNode,TResult Function( Uint8List? newBytes)?  imageChanged,TResult Function()?  undo,TResult Function()?  redo,TResult Function()?  forceSnippetRefresh,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case SignedInAsSuperEditor() when signedInAsSuperEditor != null:
 return signedInAsSuperEditor();case SignedInAsArticleEditor() when signedInAsArticleEditor != null:
@@ -285,13 +288,14 @@ return removeDirectoryTree(_that.save);case SelectNode() when selectNode != null
 return selectNode(_that.node);case ClearNodeSelection() when clearNodeSelection != null:
 return clearNodeSelection();case SaveNodeAsSnippet() when saveNodeAsSnippet != null:
 return saveNodeAsSnippet(_that.node,_that.newSnippetName);case ReplaceSelectionWith() when replaceSelectionWith != null:
-return replaceSelectionWith(_that.type,_that.snippetName,_that.testNode);case WrapSelectionWith() when wrapSelectionWith != null:
-return wrapSelectionWith(_that.type,_that.snippetName,_that.testNode);case AppendChild() when appendChild != null:
-return appendChild(_that.type,_that.testNode,_that.snippetName,_that.widgetSpanChildType,_that.testWidgetSpanChildNode);case AddSiblingBefore() when addSiblingBefore != null:
-return addSiblingBefore(_that.type,_that.snippetName,_that.testNode);case AddSiblingAfter() when addSiblingAfter != null:
-return addSiblingAfter(_that.type,_that.snippetName,_that.testNode);case PasteReplacement() when pasteReplacement != null:
-return pasteReplacement(_that.widgetSpanChildType);case PasteChild() when pasteChild != null:
-return pasteChild(_that.widgetSpanChildType,_that.testWidgetSpanChildNode);case PasteSiblingBefore() when pasteSiblingBefore != null:
+return replaceSelectionWith(_that.type,_that.testNode);case WrapSelectionWith() when wrapSelectionWith != null:
+return wrapSelectionWith(_that.type,_that.testNode);case AppendChild() when appendChild != null:
+return appendChild(_that.type,_that.testNode);case PrependArticle() when prependArticle != null:
+return prependArticle(_that.listNode,_that.type,_that.testNode);case AddSiblingBefore() when addSiblingBefore != null:
+return addSiblingBefore(_that.type,_that.testNode);case AddSiblingAfter() when addSiblingAfter != null:
+return addSiblingAfter(_that.type,_that.testNode);case PasteReplacement() when pasteReplacement != null:
+return pasteReplacement();case PasteChild() when pasteChild != null:
+return pasteChild();case PasteSiblingBefore() when pasteSiblingBefore != null:
 return pasteSiblingBefore();case PasteSiblingAfter() when pasteSiblingAfter != null:
 return pasteSiblingAfter();case DeleteNodeTapped() when deleteNodeTapped != null:
 return deleteNodeTapped();case CompleteDeletion() when completeDeletion != null:
@@ -322,7 +326,7 @@ return forceSnippetRefresh();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  signedInAsSuperEditor,required TResult Function()  signedInAsArticleEditor,required TResult Function()  signedInAsGuestEditor,required TResult Function()  signedOut,required TResult Function( String wName,  int index,  GlobalKey gk)  overrideTargetGK,required TResult Function( bool onlyTargetsWrappers)  forceRefresh,required TResult Function( SnippetName? snippetName)  toggleSnippetVisibility,required TResult Function()  clearClipboard,required TResult Function( SnippetName snippetName,  VersionId versionId)  publishSnippet,required TResult Function( SnippetName snippetName,  VersionId versionId)  revertSnippet,required TResult Function( String pathName)  deletePage,required TResult Function( SnippetName snippetName)  toggleAutoPublishingOfSnippet,required TResult Function( bool b)  autoPublishDefault,required TResult Function( SnippetName snippetName,  PanelName panelName)  setPanelOrPlaceholderSnippet,required TResult Function( SnippetName snippetName)  enterNodeSelectionMode,required TResult Function()  updateTappableRects,required TResult Function()  exitNodeSelectionMode,required TResult Function( SnippetRootNode rootNode,  SNode? selectedNode)  pushSnippetEditor,required TResult Function()  changedSnippet,required TResult Function( bool save)  popSnippetEditor,required TResult Function()  showDirectoryTree,required TResult Function( bool save)  removeDirectoryTree,required TResult Function( SNode node)  selectNode,required TResult Function()  clearNodeSelection,required TResult Function( SNode node,  String newSnippetName)  saveNodeAsSnippet,required TResult Function( Type? type,  SnippetName? snippetName,  SNode? testNode)  replaceSelectionWith,required TResult Function( Type? type,  SnippetName? snippetName,  SNode? testNode)  wrapSelectionWith,required TResult Function( Type? type,  SNode? testNode,  SnippetName? snippetName,  Type? widgetSpanChildType,  SNode? testWidgetSpanChildNode)  appendChild,required TResult Function( Type? type,  SnippetName? snippetName,  SNode? testNode)  addSiblingBefore,required TResult Function( Type? type,  SnippetName? snippetName,  SNode? testNode)  addSiblingAfter,required TResult Function( Type? widgetSpanChildType)  pasteReplacement,required TResult Function( Type? widgetSpanChildType,  SNode? testWidgetSpanChildNode)  pasteChild,required TResult Function()  pasteSiblingBefore,required TResult Function()  pasteSiblingAfter,required TResult Function()  deleteNodeTapped,required TResult Function()  completeDeletion,required TResult Function( SnippetRootNode rootNode)  copySnippetJsonToClipboard,required TResult Function( String snippetBeingReplaced,  String? snippetJson)  replaceSnippetFromJson,required TResult Function( SNode node)  copyNode,required TResult Function( SNode node)  cutNode,required TResult Function( SnippetName snippetName,  SNode? selectedNode)  selectedDirectoryOrNode,required TResult Function( Uint8List? newBytes)  imageChanged,required TResult Function()  undo,required TResult Function()  redo,required TResult Function()  forceSnippetRefresh,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  signedInAsSuperEditor,required TResult Function()  signedInAsArticleEditor,required TResult Function()  signedInAsGuestEditor,required TResult Function()  signedOut,required TResult Function( String wName,  int index,  GlobalKey gk)  overrideTargetGK,required TResult Function( bool onlyTargetsWrappers)  forceRefresh,required TResult Function( SnippetName? snippetName)  toggleSnippetVisibility,required TResult Function()  clearClipboard,required TResult Function( SnippetName snippetName,  VersionId versionId)  publishSnippet,required TResult Function( SnippetName snippetName,  VersionId versionId)  revertSnippet,required TResult Function( String pathName)  deletePage,required TResult Function( SnippetName snippetName)  toggleAutoPublishingOfSnippet,required TResult Function( bool b)  autoPublishDefault,required TResult Function( SnippetName snippetName,  PanelName panelName)  setPanelOrPlaceholderSnippet,required TResult Function( SnippetName snippetName)  enterNodeSelectionMode,required TResult Function()  updateTappableRects,required TResult Function()  exitNodeSelectionMode,required TResult Function( SNode rootNode,  SNode? selectedNode)  pushSnippetEditor,required TResult Function()  changedSnippet,required TResult Function( bool save)  popSnippetEditor,required TResult Function()  showDirectoryTree,required TResult Function( bool save)  removeDirectoryTree,required TResult Function( SNode node)  selectNode,required TResult Function()  clearNodeSelection,required TResult Function( SNode node,  String newSnippetName)  saveNodeAsSnippet,required TResult Function( Type? type,  SNode? testNode)  replaceSelectionWith,required TResult Function( Type? type,  SNode? testNode)  wrapSelectionWith,required TResult Function( Type? type,  SNode? testNode)  appendChild,required TResult Function( ArticleListViewNode listNode,  Type? type,  SNode? testNode)  prependArticle,required TResult Function( Type? type,  SNode? testNode)  addSiblingBefore,required TResult Function( Type? type,  SNode? testNode)  addSiblingAfter,required TResult Function()  pasteReplacement,required TResult Function()  pasteChild,required TResult Function()  pasteSiblingBefore,required TResult Function()  pasteSiblingAfter,required TResult Function()  deleteNodeTapped,required TResult Function()  completeDeletion,required TResult Function( SNode rootNode)  copySnippetJsonToClipboard,required TResult Function( String snippetBeingReplaced,  String? snippetJson)  replaceSnippetFromJson,required TResult Function( SNode node)  copyNode,required TResult Function( SNode node)  cutNode,required TResult Function( SnippetName snippetName,  SNode? selectedNode)  selectedDirectoryOrNode,required TResult Function( Uint8List? newBytes)  imageChanged,required TResult Function()  undo,required TResult Function()  redo,required TResult Function()  forceSnippetRefresh,}) {final _that = this;
 switch (_that) {
 case SignedInAsSuperEditor():
 return signedInAsSuperEditor();case SignedInAsArticleEditor():
@@ -350,13 +354,14 @@ return removeDirectoryTree(_that.save);case SelectNode():
 return selectNode(_that.node);case ClearNodeSelection():
 return clearNodeSelection();case SaveNodeAsSnippet():
 return saveNodeAsSnippet(_that.node,_that.newSnippetName);case ReplaceSelectionWith():
-return replaceSelectionWith(_that.type,_that.snippetName,_that.testNode);case WrapSelectionWith():
-return wrapSelectionWith(_that.type,_that.snippetName,_that.testNode);case AppendChild():
-return appendChild(_that.type,_that.testNode,_that.snippetName,_that.widgetSpanChildType,_that.testWidgetSpanChildNode);case AddSiblingBefore():
-return addSiblingBefore(_that.type,_that.snippetName,_that.testNode);case AddSiblingAfter():
-return addSiblingAfter(_that.type,_that.snippetName,_that.testNode);case PasteReplacement():
-return pasteReplacement(_that.widgetSpanChildType);case PasteChild():
-return pasteChild(_that.widgetSpanChildType,_that.testWidgetSpanChildNode);case PasteSiblingBefore():
+return replaceSelectionWith(_that.type,_that.testNode);case WrapSelectionWith():
+return wrapSelectionWith(_that.type,_that.testNode);case AppendChild():
+return appendChild(_that.type,_that.testNode);case PrependArticle():
+return prependArticle(_that.listNode,_that.type,_that.testNode);case AddSiblingBefore():
+return addSiblingBefore(_that.type,_that.testNode);case AddSiblingAfter():
+return addSiblingAfter(_that.type,_that.testNode);case PasteReplacement():
+return pasteReplacement();case PasteChild():
+return pasteChild();case PasteSiblingBefore():
 return pasteSiblingBefore();case PasteSiblingAfter():
 return pasteSiblingAfter();case DeleteNodeTapped():
 return deleteNodeTapped();case CompleteDeletion():
@@ -386,7 +391,7 @@ return forceSnippetRefresh();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  signedInAsSuperEditor,TResult? Function()?  signedInAsArticleEditor,TResult? Function()?  signedInAsGuestEditor,TResult? Function()?  signedOut,TResult? Function( String wName,  int index,  GlobalKey gk)?  overrideTargetGK,TResult? Function( bool onlyTargetsWrappers)?  forceRefresh,TResult? Function( SnippetName? snippetName)?  toggleSnippetVisibility,TResult? Function()?  clearClipboard,TResult? Function( SnippetName snippetName,  VersionId versionId)?  publishSnippet,TResult? Function( SnippetName snippetName,  VersionId versionId)?  revertSnippet,TResult? Function( String pathName)?  deletePage,TResult? Function( SnippetName snippetName)?  toggleAutoPublishingOfSnippet,TResult? Function( bool b)?  autoPublishDefault,TResult? Function( SnippetName snippetName,  PanelName panelName)?  setPanelOrPlaceholderSnippet,TResult? Function( SnippetName snippetName)?  enterNodeSelectionMode,TResult? Function()?  updateTappableRects,TResult? Function()?  exitNodeSelectionMode,TResult? Function( SnippetRootNode rootNode,  SNode? selectedNode)?  pushSnippetEditor,TResult? Function()?  changedSnippet,TResult? Function( bool save)?  popSnippetEditor,TResult? Function()?  showDirectoryTree,TResult? Function( bool save)?  removeDirectoryTree,TResult? Function( SNode node)?  selectNode,TResult? Function()?  clearNodeSelection,TResult? Function( SNode node,  String newSnippetName)?  saveNodeAsSnippet,TResult? Function( Type? type,  SnippetName? snippetName,  SNode? testNode)?  replaceSelectionWith,TResult? Function( Type? type,  SnippetName? snippetName,  SNode? testNode)?  wrapSelectionWith,TResult? Function( Type? type,  SNode? testNode,  SnippetName? snippetName,  Type? widgetSpanChildType,  SNode? testWidgetSpanChildNode)?  appendChild,TResult? Function( Type? type,  SnippetName? snippetName,  SNode? testNode)?  addSiblingBefore,TResult? Function( Type? type,  SnippetName? snippetName,  SNode? testNode)?  addSiblingAfter,TResult? Function( Type? widgetSpanChildType)?  pasteReplacement,TResult? Function( Type? widgetSpanChildType,  SNode? testWidgetSpanChildNode)?  pasteChild,TResult? Function()?  pasteSiblingBefore,TResult? Function()?  pasteSiblingAfter,TResult? Function()?  deleteNodeTapped,TResult? Function()?  completeDeletion,TResult? Function( SnippetRootNode rootNode)?  copySnippetJsonToClipboard,TResult? Function( String snippetBeingReplaced,  String? snippetJson)?  replaceSnippetFromJson,TResult? Function( SNode node)?  copyNode,TResult? Function( SNode node)?  cutNode,TResult? Function( SnippetName snippetName,  SNode? selectedNode)?  selectedDirectoryOrNode,TResult? Function( Uint8List? newBytes)?  imageChanged,TResult? Function()?  undo,TResult? Function()?  redo,TResult? Function()?  forceSnippetRefresh,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  signedInAsSuperEditor,TResult? Function()?  signedInAsArticleEditor,TResult? Function()?  signedInAsGuestEditor,TResult? Function()?  signedOut,TResult? Function( String wName,  int index,  GlobalKey gk)?  overrideTargetGK,TResult? Function( bool onlyTargetsWrappers)?  forceRefresh,TResult? Function( SnippetName? snippetName)?  toggleSnippetVisibility,TResult? Function()?  clearClipboard,TResult? Function( SnippetName snippetName,  VersionId versionId)?  publishSnippet,TResult? Function( SnippetName snippetName,  VersionId versionId)?  revertSnippet,TResult? Function( String pathName)?  deletePage,TResult? Function( SnippetName snippetName)?  toggleAutoPublishingOfSnippet,TResult? Function( bool b)?  autoPublishDefault,TResult? Function( SnippetName snippetName,  PanelName panelName)?  setPanelOrPlaceholderSnippet,TResult? Function( SnippetName snippetName)?  enterNodeSelectionMode,TResult? Function()?  updateTappableRects,TResult? Function()?  exitNodeSelectionMode,TResult? Function( SNode rootNode,  SNode? selectedNode)?  pushSnippetEditor,TResult? Function()?  changedSnippet,TResult? Function( bool save)?  popSnippetEditor,TResult? Function()?  showDirectoryTree,TResult? Function( bool save)?  removeDirectoryTree,TResult? Function( SNode node)?  selectNode,TResult? Function()?  clearNodeSelection,TResult? Function( SNode node,  String newSnippetName)?  saveNodeAsSnippet,TResult? Function( Type? type,  SNode? testNode)?  replaceSelectionWith,TResult? Function( Type? type,  SNode? testNode)?  wrapSelectionWith,TResult? Function( Type? type,  SNode? testNode)?  appendChild,TResult? Function( ArticleListViewNode listNode,  Type? type,  SNode? testNode)?  prependArticle,TResult? Function( Type? type,  SNode? testNode)?  addSiblingBefore,TResult? Function( Type? type,  SNode? testNode)?  addSiblingAfter,TResult? Function()?  pasteReplacement,TResult? Function()?  pasteChild,TResult? Function()?  pasteSiblingBefore,TResult? Function()?  pasteSiblingAfter,TResult? Function()?  deleteNodeTapped,TResult? Function()?  completeDeletion,TResult? Function( SNode rootNode)?  copySnippetJsonToClipboard,TResult? Function( String snippetBeingReplaced,  String? snippetJson)?  replaceSnippetFromJson,TResult? Function( SNode node)?  copyNode,TResult? Function( SNode node)?  cutNode,TResult? Function( SnippetName snippetName,  SNode? selectedNode)?  selectedDirectoryOrNode,TResult? Function( Uint8List? newBytes)?  imageChanged,TResult? Function()?  undo,TResult? Function()?  redo,TResult? Function()?  forceSnippetRefresh,}) {final _that = this;
 switch (_that) {
 case SignedInAsSuperEditor() when signedInAsSuperEditor != null:
 return signedInAsSuperEditor();case SignedInAsArticleEditor() when signedInAsArticleEditor != null:
@@ -414,13 +419,14 @@ return removeDirectoryTree(_that.save);case SelectNode() when selectNode != null
 return selectNode(_that.node);case ClearNodeSelection() when clearNodeSelection != null:
 return clearNodeSelection();case SaveNodeAsSnippet() when saveNodeAsSnippet != null:
 return saveNodeAsSnippet(_that.node,_that.newSnippetName);case ReplaceSelectionWith() when replaceSelectionWith != null:
-return replaceSelectionWith(_that.type,_that.snippetName,_that.testNode);case WrapSelectionWith() when wrapSelectionWith != null:
-return wrapSelectionWith(_that.type,_that.snippetName,_that.testNode);case AppendChild() when appendChild != null:
-return appendChild(_that.type,_that.testNode,_that.snippetName,_that.widgetSpanChildType,_that.testWidgetSpanChildNode);case AddSiblingBefore() when addSiblingBefore != null:
-return addSiblingBefore(_that.type,_that.snippetName,_that.testNode);case AddSiblingAfter() when addSiblingAfter != null:
-return addSiblingAfter(_that.type,_that.snippetName,_that.testNode);case PasteReplacement() when pasteReplacement != null:
-return pasteReplacement(_that.widgetSpanChildType);case PasteChild() when pasteChild != null:
-return pasteChild(_that.widgetSpanChildType,_that.testWidgetSpanChildNode);case PasteSiblingBefore() when pasteSiblingBefore != null:
+return replaceSelectionWith(_that.type,_that.testNode);case WrapSelectionWith() when wrapSelectionWith != null:
+return wrapSelectionWith(_that.type,_that.testNode);case AppendChild() when appendChild != null:
+return appendChild(_that.type,_that.testNode);case PrependArticle() when prependArticle != null:
+return prependArticle(_that.listNode,_that.type,_that.testNode);case AddSiblingBefore() when addSiblingBefore != null:
+return addSiblingBefore(_that.type,_that.testNode);case AddSiblingAfter() when addSiblingAfter != null:
+return addSiblingAfter(_that.type,_that.testNode);case PasteReplacement() when pasteReplacement != null:
+return pasteReplacement();case PasteChild() when pasteChild != null:
+return pasteChild();case PasteSiblingBefore() when pasteSiblingBefore != null:
 return pasteSiblingBefore();case PasteSiblingAfter() when pasteSiblingAfter != null:
 return pasteSiblingAfter();case DeleteNodeTapped() when deleteNodeTapped != null:
 return deleteNodeTapped();case CompleteDeletion() when completeDeletion != null:
@@ -1444,7 +1450,7 @@ class PushSnippetEditor extends CAPIEvent with DiagnosticableTreeMixin {
   const PushSnippetEditor({required this.rootNode, this.selectedNode}): super._();
   
 
- final  SnippetRootNode rootNode;
+ final  SNode rootNode;
  final  SNode? selectedNode;
 
 /// Create a copy of CAPIEvent
@@ -1483,7 +1489,7 @@ abstract mixin class $PushSnippetEditorCopyWith<$Res> implements $CAPIEventCopyW
   factory $PushSnippetEditorCopyWith(PushSnippetEditor value, $Res Function(PushSnippetEditor) _then) = _$PushSnippetEditorCopyWithImpl;
 @useResult
 $Res call({
- SnippetRootNode rootNode, SNode? selectedNode
+ SNode rootNode, SNode? selectedNode
 });
 
 
@@ -1503,7 +1509,7 @@ class _$PushSnippetEditorCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') $Res call({Object? rootNode = null,Object? selectedNode = freezed,}) {
   return _then(PushSnippetEditor(
 rootNode: null == rootNode ? _self.rootNode : rootNode // ignore: cast_nullable_to_non_nullable
-as SnippetRootNode,selectedNode: freezed == selectedNode ? _self.selectedNode : selectedNode // ignore: cast_nullable_to_non_nullable
+as SNode,selectedNode: freezed == selectedNode ? _self.selectedNode : selectedNode // ignore: cast_nullable_to_non_nullable
 as SNode?,
   ));
 }
@@ -1919,12 +1925,10 @@ as String,
 
 
 class ReplaceSelectionWith extends CAPIEvent with DiagnosticableTreeMixin {
-  const ReplaceSelectionWith({this.type, this.snippetName, this.testNode}): super._();
+  const ReplaceSelectionWith({this.type, this.testNode}): super._();
   
 
  final  Type? type;
- final  SnippetName? snippetName;
-// only used when type is SnippetRefNode
  final  SNode? testNode;
 
 /// Create a copy of CAPIEvent
@@ -1938,21 +1942,21 @@ $ReplaceSelectionWithCopyWith<ReplaceSelectionWith> get copyWith => _$ReplaceSel
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'CAPIEvent.replaceSelectionWith'))
-    ..add(DiagnosticsProperty('type', type))..add(DiagnosticsProperty('snippetName', snippetName))..add(DiagnosticsProperty('testNode', testNode));
+    ..add(DiagnosticsProperty('type', type))..add(DiagnosticsProperty('testNode', testNode));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ReplaceSelectionWith&&(identical(other.type, type) || other.type == type)&&(identical(other.snippetName, snippetName) || other.snippetName == snippetName)&&(identical(other.testNode, testNode) || other.testNode == testNode));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ReplaceSelectionWith&&(identical(other.type, type) || other.type == type)&&(identical(other.testNode, testNode) || other.testNode == testNode));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,type,snippetName,testNode);
+int get hashCode => Object.hash(runtimeType,type,testNode);
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'CAPIEvent.replaceSelectionWith(type: $type, snippetName: $snippetName, testNode: $testNode)';
+  return 'CAPIEvent.replaceSelectionWith(type: $type, testNode: $testNode)';
 }
 
 
@@ -1963,7 +1967,7 @@ abstract mixin class $ReplaceSelectionWithCopyWith<$Res> implements $CAPIEventCo
   factory $ReplaceSelectionWithCopyWith(ReplaceSelectionWith value, $Res Function(ReplaceSelectionWith) _then) = _$ReplaceSelectionWithCopyWithImpl;
 @useResult
 $Res call({
- Type? type, SnippetName? snippetName, SNode? testNode
+ Type? type, SNode? testNode
 });
 
 
@@ -1980,11 +1984,10 @@ class _$ReplaceSelectionWithCopyWithImpl<$Res>
 
 /// Create a copy of CAPIEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? type = freezed,Object? snippetName = freezed,Object? testNode = freezed,}) {
+@pragma('vm:prefer-inline') $Res call({Object? type = freezed,Object? testNode = freezed,}) {
   return _then(ReplaceSelectionWith(
 type: freezed == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as Type?,snippetName: freezed == snippetName ? _self.snippetName : snippetName // ignore: cast_nullable_to_non_nullable
-as SnippetName?,testNode: freezed == testNode ? _self.testNode : testNode // ignore: cast_nullable_to_non_nullable
+as Type?,testNode: freezed == testNode ? _self.testNode : testNode // ignore: cast_nullable_to_non_nullable
 as SNode?,
   ));
 }
@@ -1996,12 +1999,10 @@ as SNode?,
 
 
 class WrapSelectionWith extends CAPIEvent with DiagnosticableTreeMixin {
-  const WrapSelectionWith({this.type, this.snippetName, this.testNode}): super._();
+  const WrapSelectionWith({this.type, this.testNode}): super._();
   
 
  final  Type? type;
- final  SnippetName? snippetName;
-// only used when type is SnippetRefNode
  final  SNode? testNode;
 
 /// Create a copy of CAPIEvent
@@ -2015,21 +2016,21 @@ $WrapSelectionWithCopyWith<WrapSelectionWith> get copyWith => _$WrapSelectionWit
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'CAPIEvent.wrapSelectionWith'))
-    ..add(DiagnosticsProperty('type', type))..add(DiagnosticsProperty('snippetName', snippetName))..add(DiagnosticsProperty('testNode', testNode));
+    ..add(DiagnosticsProperty('type', type))..add(DiagnosticsProperty('testNode', testNode));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is WrapSelectionWith&&(identical(other.type, type) || other.type == type)&&(identical(other.snippetName, snippetName) || other.snippetName == snippetName)&&(identical(other.testNode, testNode) || other.testNode == testNode));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is WrapSelectionWith&&(identical(other.type, type) || other.type == type)&&(identical(other.testNode, testNode) || other.testNode == testNode));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,type,snippetName,testNode);
+int get hashCode => Object.hash(runtimeType,type,testNode);
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'CAPIEvent.wrapSelectionWith(type: $type, snippetName: $snippetName, testNode: $testNode)';
+  return 'CAPIEvent.wrapSelectionWith(type: $type, testNode: $testNode)';
 }
 
 
@@ -2040,7 +2041,7 @@ abstract mixin class $WrapSelectionWithCopyWith<$Res> implements $CAPIEventCopyW
   factory $WrapSelectionWithCopyWith(WrapSelectionWith value, $Res Function(WrapSelectionWith) _then) = _$WrapSelectionWithCopyWithImpl;
 @useResult
 $Res call({
- Type? type, SnippetName? snippetName, SNode? testNode
+ Type? type, SNode? testNode
 });
 
 
@@ -2057,11 +2058,10 @@ class _$WrapSelectionWithCopyWithImpl<$Res>
 
 /// Create a copy of CAPIEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? type = freezed,Object? snippetName = freezed,Object? testNode = freezed,}) {
+@pragma('vm:prefer-inline') $Res call({Object? type = freezed,Object? testNode = freezed,}) {
   return _then(WrapSelectionWith(
 type: freezed == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as Type?,snippetName: freezed == snippetName ? _self.snippetName : snippetName // ignore: cast_nullable_to_non_nullable
-as SnippetName?,testNode: freezed == testNode ? _self.testNode : testNode // ignore: cast_nullable_to_non_nullable
+as Type?,testNode: freezed == testNode ? _self.testNode : testNode // ignore: cast_nullable_to_non_nullable
 as SNode?,
   ));
 }
@@ -2073,15 +2073,11 @@ as SNode?,
 
 
 class AppendChild extends CAPIEvent with DiagnosticableTreeMixin {
-  const AppendChild({this.type, this.testNode, this.snippetName, this.widgetSpanChildType, this.testWidgetSpanChildNode}): super._();
+  const AppendChild({this.type, this.testNode}): super._();
   
 
  final  Type? type;
  final  SNode? testNode;
- final  SnippetName? snippetName;
-// only used when type is SnippetRefNode
- final  Type? widgetSpanChildType;
- final  SNode? testWidgetSpanChildNode;
 
 /// Create a copy of CAPIEvent
 /// with the given fields replaced by the non-null parameter values.
@@ -2094,21 +2090,21 @@ $AppendChildCopyWith<AppendChild> get copyWith => _$AppendChildCopyWithImpl<Appe
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'CAPIEvent.appendChild'))
-    ..add(DiagnosticsProperty('type', type))..add(DiagnosticsProperty('testNode', testNode))..add(DiagnosticsProperty('snippetName', snippetName))..add(DiagnosticsProperty('widgetSpanChildType', widgetSpanChildType))..add(DiagnosticsProperty('testWidgetSpanChildNode', testWidgetSpanChildNode));
+    ..add(DiagnosticsProperty('type', type))..add(DiagnosticsProperty('testNode', testNode));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppendChild&&(identical(other.type, type) || other.type == type)&&(identical(other.testNode, testNode) || other.testNode == testNode)&&(identical(other.snippetName, snippetName) || other.snippetName == snippetName)&&(identical(other.widgetSpanChildType, widgetSpanChildType) || other.widgetSpanChildType == widgetSpanChildType)&&(identical(other.testWidgetSpanChildNode, testWidgetSpanChildNode) || other.testWidgetSpanChildNode == testWidgetSpanChildNode));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppendChild&&(identical(other.type, type) || other.type == type)&&(identical(other.testNode, testNode) || other.testNode == testNode));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,type,testNode,snippetName,widgetSpanChildType,testWidgetSpanChildNode);
+int get hashCode => Object.hash(runtimeType,type,testNode);
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'CAPIEvent.appendChild(type: $type, testNode: $testNode, snippetName: $snippetName, widgetSpanChildType: $widgetSpanChildType, testWidgetSpanChildNode: $testWidgetSpanChildNode)';
+  return 'CAPIEvent.appendChild(type: $type, testNode: $testNode)';
 }
 
 
@@ -2119,7 +2115,7 @@ abstract mixin class $AppendChildCopyWith<$Res> implements $CAPIEventCopyWith<$R
   factory $AppendChildCopyWith(AppendChild value, $Res Function(AppendChild) _then) = _$AppendChildCopyWithImpl;
 @useResult
 $Res call({
- Type? type, SNode? testNode, SnippetName? snippetName, Type? widgetSpanChildType, SNode? testWidgetSpanChildNode
+ Type? type, SNode? testNode
 });
 
 
@@ -2136,13 +2132,86 @@ class _$AppendChildCopyWithImpl<$Res>
 
 /// Create a copy of CAPIEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? type = freezed,Object? testNode = freezed,Object? snippetName = freezed,Object? widgetSpanChildType = freezed,Object? testWidgetSpanChildNode = freezed,}) {
+@pragma('vm:prefer-inline') $Res call({Object? type = freezed,Object? testNode = freezed,}) {
   return _then(AppendChild(
 type: freezed == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as Type?,testNode: freezed == testNode ? _self.testNode : testNode // ignore: cast_nullable_to_non_nullable
-as SNode?,snippetName: freezed == snippetName ? _self.snippetName : snippetName // ignore: cast_nullable_to_non_nullable
-as SnippetName?,widgetSpanChildType: freezed == widgetSpanChildType ? _self.widgetSpanChildType : widgetSpanChildType // ignore: cast_nullable_to_non_nullable
-as Type?,testWidgetSpanChildNode: freezed == testWidgetSpanChildNode ? _self.testWidgetSpanChildNode : testWidgetSpanChildNode // ignore: cast_nullable_to_non_nullable
+as SNode?,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class PrependArticle extends CAPIEvent with DiagnosticableTreeMixin {
+  const PrependArticle({required this.listNode, this.type, this.testNode}): super._();
+  
+
+ final  ArticleListViewNode listNode;
+ final  Type? type;
+ final  SNode? testNode;
+
+/// Create a copy of CAPIEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$PrependArticleCopyWith<PrependArticle> get copyWith => _$PrependArticleCopyWithImpl<PrependArticle>(this, _$identity);
+
+
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'CAPIEvent.prependArticle'))
+    ..add(DiagnosticsProperty('listNode', listNode))..add(DiagnosticsProperty('type', type))..add(DiagnosticsProperty('testNode', testNode));
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PrependArticle&&(identical(other.listNode, listNode) || other.listNode == listNode)&&(identical(other.type, type) || other.type == type)&&(identical(other.testNode, testNode) || other.testNode == testNode));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,listNode,type,testNode);
+
+@override
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'CAPIEvent.prependArticle(listNode: $listNode, type: $type, testNode: $testNode)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $PrependArticleCopyWith<$Res> implements $CAPIEventCopyWith<$Res> {
+  factory $PrependArticleCopyWith(PrependArticle value, $Res Function(PrependArticle) _then) = _$PrependArticleCopyWithImpl;
+@useResult
+$Res call({
+ ArticleListViewNode listNode, Type? type, SNode? testNode
+});
+
+
+
+
+}
+/// @nodoc
+class _$PrependArticleCopyWithImpl<$Res>
+    implements $PrependArticleCopyWith<$Res> {
+  _$PrependArticleCopyWithImpl(this._self, this._then);
+
+  final PrependArticle _self;
+  final $Res Function(PrependArticle) _then;
+
+/// Create a copy of CAPIEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? listNode = null,Object? type = freezed,Object? testNode = freezed,}) {
+  return _then(PrependArticle(
+listNode: null == listNode ? _self.listNode : listNode // ignore: cast_nullable_to_non_nullable
+as ArticleListViewNode,type: freezed == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as Type?,testNode: freezed == testNode ? _self.testNode : testNode // ignore: cast_nullable_to_non_nullable
 as SNode?,
   ));
 }
@@ -2154,12 +2223,10 @@ as SNode?,
 
 
 class AddSiblingBefore extends CAPIEvent with DiagnosticableTreeMixin {
-  const AddSiblingBefore({this.type, this.snippetName, this.testNode}): super._();
+  const AddSiblingBefore({this.type, this.testNode}): super._();
   
 
  final  Type? type;
- final  SnippetName? snippetName;
-// only used when type is SnippetRefNode
  final  SNode? testNode;
 
 /// Create a copy of CAPIEvent
@@ -2173,21 +2240,21 @@ $AddSiblingBeforeCopyWith<AddSiblingBefore> get copyWith => _$AddSiblingBeforeCo
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'CAPIEvent.addSiblingBefore'))
-    ..add(DiagnosticsProperty('type', type))..add(DiagnosticsProperty('snippetName', snippetName))..add(DiagnosticsProperty('testNode', testNode));
+    ..add(DiagnosticsProperty('type', type))..add(DiagnosticsProperty('testNode', testNode));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AddSiblingBefore&&(identical(other.type, type) || other.type == type)&&(identical(other.snippetName, snippetName) || other.snippetName == snippetName)&&(identical(other.testNode, testNode) || other.testNode == testNode));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AddSiblingBefore&&(identical(other.type, type) || other.type == type)&&(identical(other.testNode, testNode) || other.testNode == testNode));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,type,snippetName,testNode);
+int get hashCode => Object.hash(runtimeType,type,testNode);
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'CAPIEvent.addSiblingBefore(type: $type, snippetName: $snippetName, testNode: $testNode)';
+  return 'CAPIEvent.addSiblingBefore(type: $type, testNode: $testNode)';
 }
 
 
@@ -2198,7 +2265,7 @@ abstract mixin class $AddSiblingBeforeCopyWith<$Res> implements $CAPIEventCopyWi
   factory $AddSiblingBeforeCopyWith(AddSiblingBefore value, $Res Function(AddSiblingBefore) _then) = _$AddSiblingBeforeCopyWithImpl;
 @useResult
 $Res call({
- Type? type, SnippetName? snippetName, SNode? testNode
+ Type? type, SNode? testNode
 });
 
 
@@ -2215,11 +2282,10 @@ class _$AddSiblingBeforeCopyWithImpl<$Res>
 
 /// Create a copy of CAPIEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? type = freezed,Object? snippetName = freezed,Object? testNode = freezed,}) {
+@pragma('vm:prefer-inline') $Res call({Object? type = freezed,Object? testNode = freezed,}) {
   return _then(AddSiblingBefore(
 type: freezed == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as Type?,snippetName: freezed == snippetName ? _self.snippetName : snippetName // ignore: cast_nullable_to_non_nullable
-as SnippetName?,testNode: freezed == testNode ? _self.testNode : testNode // ignore: cast_nullable_to_non_nullable
+as Type?,testNode: freezed == testNode ? _self.testNode : testNode // ignore: cast_nullable_to_non_nullable
 as SNode?,
   ));
 }
@@ -2231,12 +2297,10 @@ as SNode?,
 
 
 class AddSiblingAfter extends CAPIEvent with DiagnosticableTreeMixin {
-  const AddSiblingAfter({this.type, this.snippetName, this.testNode}): super._();
+  const AddSiblingAfter({this.type, this.testNode}): super._();
   
 
  final  Type? type;
- final  SnippetName? snippetName;
-// only used when type is SnippetRefNode
  final  SNode? testNode;
 
 /// Create a copy of CAPIEvent
@@ -2250,21 +2314,21 @@ $AddSiblingAfterCopyWith<AddSiblingAfter> get copyWith => _$AddSiblingAfterCopyW
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'CAPIEvent.addSiblingAfter'))
-    ..add(DiagnosticsProperty('type', type))..add(DiagnosticsProperty('snippetName', snippetName))..add(DiagnosticsProperty('testNode', testNode));
+    ..add(DiagnosticsProperty('type', type))..add(DiagnosticsProperty('testNode', testNode));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AddSiblingAfter&&(identical(other.type, type) || other.type == type)&&(identical(other.snippetName, snippetName) || other.snippetName == snippetName)&&(identical(other.testNode, testNode) || other.testNode == testNode));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AddSiblingAfter&&(identical(other.type, type) || other.type == type)&&(identical(other.testNode, testNode) || other.testNode == testNode));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,type,snippetName,testNode);
+int get hashCode => Object.hash(runtimeType,type,testNode);
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'CAPIEvent.addSiblingAfter(type: $type, snippetName: $snippetName, testNode: $testNode)';
+  return 'CAPIEvent.addSiblingAfter(type: $type, testNode: $testNode)';
 }
 
 
@@ -2275,7 +2339,7 @@ abstract mixin class $AddSiblingAfterCopyWith<$Res> implements $CAPIEventCopyWit
   factory $AddSiblingAfterCopyWith(AddSiblingAfter value, $Res Function(AddSiblingAfter) _then) = _$AddSiblingAfterCopyWithImpl;
 @useResult
 $Res call({
- Type? type, SnippetName? snippetName, SNode? testNode
+ Type? type, SNode? testNode
 });
 
 
@@ -2292,11 +2356,10 @@ class _$AddSiblingAfterCopyWithImpl<$Res>
 
 /// Create a copy of CAPIEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? type = freezed,Object? snippetName = freezed,Object? testNode = freezed,}) {
+@pragma('vm:prefer-inline') $Res call({Object? type = freezed,Object? testNode = freezed,}) {
   return _then(AddSiblingAfter(
 type: freezed == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as Type?,snippetName: freezed == snippetName ? _self.snippetName : snippetName // ignore: cast_nullable_to_non_nullable
-as SnippetName?,testNode: freezed == testNode ? _self.testNode : testNode // ignore: cast_nullable_to_non_nullable
+as Type?,testNode: freezed == testNode ? _self.testNode : testNode // ignore: cast_nullable_to_non_nullable
 as SNode?,
   ));
 }
@@ -2308,149 +2371,77 @@ as SNode?,
 
 
 class PasteReplacement extends CAPIEvent with DiagnosticableTreeMixin {
-  const PasteReplacement({this.widgetSpanChildType}): super._();
+  const PasteReplacement(): super._();
   
 
-// required STreeNode clipboardNode,
- final  Type? widgetSpanChildType;
 
-/// Create a copy of CAPIEvent
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$PasteReplacementCopyWith<PasteReplacement> get copyWith => _$PasteReplacementCopyWithImpl<PasteReplacement>(this, _$identity);
+
 
 
 @override
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'CAPIEvent.pasteReplacement'))
-    ..add(DiagnosticsProperty('widgetSpanChildType', widgetSpanChildType));
+    ;
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PasteReplacement&&(identical(other.widgetSpanChildType, widgetSpanChildType) || other.widgetSpanChildType == widgetSpanChildType));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PasteReplacement);
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,widgetSpanChildType);
+int get hashCode => runtimeType.hashCode;
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'CAPIEvent.pasteReplacement(widgetSpanChildType: $widgetSpanChildType)';
+  return 'CAPIEvent.pasteReplacement()';
 }
 
 
 }
 
-/// @nodoc
-abstract mixin class $PasteReplacementCopyWith<$Res> implements $CAPIEventCopyWith<$Res> {
-  factory $PasteReplacementCopyWith(PasteReplacement value, $Res Function(PasteReplacement) _then) = _$PasteReplacementCopyWithImpl;
-@useResult
-$Res call({
- Type? widgetSpanChildType
-});
 
 
-
-
-}
-/// @nodoc
-class _$PasteReplacementCopyWithImpl<$Res>
-    implements $PasteReplacementCopyWith<$Res> {
-  _$PasteReplacementCopyWithImpl(this._self, this._then);
-
-  final PasteReplacement _self;
-  final $Res Function(PasteReplacement) _then;
-
-/// Create a copy of CAPIEvent
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? widgetSpanChildType = freezed,}) {
-  return _then(PasteReplacement(
-widgetSpanChildType: freezed == widgetSpanChildType ? _self.widgetSpanChildType : widgetSpanChildType // ignore: cast_nullable_to_non_nullable
-as Type?,
-  ));
-}
-
-
-}
 
 /// @nodoc
 
 
 class PasteChild extends CAPIEvent with DiagnosticableTreeMixin {
-  const PasteChild({this.widgetSpanChildType, this.testWidgetSpanChildNode}): super._();
+  const PasteChild(): super._();
   
 
-// required STreeNode clipboardNode,
- final  Type? widgetSpanChildType;
- final  SNode? testWidgetSpanChildNode;
 
-/// Create a copy of CAPIEvent
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$PasteChildCopyWith<PasteChild> get copyWith => _$PasteChildCopyWithImpl<PasteChild>(this, _$identity);
+
 
 
 @override
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'CAPIEvent.pasteChild'))
-    ..add(DiagnosticsProperty('widgetSpanChildType', widgetSpanChildType))..add(DiagnosticsProperty('testWidgetSpanChildNode', testWidgetSpanChildNode));
+    ;
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PasteChild&&(identical(other.widgetSpanChildType, widgetSpanChildType) || other.widgetSpanChildType == widgetSpanChildType)&&(identical(other.testWidgetSpanChildNode, testWidgetSpanChildNode) || other.testWidgetSpanChildNode == testWidgetSpanChildNode));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PasteChild);
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,widgetSpanChildType,testWidgetSpanChildNode);
+int get hashCode => runtimeType.hashCode;
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'CAPIEvent.pasteChild(widgetSpanChildType: $widgetSpanChildType, testWidgetSpanChildNode: $testWidgetSpanChildNode)';
+  return 'CAPIEvent.pasteChild()';
 }
 
 
 }
 
-/// @nodoc
-abstract mixin class $PasteChildCopyWith<$Res> implements $CAPIEventCopyWith<$Res> {
-  factory $PasteChildCopyWith(PasteChild value, $Res Function(PasteChild) _then) = _$PasteChildCopyWithImpl;
-@useResult
-$Res call({
- Type? widgetSpanChildType, SNode? testWidgetSpanChildNode
-});
 
 
-
-
-}
-/// @nodoc
-class _$PasteChildCopyWithImpl<$Res>
-    implements $PasteChildCopyWith<$Res> {
-  _$PasteChildCopyWithImpl(this._self, this._then);
-
-  final PasteChild _self;
-  final $Res Function(PasteChild) _then;
-
-/// Create a copy of CAPIEvent
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? widgetSpanChildType = freezed,Object? testWidgetSpanChildNode = freezed,}) {
-  return _then(PasteChild(
-widgetSpanChildType: freezed == widgetSpanChildType ? _self.widgetSpanChildType : widgetSpanChildType // ignore: cast_nullable_to_non_nullable
-as Type?,testWidgetSpanChildNode: freezed == testWidgetSpanChildNode ? _self.testWidgetSpanChildNode : testWidgetSpanChildNode // ignore: cast_nullable_to_non_nullable
-as SNode?,
-  ));
-}
-
-
-}
 
 /// @nodoc
 
@@ -2611,7 +2602,7 @@ class CopySnippetJsonToClipboard extends CAPIEvent with DiagnosticableTreeMixin 
   const CopySnippetJsonToClipboard({required this.rootNode}): super._();
   
 
- final  SnippetRootNode rootNode;
+ final  SNode rootNode;
 
 /// Create a copy of CAPIEvent
 /// with the given fields replaced by the non-null parameter values.
@@ -2649,7 +2640,7 @@ abstract mixin class $CopySnippetJsonToClipboardCopyWith<$Res> implements $CAPIE
   factory $CopySnippetJsonToClipboardCopyWith(CopySnippetJsonToClipboard value, $Res Function(CopySnippetJsonToClipboard) _then) = _$CopySnippetJsonToClipboardCopyWithImpl;
 @useResult
 $Res call({
- SnippetRootNode rootNode
+ SNode rootNode
 });
 
 
@@ -2669,7 +2660,7 @@ class _$CopySnippetJsonToClipboardCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') $Res call({Object? rootNode = null,}) {
   return _then(CopySnippetJsonToClipboard(
 rootNode: null == rootNode ? _self.rootNode : rootNode // ignore: cast_nullable_to_non_nullable
-as SnippetRootNode,
+as SNode,
   ));
 }
 

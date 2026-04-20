@@ -1,10 +1,10 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/bool_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
-import 'package:flutter_content/src/snippet/snodes/custom_scrollview_node.dart';
-import 'package:flutter_content/src/snippet/snodes/pageview_node.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/bool_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/enum_pnode.dart';
+import 'package:fsdui/src/snippet/snodes/custom_scrollview_node.dart';
+import 'package:fsdui/src/snippet/snodes/pageview_node.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../pnodes/fyi_pnodes.dart';
@@ -18,6 +18,7 @@ abstract class ScrollViewNode extends CL with ScrollViewNodeMappable {
   bool? shrinkWrap;
 
   ScrollViewNode({
+    super.name,
     this.scrollDirection = AxisEnum.vertical,
     this.shrinkWrap,
   });

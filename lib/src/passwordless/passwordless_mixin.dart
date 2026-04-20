@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 import 'package:http/http.dart' as http;
 
 mixin PasswordlessMixin {
@@ -13,7 +13,7 @@ mixin PasswordlessMixin {
     required ValueChanged<String> onSignedInF,
     required 
   }) {
-    fco.showOverlay(
+    fsdui.showOverlay(
       targetGK: targetGK,
       calloutContent: PasswordlessStepper(
           gcrServerUrl: gcrServerUrl, onSignedInF: onSignedInF),
@@ -30,7 +30,7 @@ mixin PasswordlessMixin {
         barrier: CalloutBarrierConfig(
           opacity: 0.25,
           onTappedF: () async {
-            fco.dismiss("passwordless-stepper");
+            fsdui.dismiss("passwordless-stepper");
           },
         ),
       ),
@@ -85,14 +85,14 @@ class PasswordlessStepperState extends State<PasswordlessStepper> {
   late TextEditingController eaController;
 
   String? get ea =>
-      fco.emailIsValid(eaController.text) ? eaController.text : null;
+      fsdui.emailIsValid(eaController.text) ? eaController.text : null;
 
   @override
   void initState() {
     super.initState();
     focusNode = FocusNode();
     eaController = TextEditingController();
-    fco.afterNextBuildDo(() {
+    fsdui.afterNextBuildDo(() {
       Future.delayed(Duration.zero, () {
         focusNode.requestFocus();
       });
@@ -139,7 +139,7 @@ class PasswordlessStepperState extends State<PasswordlessStepper> {
   }
 
   bool userHasConfirmed() {
-    return fco.localStorage.read('vea') == ea;
+    return fsdui.localStorage.read('vea') == ea;
   }
 
   @override
@@ -164,13 +164,13 @@ class PasswordlessStepperState extends State<PasswordlessStepper> {
         // if (index == 0 && token != null) color = Colors.black12;
         if (index == 1 && ea == null) color = Colors.black12;
         if (index == 2 && !userHasConfirmed()) color = Colors.black12;
-        return fco.coloredText('${index + 1}',
+        return fsdui.coloredText('${index + 1}',
             color: color); ////const Offstage();
       },
       controlsBuilder: (_, __) => const Offstage(),
       steps: <Step>[
         Step(
-          title: fco.coloredText(
+          title: fsdui.coloredText(
             token != null ? ea ?? '?' : 'Enter your email address',
             color: token != null ? Colors.black45 : Colors.black,
           ),
@@ -180,7 +180,7 @@ class PasswordlessStepperState extends State<PasswordlessStepper> {
           ),
         ),
         Step(
-          title: fco.blink(fco.coloredText(
+          title: fsdui.blink(fsdui.coloredText(
             'Check your Email',
             color: ea != null ? Colors.black : Colors.black12,
             fontWeight: ea != null ? FontWeight.bold : FontWeight.normal,
@@ -231,14 +231,14 @@ class Step1 extends StatelessWidget {
                           fontSize: 18,
                           fontFamily: 'monospace',
                           color: parentState.eaController.text.isEmpty ||
-                              fco.emailIsValid(parentState.eaController.text)
+                              fsdui.emailIsValid(parentState.eaController.text)
                               ? Colors.blue[900]
                               : Colors.red,
                           fontWeight: parentState.eaController.text.isEmpty ||
-                              fco.emailIsValid(parentState.eaController.text)
+                              fsdui.emailIsValid(parentState.eaController.text)
                               ? FontWeight.w400
                               : FontWeight.w900,
-                          background: fco.whiteBgPaint),
+                          background: fsdui.whiteBgPaint),
                     ),
                   ),
                 ),
@@ -250,7 +250,7 @@ class Step1 extends StatelessWidget {
                     },
                     icon: Icon(
                       Icons.arrow_forward,
-                      color: fco.emailIsValid(parentState.eaController.text)
+                      color: fsdui.emailIsValid(parentState.eaController.text)
                           ? Colors.blue
                           : Colors.red,
                     )),
@@ -259,11 +259,11 @@ class Step1 extends StatelessWidget {
       );
 
   Future<void> _emailAddressEntered() async {
-    if (fco.emailIsValid(parentState.eaController.text)) {
+    if (fsdui.emailIsValid(parentState.eaController.text)) {
       // check whether already signed in
       if (parentState.userHasConfirmed()) {
         _showAlreadySignInToast();
-        fco.dismiss("passwordless-stepper");
+        fsdui.dismiss("passwordless-stepper");
       }
       String? token = await PasswordlessStepper
           .cloudRunCreateTokenAndEmailVerificationLinkToUser(
@@ -279,19 +279,19 @@ class Step1 extends StatelessWidget {
   }
 
   void _showAlreadySignInToast() {
-    fco.showToastOverlay(
+    fsdui.showToastOverlay(
       removeAfterMs: 5000,
       calloutConfig: CalloutConfig(
         cId: "already-signed-in",
         gravity: Alignment.topCenter,
         decorationFillColors: ColorOrGradient.color(Colors.yellow),
-        initialCalloutW: fco.scrW * .8,
+        initialCalloutW: fsdui.scrW * .8,
         initialCalloutH: 40,
         
       ),
       calloutContent: Padding(
           padding: const EdgeInsets.all(10),
-          child: fco.coloredText('You are already signed in on this device.',
+          child: fsdui.coloredText('You are already signed in on this device.',
               color: Colors.blueAccent)),
     );
   }
@@ -305,10 +305,10 @@ class Step2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (parentState.ea == null || parentState.token == null) {
-      fco.afterMsDelayDo(5000, () {
+      fsdui.afterMsDelayDo(5000, () {
         parentState.back();
       });
-      return fco.coloredText(
+      return fsdui.coloredText(
         'Enter your email address to get started.',
         fontSize: 24,
         color: Colors.purpleAccent,
@@ -324,14 +324,14 @@ class Step2 extends StatelessWidget {
               onPressed: () async {
                 // check user is actually signed in now by checking firestore
                 if (parentState.token != null &&
-                    await fco.modelRepo.tokenConfirmed(parentState.token!)) {
-                  final String? vea = fco.localStorage.read('vea');
+                    await fsdui.modelRepo.tokenConfirmed(parentState.token!)) {
+                  final String? vea = fsdui.localStorage.read('vea');
                   if (vea != parentState.ea) {
-                    await fco.localStorage.write(
+                    await fsdui.localStorage.write(
                         'vea', parentState.ea ?? 'anon');
                   }
                   parentState.widget.onSignedInF(parentState.ea!);
-                  fco.dismiss("passwordless-stepper");
+                  fsdui.dismiss("passwordless-stepper");
                   _showConfirmedOKToast();
                 } else {
                   parentState.refresh(f: () {
@@ -339,47 +339,47 @@ class Step2 extends StatelessWidget {
                   });
                 }
               },
-              child: fco.coloredText('I tapped the button in the email',
+              child: fsdui.coloredText('I tapped the button in the email',
                   color: Colors.blue, fontSize: 24),
             ),
-            fco.coloredText(
+            fsdui.coloredText(
                 "\n(NOTE - if you can't find it, it's probably in your spam email folder)"),
           ],
         ));
   }
 
   void _showConfirmedOKToast() {
-    fco.showToastOverlay(
+    fsdui.showToastOverlay(
       removeAfterMs: 3000,
       calloutConfig: CalloutConfig(
         cId: "sign-in-confirmed",
         gravity: Alignment.topCenter,
         decorationFillColors: ColorOrGradient.color(Colors.yellow),
-        initialCalloutW: fco.scrW * .8,
+        initialCalloutW: fsdui.scrW * .8,
         initialCalloutH: 40,
         
       ),
       calloutContent: Padding(
           padding: const EdgeInsets.all(10),
-          child: fco.coloredText('You are signed in as ${parentState.ea}',
+          child: fsdui.coloredText('You are signed in as ${parentState.ea}',
               color: Colors.blueAccent)),
     );
   }
 
   void _showWaitingForYouToConfirmToast() {
-    fco.showToastOverlay(
+    fsdui.showToastOverlay(
       removeAfterMs: 5000,
       calloutConfig: CalloutConfig(
         cId: "waiting-for-confirmation-button",
         gravity: Alignment.topCenter,
         decorationFillColors: ColorOrGradient.color(Colors.yellow),
-        initialCalloutW: fco.scrW * .8,
+        initialCalloutW: fsdui.scrW * .8,
         initialCalloutH: 40,
         
       ),
       calloutContent: Padding(
           padding: const EdgeInsets.all(10),
-          child: fco.coloredText(
+          child: fsdui.coloredText(
               'Waiting for you to tap the button in the email we sent you...',
               color: Colors.blueAccent)),
     );

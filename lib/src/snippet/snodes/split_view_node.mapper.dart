@@ -25,6 +25,12 @@ class SplitViewNodeMapper extends SubClassMapperBase<SplitViewNode> {
   @override
   final String id = 'SplitViewNode';
 
+  static String? _$name(SplitViewNode v) => v.name;
+  static const Field<SplitViewNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static AxisEnum _$axis(SplitViewNode v) => v.axis;
   static const Field<SplitViewNode, AxisEnum> _f$axis = Field(
     'axis',
@@ -48,6 +54,12 @@ class SplitViewNodeMapper extends SubClassMapperBase<SplitViewNode> {
   static const Field<SplitViewNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(SplitViewNode v) => v.tags;
+  static const Field<SplitViewNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(SplitViewNode v) =>
@@ -75,10 +87,12 @@ class SplitViewNodeMapper extends SubClassMapperBase<SplitViewNode> {
 
   @override
   final MappableFields<SplitViewNode> fields = const {
+    #name: _f$name,
     #axis: _f$axis,
     #resizeable: _f$resizeable,
     #children: _f$children,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -100,6 +114,7 @@ class SplitViewNodeMapper extends SubClassMapperBase<SplitViewNode> {
 
   static SplitViewNode _instantiate(DecodingData data) {
     return SplitViewNode(
+      name: data.dec(_f$name),
       axis: data.dec(_f$axis),
       resizeable: data.dec(_f$resizeable),
       children: data.dec(_f$children),
@@ -171,7 +186,12 @@ abstract class SplitViewNodeCopyWith<$R, $In extends SplitViewNode, $Out>
   @override
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
-  $R call({AxisEnum? axis, bool? resizeable, List<SNode>? children});
+  $R call({
+    String? name,
+    AxisEnum? axis,
+    bool? resizeable,
+    List<SNode>? children,
+  });
   SplitViewNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -191,8 +211,14 @@ class _SplitViewNodeCopyWithImpl<$R, $Out>
         (v) => call(children: v),
       );
   @override
-  $R call({AxisEnum? axis, bool? resizeable, List<SNode>? children}) => $apply(
+  $R call({
+    Object? name = $none,
+    AxisEnum? axis,
+    bool? resizeable,
+    List<SNode>? children,
+  }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (axis != null) #axis: axis,
       if (resizeable != null) #resizeable: resizeable,
       if (children != null) #children: children,
@@ -200,6 +226,7 @@ class _SplitViewNodeCopyWithImpl<$R, $Out>
   );
   @override
   SplitViewNode $make(CopyWithData data) => SplitViewNode(
+    name: data.get(#name, or: $value.name),
     axis: data.get(#axis, or: $value.axis),
     resizeable: data.get(#resizeable, or: $value.resizeable),
     children: data.get(#children, or: $value.children),

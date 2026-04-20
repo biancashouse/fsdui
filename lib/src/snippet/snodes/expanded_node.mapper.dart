@@ -24,6 +24,12 @@ class ExpandedNodeMapper extends SubClassMapperBase<ExpandedNode> {
   @override
   final String id = 'ExpandedNode';
 
+  static String? _$name(ExpandedNode v) => v.name;
+  static const Field<ExpandedNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static int _$flex(ExpandedNode v) => v.flex;
   static const Field<ExpandedNode, int> _f$flex = Field(
     'flex',
@@ -41,6 +47,12 @@ class ExpandedNodeMapper extends SubClassMapperBase<ExpandedNode> {
   static const Field<ExpandedNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(ExpandedNode v) => v.tags;
+  static const Field<ExpandedNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(ExpandedNode v) =>
@@ -72,9 +84,11 @@ class ExpandedNodeMapper extends SubClassMapperBase<ExpandedNode> {
 
   @override
   final MappableFields<ExpandedNode> fields = const {
+    #name: _f$name,
     #flex: _f$flex,
     #child: _f$child,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -100,7 +114,11 @@ class ExpandedNodeMapper extends SubClassMapperBase<ExpandedNode> {
   ]);
 
   static ExpandedNode _instantiate(DecodingData data) {
-    return ExpandedNode(flex: data.dec(_f$flex), child: data.dec(_f$child));
+    return ExpandedNode(
+      name: data.dec(_f$name),
+      flex: data.dec(_f$flex),
+      child: data.dec(_f$child),
+    );
   }
 
   @override
@@ -168,7 +186,7 @@ abstract class ExpandedNodeCopyWith<$R, $In extends ExpandedNode, $Out>
   @override
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({int? flex, SNode? child});
+  $R call({String? name, int? flex, SNode? child});
   ExpandedNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -184,14 +202,16 @@ class _ExpandedNodeCopyWithImpl<$R, $Out>
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
-  $R call({int? flex, Object? child = $none}) => $apply(
+  $R call({Object? name = $none, int? flex, Object? child = $none}) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (flex != null) #flex: flex,
       if (child != $none) #child: child,
     }),
   );
   @override
   ExpandedNode $make(CopyWithData data) => ExpandedNode(
+    name: data.get(#name, or: $value.name),
     flex: data.get(#flex, or: $value.flex),
     child: data.get(#child, or: $value.child),
   );

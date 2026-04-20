@@ -2,11 +2,11 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_clip.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_stack_fit.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/enum_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_clip.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_stack_fit.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'stack_node.mapper.dart';
 
@@ -17,6 +17,7 @@ class StackNode extends MC with StackNodeMappable {
   AlignmentEnum alignment;
 
   StackNode({
+    super.name,
     this.fit = StackFitEnum.loose,
     this.clipBehavior = ClipEnum.hardEdge,
     this.alignment = AlignmentEnum.topLeft,
@@ -56,7 +57,7 @@ class StackNode extends MC with StackNodeMappable {
       ];
 
   @override
-  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
+  Widget build(BuildContext context, SNode? parentNode,
       ) {
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
@@ -78,7 +79,7 @@ class StackNode extends MC with StackNodeMappable {
                   clipBehavior: clipBehavior.flutterValue,
                   alignment: alignment.alignment,
                   children: children
-                      .map((node) => node.buildFlutterWidget(context, this))
+                      .map((node) => node.build(context, this))
                       .toList(),
                 );
         },

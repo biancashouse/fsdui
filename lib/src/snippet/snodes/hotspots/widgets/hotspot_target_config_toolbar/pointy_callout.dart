@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
 
 class PointyTool extends StatefulWidget {
   final CalloutConfig cc;
@@ -30,7 +30,7 @@ class PointyTool extends StatefulWidget {
   }) {
     // GlobalKey? targetGK = tc.gk;
 
-    fco.showOverlay(
+    fsdui.showOverlay(
       // targetGK: targetGK,
       calloutContent: PointyTool(
         cc,
@@ -55,7 +55,7 @@ class PointyTool extends StatefulWidget {
     );
   }
 
-  static bool isShowing() => fco.anyPresent(["arrow-type"]);
+  static bool isShowing() => fsdui.anyPresent(["arrow-type"]);
 }
 
 class _PointyToolState extends State<PointyTool> {
@@ -64,7 +64,7 @@ class _PointyToolState extends State<PointyTool> {
 
   HotspotTargetModel get tc => widget.tc;
 
-  CAPIBloC get bloc => fco.capiBloc;
+  CAPIBloC get bloc => fsdui.capiBloc;
 
   @override
   void initState() {
@@ -76,7 +76,7 @@ class _PointyToolState extends State<PointyTool> {
   void _onPressed(TargetPointerTypeEnum t, HotspotTargetModel tc, bool animate) {
     setState(() => _arrowType = t);
     tc.targetPointerTypeEnum = t;
-    fco.dismiss("arrow-type");
+    fsdui.dismiss("arrow-type");
     widget.tc.saveParentSnippet(
       widget.wrapperState.widget.parentNode.rootNodeOfSnippet(),
     );
@@ -156,7 +156,7 @@ class _PointyToolState extends State<PointyTool> {
               tc,
               tc.animatePointer ?? false,
             );
-            fco.dismiss("arrow-type");
+            fsdui.dismiss("arrow-type");
             // fco.afterNextBuildDo(() {
             //   reshowSnippetContentCallout(tc, widget.allowButtonCallouts, widget.justPlaying, widget.onDiscardedF);
             // });

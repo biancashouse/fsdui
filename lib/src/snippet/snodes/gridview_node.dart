@@ -2,11 +2,11 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/int_pnode.dart';
-import 'package:flutter_content/src/snippet/snodes/abstract_boxscrollview_node.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/src/snippet/pnodes/int_pnode.dart';
+import 'package:fsdui/src/snippet/snodes/abstract_boxscrollview_node.dart';
 
 import '../pnodes/edge_insets_pnode.dart';
 
@@ -20,6 +20,7 @@ class GridViewNode extends BoxScrollViewNode with GridViewNodeMappable {
   double? crossAxisSpacing;
 
   GridViewNode({
+    super.name,
     this.mainAxisSpacing,
     this.crossAxisSpacing,
     this.crossAxisCount,
@@ -94,7 +95,7 @@ class GridViewNode extends BoxScrollViewNode with GridViewNodeMappable {
             children: children
                 .map(
                   (childNode) =>
-                  childNode.buildFlutterWidget(context, this),
+                  childNode.build(context, this),
             )
                 .toList(),
           );

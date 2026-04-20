@@ -1,12 +1,12 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/bool_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/color_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/edge_insets_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/text_style_pnodes.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/bool_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/color_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/edge_insets_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/text_style_pnodes.dart';
 
 part 'chip_node.mapper.dart';
 
@@ -34,6 +34,7 @@ class ChipNode extends CL with ChipNodeMappable {
   // CalloutConfig? calloutConfig;
 
   ChipNode({
+    super.name,
     this.label = 'chip-name?',
     required this.labelTSPropGroup,
     this.labelPadding,
@@ -62,7 +63,7 @@ class ChipNode extends CL with ChipNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) {
-    var textStyleName = fco.findTextStyleName(fco.appInfo, labelTSPropGroup);
+    var textStyleName = fsdui.findTextStyleName(fsdui.appInfo, labelTSPropGroup);
     textStyleName = textStyleName != null ? ': $textStyleName' : '';
     return [
       FlutterDocPNode(
@@ -156,7 +157,7 @@ class ChipNode extends CL with ChipNodeMappable {
                 () => destinationRoutePathSnippetName = newValue,
               );
             },
-            options: fco.pageList,
+            options: fsdui.pageList,
             calloutButtonSize: const Size(280, 70),
             calloutWidth: 280,
           ),
@@ -247,7 +248,7 @@ class ChipNode extends CL with ChipNodeMappable {
     
   ) {
     if (onTapHandlerName != null) {
-      fco.namedCallbacks[onTapHandlerName!]?.call(context, gk);
+      fsdui.namedCallbacks[onTapHandlerName!]?.call(context, gk);
     }
     // else if (feature != null) {
     //   // possible callout

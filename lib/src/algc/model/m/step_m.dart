@@ -4,11 +4,11 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/algc/model/bv/step_bv.dart';
-import 'package:flutter_content/src/algc/model/m/flowchart_m.dart';
-import 'package:flutter_content/src/algc/model/m/step_types_enum.dart';
-import 'package:flutter_content/src/algc/model/m/string_encoder_decoder.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/algc/model/bv/step_bv.dart';
+import 'package:fsdui/src/algc/model/m/flowchart_m.dart';
+import 'package:fsdui/src/algc/model/m/step_types_enum.dart';
+import 'package:fsdui/src/algc/model/m/string_encoder_decoder.dart';
 import 'package:random_string/random_string.dart';
 
 import 'comment_m.dart';
@@ -918,7 +918,7 @@ class StepM with StringEncoderDecoder {
         });
       }
     } catch (e) {
-      fco.logger.e(e.toString());
+      fsdui.logger.e(e.toString());
     }
     return clonedStep;
   }

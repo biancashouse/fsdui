@@ -1,4 +1,4 @@
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 class PollOptionCounts {
   Map<PollOptionId, int>? optionVoteCounts;

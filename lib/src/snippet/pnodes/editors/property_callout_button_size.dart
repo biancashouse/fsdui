@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-import 'package:flutter_content/flutter_content.dart';
-// import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_text_editor.dart';
+import 'package:fsdui/fsdui.dart';
+// import 'package:fsdui/src/target_config/content/snippet_editor/node_properties/node_text_editor.dart';
 
 class PropertyButtonSize extends HookWidget {
   final (double?, double?) originalSize;
@@ -39,7 +39,7 @@ class PropertyButtonSize extends HookWidget {
 
     Widget textLabel() =>
         skipLabelText
-            ? fco.coloredText(
+            ? fsdui.coloredText(
           editedText.value,
           color: Colors.white,
           fontWeight: FontWeight.bold,
@@ -60,7 +60,7 @@ class PropertyButtonSize extends HookWidget {
             ],
           ),
         )
-            : fco.coloredText(
+            : fsdui.coloredText(
           '$label...',
           color: Colors.white,
           fontWeight: FontWeight.w100,
@@ -76,7 +76,7 @@ class PropertyButtonSize extends HookWidget {
             barrier: CalloutBarrierConfig(
               opacity: .25,
               onTappedF: () {
-                fco.dismiss('te');
+                fsdui.dismiss('te');
               },
             ),
             decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
@@ -112,7 +112,7 @@ class PropertyButtonSize extends HookWidget {
               //     (size.$1 != null && size.$2 != null)) {
                 editedText.value = s;
                 onSizeChange(size);
-                fco.dismiss('te');
+                fsdui.dismiss('te');
               // }
             },
             dontAutoFocus: false,
@@ -122,7 +122,7 @@ class PropertyButtonSize extends HookWidget {
           if (teCC.calloutH != null && teCC.calloutH! > 400) {
             teCC.initialCalloutH = teCC.calloutH = 200;
           }
-          fco.showOverlay(
+          fsdui.showOverlay(
             calloutConfig: teCC,
             calloutContent: teCC.calloutH != null && teCC.calloutH! > 400
                 ? Padding(

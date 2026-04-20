@@ -41,6 +41,12 @@ class DirectoryNodeMapper extends SubClassMapperBase<DirectoryNode> {
     _$uid,
     mode: FieldMode.member,
   );
+  static List<String>? _$tags(DirectoryNode v) => v.tags;
+  static const Field<DirectoryNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(DirectoryNode v) =>
       v.treeNodeGK;
   static const Field<DirectoryNode, GlobalKey<State<StatefulWidget>>>
@@ -69,6 +75,7 @@ class DirectoryNodeMapper extends SubClassMapperBase<DirectoryNode> {
     #name: _f$name,
     #children: _f$children,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,

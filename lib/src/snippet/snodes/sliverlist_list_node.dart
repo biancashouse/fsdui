@@ -2,14 +2,14 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'sliverlist_list_node.mapper.dart';
 
 @MappableClass()
 class SliverListListNode extends MC with SliverListListNodeMappable {
-  SliverListListNode({required super.children});
+  SliverListListNode({super.name, required super.children});
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
@@ -33,7 +33,7 @@ class SliverListListNode extends MC with SliverListListNodeMappable {
     return SliverList.list(
       key: createNodeWidgetGK(),
       children: children
-          .map((childNode) => childNode.buildFlutterWidget(context, this))
+          .map((childNode) => childNode.build(context, this))
           .toList(),
     );
   }

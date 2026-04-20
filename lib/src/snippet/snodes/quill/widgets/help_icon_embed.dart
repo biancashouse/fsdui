@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_content/src/model/quill_target_model.dart';
+import 'package:fsdui/src/model/quill_target_model.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:flutter_content/flutter_content.dart' hide Line;
+import 'package:fsdui/fsdui.dart' hide Line;
 
 import 'quill_target_config_toolbar/quill_target_config_toolbar.dart'
     show QuillTargetConfigToolbar;
@@ -38,7 +38,7 @@ class HelpIconEmbedBuilder implements EmbedBuilder {
       return const Icon(Icons.error, color: Colors.red);
     }
 
-    final sc = fco.findAncestorScrollConfig(context);
+    final sc = fsdui.findAncestorScrollConfig(context);
 
     // var targets = parentSNode.getTargetList();
 
@@ -163,7 +163,7 @@ class HelpIconEmbedBuilder implements EmbedBuilder {
     Alignment optimalAl = _getOptimalAlignment(context, sc);
     cc.targetAlignment = optimalAl;
     cc.calloutAlignment = -optimalAl;
-    fco.showOverlay(
+    fsdui.showOverlay(
       calloutConfig: cc,
       calloutContent: qt.possiblyEditableContent(justPlaying: justPlaying),
       targetGK: gk,
@@ -178,9 +178,9 @@ class HelpIconEmbedBuilder implements EmbedBuilder {
     ScrollConfig? sc,
   ) {
     // prevent configuring targets when overlay is open
-    if (fco.anyPresent(['quill-te', QuillTargetConfigToolbar.CID])) return;
-    if (!fco.canEditAnyContent()) return;
-    fco.hide(parentSNode.quillTextToolbarCID);
+    if (fsdui.anyPresent(['quill-te', QuillTargetConfigToolbar.CID])) return;
+    if (!fsdui.canEditAnyContent()) return;
+    fsdui.hide(parentSNode.quillTextToolbarCID);
     // configure target
     qt.showConfigToolbar(
       parentNode: parentSNode,
@@ -204,7 +204,7 @@ class HelpIconEmbedBuilder implements EmbedBuilder {
     QuillTargetModel qt,
     ScrollConfig? sc,
   ) {
-    CalloutConfig? contentCC = fco.findCalloutConfig(qt.contentCId);
+    CalloutConfig? contentCC = fsdui.findCalloutConfig(qt.contentCId);
     Alignment optimalAl = _getOptimalAlignment(targetCtx, sc);
     contentCC?.targetAlignment = optimalAl;
     contentCC?.calloutAlignment = -optimalAl;
@@ -228,7 +228,7 @@ class HelpIconEmbedBuilder implements EmbedBuilder {
       renderObject = targetCtx.findRenderObject();
 
       if (renderObject == null) {
-        fco.logger.i('GlobalKeyExtension: findRenderObject returned null.');
+        fsdui.logger.i('GlobalKeyExtension: findRenderObject returned null.');
         return null;
       }
       paintBounds = renderObject.paintBounds;
@@ -238,13 +238,13 @@ class HelpIconEmbedBuilder implements EmbedBuilder {
       final offset = Offset(translation.x, translation.y);
       return paintBounds.shift(offset);
     } catch (e) {
-      fco.logger.i('paintBounds = renderObject?.paintBounds - ${e.toString()}');
+      fsdui.logger.i('paintBounds = renderObject?.paintBounds - ${e.toString()}');
       return null;
     }
   }
 
   Alignment _getOptimalAlignment(BuildContext targetCtx, ScrollConfig? sc) {
-    var screenCenterPos = fco.translateOffsetForScroll(
+    var screenCenterPos = fsdui.translateOffsetForScroll(
       sc,
       Offset(
         MediaQuery.of(targetCtx).size.width / 2,
@@ -330,7 +330,7 @@ class HelpIconEmbedBuilder implements EmbedBuilder {
     var snippet = parentSNode.rootNodeOfSnippet();
     if (snippet != null) {
       // fco.modelRepo.saveNewVersionOfSnippet(snippet);
-      fco.appInfo.cachedSnippetInfo(snippet.name)?.notifyChange(snippet);
+      fsdui.appInfo.cachedSnippetInfo(snippet.name!)?.notifyChange(snippet);
     }
   }
 

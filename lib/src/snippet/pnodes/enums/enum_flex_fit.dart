@@ -2,8 +2,8 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/flexfit_editor.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/editors/flexfit_editor.dart';
 
 part 'enum_flex_fit.mapper.dart';
 
@@ -33,7 +33,7 @@ enum FlexFitEnum  {
         ),
       );
 
-  Widget toMenuItem() => fco.coloredText(name, color: Colors.white);
+  Widget toMenuItem() => fsdui.coloredText(name, color: Colors.white);
 
   static FlexFitEnum? of(int? index) => index != null ? FlexFitEnum.values.elementAtOrNull(index) : null;
 }

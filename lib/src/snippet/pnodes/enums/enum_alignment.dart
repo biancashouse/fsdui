@@ -1,7 +1,7 @@
 // import 'package:dart_mappable/dart_mappable.dart';
 // import 'package:flutter/material.dart';
-// import 'package:flutter_content/flutter_content.dart';
-// import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.dart';
+// import 'package:fsdui/fsdui.dart';
+// import 'package:fsdui/src/snippet/pnodes/editors/property_button_enum.dart';
 //
 // part 'enum_alignment.mapper.dart';
 //
@@ -33,7 +33,7 @@
 //         AlignmentEnumModel.bottomRight => AlignmentEnumModel.topLeft,
 //       };
 //
-//   /// for flutter_content usage
+//   /// for fsdui usage
 //   static Widget propertyNodeContents({
 //     int? enumValueIndex,
 //     required SNode snode,

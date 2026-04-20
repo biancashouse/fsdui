@@ -1,7 +1,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'menu_bar_node.mapper.dart';
 
@@ -11,6 +11,7 @@ class MenuBarNode extends MC with MenuBarNodeMappable {
   double? height;
 
   MenuBarNode({
+    super.name,
     this.width,
     this.height,
     required super.children,
@@ -45,13 +46,13 @@ class MenuBarNode extends MC with MenuBarNodeMappable {
               MenuBar(
                 key: createNodeWidgetGK(),
                 children: super.children.map((child) =>
-                    child.buildFlutterWidget(context, this)).toList(),
+                    child.build(context, this)).toList(),
               ),
-              width ?? fco.scrW,
+              width ?? fsdui.scrW,
               height ?? 60,
             );
           } catch (e) {
-            fco.logger.i('MenuBarNode.toWidget() failed!');
+            fsdui.logger.i('MenuBarNode.toWidget() failed!');
             return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());
       }
     } catch (e) {

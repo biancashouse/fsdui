@@ -26,6 +26,12 @@ class FlexibleNodeMapper extends SubClassMapperBase<FlexibleNode> {
   @override
   final String id = 'FlexibleNode';
 
+  static String? _$name(FlexibleNode v) => v.name;
+  static const Field<FlexibleNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static int _$flex(FlexibleNode v) => v.flex;
   static const Field<FlexibleNode, int> _f$flex = Field(
     'flex',
@@ -52,6 +58,12 @@ class FlexibleNodeMapper extends SubClassMapperBase<FlexibleNode> {
     _$uid,
     mode: FieldMode.member,
   );
+  static List<String>? _$tags(FlexibleNode v) => v.tags;
+  static const Field<FlexibleNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(FlexibleNode v) =>
       v.treeNodeGK;
   static const Field<FlexibleNode, GlobalKey<State<StatefulWidget>>>
@@ -75,10 +87,12 @@ class FlexibleNodeMapper extends SubClassMapperBase<FlexibleNode> {
 
   @override
   final MappableFields<FlexibleNode> fields = const {
+    #name: _f$name,
     #flex: _f$flex,
     #fit: _f$fit,
     #child: _f$child,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -102,6 +116,7 @@ class FlexibleNodeMapper extends SubClassMapperBase<FlexibleNode> {
 
   static FlexibleNode _instantiate(DecodingData data) {
     return FlexibleNode(
+      name: data.dec(_f$name),
       flex: data.dec(_f$flex),
       fit: data.dec(_f$fit),
       child: data.dec(_f$child),
@@ -173,7 +188,7 @@ abstract class FlexibleNodeCopyWith<$R, $In extends FlexibleNode, $Out>
   @override
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({int? flex, SNode? child});
+  $R call({String? name, int? flex, SNode? child});
   FlexibleNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -189,14 +204,16 @@ class _FlexibleNodeCopyWithImpl<$R, $Out>
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
-  $R call({int? flex, Object? child = $none}) => $apply(
+  $R call({Object? name = $none, int? flex, Object? child = $none}) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (flex != null) #flex: flex,
       if (child != $none) #child: child,
     }),
   );
   @override
   FlexibleNode $make(CopyWithData data) => FlexibleNode(
+    name: data.get(#name, or: $value.name),
     flex: data.get(#flex, or: $value.flex),
     fit: data.get(#fit, or: $value.fit),
     child: data.get(#child, or: $value.child),

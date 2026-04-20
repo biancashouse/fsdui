@@ -24,6 +24,12 @@ class CenterNodeMapper extends SubClassMapperBase<CenterNode> {
   @override
   final String id = 'CenterNode';
 
+  static String? _$name(CenterNode v) => v.name;
+  static const Field<CenterNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static SNode? _$child(CenterNode v) => v.child;
   static const Field<CenterNode, SNode> _f$child = Field(
     'child',
@@ -34,6 +40,12 @@ class CenterNodeMapper extends SubClassMapperBase<CenterNode> {
   static const Field<CenterNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(CenterNode v) => v.tags;
+  static const Field<CenterNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(CenterNode v) =>
@@ -59,8 +71,10 @@ class CenterNodeMapper extends SubClassMapperBase<CenterNode> {
 
   @override
   final MappableFields<CenterNode> fields = const {
+    #name: _f$name,
     #child: _f$child,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -81,7 +95,7 @@ class CenterNodeMapper extends SubClassMapperBase<CenterNode> {
   ]);
 
   static CenterNode _instantiate(DecodingData data) {
-    return CenterNode(child: data.dec(_f$child));
+    return CenterNode(name: data.dec(_f$name), child: data.dec(_f$child));
   }
 
   @override
@@ -147,7 +161,7 @@ abstract class CenterNodeCopyWith<$R, $In extends CenterNode, $Out>
   @override
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({SNode? child});
+  $R call({String? name, SNode? child});
   CenterNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -163,11 +177,17 @@ class _CenterNodeCopyWithImpl<$R, $Out>
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
-  $R call({Object? child = $none}) =>
-      $apply(FieldCopyWithData({if (child != $none) #child: child}));
+  $R call({Object? name = $none, Object? child = $none}) => $apply(
+    FieldCopyWithData({
+      if (name != $none) #name: name,
+      if (child != $none) #child: child,
+    }),
+  );
   @override
-  CenterNode $make(CopyWithData data) =>
-      CenterNode(child: data.get(#child, or: $value.child));
+  CenterNode $make(CopyWithData data) => CenterNode(
+    name: data.get(#name, or: $value.name),
+    child: data.get(#child, or: $value.child),
+  );
 
   @override
   CenterNodeCopyWith<$R2, CenterNode, $Out2> $chain<$R2, $Out2>(

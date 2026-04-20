@@ -6,6 +6,6 @@ pipelines:
         clone:
           enabled: false
         script:
-          - git clone --bare git@bitbucket.org:biancashouse/flutter_content.git
-          - cd flutter_content.git
-          - git push --mirror git@github.com:biancashouse/flutter_content.git
+          - git clone --bare git@bitbucket.org:biancashouse/fsdui.git
+          - cd fsdui.git
+          - git push --mirror git@github.com:biancashouse/fsdui.git

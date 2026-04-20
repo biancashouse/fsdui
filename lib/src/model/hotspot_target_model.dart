@@ -4,9 +4,9 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/model/size_model.dart';
-import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/model/size_model.dart';
+import 'package:fsdui/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../snippet/pnodes/enums/enum_target_pointer_type.dart';
@@ -190,9 +190,9 @@ class HotspotTargetModel extends TargetConfigModel
       decorationBorderRadius: 16,
       animatePointer: false,
       targetPointerType: TargetPointerType.none(),
-      initialCalloutPos: OffsetModel.fromOffset(fco.calloutConfigToolbarPos()),
+      initialCalloutPos: OffsetModel.fromOffset(fsdui.calloutConfigToolbarPos()),
       onDragEndedF: (newPos) {
-        fco.setCalloutConfigToolbarPos(newPos);
+        fsdui.setCalloutConfigToolbarPos(newPos);
       },
       dragHandleHeight: 30,
       followScroll: false,
@@ -209,7 +209,7 @@ class HotspotTargetModel extends TargetConfigModel
       },
     );
 
-    fco.showOverlay(
+    fsdui.showOverlay(
       onReadyF: () {},
       calloutConfig: cc,
       calloutContent: HotspotTargetConfigToolbar(
@@ -257,11 +257,7 @@ class HotspotTargetModel extends TargetConfigModel
     // if (fco.targetSnippetBeingConfigured != null) {
 
     Widget content() => SnippetBuilder(
-      snippetName: contentCId,
-      templateSnippet: SnippetRootNode(
-        name: contentCId,
-        child: PlaceholderNode(),
-      ),
+      initialValue: PlaceholderNode(name: contentCId),
       justPlaying: justPlaying,
     );
 
@@ -277,23 +273,23 @@ class HotspotTargetModel extends TargetConfigModel
     );
 
     Widget possiblyEditableContent() =>
-        fco.canEditAnyContent() && !justPlaying ? editableContent() : content();
+        fsdui.canEditAnyContent() && !justPlaying ? editableContent() : content();
 
-    final snippetBeingEdited = fco.snippetBeingEdited != null;
+    final snippetBeingEdited = fsdui.snippetBeingEdited != null;
 
     // globalPaintBounds() returns the correctly scaled topLeft, but the
     // rect width and height are the unscaled values!
     Rect? targetRect = gk?.globalPaintBounds();
     if (targetRect == null) return;
 
-    Offset initialCalloutPos = fco.calculateCalloutTopLeft(
+    Offset initialCalloutPos = fsdui.calculateCalloutTopLeft(
       // targetRect: inflateRectByFactor_fromCenter(gk!.globalPaintBounds()!, getScale(wrapperState)),
       targetRect: targetRect,
       calloutRect: Rect.fromLTWH(0, 0, calloutSize!.width, calloutSize!.height),
       alignment: tcAlignment!,
     );
 
-    Offset initialCalloutPosSA = fco.translateOffsetForScroll(
+    Offset initialCalloutPosSA = fsdui.translateOffsetForScroll(
       wrapperState.scrollConfig,
       initialCalloutPos,
     );
@@ -343,7 +339,7 @@ class HotspotTargetModel extends TargetConfigModel
         // tcAlignment = AlignmentModel(cc.targetAlignment!.x, cc.targetAlignment!.y);
       },
       onDragEndedF: (Offset newPos) {
-        if ((justPlaying && hasABtn()) || !fco.canEditAnyContent()) return;
+        if ((justPlaying && hasABtn()) || !fsdui.canEditAnyContent()) return;
 
         // update the targetAlignment
         final Rect calloutRect = Rect.fromLTWH(
@@ -355,14 +351,14 @@ class HotspotTargetModel extends TargetConfigModel
 
         // calc alignment that positions the callout at its final separation
 
-        var targetRectSA = fco.translateRectForScroll(
+        var targetRectSA = fsdui.translateRectForScroll(
           wrapperState.scrollConfig,
           targetRect,
         );
 
         // var calloutRectSA = wrapperState.translateRectForScroll(calloutRect);
 
-        Alignment newAlignment = fco.getAlignmentBetweenRects(
+        Alignment newAlignment = fsdui.getAlignmentBetweenRects(
           targetRectSA,
           calloutRect,
         );
@@ -386,7 +382,7 @@ class HotspotTargetModel extends TargetConfigModel
       onDismissedF: () {
         // FCO.parentTW(twName)?.zoomer?.resetTransform();
         // fco.capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
-        fco.dismiss(HotspotTargetConfigToolbar.CID);
+        fsdui.dismiss(HotspotTargetConfigToolbar.CID);
       },
       barrier: hasABtn() && !snippetBeingEdited
           ? CalloutBarrierConfig(
@@ -459,7 +455,7 @@ class HotspotTargetModel extends TargetConfigModel
     }
 
     //)
-    fco.showOverlay(
+    fsdui.showOverlay(
       // isHotspotCallout: true,
       // skipOnScreenCheck: justPlaying,
       targetGK: gk,
@@ -484,7 +480,7 @@ class HotspotTargetModel extends TargetConfigModel
 
     showContentCallout(justPlaying: false, wrapperState: wrapperState);
 
-    fco.dismiss(HotspotTargetConfigToolbar.CID, skipOnDismiss: true);
+    fsdui.dismiss(HotspotTargetConfigToolbar.CID, skipOnDismiss: true);
     showConfigToolbar(wrapperState);
   }
 

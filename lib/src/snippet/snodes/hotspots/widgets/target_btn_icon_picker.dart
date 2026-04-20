@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_flex_fit.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_flex_fit.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import 'enum_target_btn_icon.dart';

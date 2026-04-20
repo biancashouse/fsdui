@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 import 'package:go_router/go_router.dart';
 
 // same as GoRoute, with onExit to dismiss any callouts
@@ -18,7 +18,7 @@ class EditablePageRoute extends GoRoute {
     super.routes,
   }) : super(
          onExit: (BuildContext context, GoRouterState state) async {
-           fco.dismissAll();
+           fsdui.dismissAll();
            return true;
          },
          builder: (BuildContext context, GoRouterState state) {
@@ -37,7 +37,7 @@ class EditablePageRoute extends GoRoute {
                      // zoomable: zoomable,
                      // provideNamedScrollController: provideNamedScrollController,
                      child: child ?? SnippetBuilder(
-                       templateSnippet: SnippetRootNode(name: state.path!, child: PlaceholderNode()),
+                       initialValue: PlaceholderNode(name: state.path!),
                      ),
                    );
                  }

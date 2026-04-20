@@ -25,6 +25,12 @@ class MenuItemButtonNodeMapper extends SubClassMapperBase<MenuItemButtonNode> {
   @override
   final String id = 'MenuItemButtonNode';
 
+  static String? _$name(MenuItemButtonNode v) => v.name;
+  static const Field<MenuItemButtonNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static String? _$destinationRoutePathSnippetName(MenuItemButtonNode v) =>
       v.destinationRoutePathSnippetName;
   static const Field<MenuItemButtonNode, String>
@@ -55,6 +61,12 @@ class MenuItemButtonNodeMapper extends SubClassMapperBase<MenuItemButtonNode> {
     _$uid,
     mode: FieldMode.member,
   );
+  static List<String>? _$tags(MenuItemButtonNode v) => v.tags;
+  static const Field<MenuItemButtonNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(MenuItemButtonNode v) =>
       v.treeNodeGK;
   static const Field<MenuItemButtonNode, GlobalKey<State<StatefulWidget>>>
@@ -80,11 +92,13 @@ class MenuItemButtonNodeMapper extends SubClassMapperBase<MenuItemButtonNode> {
 
   @override
   final MappableFields<MenuItemButtonNode> fields = const {
+    #name: _f$name,
     #destinationRoutePathSnippetName: _f$destinationRoutePathSnippetName,
     #bsPropGroup: _f$bsPropGroup,
     #onTapHandlerName: _f$onTapHandlerName,
     #child: _f$child,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -107,6 +121,7 @@ class MenuItemButtonNodeMapper extends SubClassMapperBase<MenuItemButtonNode> {
 
   static MenuItemButtonNode _instantiate(DecodingData data) {
     return MenuItemButtonNode(
+      name: data.dec(_f$name),
       destinationRoutePathSnippetName: data.dec(
         _f$destinationRoutePathSnippetName,
       ),
@@ -198,6 +213,7 @@ abstract class MenuItemButtonNodeCopyWith<
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
   $R call({
+    String? name,
     String? destinationRoutePathSnippetName,
     ButtonStyleProperties? bsPropGroup,
     String? onTapHandlerName,
@@ -229,12 +245,14 @@ class _MenuItemButtonNodeCopyWithImpl<$R, $Out>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
   $R call({
+    Object? name = $none,
     Object? destinationRoutePathSnippetName = $none,
     ButtonStyleProperties? bsPropGroup,
     Object? onTapHandlerName = $none,
     Object? child = $none,
   }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (destinationRoutePathSnippetName != $none)
         #destinationRoutePathSnippetName: destinationRoutePathSnippetName,
       if (bsPropGroup != null) #bsPropGroup: bsPropGroup,
@@ -244,6 +262,7 @@ class _MenuItemButtonNodeCopyWithImpl<$R, $Out>
   );
   @override
   MenuItemButtonNode $make(CopyWithData data) => MenuItemButtonNode(
+    name: data.get(#name, or: $value.name),
     destinationRoutePathSnippetName: data.get(
       #destinationRoutePathSnippetName,
       or: $value.destinationRoutePathSnippetName,

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 // import 'package:window_manager/window_manager.dart';
 import 'pages/routes_config.dart';
 import 'bh-apps.firebase_options.dart';
@@ -16,7 +16,7 @@ void disableOverflowErrors() {
         );
 
     if (isOverflowError) {
-      fco.logger.d(details.toString());
+      fsdui.logger.d(details.toString());
     } else {
       FlutterError.presentError(details);
     }
@@ -56,13 +56,13 @@ void main({bool useEmulator = false}) {
 
       runApp(
         FlutterContentApp.router(
-          appName: 'flutter-content-example-with-go-router',
+          appName: 'fsdui-example-with-go-router',
           // use web, mobile or desktop routingConfig defined in your routes_config.dart
           routingConfig: webRoutingConfig,
           initialRoutePath: '/',
           materialAppThemeF: () => ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            primaryColor: fco.FUCHSIA_X,
+            primaryColor: fsdui.FUCHSIA_X,
             primarySwatch: Colors.purple,
           ),
           fbOptions: BH_APPS_DefaultFirebaseOptions.currentPlatform,

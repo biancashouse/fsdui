@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart' hide Line;
-import 'package:flutter_content/src/model/quill_target_model.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
-import 'package:flutter_content/src/snippet/snodes/quill/widgets/help_icon_embed.dart';
-import 'package:flutter_content/src/snippet/snodes/quill/widgets/quill_text_toolbar/quill_text_toolbar.dart';
+import 'package:fsdui/fsdui.dart' hide Line;
+import 'package:fsdui/src/model/quill_target_model.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
+import 'package:fsdui/src/snippet/snodes/quill/widgets/help_icon_embed.dart';
+import 'package:fsdui/src/snippet/snodes/quill/widgets/quill_text_toolbar/quill_text_toolbar.dart';
 
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -45,7 +45,7 @@ class _FocusAwareQuillEditorState extends State<FocusAwareQuillEditor> {
   late FocusNode _focusNode;
   late ScrollController _scrollController;
 
-  late SnippetRootNode? _rootNode;
+  late SNode? _rootNode;
 
   @override
   void initState() {
@@ -137,11 +137,11 @@ class _FocusAwareQuillEditorState extends State<FocusAwareQuillEditor> {
       // }
     } else {
       // GAINED FOCUS
-      if (fco.quillTextToolbarCIDVN.value != widget.parentSNode.quillTextToolbarCID) {
-        if (fco.quillTextToolbarCIDVN.value != null) {
-          fco.dismiss(fco.quillTextToolbarCIDVN.value!);
+      if (fsdui.quillTextToolbarCIDVN.value != widget.parentSNode.quillTextToolbarCID) {
+        if (fsdui.quillTextToolbarCIDVN.value != null) {
+          fsdui.dismiss(fsdui.quillTextToolbarCIDVN.value!);
         }
-        fco.quillTextToolbarCIDVN.value = widget.parentSNode.quillTextToolbarCID;
+        fsdui.quillTextToolbarCIDVN.value = widget.parentSNode.quillTextToolbarCID;
         QuillTextToolbar.show(
           parentSNode: widget.parentSNode,
           focusNode: _focusNode,
@@ -172,7 +172,7 @@ class _FocusAwareQuillEditorState extends State<FocusAwareQuillEditor> {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<CalloutId?>(
-      valueListenable: fco.quillTextToolbarCIDVN,
+      valueListenable: fsdui.quillTextToolbarCIDVN,
       builder: (context, value, child) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -326,7 +326,7 @@ class _FocusAwareQuillEditorState extends State<FocusAwareQuillEditor> {
   );
 
   QuillTargetModel? _createQuillTarget() {
-    if (!fco.canEditAnyContent()) return null;
+    if (!fsdui.canEditAnyContent()) return null;
 
     TargetId newTargetId = DateTime.now().millisecondsSinceEpoch;
     return QuillTargetModel(

@@ -1,8 +1,8 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/edge_insets_pnode.dart';
-import 'package:flutter_content/src/snippet/snodes/abstract_scrollview_node.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/edge_insets_pnode.dart';
+import 'package:fsdui/src/snippet/snodes/abstract_scrollview_node.dart';
 
 import '../pnodes/fyi_pnodes.dart';
 
@@ -13,6 +13,7 @@ abstract class BoxScrollViewNode extends ScrollViewNode with BoxScrollViewNodeMa
   EdgeInsetsValue? padding;
 
   BoxScrollViewNode({
+    super.name,
     super.scrollDirection,
     super.shrinkWrap,
     this.padding,

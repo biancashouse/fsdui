@@ -2,12 +2,12 @@
 
 // import 'dart:typed_data';
 
-import 'dart:typed_data' show Uint8List;
+// import 'dart:typed_data' show Uint8List;
 
 import 'package:flutter/material.dart';
-// import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
+// import 'package:fsdui/src/snippet/pnodes/groups/button_style_properties.dart';
 
-import '../flutter_content.dart';
+import '../fsdui.dart';
 
 typedef VoterId = String;
 typedef PollOptionId = String;
@@ -53,10 +53,10 @@ typedef PropertyName = String;
 typedef ButtonStyleFunc = ButtonStyle Function();
 
 // typedef VersionIdHistory = List<VersionId>;
-typedef SnippetVersions = Map<VersionId, SnippetRootNode>;
-typedef VersionedSnippet = (VersionId, SnippetRootNode);
+typedef SnippetVersions = Map<VersionId, SNode>;
+typedef VersionedSnippet = (VersionId, SNode);
 // typedef EncodedJson = String;
-typedef SnippetMap = Map<SnippetName, SnippetRootNode>;
+typedef SnippetMap = Map<SnippetName, SNode>;
 // typedef EncodedSnippetJson = String;
 // typedef SizeFunc = Size Function();
 // typedef PosFunc = Offset Function();

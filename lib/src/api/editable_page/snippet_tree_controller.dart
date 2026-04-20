@@ -1,5 +1,5 @@
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/fancy_tree/tree_controller.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/fancy_tree/tree_controller.dart';
 
 class SnippetTreeController extends TreeController<SNode> {
   Set<SNode>? _expandedNodesCache;

@@ -25,6 +25,12 @@ class CarouselNodeMapper extends SubClassMapperBase<CarouselNode> {
   @override
   final String id = 'CarouselNode';
 
+  static String? _$name(CarouselNode v) => v.name;
+  static const Field<CarouselNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static bool _$autoPlay(CarouselNode v) => v.autoPlay;
   static const Field<CarouselNode, bool> _f$autoPlay = Field(
     'autoPlay',
@@ -77,6 +83,12 @@ class CarouselNodeMapper extends SubClassMapperBase<CarouselNode> {
     _$uid,
     mode: FieldMode.member,
   );
+  static List<String>? _$tags(CarouselNode v) => v.tags;
+  static const Field<CarouselNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(CarouselNode v) =>
       v.treeNodeGK;
   static const Field<CarouselNode, GlobalKey<State<StatefulWidget>>>
@@ -100,6 +112,7 @@ class CarouselNodeMapper extends SubClassMapperBase<CarouselNode> {
 
   @override
   final MappableFields<CarouselNode> fields = const {
+    #name: _f$name,
     #autoPlay: _f$autoPlay,
     #autoPlayIntervalSecs: _f$autoPlayIntervalSecs,
     #enlargeCenterPage: _f$enlargeCenterPage,
@@ -108,6 +121,7 @@ class CarouselNodeMapper extends SubClassMapperBase<CarouselNode> {
     #axis: _f$axis,
     #children: _f$children,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -129,6 +143,7 @@ class CarouselNodeMapper extends SubClassMapperBase<CarouselNode> {
 
   static CarouselNode _instantiate(DecodingData data) {
     return CarouselNode(
+      name: data.dec(_f$name),
       autoPlay: data.dec(_f$autoPlay),
       autoPlayIntervalSecs: data.dec(_f$autoPlayIntervalSecs),
       enlargeCenterPage: data.dec(_f$enlargeCenterPage),
@@ -205,6 +220,7 @@ abstract class CarouselNodeCopyWith<$R, $In extends CarouselNode, $Out>
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
   $R call({
+    String? name,
     bool? autoPlay,
     int? autoPlayIntervalSecs,
     bool? enlargeCenterPage,
@@ -233,6 +249,7 @@ class _CarouselNodeCopyWithImpl<$R, $Out>
       );
   @override
   $R call({
+    Object? name = $none,
     bool? autoPlay,
     int? autoPlayIntervalSecs,
     bool? enlargeCenterPage,
@@ -242,6 +259,7 @@ class _CarouselNodeCopyWithImpl<$R, $Out>
     List<SNode>? children,
   }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (autoPlay != null) #autoPlay: autoPlay,
       if (autoPlayIntervalSecs != null)
         #autoPlayIntervalSecs: autoPlayIntervalSecs,
@@ -254,6 +272,7 @@ class _CarouselNodeCopyWithImpl<$R, $Out>
   );
   @override
   CarouselNode $make(CopyWithData data) => CarouselNode(
+    name: data.get(#name, or: $value.name),
     autoPlay: data.get(#autoPlay, or: $value.autoPlay),
     autoPlayIntervalSecs: data.get(
       #autoPlayIntervalSecs,

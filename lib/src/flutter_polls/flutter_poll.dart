@@ -4,9 +4,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/bloc/poll_bloc.dart';
-import 'package:flutter_content/src/bloc/poll_state.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/bloc/poll_bloc.dart';
+import 'package:fsdui/src/bloc/poll_state.dart';
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 // import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -207,21 +207,21 @@ class FlutterPollState extends State<FlutterPoll> {
 
   Future<PollBloC> _initPoll() async {
     // localstorage
-    voterId = fco.localStorage.read("vea") ?? 'anon';
+    voterId = fsdui.localStorage.read("vea") ?? 'anon';
     // firestore
     OptionVoteCountMap counts =
-        await fco.capiBloc.modelRepo.getPollOptionVoteCounts(
-      pollName: widget.poll.name,
+        await fsdui.capiBloc.modelRepo.getPollOptionVoteCounts(
+      pollName: widget.poll.pollName,
     );
     UserVoterRecord? usersVote =
-        await fco.capiBloc.modelRepo.getUsersVote(
-      pollName: widget.poll.name,
+        await fsdui.capiBloc.modelRepo.getUsersVote(
+      pollName: widget.poll.pollName,
       voterId: voterId,
     );
     pollBloc = PollBloC(
-      modelRepo: fco.capiBloc.modelRepo,
+      modelRepo: fsdui.capiBloc.modelRepo,
       voterId: voterId,
-      pollName: widget.poll.name,
+      pollName: widget.poll.pollName,
       starts: widget.startDate,
       ends: widget.endDate,
       optionCountsMap: counts,
@@ -273,7 +273,7 @@ class FlutterPollState extends State<FlutterPoll> {
                           SizedBox(height: widget.heightBetweenTitleAndOptions),
                           ...widget.children,
                           const Gap(10),
-                          fco.coloredText(
+                          fsdui.coloredText(
                               '${widget.votesText} ${snapshot.data!.state.totalPollVoteCount()}',
                               color: Colors.blue[900],
                               fontSize: 14),
@@ -281,19 +281,19 @@ class FlutterPollState extends State<FlutterPoll> {
                           Align(
                               alignment: Alignment.centerRight,
                               child: (state.tooEarly())
-                                  ? fco.coloredText(
-                                      'poll not yet open. begins: ${fco.formattedDate(state.startDate!)}',
+                                  ? fsdui.coloredText(
+                                      'poll not yet open. begins: ${fsdui.formattedDate(state.startDate!)}',
                                       fontSize: 12)
                                   : (state.pollHasEnded())
-                                      ? fco.coloredText(
-                                          'poll closed. ended: ${fco.formattedDate(state.startDate!)}',
+                                      ? fsdui.coloredText(
+                                          'poll closed. ended: ${fsdui.formattedDate(state.startDate!)}',
                                           fontSize: 12)
                                       : (!state.tooEarly() &&
                                               !state.pollHasEnded() &&
                                               state.startDate != null &&
                                               state.endDate != null)
-                                          ? fco.coloredText(
-                                              'poll closes: ${fco.formattedDate(state.endDate!)}',
+                                          ? fsdui.coloredText(
+                                              'poll closes: ${fsdui.formattedDate(state.endDate!)}',
                                               fontSize: 12)
                                           : const Offstage()),
                           Expanded(

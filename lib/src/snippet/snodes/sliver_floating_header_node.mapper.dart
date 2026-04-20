@@ -27,6 +27,12 @@ class SliverFloatingHeaderNodeMapper
   @override
   final String id = 'SliverFloatingHeaderNode';
 
+  static String? _$name(SliverFloatingHeaderNode v) => v.name;
+  static const Field<SliverFloatingHeaderNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static SNode? _$child(SliverFloatingHeaderNode v) => v.child;
   static const Field<SliverFloatingHeaderNode, SNode> _f$child = Field(
     'child',
@@ -37,6 +43,12 @@ class SliverFloatingHeaderNodeMapper
   static const Field<SliverFloatingHeaderNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(SliverFloatingHeaderNode v) => v.tags;
+  static const Field<SliverFloatingHeaderNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(
@@ -66,8 +78,10 @@ class SliverFloatingHeaderNodeMapper
 
   @override
   final MappableFields<SliverFloatingHeaderNode> fields = const {
+    #name: _f$name,
     #child: _f$child,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -88,7 +102,10 @@ class SliverFloatingHeaderNodeMapper
   ]);
 
   static SliverFloatingHeaderNode _instantiate(DecodingData data) {
-    return SliverFloatingHeaderNode(child: data.dec(_f$child));
+    return SliverFloatingHeaderNode(
+      name: data.dec(_f$name),
+      child: data.dec(_f$child),
+    );
   }
 
   @override
@@ -164,7 +181,7 @@ abstract class SliverFloatingHeaderNodeCopyWith<
   @override
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({SNode? child});
+  $R call({String? name, SNode? child});
   SliverFloatingHeaderNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -183,11 +200,17 @@ class _SliverFloatingHeaderNodeCopyWithImpl<$R, $Out>
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
-  $R call({Object? child = $none}) =>
-      $apply(FieldCopyWithData({if (child != $none) #child: child}));
+  $R call({Object? name = $none, Object? child = $none}) => $apply(
+    FieldCopyWithData({
+      if (name != $none) #name: name,
+      if (child != $none) #child: child,
+    }),
+  );
   @override
-  SliverFloatingHeaderNode $make(CopyWithData data) =>
-      SliverFloatingHeaderNode(child: data.get(#child, or: $value.child));
+  SliverFloatingHeaderNode $make(CopyWithData data) => SliverFloatingHeaderNode(
+    name: data.get(#name, or: $value.name),
+    child: data.get(#child, or: $value.child),
+  );
 
   @override
   SliverFloatingHeaderNodeCopyWith<$R2, SliverFloatingHeaderNode, $Out2>

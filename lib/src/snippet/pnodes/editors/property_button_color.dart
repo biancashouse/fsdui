@@ -1,7 +1,7 @@
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/property_callout_button.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/editors/property_callout_button.dart';
 
 class PropertyButtonColor extends StatelessWidget {
   final CalloutId cId;
@@ -26,7 +26,7 @@ class PropertyButtonColor extends StatelessWidget {
   Widget build(BuildContext context) {
     void propagateChangeAndClose(Color newColor) {
       onChangeF(newColor);
-      fco.dismiss(cId);
+      fsdui.dismiss(cId);
     }
 
     Widget colorLabel = originalColor != null
@@ -64,7 +64,7 @@ class PropertyButtonColor extends StatelessWidget {
                           WidgetStateProperty.all<Color>(Colors.black),
                     ),
                     onPressed: () => propagateChangeAndClose(Colors.black),
-                    child: fco.coloredText('black', color: Colors.white),
+                    child: fsdui.coloredText('black', color: Colors.white),
                   ),
                   TextButton(
                     onPressed: () => propagateChangeAndClose(Colors.transparent),

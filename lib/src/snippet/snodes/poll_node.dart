@@ -2,19 +2,19 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/flutter_polls/flutter_poll.dart';
-import 'package:flutter_content/src/snippet/pnodes/date_range_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/date_range_button.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/flutter_polls/flutter_poll.dart';
+import 'package:fsdui/src/snippet/pnodes/date_range_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/editors/date_range_button.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
 
 part 'poll_node.mapper.dart';
 
 // poll must always have first child richtext as the title
 @MappableClass()
 class PollNode extends MC with PollNodeMappable {
-  String name;
+  String pollName;
   String title;
   int? startDate;
   int? endDate;
@@ -23,7 +23,8 @@ class PollNode extends MC with PollNodeMappable {
   bool locked;
 
   PollNode({
-    this.name = '',
+    super.name,
+    this.pollName = '',
     this.title = '',
     this.startDate,
     this.endDate,
@@ -43,14 +44,14 @@ class PollNode extends MC with PollNodeMappable {
             name: 'fyi'),
         StringPNode(
           snode: this,
-          name: 'name',
+          name: 'pollName',
           expands: false,
           numLines: 1,
           // skipHelperText: true,
           // skipLabelText: true,
-          stringValue: name,
+          stringValue: pollName,
           onStringChange: (newValue) =>
-              refreshWithUpdate(context, () => name = newValue ?? ''),
+              refreshWithUpdate(context, () => pollName = newValue ?? ''),
           calloutButtonSize: const Size(300, 20),
           calloutWidth: 300,
         ),
@@ -104,7 +105,7 @@ class PollNode extends MC with PollNodeMappable {
       ];
 
   @override
-  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
+  Widget build(BuildContext context, SNode? parentNode,
       ) {
     try {
       setParent(parentNode);
@@ -118,7 +119,7 @@ class PollNode extends MC with PollNodeMappable {
           for (int i = 0; i < children.length; i++) {
             SNode child = children[i];
             if (child is PollOptionNode) {
-              optionWidgets.add(child.buildFlutterWidget(context, this));
+              optionWidgets.add(child.build(context, this));
             }
           }
           return SizedBox(
@@ -128,7 +129,7 @@ class PollNode extends MC with PollNodeMappable {
               key: createNodeWidgetGK(),
               poll: this,
               titleWidget: Center(
-                  child: fco.coloredText(title,
+                  child: fsdui.coloredText(title,
                       color: Colors.blue[900],
                       fontSize: 24,
                       fontWeight: FontWeight.bold)),
@@ -166,7 +167,7 @@ class PollNode extends MC with PollNodeMappable {
 
   @override
   Widget? widgetLogo() => Image.asset(
-    fco.asset('lib/assets/images/pub.dev.png'),
+    fsdui.asset('lib/assets/images/pub.dev.png'),
     width: 16,
   );
 

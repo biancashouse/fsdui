@@ -26,6 +26,12 @@ class ScrollViewNodeMapper extends SubClassMapperBase<ScrollViewNode> {
   @override
   final String id = 'ScrollViewNode';
 
+  static String? _$name(ScrollViewNode v) => v.name;
+  static const Field<ScrollViewNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static AxisEnum _$scrollDirection(ScrollViewNode v) => v.scrollDirection;
   static const Field<ScrollViewNode, AxisEnum> _f$scrollDirection = Field(
     'scrollDirection',
@@ -43,6 +49,12 @@ class ScrollViewNodeMapper extends SubClassMapperBase<ScrollViewNode> {
   static const Field<ScrollViewNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(ScrollViewNode v) => v.tags;
+  static const Field<ScrollViewNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(ScrollViewNode v) =>
@@ -76,9 +88,11 @@ class ScrollViewNodeMapper extends SubClassMapperBase<ScrollViewNode> {
 
   @override
   final MappableFields<ScrollViewNode> fields = const {
+    #name: _f$name,
     #scrollDirection: _f$scrollDirection,
     #shrinkWrap: _f$shrinkWrap,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -129,7 +143,7 @@ mixin ScrollViewNodeMappable {
 abstract class ScrollViewNodeCopyWith<$R, $In extends ScrollViewNode, $Out>
     implements CLCopyWith<$R, $In, $Out> {
   @override
-  $R call({bool? shrinkWrap});
+  $R call({String? name, bool? shrinkWrap});
   ScrollViewNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );

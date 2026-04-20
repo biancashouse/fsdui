@@ -1,7 +1,7 @@
 // ignore_for_file: camel_case_types, prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 class PNode extends Node {
   final PropertyName name;
@@ -17,8 +17,8 @@ class PNode extends Node {
     this.children,
     this.expanded = false,
   }) {
-    fco.pNodes[name] = this;
-    fco.logger.i('pNode:$name');
+    fsdui.pNodes[name] = this;
+    fsdui.logger.i('pNode:$name');
   }
 
   // a group, like TextStyleWithoutColorPNode can override to include current style
@@ -34,7 +34,7 @@ class PNode extends Node {
   // selection always uses this gk
   static GlobalKey get selectedPropertyGK {
     if (_selectedPropertyGK.currentState == null) return _selectedPropertyGK;
-    fco.logger.i(
+    fsdui.logger.i(
         "_selectedPropertyGK in use: ${_selectedPropertyGK.currentWidget.runtimeType}");
     return GlobalKey(debugLabel: '_selectedPropertyGK was in use');
   }

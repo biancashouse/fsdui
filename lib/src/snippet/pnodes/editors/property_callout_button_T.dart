@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 class PropertyButton<T> extends HookWidget {
   final String originalText;
@@ -41,7 +41,7 @@ class PropertyButton<T> extends HookWidget {
     }, [originalText]);
 
     Widget textLabel() => skipLabelText
-        ? fco.coloredText(editedText.value, color: Colors.white, fontWeight: FontWeight.bold)
+        ? fsdui.coloredText(editedText.value, color: Colors.white, fontWeight: FontWeight.bold)
         : editedText.value.isNotEmpty
             ? Text.rich(TextSpan(
                 text: '$label: ',
@@ -53,7 +53,7 @@ class PropertyButton<T> extends HookWidget {
                   ),
                 ],
               ))
-            : fco.coloredText('$label...', color: Colors.white, fontWeight: FontWeight.w100);
+            : fsdui.coloredText('$label...', color: Colors.white, fontWeight: FontWeight.w100);
 
     return MouseRegion(
       cursor: SystemMouseCursors.click,
@@ -68,8 +68,8 @@ class PropertyButton<T> extends HookWidget {
             barrier: CalloutBarrierConfig(
               opacity: .25,
               onTappedF: () {
-                fco.dismiss('matches');
-                fco.dismiss('te');
+                fsdui.dismiss('matches');
+                fsdui.dismiss('te');
               },
             ),
             decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
@@ -92,7 +92,7 @@ class PropertyButton<T> extends HookWidget {
             originalS: editedText.value,
             onTextChangedF: (s) {
               editedText.value = s;
-              fco.dismiss('matches');
+              fsdui.dismiss('matches');
               if (options.isNotEmpty && _matches(options, s).isNotEmpty) {
                 _showOptionMatches(
                   context,
@@ -109,15 +109,15 @@ class PropertyButton<T> extends HookWidget {
             onEditingCompleteF: (s) {
               editedText.value = s;
               onChangeF(s);
-              fco.dismiss('matches');
-              fco.dismiss('te');
+              fsdui.dismiss('matches');
+              fsdui.dismiss('te');
             },
             dontAutoFocus: false,
             bgColor: Colors.white,
             maxLines: maxLines,
           );
 
-          fco.showOverlay(
+          fsdui.showOverlay(
             calloutConfig: teCC,
             calloutContent: teCC.calloutH != null && teCC.calloutH! > 400
                 ? Padding(
@@ -162,7 +162,7 @@ class PropertyButton<T> extends HookWidget {
     ValueChanged<String> onSelected,
     GlobalKey targetGK,
   ) {
-    fco.dismiss('matches');
+    fsdui.dismiss('matches');
     final matches = _matches(options, currentText);
     if (matches.isEmpty) return;
 
@@ -185,14 +185,14 @@ class PropertyButton<T> extends HookWidget {
             title: Text(matches[index]),
             onTap: () {
               onSelected(matches[index]);
-              fco.dismiss('matches');
+              fsdui.dismiss('matches');
             },
           );
         },
       );
     }
 
-    fco.showOverlay(
+    fsdui.showOverlay(
       calloutConfig: matchesMenuCC,
       calloutContent: matchesMenuBoxContent(),
       targetGK: targetGK,
