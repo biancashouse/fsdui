@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 import 'widget_entry.dart';
 
 const String kWidgetPickerCId = 'widget-picker';
@@ -55,7 +55,7 @@ class QuickPickPanel extends StatelessWidget {
                     backgroundColor: entry.category.color.withValues(alpha: .35),
                     side: BorderSide.none,
                     onPressed: () {
-                      fco.dismiss(kWidgetPickerCId);
+                      fsdui.dismiss(kWidgetPickerCId);
                       onTypeSelected(entry.type);
                     },
                   ),
@@ -66,7 +66,7 @@ class QuickPickPanel extends StatelessWidget {
             const SizedBox(height: 8),
             TextButton.icon(
               onPressed: () {
-                fco.dismiss(kWidgetPickerCId);
+                fsdui.dismiss(kWidgetPickerCId);
                 onPaste!();
               },
               icon: const Icon(Icons.paste, size: 14),
@@ -85,7 +85,7 @@ class QuickPickPanel extends StatelessWidget {
             alignment: Alignment.centerRight,
             child: TextButton(
               onPressed: () {
-                fco.dismiss(kWidgetPickerCId);
+                fsdui.dismiss(kWidgetPickerCId);
                 onMorePressed();
               },
               child: const Text('more...'),

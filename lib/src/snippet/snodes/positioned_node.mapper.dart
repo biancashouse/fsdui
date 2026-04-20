@@ -24,6 +24,12 @@ class PositionedNodeMapper extends SubClassMapperBase<PositionedNode> {
   @override
   final String id = 'PositionedNode';
 
+  static String? _$name(PositionedNode v) => v.name;
+  static const Field<PositionedNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static double? _$top(PositionedNode v) => v.top;
   static const Field<PositionedNode, double> _f$top = Field(
     'top',
@@ -60,6 +66,12 @@ class PositionedNodeMapper extends SubClassMapperBase<PositionedNode> {
     _$uid,
     mode: FieldMode.member,
   );
+  static List<String>? _$tags(PositionedNode v) => v.tags;
+  static const Field<PositionedNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(PositionedNode v) =>
       v.treeNodeGK;
   static const Field<PositionedNode, GlobalKey<State<StatefulWidget>>>
@@ -85,12 +97,14 @@ class PositionedNodeMapper extends SubClassMapperBase<PositionedNode> {
 
   @override
   final MappableFields<PositionedNode> fields = const {
+    #name: _f$name,
     #top: _f$top,
     #left: _f$left,
     #bottom: _f$bottom,
     #right: _f$right,
     #child: _f$child,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -112,6 +126,7 @@ class PositionedNodeMapper extends SubClassMapperBase<PositionedNode> {
 
   static PositionedNode _instantiate(DecodingData data) {
     return PositionedNode(
+      name: data.dec(_f$name),
       top: data.dec(_f$top),
       left: data.dec(_f$left),
       bottom: data.dec(_f$bottom),
@@ -186,6 +201,7 @@ abstract class PositionedNodeCopyWith<$R, $In extends PositionedNode, $Out>
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
   $R call({
+    String? name,
     double? top,
     double? left,
     double? bottom,
@@ -210,6 +226,7 @@ class _PositionedNodeCopyWithImpl<$R, $Out>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
   $R call({
+    Object? name = $none,
     Object? top = $none,
     Object? left = $none,
     Object? bottom = $none,
@@ -217,6 +234,7 @@ class _PositionedNodeCopyWithImpl<$R, $Out>
     Object? child = $none,
   }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (top != $none) #top: top,
       if (left != $none) #left: left,
       if (bottom != $none) #bottom: bottom,
@@ -226,6 +244,7 @@ class _PositionedNodeCopyWithImpl<$R, $Out>
   );
   @override
   PositionedNode $make(CopyWithData data) => PositionedNode(
+    name: data.get(#name, or: $value.name),
     top: data.get(#top, or: $value.top),
     left: data.get(#left, or: $value.left),
     bottom: data.get(#bottom, or: $value.bottom),

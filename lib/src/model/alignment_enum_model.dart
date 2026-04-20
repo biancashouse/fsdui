@@ -2,7 +2,7 @@ import 'dart:collection';
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 import '../snippet/pnodes/editors/property_button_enum.dart';
 

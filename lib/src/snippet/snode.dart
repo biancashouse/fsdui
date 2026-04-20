@@ -2,11 +2,12 @@ import 'dart:math';
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/snode_widget.dart';
-import 'package:flutter_content/src/api/editable_page/snippet_editor_side_panel.dart';
-import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/snode_widget.dart';
+import 'package:fsdui/src/api/editable_page/snippet_editor_side_panel.dart';
+import 'package:fsdui/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'widget_picker/quick_pick_panel.dart';
 import 'widget_picker/widget_entry.dart';
 import 'widget_picker/widget_picker_dialog.dart';
@@ -61,7 +62,6 @@ const List<Type> singleChildSubClasses = [
   SliverFloatingHeaderNode,
   SliverResizingHeaderNode,
   SliverToBoxAdapterNode,
-  SnippetRootNode,
   TabNode,
   TargetsWrapperNode,
 ];
@@ -128,6 +128,22 @@ enum NodeAction {
 )
 abstract class SNode extends Node with SNodeMappable {
   String uid = UniqueKey().toString();
+
+  // any node that is the root node of a snippet: will have name != null
+  SnippetName? name;
+  List<String>? tags;
+
+  SNode({this.name, this.tags});
+
+  String? get snippetName => rootNodeOfSnippet()?.name;
+
+  bool get isASnippetRoot => name != null;
+
+  SnippetInfoModel? get snippetInfo =>
+      isASnippetRoot ? fsdui.appInfo.cachedSnippetInfo(name!) : null;
+
+  static bool isHotspotCalloutContent(String sname) =>
+      int.tryParse(sname) != null || /*legacy*/ sname.startsWith('T-');
 
   Widget? widgetLogo() => FlutterLogo(size: 20);
 
@@ -210,10 +226,18 @@ abstract class SNode extends Node with SNodeMappable {
   @JsonKey(includeFromJson: false, includeToJson: false)
   GlobalKey? _nodeWidgetGK; // gets used in toWidget()
 
-  SnippetRootNode? rootNodeOfSnippet() {
-    final result = this is SnippetRootNode
-        ? this as SnippetRootNode
-        : findNearestAncestor<SnippetRootNode>();
+  SNode? rootNodeOfSnippet() {
+    if (this.isASnippetRoot) {
+      return this;
+    } else if (getParent() is! SNode) {
+      return null;
+    }
+    SNode? result;
+    SNode? node = getParent() as SNode?;
+    while (node != null && node.name == null) {
+      node = node.getParent() as SNode?;
+    }
+    result = node;
     if (result?.isValid() ?? false) {
       return result;
     } else {
@@ -329,14 +353,12 @@ abstract class SNode extends Node with SNodeMappable {
 
   void tappedToEditSnippetNode() {
     // fco.logger.i("${toString()} tapped");
-    SnippetRootNode? rootNode = (this is SnippetRootNode)
-        ? this as SnippetRootNode
-        : rootNodeOfSnippet();
+    SNode? rootNode = this.isASnippetRoot ? this : rootNodeOfSnippet();
     SnippetName? snippetName = rootNode?.name;
     if (snippetName == null) return;
     // maybe a page snippet, so check name in appInfo: maybe prefix with /
     // var names = fco.appInfo.snippetNames;
-    if (fco.appInfo.snippetNames.contains('/$snippetName')) {
+    if (fsdui.appInfo.snippetNames.contains('/$snippetName')) {
       snippetName = '/$snippetName';
     }
     // var cc = nodeWidgetGK?.currentContext;
@@ -345,8 +367,8 @@ abstract class SNode extends Node with SNodeMappable {
     // FCO.capiBloc.add(const CAPIEvent.hideAllTargetGroupBtns());
     // FCO.capiBloc.add(const CAPIEvent.hideTargetGroupsExcept());
     // remove the barrier if about to edit a content callout
-    if (SnippetRootNode.isHotspotCalloutContent(snippetName)) {
-      final cc = fco.findOE(snippetName)?.calloutConfig;
+    if (SNode.isHotspotCalloutContent(snippetName)) {
+      final cc = fsdui.findOE(snippetName)?.calloutConfig;
       cc?.rebuild(() {
         cc
           ..barrier = null
@@ -368,15 +390,25 @@ abstract class SNode extends Node with SNodeMappable {
   }
 
   void showSelectedNonTappableNodeWidgetOverlay({required Rect borderRect}) {
-    bool isSelected = this == fco.selectedNode;
+    bool isSelected = this == fsdui.selectedNode;
     if (!isSelected) {
       return;
     }
     // Clip to the visible region (exclude the side panel column).
     final screenSize = WidgetsBinding.instance.renderView.size;
-    final visibleArea = fco.snippetEditorPanelOnRight
-        ? Rect.fromLTWH(0, 0, screenSize.width - kSidePanelWidth, screenSize.height)
-        : Rect.fromLTWH(kSidePanelWidth, 0, screenSize.width - kSidePanelWidth, screenSize.height);
+    final visibleArea = fsdui.snippetEditorPanelOnRight
+        ? Rect.fromLTWH(
+            0,
+            0,
+            screenSize.width - kSidePanelWidth,
+            screenSize.height,
+          )
+        : Rect.fromLTWH(
+            kSidePanelWidth,
+            0,
+            screenSize.width - kSidePanelWidth,
+            screenSize.height,
+          );
     final clipped = borderRect.intersect(visibleArea);
     if (clipped.isEmpty) return;
 
@@ -398,7 +430,7 @@ abstract class SNode extends Node with SNodeMappable {
     //       nodeWidgetGK!.currentContext!);
     //   eps?.dismissAllNodeWidgetOverlays();
     // }
-    fco.showOverlay(
+    fsdui.showOverlay(
       calloutContent: AbsorbPointer(
         child: _PulsingOverlay(
           width: clipped.width.abs(),
@@ -679,14 +711,16 @@ abstract class SNode extends Node with SNodeMappable {
     SNode selectedNode, {
     HotspotTargetModel? targetBeingConfigured,
   }) async {
-    SnippetInfoModel? snippetInfo = fco.appInfo.cachedSnippetInfo(snippetName);
+    SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(
+      snippetName,
+    );
     if (snippetInfo == null) return;
 
-    SnippetRootNode? rootNode = await snippetInfo.currentVersionFromCacheOrFB();
+    SNode? rootNode = await snippetInfo.currentVersionFromCacheOrFB();
     if (rootNode == null) return;
 
-    if (rootNode.child?.nodeWidgetGK?.currentContext == null) {
-      fco.showToast(
+    if (rootNode.nodeWidgetGK?.currentContext == null) {
+      fsdui.showToast(
         msg: "This node is not visible right now",
         bgColor: Colors.white,
         textColor: Colors.red,
@@ -695,7 +729,7 @@ abstract class SNode extends Node with SNodeMappable {
       return;
     }
 
-    fco.capiBloc.add(
+    fsdui.capiBloc.add(
       CAPIEvent.pushSnippetEditor(
         rootNode: rootNode,
         selectedNode: selectedNode,
@@ -706,7 +740,7 @@ abstract class SNode extends Node with SNodeMappable {
     // return;
     // fco.logger.i('after pushSnippetBloc');
     // var b = startingAtNode.nodeWidgetGK?.currentContext?.mounted;
-    fco.afterNextBuildDo(() {
+    fsdui.afterNextBuildDo(() {
       // fco.inEditMode.value = true;
       // var nodeGK = startingAtNode.nodeWidgetGK;
 
@@ -716,14 +750,14 @@ abstract class SNode extends Node with SNodeMappable {
       // bool isMOunted = cc?.mounted ?? false;
       // var cw = nodeGK?.currentWidget;
 
-      if (fco.snippetBeingEdited != null) {
+      if (fsdui.snippetBeingEdited != null) {
         // fco.snippetBeingEdited?.treeC.expandAll();
         // fco.snippetBeingEdited?.treeC.rebuild();
         // possibly show clipboard
-        if (!fco.appInfo.clipboardIsEmpty) {
-          fco.appInfo.showFloatingClipboard();
+        if (!fsdui.appInfo.clipboardIsEmpty) {
+          fsdui.appInfo.showFloatingClipboard();
         }
-        fco.hide(HotspotTargetConfigToolbar.CID);
+        fsdui.hide(HotspotTargetConfigToolbar.CID);
         // fco.afterMsDelayDo(1000, () {
         //   var ctx = rootNode.child?.nodeWidgetGK?.currentContext;
         //   if (ctx != null) {
@@ -741,9 +775,9 @@ abstract class SNode extends Node with SNodeMappable {
     bool alsoRefreshPropertiesView = false,
   }) {
     assignF.call();
-    fco.capiBloc.add(CAPIEvent.changedSnippet());
-    fco.afterNextBuildDo(() {
-      fco.dismiss('pink-overlay');
+    fsdui.capiBloc.add(CAPIEvent.changedSnippet());
+    fsdui.afterNextBuildDo(() {
+      fsdui.dismiss('pink-overlay');
       SNodeWidget.pointOutSelectedNode();
     });
   }
@@ -834,7 +868,7 @@ abstract class SNode extends Node with SNodeMappable {
       debugLabel += (this as TextNode).text;
     }
     _nodeWidgetGK = GlobalKey(debugLabel: debugLabel);
-    fco.nodesByGK[_nodeWidgetGK!] = this;
+    fsdui.nodesByGK[_nodeWidgetGK!] = this;
     return _nodeWidgetGK;
   }
 
@@ -858,7 +892,7 @@ abstract class SNode extends Node with SNodeMappable {
   bool parentIsValid() {
     // this must be a child of it's parent
     final parent = getParent();
-    if (parent == null && this is SnippetRootNode) {
+    if (parent == null && this.isASnippetRoot) {
       return true; // must be a snippetRootNode; ignore
     }
     if (parent is SC && parent.child == this) return true;
@@ -1086,9 +1120,9 @@ abstract class SNode extends Node with SNodeMappable {
   static List<HotspotTargetModel> allTargets() {
     // var fc = FC();
     List<HotspotTargetModel> foundTargets = [];
-    for (SnippetName snippetName in fco.appInfo.cachedSnippetNames()) {
+    for (SnippetName snippetName in fsdui.appInfo.cachedSnippetNames()) {
       // get published or editing version
-      SnippetInfoModel? snippetInfo = fco.appInfo.cachedSnippetInfo(
+      SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(
         snippetName,
       );
       if (snippetInfo == null) return foundTargets;
@@ -1109,8 +1143,345 @@ abstract class SNode extends Node with SNodeMappable {
   // check nodes are identical
   bool isSame(SNode otherNode) => toJson() == otherNode.toJson();
 
-  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) =>
-      const Placeholder();
+  // generates a flutter widget, possibly as a snippet root
+  Widget build(BuildContext context, SNode? parentNode) => isASnippetRoot
+      ? _wrapWithTriangleAndBanner(buildFlutterWidget(context, parentNode))
+      : this is ListViewNode
+      ? _wrapWithTriangle(buildFlutterWidget(context, parentNode))
+      : buildFlutterWidget(context, parentNode);
+
+  // @mustCallSuper
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
+    return Placeholder();
+  }
+
+  // Widget asRoot(BuildContext context) {
+  //   CAPIBloC bloc = context.read<CAPIBloC>();
+  //
+  //   var snippetInfo = fco.appInfo.cachedSnippetInfo(name!);
+  //
+  //   if (snippetInfo?.hide ?? false) {
+  //     return const Offstage();
+  //   }
+  //
+  //   // only use a FutureBuilder if abs necc
+  //   var snippet = snippetInfo?.currentVersionInCache();
+  //   try {
+  //     // fco.logger.i("SnippetRootNode.toWidget($name)...");
+  //     // if (findDescendant(SnippetRootNode) != null) {}
+  //     setParent(parentNode);
+  //
+  //     // SnippetInfoModel.debug();
+  //     if (snippet != null) {
+  //       // already cached
+  //       Widget snippetWidget =
+  //           snippet.buildFlutterWidget(context, this) ??
+  //           Icon(Icons.warning, color: Colors.red, size: 24);
+  //
+  //       // guest or editing or selecting a widget node
+  //       if (!bloc.state.isSignedInAsSuperEditor ||
+  //           bloc.aSnippetIsBeingEdited() ||
+  //           bloc.showTappableBorderRects()) {
+  //         return snippetWidget;
+  //       }
+  //
+  //       // signed in
+  //       return _wrapWithTriangleAndBanner(snippetWidget);
+  //     }
+  //
+  //     return FutureBuilder<SNode?>(
+  //       future: SNode.loadSnippetFromCacheOrFromFB(snippetName: name!),
+  //       builder: (futureContext, snapshot) {
+  //         if (snapshot.connectionState == ConnectionState.done) {
+  //           // fco.logger.i("FutureBuilder<void> Ensuring $name present");
+  //           try {
+  //             // in case did a revert, ignore snapshot data and use the AppInfo instead
+  //             SNode? snippet = snapshot.data; //fco.currentSnippetVersion(name);
+  //             // SnippetRootNode? snippetRoot = cache?[editingVersionId];
+  //             Widget snippetWidget = snippet == null
+  //                 ? Error(
+  //                     key: createNodeWidgetGK(),
+  //                     toString(),
+  //                     color: Colors.red,
+  //                     size: 16,
+  //                     errorMsg: "null snippet!",
+  //                   )
+  //                 : snippet.buildFlutterWidget(futureContext, this) ??
+  //                       const FlexibleSpaceBar(background: Placeholder());
+  //             snippet?.validateTree();
+  //             if (!(snippet?.isValid() ?? false)) {
+  //               return const Offstage();
+  //             }
+  //
+  //             // guest or editing or selecting a widget node
+  //             if (!bloc.state.isSignedInAsSuperEditor ||
+  //                 bloc.aSnippetIsBeingEdited() ||
+  //                 bloc.showTappableBorderRects()) {
+  //               return snippetWidget;
+  //             }
+  //
+  //             // signed in
+  //             var snippetInfo = fco.appInfo.cachedSnippetInfo(name!);
+  //             return _wrapWithTriangleAndBanner(snippetInfo!, snippetWidget);
+  //           } catch (e) {
+  //             return Error(
+  //               key: createNodeWidgetGK(),
+  //               toString(),
+  //               color: Colors.red,
+  //               size: 16,
+  //               errorMsg: e.toString(),
+  //             );
+  //           }
+  //         } else {
+  //           return const CircularProgressIndicator();
+  //         }
+  //       },
+  //     );
+  //   } catch (e) {
+  //     return Error(
+  //       key: createNodeWidgetGK(),
+  //       toString(),
+  //       color: Colors.red,
+  //       size: 16,
+  //       errorMsg: e.toString(),
+  //     );
+  //   }
+  // }
+
+  // if root already exists, return it.
+  // If not, and a template name supplied, create a named copy of that template.
+  // If not, just create a snippet that comprises a PlaceholderNode.
+  static Future<SNode?> loadSnippetFromCacheOrFromFB({
+    required SnippetName snippetName,
+  }) async {
+    // fco.logger.d("SnippetRootNode.loadSnippetFromCacheOrFromFB");
+
+    SNode? rootNode;
+    await fsdui.modelRepo.ensureSnippetInfoCached(snippetName: snippetName);
+    SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(
+      snippetName,
+    );
+    if (snippetInfo != null) {
+      // may already be in snippet cache
+      rootNode = await snippetInfo.currentVersionFromCacheOrFB();
+    }
+    String result = '';
+    if (rootNode?.isValid() ?? false) {
+      result = findUnboundedConstraintIssues(rootNode!);
+      if (result != '') {
+        print(result);
+      }
+      return rootNode;
+    }
+    return null;
+  }
+
+  Widget _wrapWithTriangleAndBanner(Widget snippetWidget) {
+    if (!fsdui.canEditAnyContent() && !isASnippetRoot) {
+      return snippetWidget;
+    }
+
+    final snippetName = rootNodeOfSnippet()?.name;
+
+    if (snippetName == null) {
+      return snippetWidget;
+    }
+
+    var snippetInfo = fsdui.appInfo.cachedSnippetInfo(snippetName);
+
+    if (snippetInfo == null) {
+      return snippetWidget;
+    }
+
+    if (snippetInfo.hide ?? false) {
+      return const Offstage();
+    }
+
+    bool editingPublishedVersion =
+        snippetInfo.publishedVersionId == snippetInfo.editingVersionId;
+
+    return fsdui.canEditAnyContent()
+        ? ValueListenableBuilder<String>(
+            // must assume snippetInfo will be in cache
+            valueListenable: snippetInfo.getChangeNotifier(),
+            builder: (context, value, child) => _superEditorBanner(
+              snippetWidget,
+              editingPublishedVersion,
+              snippetInfo.changesPending(value),
+            ),
+          )
+        : snippetWidget;
+
+    // //TODO warn user if in debug mode and snippet version does not match editing version
+    // if (!isPublishedVersion && kDebugMode) {
+    //   return Container(
+    //     color: Colors.red.shade50,
+    //     padding: EdgeInsets.all(50),
+    //     child: snippetWidget,
+    //   );
+    // }
+  }
+
+  Widget _wrapWithTriangle(Widget snippetWidget) {
+    final snippetName = rootNodeOfSnippet()?.name;
+
+    if (snippetName == null) {
+      return snippetWidget;
+    }
+
+    var snippetInfo = fsdui.appInfo.cachedSnippetInfo(snippetName);
+
+    if (snippetInfo == null) {
+      return snippetWidget;
+    }
+
+    if (snippetInfo.hide ?? false) {
+      return const Offstage();
+    }
+
+    return fsdui.isArticleEditor()
+        ? ValueListenableBuilder<String>(
+            // must assume snippetInfo will be in cache
+            valueListenable: snippetInfo.getChangeNotifier(),
+            builder: (context, value, child) =>
+                _articleEditorBanner(snippetWidget, snippetInfo),
+          )
+        : snippetWidget;
+  }
+
+  Widget _superEditorBanner(
+    Widget snippetWidget,
+    bool isPublishedVersion,
+    bool changesPending,
+  ) {
+    return SizedBox(
+      width: double.infinity,
+      child: Banner(
+        message: changesPending
+            ? 'changes pending'
+            : isPublishedVersion
+            ? 'published'
+            : 'not published',
+        location: BannerLocation.topEnd,
+        color: changesPending
+            ? Colors.yellow
+            : isPublishedVersion
+            ? Colors.blue
+            : Colors.pink.shade100,
+        textStyle: TextStyle(
+          color: Colors.black,
+          fontSize: changesPending ? 8 : 10,
+        ),
+        child:
+            // Stack(children: [
+            snippetWidget,
+        // Align(
+        //   alignment: Alignment.topRight,
+        //   child: SizedBox(
+        //     width: 40,
+        //     height: 40,
+        //     child: CustomPaint(
+        //       size: const Size(40, 40),
+        //       painter: TRTriangle(Colors.black),
+        //     ),
+        //   ),
+        // ),
+        // ]
+        // ),
+      ),
+    );
+  }
+
+  Widget _articleEditorBanner(
+    Widget snippetWidget,
+    SnippetInfoModel snippetInfo,
+  ) {
+    return SizedBox(
+      width: double.infinity,
+      child: Banner(
+        message: 'edit',
+        location: BannerLocation.topEnd,
+        color: Colors.pink,
+        textStyle: TextStyle(color: Colors.black),
+        child: Stack(
+          children: [
+            snippetWidget,
+            Align(
+              alignment: Alignment.topRight,
+              child: DropdownButton<String>(
+                // key: fco.authIconGK,
+                items: [
+                  _dropdownItemWithPI(
+                    value: 'new-article',
+                    child: Text('+ new article (text)'),
+                  ),
+                  _dropdownItemWithPI(
+                    value: 'new-md',
+                    child: Text('+ new article (markdown)'),
+                  ),
+                  _dropdownItemWithPI(
+                    value: 'yt',
+                    child: Text('+ youtube clip'),
+                  ),
+                ],
+                underline: Offstage(),
+                focusColor: Colors.transparent,
+                icon: PointerInterceptor(
+                  child: Icon(
+                    Icons.more_vert,
+                    color: Colors.purpleAccent,
+                    size: 24,
+                  ),
+                ),
+                dropdownColor: Colors.white,
+                onChanged: (value) {
+                  if (this is! ArticleListViewNode) {
+                    return;
+                  }
+                  switch (value) {
+                    case 'new-article':
+                      fsdui.capiBloc.add(
+                        CAPIEvent.prependArticle(
+                          listNode: this as ArticleListViewNode,
+                          type: QuillTextNode,
+                        ),
+                      );
+                      break;
+                    case 'new-md':
+                      fsdui.capiBloc.add(
+                        CAPIEvent.prependArticle(
+                          listNode: this as ArticleListViewNode,
+                          type: MarkdownNode,
+                        ),
+                      );
+                      break;
+                    case 'yt':
+                      fsdui.capiBloc.add(
+                        CAPIEvent.prependArticle(
+                          listNode: this as ArticleListViewNode,
+                          type: YTNode,
+                        ),
+                      );
+                      break;
+                    default:
+                      break;
+                  }
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  DropdownMenuItem<String> _dropdownItemWithPI({
+    required String value,
+    required Widget child,
+  }) => DropdownMenuItem<String>(
+    value: value,
+    child: PointerInterceptor(child: child),
+  );
 
   Widget possiblyCheckHeightConstraint(SNode? parentNode, Widget actualWidget) {
     /*
@@ -1464,7 +1835,6 @@ abstract class SNode extends Node with SNodeMappable {
   //     };
 
   bool canWrap() =>
-      (this is! SnippetRootNode || getParent() != null) &&
       this is! NamedSC &&
       this is! NamedMC &&
       this is! InlineSpanNode &&
@@ -1476,7 +1846,7 @@ abstract class SNode extends Node with SNodeMappable {
 
   bool canAppendAChild() => false;
 
-  bool canReplace() => getParent() != null;
+  bool canReplace() => getParent() != null || isASnippetRoot;
 
   // bool canAddASibling() =>
   //     getParent() is MC ||
@@ -1604,10 +1974,11 @@ abstract class SNode extends Node with SNodeMappable {
     }
   }
 
-  List<WidgetEntry> recommendedEntries(NodeAction action) => recommendations(action)
-      .map((t) => widgetRegistry.where((e) => e.type == t).firstOrNull)
-      .whereType<WidgetEntry>()
-      .toList();
+  List<WidgetEntry> recommendedEntries(NodeAction action) =>
+      recommendations(action)
+          .map((t) => widgetRegistry.where((e) => e.type == t).firstOrNull)
+          .whereType<WidgetEntry>()
+          .toList();
 
   List<WidgetEntry> _allCandidatesForAction(NodeAction action) {
     List<Type> types;
@@ -1623,7 +1994,12 @@ abstract class SNode extends Node with SNodeMappable {
           final candidates = replaceWithCandidates();
           types = candidates.isNotEmpty
               ? candidates
-              : [...singleChildSubClasses, ...multiChildSubClasses, ...childlessSubClasses];
+              : [
+                  ...singleChildSubClasses,
+                  ...multiChildSubClasses,
+                  ...childlessSubClasses,
+                  ...scrollViewChildSubClasses,
+                ];
         }
       case NodeAction.addChild:
         types = appendCandidates();
@@ -1634,48 +2010,56 @@ abstract class SNode extends Node with SNodeMappable {
     return widgetRegistry.where((e) => types.contains(e.type)).toList();
   }
 
-  void _performTypeAction(Type childType, NodeAction action) {
+  void _performTypeAction(Type snippetType, NodeAction action) {
     switch (action) {
       case NodeAction.wrapWith:
-        fco.capiBloc.add(CAPIEvent.wrapSelectionWith(type: childType));
+        fsdui.capiBloc.add(CAPIEvent.wrapSelectionWith(type: snippetType));
       case NodeAction.replaceWith:
-        fco.capiBloc.add(CAPIEvent.replaceSelectionWith(type: childType));
-        fco.afterNextBuildDo(() => fco.dismiss('node-actions'));
+        fsdui.capiBloc.add(CAPIEvent.replaceSelectionWith(type: snippetType));
+        fsdui.afterNextBuildDo(() => fsdui.dismiss('node-actions'));
       case NodeAction.addChild:
-        if (isANamedPropertyNode() && fco.selectedNode != this) {
-          fco.capiBloc.add(CAPIEvent.selectNode(node: this));
-          fco.afterNextBuildDo(() {
-            fco.capiBloc.add(CAPIEvent.appendChild(type: childType));
-            fco.afterNextBuildDo(() => fco.dismiss('node-actions'));
+        if (isANamedPropertyNode() && fsdui.selectedNode != this) {
+          fsdui.capiBloc.add(CAPIEvent.selectNode(node: this));
+          fsdui.afterNextBuildDo(() {
+            fsdui.capiBloc.add(CAPIEvent.appendChild(type: snippetType));
+            fsdui.afterNextBuildDo(() => fsdui.dismiss('node-actions'));
           });
         } else {
-          fco.capiBloc.add(CAPIEvent.appendChild(type: childType));
-          fco.afterNextBuildDo(() => fco.dismiss('node-actions'));
+          fsdui.capiBloc.add(CAPIEvent.appendChild(type: snippetType));
+          fsdui.afterNextBuildDo(() => fsdui.dismiss('node-actions'));
         }
       case NodeAction.addSiblingBefore:
-        fco.capiBloc.add(CAPIEvent.addSiblingBefore(type: childType));
-        fco.afterNextBuildDo(() => fco.dismiss('node-actions'));
+        fsdui.capiBloc.add(CAPIEvent.addSiblingBefore(type: snippetType));
+        fsdui.afterNextBuildDo(() => fsdui.dismiss('node-actions'));
       case NodeAction.addSiblingAfter:
-        fco.capiBloc.add(CAPIEvent.addSiblingAfter(type: childType));
-        fco.afterNextBuildDo(() => fco.dismiss('node-actions'));
+        fsdui.capiBloc.add(CAPIEvent.addSiblingAfter(type: snippetType));
+        fsdui.afterNextBuildDo(() => fsdui.dismiss('node-actions'));
     }
   }
 
   void _performSnippetAction(String snippetName, NodeAction action) async {
-    await SnippetRootNode.loadSnippetFromCacheOrFromFB(snippetName: snippetName);
+    final snippet = await SNode.loadSnippetFromCacheOrFromFB(
+      snippetName: snippetName,
+    );
     switch (action) {
       case NodeAction.replaceWith:
-        fco.capiBloc.add(CAPIEvent.replaceSelectionWith(type: SnippetRootNode, snippetName: snippetName));
-        fco.afterNextBuildDo(() => fco.dismiss('node-actions'));
+        fsdui.capiBloc.add(
+          CAPIEvent.replaceSelectionWith(type: snippet.runtimeType),
+        );
+        fsdui.afterNextBuildDo(() => fsdui.dismiss('node-actions'));
       case NodeAction.addSiblingBefore:
-        fco.capiBloc.add(CAPIEvent.addSiblingBefore(type: SnippetRootNode, snippetName: snippetName));
-        fco.afterNextBuildDo(() => fco.dismiss('node-actions'));
+        fsdui.capiBloc.add(
+          CAPIEvent.addSiblingBefore(type: snippet.runtimeType),
+        );
+        fsdui.afterNextBuildDo(() => fsdui.dismiss('node-actions'));
       case NodeAction.addSiblingAfter:
-        fco.capiBloc.add(CAPIEvent.addSiblingAfter(type: SnippetRootNode, snippetName: snippetName));
-        fco.afterNextBuildDo(() => fco.dismiss('node-actions'));
+        fsdui.capiBloc.add(
+          CAPIEvent.addSiblingAfter(type: snippet.runtimeType),
+        );
+        fsdui.afterNextBuildDo(() => fsdui.dismiss('node-actions'));
       case NodeAction.addChild:
-        fco.capiBloc.add(CAPIEvent.appendChild(type: SnippetRootNode, snippetName: snippetName));
-        fco.afterNextBuildDo(() => fco.dismiss('node-actions'));
+        fsdui.capiBloc.add(CAPIEvent.appendChild(type: snippet.runtimeType));
+        fsdui.afterNextBuildDo(() => fsdui.dismiss('node-actions'));
       case NodeAction.wrapWith:
         break;
     }
@@ -1684,17 +2068,17 @@ abstract class SNode extends Node with SNodeMappable {
   void _performPasteAction(NodeAction action) {
     switch (action) {
       case NodeAction.replaceWith:
-        fco.capiBloc.add(const CAPIEvent.pasteReplacement());
+        fsdui.capiBloc.add(const CAPIEvent.pasteReplacement());
       case NodeAction.addSiblingBefore:
-        fco.capiBloc.add(const CAPIEvent.pasteSiblingBefore());
+        fsdui.capiBloc.add(const CAPIEvent.pasteSiblingBefore());
       case NodeAction.addSiblingAfter:
-        fco.capiBloc.add(const CAPIEvent.pasteSiblingAfter());
+        fsdui.capiBloc.add(const CAPIEvent.pasteSiblingAfter());
       case NodeAction.addChild:
-        fco.capiBloc.add(const CAPIEvent.pasteChild());
+        fsdui.capiBloc.add(const CAPIEvent.pasteChild());
       case NodeAction.wrapWith:
         break;
     }
-    fco.afterNextBuildDo(() => fco.dismiss('node-actions'));
+    fsdui.afterNextBuildDo(() => fsdui.dismiss('node-actions'));
   }
 
   void _openQuickPick(NodeAction action) {
@@ -1704,22 +2088,20 @@ abstract class SNode extends Node with SNodeMappable {
       return;
     }
     final hasPaste =
-        fco.appInfo.clipboard != null && action != NodeAction.wrapWith;
+        fsdui.appInfo.clipboard != null && action != NodeAction.wrapWith;
 
-    fco.showOverlay(
+    fsdui.showOverlay(
       calloutConfig: CalloutConfig(
         cId: kWidgetPickerCId,
         initialCalloutW: 320,
-        initialCalloutH: 600,
+        initialCalloutH: 300,
         decorationFillColors: ColorOrGradient.color(Colors.white),
         initialTargetAlignment: Alignment.bottomLeft,
         initialCalloutAlignment: Alignment.topLeft,
         finalSeparation: 4,
         decorationBorderRadius: 12,
         elevation: 8,
-        barrier: CalloutBarrierConfig(
-          closeOnTapped: true,
-        ),
+        barrier: CalloutBarrierConfig(closeOnTapped: true),
       ),
       calloutContent: QuickPickPanel(
         action: action,
@@ -1736,24 +2118,22 @@ abstract class SNode extends Node with SNodeMappable {
 
   void _openFullPicker(NodeAction action) {
     final allCandidates = _allCandidatesForAction(action);
-    final snippetNames = List<String>.from(fco.appInfo.snippetNames)..sort();
+    final snippetNames = List<String>.from(fsdui.appInfo.snippetNames)..sort();
     final hasPaste =
-        fco.appInfo.clipboard != null && action != NodeAction.wrapWith;
+        fsdui.appInfo.clipboard != null && action != NodeAction.wrapWith;
 
-    fco.showOverlay(
+    fsdui.showOverlay(
       calloutConfig: CalloutConfig(
         cId: kWidgetPickerCId,
         initialCalloutW: 420,
-        initialCalloutH: 560,
+        initialCalloutH: 300,
         decorationFillColors: ColorOrGradient.color(Colors.white),
         initialTargetAlignment: Alignment.bottomLeft,
         initialCalloutAlignment: Alignment.topLeft,
         finalSeparation: 4,
         decorationBorderRadius: 12,
         elevation: 8,
-        barrier: CalloutBarrierConfig(
-          closeOnTapped: true,
-        ),
+        barrier: CalloutBarrierConfig(closeOnTapped: true),
       ),
       calloutContent: WidgetPickerDialog(
         action: action,
@@ -1798,7 +2178,12 @@ abstract class SNode extends Node with SNodeMappable {
           ),
           const Divider(),
           menuItemButton(context, "ListView", ListViewNode, action),
-          menuItemButton(context, "ArticleListView", ArticleListViewNode, action),
+          menuItemButton(
+            context,
+            "ArticleListView",
+            ArticleListViewNode,
+            action,
+          ),
           menuItemButton(context, "GridView", GridViewNode, action),
           menuItemButton(context, "Column", ColumnNode, action),
           menuItemButton(context, "Row", RowNode, action),
@@ -1818,7 +2203,7 @@ abstract class SNode extends Node with SNodeMappable {
           const Divider(),
           menuItemButton(context, "Scaffold", ScaffoldNode, action),
         ],
-        child: fco.coloredText("container", fontWeight: FontWeight.normal),
+        child: fsdui.coloredText("container", fontWeight: FontWeight.normal),
       ),
       SubmenuButton(
         menuChildren: [
@@ -1854,7 +2239,7 @@ abstract class SNode extends Node with SNodeMappable {
             action,
           ),
         ],
-        child: fco.coloredText("slivers", fontWeight: FontWeight.normal),
+        child: fsdui.coloredText("slivers", fontWeight: FontWeight.normal),
       ),
       menuItemButton(context, "Align", AlignNode, action),
       menuItemButton(context, "SplitView", SplitViewNode, action),
@@ -1884,7 +2269,12 @@ abstract class SNode extends Node with SNodeMappable {
           menuItemButton(context, "SizedBox", SizedBoxNode, action),
           menuItemButton(context, "ConstrainedBox", ConstrainedBoxNode, action),
           menuItemButton(context, "ListView", ListViewNode, action),
-          menuItemButton(context, "ArticleListView", ArticleListViewNode, action),
+          menuItemButton(
+            context,
+            "ArticleListView",
+            ArticleListViewNode,
+            action,
+          ),
           menuItemButton(context, "GridView", GridViewNode, action),
           menuItemButton(
             context,
@@ -1907,7 +2297,7 @@ abstract class SNode extends Node with SNodeMappable {
             action,
           ),
         ],
-        child: fco.coloredText("container", fontWeight: FontWeight.normal),
+        child: fsdui.coloredText("container", fontWeight: FontWeight.normal),
       ),
       SubmenuButton(
         menuChildren: [
@@ -1943,7 +2333,7 @@ abstract class SNode extends Node with SNodeMappable {
             action,
           ),
         ],
-        child: fco.coloredText("slivers", fontWeight: FontWeight.normal),
+        child: fsdui.coloredText("slivers", fontWeight: FontWeight.normal),
       ),
       SubmenuButton(
         menuChildren: [
@@ -1959,7 +2349,7 @@ abstract class SNode extends Node with SNodeMappable {
           menuItemButton(context, "TextSpan", TextSpanNode, action),
           menuItemButton(context, "WidgetSpan", WidgetSpanNode, action),
         ],
-        child: fco.coloredText("text", fontWeight: FontWeight.normal),
+        child: fsdui.coloredText("text", fontWeight: FontWeight.normal),
       ),
       SubmenuButton(
         menuChildren: [
@@ -1979,14 +2369,14 @@ abstract class SNode extends Node with SNodeMappable {
               ),
               menuItemButton(context, "MenuBar", MenuBarNode, action),
             ],
-            child: fco.coloredText("menu", fontWeight: FontWeight.normal),
+            child: fsdui.coloredText("menu", fontWeight: FontWeight.normal),
           ),
           SubmenuButton(
             menuChildren: [
               menuItemButton(context, "TabBar", TabBarNode, action),
               menuItemButton(context, "TabBarView", TabBarViewNode, action),
             ],
-            child: fco.coloredText("tab bar", fontWeight: FontWeight.normal),
+            child: fsdui.coloredText("tab bar", fontWeight: FontWeight.normal),
           ),
           SubmenuButton(
             menuChildren: [
@@ -2006,11 +2396,11 @@ abstract class SNode extends Node with SNodeMappable {
               menuItemButton(context, "FilledButton", FilledButtonNode, action),
               menuItemButton(context, "IconButton", IconButtonNode, action),
             ],
-            child: fco.coloredText("button", fontWeight: FontWeight.normal),
+            child: fsdui.coloredText("button", fontWeight: FontWeight.normal),
           ),
           menuItemButton(context, "Chip", ChipNode, action),
         ],
-        child: fco.coloredText("navigation", fontWeight: FontWeight.normal),
+        child: fsdui.coloredText("navigation", fontWeight: FontWeight.normal),
       ),
       SubmenuButton(
         menuChildren: [
@@ -2026,7 +2416,7 @@ abstract class SNode extends Node with SNodeMappable {
           menuItemButton(context, "Carousel", CarouselNode, action),
           menuItemButton(context, "Aspect Ratio", AspectRatioNode, action),
         ],
-        child: fco.coloredText("image", fontWeight: FontWeight.normal),
+        child: fsdui.coloredText("image", fontWeight: FontWeight.normal),
       ),
       SubmenuButton(
         menuChildren: [
@@ -2040,7 +2430,7 @@ abstract class SNode extends Node with SNodeMappable {
           menuItemButton(context, "File", FileNode, action),
           menuItemButton(context, "Directory", DirectoryNode, action),
         ],
-        child: fco.coloredText("file", fontWeight: FontWeight.normal),
+        child: fsdui.coloredText("file", fontWeight: FontWeight.normal),
       ),
       menuItemButton(context, "SplitView", SplitViewNode, action),
       menuItemButton(context, "Stepper", StepperNode, action),
@@ -2126,7 +2516,7 @@ abstract class SNode extends Node with SNodeMappable {
         margin: const EdgeInsets.all(10),
         width: 200,
         height: 40,
-        child: Center(child: fco.purpleText(action.displayName)),
+        child: Center(child: fsdui.purpleText(action.displayName)),
       ),
       pasteMI(action) ?? const Offstage(),
 
@@ -2147,7 +2537,12 @@ abstract class SNode extends Node with SNodeMappable {
               action,
             ),
             menuItemButton(context, "ListView", ListViewNode, action),
-            menuItemButton(context, "ArticleListView", ArticleListViewNode, action),
+            menuItemButton(
+              context,
+              "ArticleListView",
+              ArticleListViewNode,
+              action,
+            ),
             menuItemButton(context, "GridView", GridViewNode, action),
             menuItemButton(
               context,
@@ -2185,7 +2580,7 @@ abstract class SNode extends Node with SNodeMappable {
             const Divider(),
             menuItemButton(context, "Scaffold", ScaffoldNode, action),
           ],
-          child: fco.coloredText("container", fontWeight: FontWeight.normal),
+          child: fsdui.coloredText("container", fontWeight: FontWeight.normal),
         ),
         SubmenuButton(
           menuChildren: [
@@ -2221,7 +2616,7 @@ abstract class SNode extends Node with SNodeMappable {
               action,
             ),
           ],
-          child: fco.coloredText("slivers", fontWeight: FontWeight.normal),
+          child: fsdui.coloredText("slivers", fontWeight: FontWeight.normal),
         ),
         SubmenuButton(
           menuChildren: [
@@ -2237,7 +2632,7 @@ abstract class SNode extends Node with SNodeMappable {
             menuItemButton(context, "TextSpan", TextSpanNode, action),
             menuItemButton(context, "WidgetSpan", WidgetSpanNode, action),
           ],
-          child: fco.coloredText("text", fontWeight: FontWeight.normal),
+          child: fsdui.coloredText("text", fontWeight: FontWeight.normal),
         ),
         SubmenuButton(
           menuChildren: [
@@ -2257,7 +2652,7 @@ abstract class SNode extends Node with SNodeMappable {
                 ),
                 menuItemButton(context, "MenuBar", MenuBarNode, action),
               ],
-              child: fco.coloredText("menu", fontWeight: FontWeight.normal),
+              child: fsdui.coloredText("menu", fontWeight: FontWeight.normal),
             ),
             SubmenuButton(
               menuChildren: [
@@ -2265,7 +2660,10 @@ abstract class SNode extends Node with SNodeMappable {
                 menuItemButton(context, "TabBar", TabBarNode, action),
                 menuItemButton(context, "TabBarView", TabBarViewNode, action),
               ],
-              child: fco.coloredText("tab bar", fontWeight: FontWeight.normal),
+              child: fsdui.coloredText(
+                "tab bar",
+                fontWeight: FontWeight.normal,
+              ),
             ),
             SubmenuButton(
               menuChildren: [
@@ -2290,11 +2688,11 @@ abstract class SNode extends Node with SNodeMappable {
                 ),
                 menuItemButton(context, "IconButton", IconButtonNode, action),
               ],
-              child: fco.coloredText("button", fontWeight: FontWeight.normal),
+              child: fsdui.coloredText("button", fontWeight: FontWeight.normal),
             ),
             menuItemButton(context, "Chip", ChipNode, action),
           ],
-          child: fco.coloredText("navigation", fontWeight: FontWeight.normal),
+          child: fsdui.coloredText("navigation", fontWeight: FontWeight.normal),
         ),
         SubmenuButton(
           menuChildren: [
@@ -2310,7 +2708,7 @@ abstract class SNode extends Node with SNodeMappable {
             menuItemButton(context, "Carousel", CarouselNode, action),
             menuItemButton(context, "Aspect Ratio", AspectRatioNode, action),
           ],
-          child: fco.coloredText("image", fontWeight: FontWeight.normal),
+          child: fsdui.coloredText("image", fontWeight: FontWeight.normal),
         ),
         SubmenuButton(
           menuChildren: [
@@ -2324,7 +2722,7 @@ abstract class SNode extends Node with SNodeMappable {
             menuItemButton(context, "File", FileNode, action),
             menuItemButton(context, "Directory", DirectoryNode, action),
           ],
-          child: fco.coloredText("file", fontWeight: FontWeight.normal),
+          child: fsdui.coloredText("file", fontWeight: FontWeight.normal),
         ),
         menuItemButton(context, "SplitView", SplitViewNode, action),
         menuItemButton(context, "Stepper", StepperNode, action),
@@ -2350,7 +2748,7 @@ abstract class SNode extends Node with SNodeMappable {
         margin: const EdgeInsets.all(10),
         width: 200,
         height: 40,
-        child: Center(child: fco.purpleText(action.displayName)),
+        child: Center(child: fsdui.purpleText(action.displayName)),
       ),
       pasteMI(action) ?? const Offstage(),
     ];
@@ -2366,7 +2764,7 @@ abstract class SNode extends Node with SNodeMappable {
       if (action == NodeAction.wrapWith) {
         // var treeC = fco.snippetBeingEdited?.treeC;
         // bool navUp = this == treeC?.roots.firstOrNull;
-        fco.capiBloc.add(CAPIEvent.wrapSelectionWith(type: childType));
+        fsdui.capiBloc.add(CAPIEvent.wrapSelectionWith(type: childType));
         // in case need to show more of the tree (higher up)
         // fco.afterNextBuildDo(() {
         //   if (navUp) {
@@ -2376,86 +2774,86 @@ abstract class SNode extends Node with SNodeMappable {
         //   EditablePage.refreshSelectedNodeWidgetBorderOverlay(scName);
         // });
       } else if (action == NodeAction.replaceWith) {
-        fco.capiBloc.add(CAPIEvent.replaceSelectionWith(type: childType));
-        fco.afterNextBuildDo(() {
-          fco.dismiss('node-actions');
+        fsdui.capiBloc.add(CAPIEvent.replaceSelectionWith(type: childType));
+        fsdui.afterNextBuildDo(() {
+          fsdui.dismiss('node-actions');
           //   EditablePageState? eps = EditablePage.of(context);
           //   eps?.showNodeWidgetOverlays();
         });
       } else if (action == NodeAction.addChild) {
         // auto-select if its a named child property node
-        if (this.isANamedPropertyNode() && fco.selectedNode != this) {
-          fco.capiBloc.add(CAPIEvent.selectNode(node: this));
-          fco.afterNextBuildDo(() {
-            fco.capiBloc.add(CAPIEvent.appendChild(type: childType));
-            fco.afterNextBuildDo(() {
-              fco.dismiss('node-actions');
+        if (this.isANamedPropertyNode() && fsdui.selectedNode != this) {
+          fsdui.capiBloc.add(CAPIEvent.selectNode(node: this));
+          fsdui.afterNextBuildDo(() {
+            fsdui.capiBloc.add(CAPIEvent.appendChild(type: childType));
+            fsdui.afterNextBuildDo(() {
+              fsdui.dismiss('node-actions');
             });
           });
         } else {
-          fco.capiBloc.add(CAPIEvent.appendChild(type: childType));
-          fco.afterNextBuildDo(() {
-            fco.dismiss('node-actions');
+          fsdui.capiBloc.add(CAPIEvent.appendChild(type: childType));
+          fsdui.afterNextBuildDo(() {
+            fsdui.dismiss('node-actions');
           });
         }
       } else if (action == NodeAction.addSiblingBefore) {
-        fco.capiBloc.add(CAPIEvent.addSiblingBefore(type: childType));
-        fco.afterNextBuildDo(() {
-          fco.dismiss('node-actions');
+        fsdui.capiBloc.add(CAPIEvent.addSiblingBefore(type: childType));
+        fsdui.afterNextBuildDo(() {
+          fsdui.dismiss('node-actions');
           //   EditablePageState? eps = EditablePage.of(context);
           //   eps?.showNodeWidgetOverlays();
         });
       } else if (action == NodeAction.addSiblingAfter) {
-        fco.capiBloc.add(CAPIEvent.addSiblingAfter(type: childType));
-        fco.afterNextBuildDo(() {
-          fco.dismiss('node-actions');
+        fsdui.capiBloc.add(CAPIEvent.addSiblingAfter(type: childType));
+        fsdui.afterNextBuildDo(() {
+          fsdui.dismiss('node-actions');
           // EditablePageState? eps = EditablePage.of(context);
           // eps?.showNodeWidgetOverlays();
         });
       }
     },
-    child: fco.coloredText(label, fontWeight: FontWeight.bold),
+    child: fsdui.coloredText(label, fontWeight: FontWeight.bold),
   );
 
   MenuItemButton? pasteMI(NodeAction action) {
-    if (fco.appInfo.clipboard != null && action != NodeAction.wrapWith) {
+    if (fsdui.appInfo.clipboard != null && action != NodeAction.wrapWith) {
       return MenuItemButton(
         onPressed: () {
           // CAPIBloC bloc = fco.capiBloc;
           switch (action) {
             case NodeAction.replaceWith:
-              fco.capiBloc.add(const CAPIEvent.pasteReplacement());
-              fco.afterNextBuildDo(() {
-                fco.dismiss('node-actions');
+              fsdui.capiBloc.add(const CAPIEvent.pasteReplacement());
+              fsdui.afterNextBuildDo(() {
+                fsdui.dismiss('node-actions');
               });
               break;
             case NodeAction.addSiblingBefore:
-              fco.capiBloc.add(const CAPIEvent.pasteSiblingBefore());
-              fco.afterNextBuildDo(() {
-                fco.dismiss('node-actions');
+              fsdui.capiBloc.add(const CAPIEvent.pasteSiblingBefore());
+              fsdui.afterNextBuildDo(() {
+                fsdui.dismiss('node-actions');
               });
               break;
             case NodeAction.addSiblingAfter:
-              fco.capiBloc.add(const CAPIEvent.pasteSiblingAfter());
-              fco.afterNextBuildDo(() {
-                fco.dismiss('node-actions');
+              fsdui.capiBloc.add(const CAPIEvent.pasteSiblingAfter());
+              fsdui.afterNextBuildDo(() {
+                fsdui.dismiss('node-actions');
               });
               break;
             case NodeAction.addChild:
-              fco.capiBloc.add(const CAPIEvent.pasteChild());
-              fco.afterNextBuildDo(() {
-                fco.dismiss('node-actions');
+              fsdui.capiBloc.add(const CAPIEvent.pasteChild());
+              fsdui.afterNextBuildDo(() {
+                fsdui.dismiss('node-actions');
               });
               break;
             case NodeAction.wrapWith:
-              fco.dismiss('node-actions');
+              fsdui.dismiss('node-actions');
               break;
           }
-          fco.afterNextBuildDo(() {
-            fco.dismiss('node-actions');
+          fsdui.afterNextBuildDo(() {
+            fsdui.dismiss('node-actions');
           });
         },
-        child: fco.coloredText('paste from clipboard', color: Colors.blue),
+        child: fsdui.coloredText('paste from clipboard', color: Colors.blue),
       );
     }
     return null;
@@ -2465,57 +2863,43 @@ abstract class SNode extends Node with SNodeMappable {
     List<MenuItemButton> snippetMIs = [];
     // var snippetInfoCache = fco.snippetInfoCache;
     List<SnippetName>? snippetNames =
-        fco.appInfo.snippetNames; //snippetInfoCache.keys.toList();
+        fsdui.appInfo.snippetNames; //snippetInfoCache.keys.toList();
     snippetNames.sort();
     for (String snippetName in snippetNames) {
       snippetMIs.add(
         MenuItemButton(
           onPressed: () async {
             // make sure snippet actually present
-            await SnippetRootNode.loadSnippetFromCacheOrFromFB(
+            final snippet = await SNode.loadSnippetFromCacheOrFromFB(
               snippetName: snippetName,
             );
             if (action == NodeAction.replaceWith) {
-              fco.capiBloc.add(
-                CAPIEvent.replaceSelectionWith(
-                  type: SnippetRootNode,
-                  snippetName: snippetName,
-                ),
+              fsdui.capiBloc.add(
+                CAPIEvent.replaceSelectionWith(type: snippet.runtimeType),
               );
-              fco.afterNextBuildDo(() {
-                fco.dismiss('node-actions');
+              fsdui.afterNextBuildDo(() {
+                fsdui.dismiss('node-actions');
               });
             } else if (action == NodeAction.addSiblingBefore) {
-              fco.capiBloc.add(
-                CAPIEvent.addSiblingBefore(
-                  type: SnippetRootNode,
-                  snippetName: snippetName,
-                ),
+              fsdui.capiBloc.add(
+                CAPIEvent.addSiblingBefore(type: snippet.runtimeType),
               );
               // removeNodePropertiesCallout();
-              fco.afterNextBuildDo(() {
-                fco.dismiss('node-actions');
+              fsdui.afterNextBuildDo(() {
+                fsdui.dismiss('node-actions');
               });
             } else if (action == NodeAction.addSiblingAfter) {
-              fco.capiBloc.add(
-                CAPIEvent.addSiblingAfter(
-                  type: SnippetRootNode,
-                  snippetName: snippetName,
-                ),
+              fsdui.capiBloc.add(
+                CAPIEvent.addSiblingAfter(type: snippet.runtimeType),
               );
-              fco.afterNextBuildDo(() {
-                fco.dismiss('node-actions');
+              fsdui.afterNextBuildDo(() {
+                fsdui.dismiss('node-actions');
               });
               // removeNodePropertiesCallout();
             } else if (action == NodeAction.addChild) {
-              fco.capiBloc.add(
-                CAPIEvent.appendChild(
-                  type: SnippetRootNode,
-                  snippetName: snippetName,
-                ),
-              );
-              fco.afterNextBuildDo(() {
-                fco.dismiss('node-actions');
+              fsdui.capiBloc.add(CAPIEvent.appendChild(type: SNode));
+              fsdui.afterNextBuildDo(() {
+                fsdui.dismiss('node-actions');
               });
               // removeNodePropertiesCallout();
             }
@@ -2534,7 +2918,7 @@ abstract class SNode extends Node with SNodeMappable {
     String jsonS = toJson();
     var clonedNode = SNodeMapper.fromJson(jsonS);
     if (nodeWidgetGK != null && nodeWidgetGK == clonedNode.nodeWidgetGK) {
-      fco.logger.d('gk cloned !)');
+      fsdui.logger.d('gk cloned !)');
     }
     return clonedNode;
   }
@@ -2545,7 +2929,7 @@ abstract class SNode extends Node with SNodeMappable {
     node.getParent();
     Iterable<SNode> children = [];
 
-    if (node is SnippetRootNode && node.getParent() != null) {
+    if (node.isASnippetRoot && node.getParent() != null) {
       children = [];
     } else if (node is ScaffoldNode) {
       children = [node.appBar, node.body];
@@ -2603,6 +2987,192 @@ abstract class SNode extends Node with SNodeMappable {
   }
 }
 
+// @override
+// /// optional clone name, with a default
+// SNode clone({String? cloneName}) {
+//   SNode copiedNode = super.clone() as SNode;
+//   copiedNode
+//     ..name = (cloneName ?? '$name-copy')
+//   // new GlobalKey !
+//     ..nodeWidgetGK = GlobalKey();
+//   copiedNode.validateTree();
+//   return copiedNode;
+// }
+
+@override
+Widget? widgetLogo() =>
+    Image.asset(fsdui.asset('lib/assets/images/pub.dev.png'), width: 16);
+
+// The WidgetType enum helps simplify the analysis logic.
+enum WidgetType {
+  Flex, // Widgets like Column, Row, Flex
+  Scrollable, // Widgets like ListView, SingleChildScrollView, GridView
+  Flexible, // Widgets like Expanded, Flexible
+  FixedOrBounded, // Widgets like SizedBox, Container with fixed dimensions, Center, Padding
+  Other,
+}
+
+// Helper function to classify a widget based on common layout behavior.
+WidgetType _classifyNode(SNode node) {
+  // Check for common Flex widgets (pass constraints along main axis)
+  if (node is FlexNode) {
+    return WidgetType.Flex;
+  }
+  // Check for common scrollable widgets (want infinite space on main axis)
+  if (node is ListViewNode ||
+      node is SingleChildScrollViewNode /* || node is GridViewNode */ ) {
+    return WidgetType.Scrollable;
+  }
+  // Check for widgets that use flex properties (Expanded/Flexible)
+  if (node is FlexibleNode) {
+    return WidgetType.Flexible;
+  }
+  // Check for common fixed or bounding widgets (often safe)
+  if (node is SizedBoxNode ||
+      node is ContainerNode ||
+      node is PaddingNode ||
+      node is CenterNode) {
+    // A sophisticated check would analyze the Container/SizedBox properties,
+    // but for simplicity, we treat them as potentially bounding here.
+    return WidgetType.FixedOrBounded;
+  }
+  return WidgetType.Other;
+}
+
+// The core algorithm to spot potential unbounded constraint issues.
+String findUnboundedConstraintIssues(SNode snippet) {
+  // Start the recursive check.
+  return _checkWidgetNesting(
+    snippet,
+    isInsideFlex: false,
+    isInsideScrollable: false,
+  );
+}
+
+String _checkWidgetNesting(
+  SNode sNode, {
+  required bool isInsideFlex,
+  required bool isInsideScrollable,
+}) {
+  final currentType = _classifyNode(sNode);
+
+  // --- Core Unbounded Constraint Rules ---
+
+  // 1. A Scrollable widget inside an unbounded Flex (Column/Row)
+  if (currentType == WidgetType.Scrollable &&
+      isInsideFlex &&
+      !isInsideScrollable) {
+    // This often happens when a ListView is a direct child of a Column.
+    return "Issue Found: ${sNode.toString()} (Scrollable) is a direct child of an unbounded Flex widget.";
+  }
+
+  // 2. An inner Flex widget is a child of an outer Flex and *not* wrapped in Expanded/Flexible
+  if (currentType == WidgetType.Flex && isInsideFlex) {
+    // This means a Column inside a Column, where the inner one gets infinite height.
+    // We check if the widget *itself* is a Flexible, but we can't reliably check
+    // its *immediate* parent in this simple recursive model.
+    // For a more reliable check, we'd need to check if the parent data is FlexParentData,
+    // which is not possible before the build.
+    // For this demonstration, we'll assume a Flex inside a Flex is a problem
+    // unless it's wrapped in a Flexible/Expanded.
+    // Note: The parent data check is what Flutter's runtime does.
+    if (sNode is! FlexibleNode) {
+      return "Issue Found: Nested Flex widget (${sNode.toString()}) is not wrapped in Expanded/Flexible. It will request infinite space.";
+    }
+  }
+
+  // 3. Expanded/Flexible used outside of a Flex widget.
+  if (currentType == WidgetType.Flexible && !isInsideFlex) {
+    return "Issue Found: ${sNode.toString()} can only be used in a Flex (Row/Column).";
+  }
+
+  // --- Recurse to children ---
+
+  // Update state for recursion
+  final nextIsInsideFlex = isInsideFlex || currentType == WidgetType.Flex;
+  final nextIsInsideScrollable =
+      isInsideScrollable || currentType == WidgetType.Scrollable;
+
+  // Find children based on common widget properties
+  final children = <SNode>[];
+
+  // Single-child widgets
+  if (sNode is SC) {
+    // Common base class for Container, Center, Padding, etc.
+    final child = sNode.child;
+    if (child != null) children.add(child);
+  } else if (false && sNode is StatelessWidget) {
+    // We must call the build method for StatelessWidgets (risky but necessary)
+    // In a real static analyzer, you'd analyze the source code, not call build.
+    // We *must* skip this for this simplified example to avoid runtime errors,
+    // as calling build outside the framework is complex.
+  } else if (sNode is MC) {
+    // Common base class for Column, Row, Stack, etc.
+    children.addAll(sNode.children);
+  }
+
+  // Recurse through all found children
+  for (final child in children) {
+    final issue = _checkWidgetNesting(
+      child,
+      isInsideFlex: nextIsInsideFlex,
+      isInsideScrollable: nextIsInsideScrollable,
+    );
+    if (issue.isNotEmpty) {
+      return issue; // Return the first issue found
+    }
+  }
+
+  return ""; // No issue found in this branch
+}
+
+// --- Example Usage ---
+// This requires a mock setup because a real Widget's build method cannot be
+// called outside of the Flutter framework. This code demonstrates the logic.
+
+// A common mistake: A ListView inside a Column
+final badWidgetTree1 = Column(
+  children: <Widget>[
+    const Text('Header'),
+    ListView.builder(itemBuilder: (context, index) => Text('Item $index')),
+  ],
+);
+// The algorithm would flag: ListView (Scrollable) is a direct child of an unbounded Flex widget.
+
+// A common mistake: A Column inside a Column
+final badWidgetTree2 = Column(
+  children: <Widget>[
+    const Text('Header'),
+    Column(
+      // Inner Column gets infinite height from outer Column
+      children: [Container(height: 50, color: Colors.red)],
+    ),
+  ],
+);
+// The algorithm would flag: Nested Flex widget (Column) is not wrapped in Expanded/Flexible.
+
+// A correct, bounded layout
+final goodWidgetTree = Column(
+  children: <Widget>[
+    const Text('Header'),
+    Expanded(
+      // Expanded bounds the ListView's height
+      child: ListView.builder(
+        itemBuilder: (context, index) => Text('Item $index'),
+      ),
+    ),
+  ],
+);
+// The algorithm would flag: "" (No issue)
+
+/*
+// To run this in a real Dart environment (outside of Flutter's build context)
+// you would need to adjust the logic to use a real static code analyzer
+// (like the one built into the Dart/Flutter IDE) which can parse the code's
+// abstract syntax tree (AST) instead of relying on the runtime object types.
+// The principle remains: check for known problematic widget nesting patterns.
+*/
+
 // /// Exception when an encoded enum value has no match.
 // class EnumException implements Exception {
 //   String cause;
@@ -2635,12 +3205,14 @@ class _PulsingOverlayState extends State<_PulsingOverlay>
       duration: const Duration(milliseconds: 900),
     )..repeat(reverse: true);
 
-    _scale = Tween<double>(begin: 1.0, end: 1.04).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
-    _opacity = Tween<double>(begin: 1.0, end: 0.3).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
+    _scale = Tween<double>(
+      begin: 1.0,
+      end: 1.04,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+    _opacity = Tween<double>(
+      begin: 1.0,
+      end: 0.3,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override
@@ -2655,10 +3227,7 @@ class _PulsingOverlayState extends State<_PulsingOverlay>
       animation: _controller,
       builder: (context, child) => Transform.scale(
         scale: _scale.value,
-        child: Opacity(
-          opacity: _opacity.value,
-          child: child,
-        ),
+        child: Opacity(opacity: _opacity.value, child: child),
       ),
       child: Container(
         width: widget.width,

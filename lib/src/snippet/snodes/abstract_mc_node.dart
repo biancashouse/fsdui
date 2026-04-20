@@ -1,5 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 part 'abstract_mc_node.mapper.dart';
 
@@ -9,7 +9,7 @@ part 'abstract_mc_node.mapper.dart';
 abstract class MC extends SNode with MCMappable {
   List<SNode> children;
 
-  MC({required this.children});
+  MC({super.name, required this.children});
 
   @override
   bool canRemove() => children.length < 2;

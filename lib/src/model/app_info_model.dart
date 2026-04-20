@@ -1,8 +1,8 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart' show Colors;
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/api/clipboard/clipboard_view.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/api/clipboard/clipboard_view.dart';
+import 'package:fsdui/src/snippet/pnodes/groups/button_style_properties.dart';
 
 part 'app_info_model.mapper.dart';
 
@@ -38,17 +38,17 @@ class AppInfoModel with AppInfoModelMappable {
 
   bool get clipboardIsEmpty => clipboard == null;
 
-  void hideClipboard() => fco.dismiss("floating-clipboard");
+  void hideClipboard() => fsdui.dismiss("floating-clipboard");
 
   void showFloatingClipboard() {
-    fco.dismiss("floating-clipboard");
-    fco.showOverlay(
+    fsdui.dismiss("floating-clipboard");
+    fsdui.showOverlay(
       calloutContent: const ClipboardView(),
       calloutConfig: CalloutConfig(
         cId: "floating-clipboard",
         initialCalloutW: 300,
         initialCalloutH: 180,
-        initialCalloutPos: OffsetModel(fco.scrW - 400, 0),
+        initialCalloutPos: OffsetModel(fsdui.scrW - 400, 0),
         decorationFillColors: ColorOrGradient.color(Colors.transparent),
         decorationBorderRadius: 16,
         targetPointerType: TargetPointerType.none(),

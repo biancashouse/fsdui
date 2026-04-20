@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_size.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_main_axis_size.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class MainAxisSizeEditor extends HookWidget {

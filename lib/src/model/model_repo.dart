@@ -1,6 +1,6 @@
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/snodes/widget/fs_folder_node.dart';
 
 // import '../kroki/domain/models/diagram_type.dart' show DiagramType;
 
@@ -15,7 +15,7 @@ abstract class IModelRepository {
   // Future<void> copyFlowchartDocBetweenUsersInSameProject(String fromUserId, String toUserId);
   // Future<void> copyUsersProjects();
 
-  Future<SnippetRootNode?> loadVersionFromFBIntoCache({
+  Future<SNode?> loadVersionFromFBIntoCache({
     required SnippetInfoModel snippetInfo,
     required VersionId versionId,
   });
@@ -35,12 +35,12 @@ abstract class IModelRepository {
   });
 
   // Future<bool> saveNewVersionOfSnippetBeingEdited();
-  Future<void> saveNewVersionOfSnippet(SnippetRootNode rootNode);
+  Future<void> saveNewVersionOfSnippet(SNode rootNode);
 
   Future<bool> saveBrandNewSnippet({
     required SnippetName snippetName,
     required VersionId versionId,
-    required SnippetRootNode initialVersion,
+    required SNode initialVersion,
   });
 
   Future<void> deleteSnippet(final String snippetName);

@@ -6,14 +6,14 @@ import 'dart:typed_data';
 
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/algc/model/bv/flowchart_bv.dart';
-import 'package:flutter_content/src/algc/model/bv/serializers.dart';
-import 'package:flutter_content/src/algc/model/bv/step_bv.dart';
-import 'package:flutter_content/src/algc/model/m/constants.dart';
-import 'package:flutter_content/src/algc/model/m/pdf_page_format.dart';
-import 'package:flutter_content/src/algc/model/m/step_m.dart';
-import 'package:flutter_content/src/algc/model/m/string_encoder_decoder.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/algc/model/bv/flowchart_bv.dart';
+import 'package:fsdui/src/algc/model/bv/serializers.dart';
+import 'package:fsdui/src/algc/model/bv/step_bv.dart';
+import 'package:fsdui/src/algc/model/m/constants.dart';
+import 'package:fsdui/src/algc/model/m/pdf_page_format.dart';
+import 'package:fsdui/src/algc/model/m/step_m.dart';
+import 'package:fsdui/src/algc/model/m/string_encoder_decoder.dart';
 
 import 'comment_m.dart';
 import 'has_image.dart';
@@ -35,7 +35,7 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
           serializers.deserializeWith(FlowchartBV.serializer, theJson)!;
       result = flowchartBV2M(deserializedFlowchart);
     } catch (e) {
-      fco.logger.i(e.toString());
+      fsdui.logger.i(e.toString());
     }
     return result;
   }
@@ -44,15 +44,15 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
     late FlowchartM result;
     try {
       Map<String, dynamic> decodedJson = json.decode(theJson);
-      fco.logger.d('FlowchartM.fromJsonString:');
+      fsdui.logger.d('FlowchartM.fromJsonString:');
       // fco.logger.d(decodedJson.toString());
-      fco.logger.d('----------------------------------------------------------');
+      fsdui.logger.d('----------------------------------------------------------');
       FlowchartBV deserializedFlowchart =
           serializers.deserializeWith(FlowchartBV.serializer, decodedJson)!;
-      fco.logger.d('deserialized OK');
+      fsdui.logger.d('deserialized OK');
       result = flowchartBV2M(deserializedFlowchart);
     } catch (e) {
-      fco.logger.i(e.toString());
+      fsdui.logger.i(e.toString());
       rethrow;
     }
     return result;
@@ -81,11 +81,11 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
 
   /// for Firestore dto usage ----------------------------------------------------
   factory FlowchartM.fromFirestoreMap(Map<String, dynamic> data) {
-    fco.logger.d('FlowchartM.fromFirestoreMap--------------');
+    fsdui.logger.d('FlowchartM.fromFirestoreMap--------------');
     FlowchartM flowchart = FlowchartM.fromJsonString(data['json']);
     Timestamp ts = data['created'];
     if (flowchart.createdMs != ts.millisecondsSinceEpoch) {
-      fco.logger.i('Flowchart in firestore has created != json createdMs');
+      fsdui.logger.i('Flowchart in firestore has created != json createdMs');
     }
     ts = data['updated'];
     if (flowchart.lastModifiedMs != ts.millisecondsSinceEpoch) {
@@ -1720,16 +1720,16 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
     for (var theStep in theList) {
       //fco.logger.i('${theStep!.shape} - ${theStep.id}');
       theStep.childStepLists.forEach((String key, List<StepM> theChildList) {
-        fco.logger.i('  $key children: ${theChildList.length}');
+        fsdui.logger.i('  $key children: ${theChildList.length}');
         stepsLogger(theChildList);
       });
     }
   }
 
   void selectedFlowchartLogger(String calledFrom) {
-    fco.logger.i(
+    fsdui.logger.i(
         '---==================---===========---===============------==============--------======');
-    fco.logger.i(calledFrom);
+    fsdui.logger.i(calledFrom);
     stepsLogger(steps);
   }
 
@@ -1931,7 +1931,7 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
       try {
         newFlowchart.stepsMap[int.parse(key)] = newList;
       } catch (error) {
-        fco.logger.i('parse error - key = $key');
+        fsdui.logger.i('parse error - key = $key');
       }
     }
 // prev versions
@@ -2073,7 +2073,7 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
         }
       }
     } catch (e) {
-      fco.logger.i(e.toString());
+      fsdui.logger.i(e.toString());
     }
     return mStep;
   }
@@ -2086,7 +2086,7 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
 
   /// this creates a copy with its own key, including some transient properties
   FlowchartM copyOf({required bool generateNewKey}) {
-    fco.logger.d('FlowchartM.copyOf--------------');
+    fsdui.logger.d('FlowchartM.copyOf--------------');
     var json = toJsonString();
     var copy = FlowchartM.fromJsonString(json);
 

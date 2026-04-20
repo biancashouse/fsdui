@@ -1,9 +1,9 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
-import 'package:flutter_content/src/snippet/snodes/iframe/iframe.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
+import 'package:fsdui/src/snippet/snodes/iframe/iframe.dart';
 
 part 'google_drive_iframe_node.mapper.dart';
 
@@ -13,14 +13,15 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
   // <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQlAAiNow9CthD2TMk0qxiEoXveNDZh0etVOlwlqbzkBgPijvY4YDygnzjZkCbBGQ/pubhtml?widget=true&amp;headers=false"></iframe>
   //
   // <iframe src="https://docs.google.com/document/d/e/2PACX-1vTkJLCy0EmKeg2OzAekWbNWQrG5GKCdZMFiSAeg-U_2IM_cJINlNWrv5-HuxGRyCg/pub?embedded=true"></iframe>
-  String name;
+  String frameName;
   String folderId;
   String resourceKey;
   double? iframeWidth;
   double? iframeHeight;
 
   GoogleDriveIFrameNode({
-    this.name = '',
+    super.name,
+    this.frameName = '',
     this.folderId = '',
     this.resourceKey = '',
     this.iframeWidth, // not 595?
@@ -31,10 +32,10 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
         StringPNode(
           snode: this,
-          name: 'name',
-          stringValue: name,
+          name: 'frameName',
+          stringValue: frameName,
           onStringChange: (newValue) =>
-              refreshWithUpdate(context,() => name = newValue ?? ''),
+              refreshWithUpdate(context,() => frameName = newValue ?? ''),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
         ),
@@ -174,10 +175,10 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
   // : Row(
   //     children: [
   //       Icon(Icons.code)
-  //       Image.asset("${pkg_flutter_content}images/google-icons/docs.png", height: 64),
-  //       Image.asset("${pkg_flutter_content}images/google-icons/sheets.png", height: 64),
-  //       Image.asset("${pkg_flutter_content}images/google-icons/slides.png", height: 64),
-  //       Image.asset("${pkg_flutter_content}images/google-icons/forms.png", height: 64),
+  //       Image.asset("${pkg_fsdui}images/google-icons/docs.png", height: 64),
+  //       Image.asset("${pkg_fsdui}images/google-icons/sheets.png", height: 64),
+  //       Image.asset("${pkg_fsdui}images/google-icons/slides.png", height: 64),
+  //       Image.asset("${pkg_fsdui}images/google-icons/forms.png", height: 64),
   //     ],
   //   );
 
@@ -193,7 +194,7 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
 
   @override
   Widget? widgetLogo() => Image.asset(
-        fco.asset('lib/assets/images/google-icons/google-drive-icon.webp'),
+        fsdui.asset('lib/assets/images/google-icons/google-drive-icon.webp'),
         width: 24,
       );
 

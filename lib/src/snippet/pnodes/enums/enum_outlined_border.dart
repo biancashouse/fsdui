@@ -2,9 +2,9 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/border_side_properties.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/editors/property_button_enum.dart';
+import 'package:fsdui/src/snippet/pnodes/groups/border_side_properties.dart';
 
 part 'enum_outlined_border.mapper.dart';
 
@@ -60,7 +60,7 @@ enum OutlinedBorderEnum {
 
   Widget toMenuItem() => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        child: fco.coloredText(
+        child: fsdui.coloredText(
           name,
           color: Colors.white,
           fontSize: 14,

@@ -25,6 +25,12 @@ class AlignNodeMapper extends SubClassMapperBase<AlignNode> {
   @override
   final String id = 'AlignNode';
 
+  static String? _$name(AlignNode v) => v.name;
+  static const Field<AlignNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static AlignmentEnum _$alignment(AlignNode v) => v.alignment;
   static const Field<AlignNode, AlignmentEnum> _f$alignment = Field(
     'alignment',
@@ -40,6 +46,12 @@ class AlignNodeMapper extends SubClassMapperBase<AlignNode> {
   static const Field<AlignNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(AlignNode v) => v.tags;
+  static const Field<AlignNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(AlignNode v) =>
@@ -65,9 +77,11 @@ class AlignNodeMapper extends SubClassMapperBase<AlignNode> {
 
   @override
   final MappableFields<AlignNode> fields = const {
+    #name: _f$name,
     #alignment: _f$alignment,
     #child: _f$child,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -89,6 +103,7 @@ class AlignNodeMapper extends SubClassMapperBase<AlignNode> {
 
   static AlignNode _instantiate(DecodingData data) {
     return AlignNode(
+      name: data.dec(_f$name),
       alignment: data.dec(_f$alignment),
       child: data.dec(_f$child),
     );
@@ -156,7 +171,7 @@ abstract class AlignNodeCopyWith<$R, $In extends AlignNode, $Out>
   @override
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({AlignmentEnum? alignment, SNode? child});
+  $R call({String? name, AlignmentEnum? alignment, SNode? child});
   AlignNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -172,14 +187,20 @@ class _AlignNodeCopyWithImpl<$R, $Out>
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
-  $R call({AlignmentEnum? alignment, Object? child = $none}) => $apply(
+  $R call({
+    Object? name = $none,
+    AlignmentEnum? alignment,
+    Object? child = $none,
+  }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (alignment != null) #alignment: alignment,
       if (child != $none) #child: child,
     }),
   );
   @override
   AlignNode $make(CopyWithData data) => AlignNode(
+    name: data.get(#name, or: $value.name),
     alignment: data.get(#alignment, or: $value.alignment),
     child: data.get(#child, or: $value.child),
   );

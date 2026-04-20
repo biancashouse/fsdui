@@ -2,9 +2,9 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/edge_insets_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/edge_insets_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'padding_node.mapper.dart';
 
@@ -12,7 +12,7 @@ part 'padding_node.mapper.dart';
 class PaddingNode extends SC with PaddingNodeMappable {
   EdgeInsetsValue? padding;
 
-  PaddingNode({this.padding, super.child});
+  PaddingNode({super.name, this.padding, super.child});
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
@@ -46,7 +46,7 @@ class PaddingNode extends SC with PaddingNodeMappable {
     return Padding(
       key: createNodeWidgetGK(),
       padding: padding?.toEdgeInsets() ?? const EdgeInsets.all(8),
-      child: child?.buildFlutterWidget(context, this),
+      child: child?.build(context, this),
     );
   }
 

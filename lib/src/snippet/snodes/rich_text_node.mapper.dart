@@ -27,6 +27,12 @@ class RichTextNodeMapper extends SubClassMapperBase<RichTextNode> {
   @override
   final String id = 'RichTextNode';
 
+  static String? _$name(RichTextNode v) => v.name;
+  static const Field<RichTextNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static TextAlignEnum? _$textAlign(RichTextNode v) => v.textAlign;
   static const Field<RichTextNode, TextAlignEnum> _f$textAlign = Field(
     'textAlign',
@@ -68,6 +74,12 @@ class RichTextNodeMapper extends SubClassMapperBase<RichTextNode> {
     _$uid,
     mode: FieldMode.member,
   );
+  static List<String>? _$tags(RichTextNode v) => v.tags;
+  static const Field<RichTextNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(RichTextNode v) =>
       v.treeNodeGK;
   static const Field<RichTextNode, GlobalKey<State<StatefulWidget>>>
@@ -91,6 +103,7 @@ class RichTextNodeMapper extends SubClassMapperBase<RichTextNode> {
 
   @override
   final MappableFields<RichTextNode> fields = const {
+    #name: _f$name,
     #textAlign: _f$textAlign,
     #textDirection: _f$textDirection,
     #softWrap: _f$softWrap,
@@ -98,6 +111,7 @@ class RichTextNodeMapper extends SubClassMapperBase<RichTextNode> {
     #textScaleFactor: _f$textScaleFactor,
     #text: _f$text,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -119,6 +133,7 @@ class RichTextNodeMapper extends SubClassMapperBase<RichTextNode> {
 
   static RichTextNode _instantiate(DecodingData data) {
     return RichTextNode(
+      name: data.dec(_f$name),
       textAlign: data.dec(_f$textAlign),
       textDirection: data.dec(_f$textDirection),
       softWrap: data.dec(_f$softWrap),
@@ -193,6 +208,7 @@ abstract class RichTextNodeCopyWith<$R, $In extends RichTextNode, $Out>
   InlineSpanNodeCopyWith<$R, InlineSpanNode, InlineSpanNode> get text;
   @override
   $R call({
+    String? name,
     TextAlignEnum? textAlign,
     TextDirectionEnum? textDirection,
     bool? softWrap,
@@ -216,6 +232,7 @@ class _RichTextNodeCopyWithImpl<$R, $Out>
       $value.text.copyWith.$chain((v) => call(text: v));
   @override
   $R call({
+    Object? name = $none,
     Object? textAlign = $none,
     Object? textDirection = $none,
     Object? softWrap = $none,
@@ -224,6 +241,7 @@ class _RichTextNodeCopyWithImpl<$R, $Out>
     InlineSpanNode? text,
   }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (textAlign != $none) #textAlign: textAlign,
       if (textDirection != $none) #textDirection: textDirection,
       if (softWrap != $none) #softWrap: softWrap,
@@ -234,6 +252,7 @@ class _RichTextNodeCopyWithImpl<$R, $Out>
   );
   @override
   RichTextNode $make(CopyWithData data) => RichTextNode(
+    name: data.get(#name, or: $value.name),
     textAlign: data.get(#textAlign, or: $value.textAlign),
     textDirection: data.get(#textDirection, or: $value.textDirection),
     softWrap: data.get(#softWrap, or: $value.softWrap),

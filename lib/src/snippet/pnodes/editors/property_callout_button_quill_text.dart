@@ -1,6 +1,6 @@
 // import 'package:flutter/material.dart';
-// import 'package:flutter_content/flutter_content.dart';
-// import 'package:flutter_content/src/snippet/snodes/quill/widgets/quill_editor_with_toolbar_callout.dart';
+// import 'package:fsdui/fsdui.dart';
+// import 'package:fsdui/src/snippet/snodes/quill/widgets/quill_editor_with_toolbar_callout.dart';
 //
 // class PropertyButtonQuillText extends StatelessWidget {
 //   final QuillTextNode parentNode;

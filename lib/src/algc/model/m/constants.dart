@@ -1,5 +1,5 @@
 import 'package:flutter/painting.dart';
-import 'package:flutter_content/src/algc/model/m/step_m.dart';
+import 'package:fsdui/src/algc/model/m/step_m.dart';
 
 //const String flowchartKeys = "clipboard-keys";
 //const String currFlowchartKey = "curr-clipboard-key";

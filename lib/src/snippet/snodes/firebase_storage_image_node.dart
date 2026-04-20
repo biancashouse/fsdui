@@ -4,9 +4,9 @@
 // import 'package:firebase_storage/firebase_storage.dart';
 // import 'package:firebase_ui_storage/firebase_ui_storage.dart';
 // import 'package:flutter/material.dart';
-// import 'package:flutter_content/flutter_content.dart';
-// import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
-// import 'package:flutter_content/src/snippet/pnodes/enums/enum_boxfit.dart';
+// import 'package:fsdui/fsdui.dart';
+// import 'package:fsdui/src/snippet/pnodes/enums/enum_alignment.dart';
+// import 'package:fsdui/src/snippet/pnodes/enums/enum_boxfit.dart';
 //
 // part 'firebase_storage_image_node.mapper.dart';
 //

@@ -5,16 +5,16 @@ import 'package:dart_mappable/dart_mappable.dart';
 // import 'package:firebase_storage/firebase_storage.dart' show FirebaseStorage;
 // import 'package:firebase_ui_storage/firebase_ui_storage.dart' show StorageImage;
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
-// import 'package:flutter_content/src/snippet/pnodes/editors/plantuml_msv.dart';
-import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_boxfit.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart'
+// import 'package:fsdui/src/snippet/pnodes/editors/plantuml_msv.dart';
+import 'package:fsdui/src/snippet/pnodes/enum_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_boxfit.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart'
     show FlutterDocPNode;
 
-// import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
-// import 'package:flutter_content/src/snippet/pnodes/uml_string_pnode.dart';
+// import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
+// import 'package:fsdui/src/snippet/pnodes/uml_string_pnode.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 // import '../../svg/web_svg_view.dart' show WebSvgView;
@@ -299,7 +299,7 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
 
   @override
   Widget? widgetLogo() =>
-      Image.asset(fco.asset('lib/assets/images/pub.dev.png'), width: 16);
+      Image.asset(fsdui.asset('lib/assets/images/pub.dev.png'), width: 16);
 
   @override
   String toString() => diagramText == null

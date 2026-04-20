@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 class Page_IframeTest extends StatelessWidget {
   const Page_IframeTest({super.key});
@@ -8,11 +8,8 @@ class Page_IframeTest extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SnippetBuilder sp = SnippetBuilder(
-      templateSnippet: SnippetRootNode(
-        name: 'iframe-demo',
-        child: IFrameNode(),
-      ),
-       //sC.name, because no scrolling used
+      initialValue: IFrameNode(name: 'iframe-demo'),
+      //sC.name, because no scrolling used
     );
 
     final scaffold = sp;

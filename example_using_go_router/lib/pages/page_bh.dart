@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 // import 'package:flutter_callouts/flutter_callouts.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 bool biancaTouched = false;
 
@@ -39,13 +39,13 @@ class Page_BHState extends State<Page_BH> with TickerProviderStateMixin {
       vsync: this,
     );
 
-    fco.afterNextBuildDo(() {
-      fco.afterMsDelayDo(5000, () {
+    fsdui.afterNextBuildDo(() {
+      fsdui.afterMsDelayDo(5000, () {
         if (mounted) {
           _ac.forward();
         }
       });
-      fco.afterMsDelayDo(3000, () {
+      fsdui.afterMsDelayDo(3000, () {
         biancaAutoFlipped = true;
       });
       //context.go('/flutter-callouts');
@@ -64,7 +64,7 @@ class Page_BHState extends State<Page_BH> with TickerProviderStateMixin {
       Scaffold(
         appBar: AppBar(
           title: _welcomeTxt(),
-          actions: [fco.NavigationDD(pencilIconColor: Colors.red)],
+          actions: [fsdui.NavigationDD(pencilIconColor: Colors.red)],
           backgroundColor: Colors.black,
         ),
         backgroundColor: Colors.black,
@@ -99,10 +99,10 @@ class Page_BHState extends State<Page_BH> with TickerProviderStateMixin {
                     child: Align(
                       alignment: Alignment.bottomRight,
                       child: FutureBuilder<String>(
-                        future: fco.versionAndBuild,
+                        future: fsdui.versionAndBuild,
                         builder: (context, snap) =>
                         snap.hasData
-                            ? fco.coloredText(
+                            ? fsdui.coloredText(
                           'v.${snap.data}  ',
                           color: Colors.white,
                         )
@@ -152,7 +152,7 @@ class Page_BHState extends State<Page_BH> with TickerProviderStateMixin {
         alignment: FractionalOffset.center,
         child: Opacity(
           opacity: .1,
-          child: fco.assetPicWithFadeIn(
+          child: fsdui.assetPicWithFadeIn(
             path: 'assets/images/bianca-1024x1024.png',
             padding: EdgeInsets.zero,
             alignment: Alignment.center,
@@ -163,9 +163,8 @@ class Page_BHState extends State<Page_BH> with TickerProviderStateMixin {
 
   Widget _weCreate() =>
       SnippetBuilder(
-        templateSnippet: SnippetRootNode(
+        initialValue: PlaceholderNode(
           name: 'we-create',
-          child: PlaceholderNode(),
         ),
       );
 
@@ -173,9 +172,8 @@ class Page_BHState extends State<Page_BH> with TickerProviderStateMixin {
       Padding(
         padding: const EdgeInsets.all(18.0),
         child: SnippetBuilder(
-          templateSnippet: SnippetRootNode(
+          initialValue: PlaceholderNode(
             name: 'about-hotspots',
-            child: PlaceholderNode(),
           ),
         ),
       );

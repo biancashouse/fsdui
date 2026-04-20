@@ -2,16 +2,17 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
-import 'package:flutter_content/src/snippet/snodes/button_style_hook.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/src/snippet/pnodes/groups/button_style_properties.dart';
+import 'package:fsdui/src/snippet/snodes/button_style_hook.dart';
 
 part 'filled_button_node.mapper.dart';
 
 @MappableClass()
 class FilledButtonNode extends ButtonNode with FilledButtonNodeMappable {
   FilledButtonNode({
+    super.name,
     super.destinationRoutePathSnippetName,
     // super.template,
     // super.destinationPanelOrPlaceholderName,
@@ -43,7 +44,7 @@ class FilledButtonNode extends ButtonNode with FilledButtonNodeMappable {
 
       //buttonStyle?.toButtonStyle(context);
       // possible handler
-      void Function(BuildContext)? f = onTapHandlerName != null ? fco.namedHandler(onTapHandlerName!) : null;
+      void Function(BuildContext)? f = onTapHandlerName != null ? fsdui.namedHandler(onTapHandlerName!) : null;
 
       setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
@@ -60,7 +61,7 @@ class FilledButtonNode extends ButtonNode with FilledButtonNodeMappable {
               onPressed: ()=>onPressed(context, gk),
               onLongPress: () => f?.call(context),
               style: btnStyle,
-              child: child?.buildFlutterWidget(context, this),
+              child: child?.build(context, this),
             ),
           );
     } catch (e) {

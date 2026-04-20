@@ -1,12 +1,12 @@
 // import 'package:flutter/material.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:flutter_content/src/bloc/capi_bloc.dart';
-// import 'package:flutter_content/src/bloc/capi_event.dart';
-// import 'package:flutter_content/src/bloc/capi_state.dart';
+// import 'package:fsdui/src/bloc/capi_bloc.dart';
+// import 'package:fsdui/src/bloc/capi_event.dart';
+// import 'package:fsdui/src/bloc/capi_state.dart';
 //
-// import 'package:flutter_content/flutter_content.dart';
-// import 'package:flutter_content/src/model/model.dart';
-// import 'package:flutter_content/src/styles/color_palette.dart';
+// import 'package:fsdui/fsdui.dart';
+// import 'package:fsdui/src/model/model.dart';
+// import 'package:fsdui/src/styles/color_palette.dart';
 //
 // void showColorCallout(
 //   final GlobalKey btnGK,

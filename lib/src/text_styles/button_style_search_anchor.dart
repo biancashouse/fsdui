@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
-import 'package:flutter_content/src/text_styles/button_style_suggestions.dart';
-import 'package:flutter_content/src/text_styles/style_name_editor.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/groups/button_style_properties.dart';
+import 'package:fsdui/src/text_styles/button_style_suggestions.dart';
+import 'package:fsdui/src/text_styles/style_name_editor.dart';
 
 class ButtonStyleNameSearchAnchor extends StatefulWidget {
   final CalloutId? parentCId;
@@ -24,11 +24,11 @@ class ButtonStyleNameSearchAnchor extends StatefulWidget {
 
   static ButtonStyleNameSearchAnchorState? of(BuildContext context) {
     if (!context.mounted) {
-      fco.logger.i('context not mounted!');
+      fsdui.logger.i('context not mounted!');
     }
     var result = context.findAncestorStateOfType<ButtonStyleNameSearchAnchorState>();
     if (result == null) {
-      fco.logger.i('SearchAnchor not found!');
+      fsdui.logger.i('SearchAnchor not found!');
     }
     return result;
   }
@@ -51,7 +51,7 @@ class ButtonStyleNameSearchAnchorState extends State<ButtonStyleNameSearchAnchor
   void initState() {
     super.initState();
     madeASelection = false;
-    originalStyleName = fco.findButtonStyleName(fco.appInfo, widget.buttonStyle);
+    originalStyleName = fsdui.findButtonStyleName(fsdui.appInfo, widget.buttonStyle);
     searchStringTEC = TextEditingController(text: originalStyleName);
   }
 
@@ -66,7 +66,7 @@ class ButtonStyleNameSearchAnchorState extends State<ButtonStyleNameSearchAnchor
 
   @override
   Widget build(BuildContext context) {
-    fco.afterMsDelayDo(50, () {
+    fsdui.afterMsDelayDo(50, () {
       focusNode.requestFocus();
     });
     return TapRegion(
@@ -96,7 +96,7 @@ class ButtonStyleNameSearchAnchorState extends State<ButtonStyleNameSearchAnchor
 
   void showButtonStyleSuggestionsOverlay() {
     if (entry == null) {
-      fco.logger.d('showSuggestionsOverlay()');
+      fsdui.logger.d('showSuggestionsOverlay()');
       final renderBox = context.findRenderObject() as RenderBox;
       final offset = renderBox.localToGlobal(Offset.zero);
       entry = OverlayEntry(builder: (_) {
@@ -111,17 +111,17 @@ class ButtonStyleNameSearchAnchorState extends State<ButtonStyleNameSearchAnchor
             child: ButtonStyleNameSuggestions(
               anchorContext: context,
               searchString: searchStringTEC.text, //widget.textStyle.lastSearchString??'',
-              suggestions: fco.namedButtonStyles.keys.toList(),
+              suggestions: fsdui.namedButtonStyles.keys.toList(),
               onHoverF: (hoveredButtonStyleName) {
                 if (widget.buttonStyle.lastHoveredSuggestion != hoveredButtonStyleName) {
                   widget.debouncer.run(() {
-                    if (widget.parentCId == null || fco.anyPresent([
+                    if (widget.parentCId == null || fsdui.anyPresent([
                       widget.parentCId!
                     ])) {
                       setState(() {
-                        fco.logger.d('onHoverF - suggestedButtonStyleName = $hoveredButtonStyleName');
+                        fsdui.logger.d('onHoverF - suggestedButtonStyleName = $hoveredButtonStyleName');
                         widget.buttonStyle.lastHoveredSuggestion = hoveredButtonStyleName;
-                        fco.afterNextBuildDo(() {
+                        fsdui.afterNextBuildDo(() {
                           widget.onHoveredF(hoveredButtonStyleName);
                         });
                       });
@@ -137,7 +137,7 @@ class ButtonStyleNameSearchAnchorState extends State<ButtonStyleNameSearchAnchor
                   widget.onSelectionF(selectedButtonStyleName);
                   dismissSuggestionsOverlay();
                   if (widget.parentCId != null) {
-                    fco.dismiss(widget.parentCId!);
+                    fsdui.dismiss(widget.parentCId!);
                   }
                 });
               },
@@ -147,7 +147,7 @@ class ButtonStyleNameSearchAnchorState extends State<ButtonStyleNameSearchAnchor
       });
       Overlay.of(context).insert(entry!);
     } else {
-      fco.logger.d('showSuggestionsOverlay() SKIPPED');
+      fsdui.logger.d('showSuggestionsOverlay() SKIPPED');
     }
   }
 

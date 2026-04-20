@@ -39,6 +39,8 @@ class MCMapper extends SubClassMapperBase<MC> {
   @override
   final String id = 'MC';
 
+  static String? _$name(MC v) => v.name;
+  static const Field<MC, String> _f$name = Field('name', _$name, opt: true);
   static List<SNode> _$children(MC v) => v.children;
   static const Field<MC, List<SNode>> _f$children = Field(
     'children',
@@ -46,7 +48,10 @@ class MCMapper extends SubClassMapperBase<MC> {
   );
 
   @override
-  final MappableFields<MC> fields = const {#children: _f$children};
+  final MappableFields<MC> fields = const {
+    #name: _f$name,
+    #children: _f$children,
+  };
 
   @override
   final String discriminatorKey = 'DK:snode';
@@ -89,7 +94,7 @@ mixin MCMappable {
 abstract class MCCopyWith<$R, $In extends MC, $Out>
     implements SNodeCopyWith<$R, $In, $Out> {
   @override
-  $R call();
+  $R call({String? name});
   MCCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 

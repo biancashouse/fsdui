@@ -1,10 +1,10 @@
 // ignore_for_file: constant_identifier_names
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/bool_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/edge_insets_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/bool_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/edge_insets_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'flexible_space_bar_node.mapper.dart';
 
@@ -16,6 +16,7 @@ class FlexibleSpaceBarNode extends CL with FlexibleSpaceBarNodeMappable {
   EdgeInsetsValue? titlePadding;
 
   FlexibleSpaceBarNode({
+    super.name,
     required this.title,
     required this.background,
     this.centerTitle,
@@ -66,11 +67,11 @@ class FlexibleSpaceBarNode extends CL with FlexibleSpaceBarNodeMappable {
     try {
       setParent(parentNode); // propagating parents down from root
 
-      var titleWidget = title.buildFlutterWidget(
+      var titleWidget = title.build(
         context,
         this,
       );
-      var backgroundWidget = background.buildFlutterWidget(context, this);
+      var backgroundWidget = background.build(context, this);
 
       try {
         var fsBar = FlexibleSpaceBar(
@@ -82,7 +83,7 @@ class FlexibleSpaceBarNode extends CL with FlexibleSpaceBarNodeMappable {
         );
         return fsBar;
       } catch (e) {
-        fco.logger.i('FlexibleSpaceBarNode.toWidget() failed!');
+        fsdui.logger.i('FlexibleSpaceBarNode.toWidget() failed!');
         return Material(
           textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
           child: SingleChildScrollView(
@@ -91,7 +92,7 @@ class FlexibleSpaceBarNode extends CL with FlexibleSpaceBarNodeMappable {
               children: [
                 Icon(Icons.error, color: Colors.red),
                 const Gap(10),
-                fco.coloredText(e.toString()),
+                fsdui.coloredText(e.toString()),
               ],
             ),
           ),

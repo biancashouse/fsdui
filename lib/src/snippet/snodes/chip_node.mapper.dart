@@ -26,6 +26,12 @@ class ChipNodeMapper extends SubClassMapperBase<ChipNode> {
   @override
   final String id = 'ChipNode';
 
+  static String? _$name(ChipNode v) => v.name;
+  static const Field<ChipNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static String _$label(ChipNode v) => v.label;
   static const Field<ChipNode, String> _f$label = Field(
     'label',
@@ -105,6 +111,12 @@ class ChipNodeMapper extends SubClassMapperBase<ChipNode> {
     _$uid,
     mode: FieldMode.member,
   );
+  static List<String>? _$tags(ChipNode v) => v.tags;
+  static const Field<ChipNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(ChipNode v) =>
       v.treeNodeGK;
   static const Field<ChipNode, GlobalKey<State<StatefulWidget>>> _f$treeNodeGK =
@@ -128,6 +140,7 @@ class ChipNodeMapper extends SubClassMapperBase<ChipNode> {
 
   @override
   final MappableFields<ChipNode> fields = const {
+    #name: _f$name,
     #label: _f$label,
     #labelTSPropGroup: _f$labelTSPropGroup,
     #labelPadding: _f$labelPadding,
@@ -140,6 +153,7 @@ class ChipNodeMapper extends SubClassMapperBase<ChipNode> {
     #destinationRoutePathSnippetName: _f$destinationRoutePathSnippetName,
     #onTapHandlerName: _f$onTapHandlerName,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -161,6 +175,7 @@ class ChipNodeMapper extends SubClassMapperBase<ChipNode> {
 
   static ChipNode _instantiate(DecodingData data) {
     return ChipNode(
+      name: data.dec(_f$name),
       label: data.dec(_f$label),
       labelTSPropGroup: data.dec(_f$labelTSPropGroup),
       labelPadding: data.dec(_f$labelPadding),
@@ -245,6 +260,7 @@ abstract class ChipNodeCopyWith<$R, $In extends ChipNode, $Out>
   ColorModelCopyWith<$R, ColorModel, ColorModel>? get selectedColor;
   @override
   $R call({
+    String? name,
     String? label,
     TextStyleProperties? labelTSPropGroup,
     EdgeInsetsValue? labelPadding,
@@ -287,6 +303,7 @@ class _ChipNodeCopyWithImpl<$R, $Out>
       $value.selectedColor?.copyWith.$chain((v) => call(selectedColor: v));
   @override
   $R call({
+    Object? name = $none,
     String? label,
     TextStyleProperties? labelTSPropGroup,
     Object? labelPadding = $none,
@@ -300,6 +317,7 @@ class _ChipNodeCopyWithImpl<$R, $Out>
     Object? onTapHandlerName = $none,
   }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (label != null) #label: label,
       if (labelTSPropGroup != null) #labelTSPropGroup: labelTSPropGroup,
       if (labelPadding != $none) #labelPadding: labelPadding,
@@ -318,6 +336,7 @@ class _ChipNodeCopyWithImpl<$R, $Out>
   );
   @override
   ChipNode $make(CopyWithData data) => ChipNode(
+    name: data.get(#name, or: $value.name),
     label: data.get(#label, or: $value.label),
     labelTSPropGroup: data.get(#labelTSPropGroup, or: $value.labelTSPropGroup),
     labelPadding: data.get(#labelPadding, or: $value.labelPadding),

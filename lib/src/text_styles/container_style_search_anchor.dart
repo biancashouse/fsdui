@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/text_styles/container_style_suggestions.dart';
-import 'package:flutter_content/src/text_styles/style_name_editor.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/text_styles/container_style_suggestions.dart';
+import 'package:fsdui/src/text_styles/style_name_editor.dart';
 
 class ContainerStyleNameSearchAnchor extends StatefulWidget {
   final CalloutId? parentCId;
@@ -23,11 +23,11 @@ class ContainerStyleNameSearchAnchor extends StatefulWidget {
 
   static ContainerStyleNameSearchAnchorState? of(BuildContext context) {
     if (!context.mounted) {
-      fco.logger.i('context not mounted!');
+      fsdui.logger.i('context not mounted!');
     }
     var result = context.findAncestorStateOfType<ContainerStyleNameSearchAnchorState>();
     if (result == null) {
-      fco.logger.i('SearchAnchor not found!');
+      fsdui.logger.i('SearchAnchor not found!');
     }
     return result;
   }
@@ -50,7 +50,7 @@ class ContainerStyleNameSearchAnchorState extends State<ContainerStyleNameSearch
   void initState() {
     super.initState();
     madeASelection = false;
-    originalStyleName = fco.findContainerStyleName(fco.appInfo, widget.buttonStyle);
+    originalStyleName = fsdui.findContainerStyleName(fsdui.appInfo, widget.buttonStyle);
     searchStringTEC = TextEditingController(text: originalStyleName);
   }
 
@@ -65,7 +65,7 @@ class ContainerStyleNameSearchAnchorState extends State<ContainerStyleNameSearch
 
   @override
   Widget build(BuildContext context) {
-    fco.afterMsDelayDo(50, () {
+    fsdui.afterMsDelayDo(50, () {
       focusNode.requestFocus();
     });
     return TapRegion(
@@ -95,7 +95,7 @@ class ContainerStyleNameSearchAnchorState extends State<ContainerStyleNameSearch
 
   void showContainerStyleSuggestionsOverlay() {
     if (entry == null) {
-      fco.logger.d('showSuggestionsOverlay()');
+      fsdui.logger.d('showSuggestionsOverlay()');
       final renderBox = context.findRenderObject() as RenderBox;
       final offset = renderBox.localToGlobal(Offset.zero);
       entry = OverlayEntry(builder: (_) {
@@ -110,17 +110,17 @@ class ContainerStyleNameSearchAnchorState extends State<ContainerStyleNameSearch
             child: ContainerStyleNameSuggestions(
               anchorContext: context,
               searchString: searchStringTEC.text, //widget.textStyle.lastSearchString??'',
-              suggestions: fco.namedContainerStyles.keys.toList(),
+              suggestions: fsdui.namedContainerStyles.keys.toList(),
               onHoverF: (hoveredContainerStyleName) {
                 if (widget.buttonStyle.lastHoveredSuggestion != hoveredContainerStyleName) {
                   widget.debouncer.run(() {
-                    if (widget.parentCId == null || fco.anyPresent([
+                    if (widget.parentCId == null || fsdui.anyPresent([
                       widget.parentCId!
                     ])) {
                       setState(() {
-                        fco.logger.d('onHoverF - suggestedContainerStyleName = $hoveredContainerStyleName');
+                        fsdui.logger.d('onHoverF - suggestedContainerStyleName = $hoveredContainerStyleName');
                         widget.buttonStyle.lastHoveredSuggestion = hoveredContainerStyleName;
-                        fco.afterNextBuildDo(() {
+                        fsdui.afterNextBuildDo(() {
                           widget.onHoveredF(hoveredContainerStyleName);
                         });
                       });
@@ -136,7 +136,7 @@ class ContainerStyleNameSearchAnchorState extends State<ContainerStyleNameSearch
                   widget.onSelectionF(selectedContainerStyleName);
                   dismissSuggestionsOverlay();
                   if (widget.parentCId != null) {
-                    fco.dismiss(widget.parentCId!);
+                    fsdui.dismiss(widget.parentCId!);
                   }
                 });
               },
@@ -146,7 +146,7 @@ class ContainerStyleNameSearchAnchorState extends State<ContainerStyleNameSearch
       });
       Overlay.of(context).insert(entry!);
     } else {
-      fco.logger.d('showSuggestionsOverlay() SKIPPED');
+      fsdui.logger.d('showSuggestionsOverlay() SKIPPED');
     }
   }
 

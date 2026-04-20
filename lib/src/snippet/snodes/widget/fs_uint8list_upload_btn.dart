@@ -9,7 +9,7 @@ import 'package:firebase_ui_shared/firebase_ui_shared.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 import 'fs_file_upload_btn.dart';
 
@@ -63,8 +63,8 @@ class _FSBytesUploadButtonState extends State<FSBytesUploadButton> {
         isLoading = true;
       });
 
-      fco.afterNextBuildDo(() async {
-        final folderRef = fco.folderPathRef('/plantuml-images');
+      fsdui.afterNextBuildDo(() async {
+        final folderRef = fsdui.folderPathRef('/plantuml-images');
         final childRef = config.namingPolicy.getUploadFileName(widget.fileName);
         final ref = folderRef.child(childRef);
 

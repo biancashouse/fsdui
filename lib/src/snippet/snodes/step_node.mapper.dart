@@ -24,6 +24,12 @@ class StepNodeMapper extends SubClassMapperBase<StepNode> {
   @override
   final String id = 'StepNode';
 
+  static String? _$name(StepNode v) => v.name;
+  static const Field<StepNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static NamedSC _$title(StepNode v) => v.title;
   static const Field<StepNode, NamedSC> _f$title = Field('title', _$title);
   static NamedSC? _$subtitle(StepNode v) => v.subtitle;
@@ -41,6 +47,12 @@ class StepNodeMapper extends SubClassMapperBase<StepNode> {
   static const Field<StepNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(StepNode v) => v.tags;
+  static const Field<StepNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(StepNode v) =>
@@ -66,10 +78,12 @@ class StepNodeMapper extends SubClassMapperBase<StepNode> {
 
   @override
   final MappableFields<StepNode> fields = const {
+    #name: _f$name,
     #title: _f$title,
     #subtitle: _f$subtitle,
     #content: _f$content,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -91,6 +105,7 @@ class StepNodeMapper extends SubClassMapperBase<StepNode> {
 
   static StepNode _instantiate(DecodingData data) {
     return StepNode(
+      name: data.dec(_f$name),
       title: data.dec(_f$title),
       subtitle: data.dec(_f$subtitle),
       content: data.dec(_f$content),
@@ -158,7 +173,7 @@ abstract class StepNodeCopyWith<$R, $In extends StepNode, $Out>
   NamedSCCopyWith<$R, NamedSC, NamedSC>? get subtitle;
   NamedSCCopyWith<$R, NamedSC, NamedSC> get content;
   @override
-  $R call({NamedSC? title, NamedSC? subtitle, NamedSC? content});
+  $R call({String? name, NamedSC? title, NamedSC? subtitle, NamedSC? content});
   StepNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -180,16 +195,22 @@ class _StepNodeCopyWithImpl<$R, $Out>
   NamedSCCopyWith<$R, NamedSC, NamedSC> get content =>
       $value.content.copyWith.$chain((v) => call(content: v));
   @override
-  $R call({NamedSC? title, Object? subtitle = $none, NamedSC? content}) =>
-      $apply(
-        FieldCopyWithData({
-          if (title != null) #title: title,
-          if (subtitle != $none) #subtitle: subtitle,
-          if (content != null) #content: content,
-        }),
-      );
+  $R call({
+    Object? name = $none,
+    NamedSC? title,
+    Object? subtitle = $none,
+    NamedSC? content,
+  }) => $apply(
+    FieldCopyWithData({
+      if (name != $none) #name: name,
+      if (title != null) #title: title,
+      if (subtitle != $none) #subtitle: subtitle,
+      if (content != null) #content: content,
+    }),
+  );
   @override
   StepNode $make(CopyWithData data) => StepNode(
+    name: data.get(#name, or: $value.name),
     title: data.get(#title, or: $value.title),
     subtitle: data.get(#subtitle, or: $value.subtitle),
     content: data.get(#content, or: $value.content),

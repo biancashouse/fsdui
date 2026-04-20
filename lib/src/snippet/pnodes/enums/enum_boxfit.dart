@@ -1,7 +1,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/editors/property_button_enum.dart';
 
 part 'enum_boxfit.mapper.dart';
 
@@ -31,19 +31,19 @@ enum BoxFitEnum {
   ),);
 
   Widget _toMenuItem() => switch (this) {
-        BoxFitEnum.fill => fco.coloredText('$name - fill box by distorting aspect ratio', color: Colors.white),
-        BoxFitEnum.contain => fco.coloredText(maxLines:2,'$name - as large as possible while still contained entirely within the box', color: Colors.white),
-        BoxFitEnum.cover => fco.coloredText(maxLines:2,'$name - as small as possible while still covering the entire box', color: Colors.white),
-        BoxFitEnum.fitWidth => fco.coloredText(maxLines:3,
+        BoxFitEnum.fill => fsdui.coloredText('$name - fill box by distorting aspect ratio', color: Colors.white),
+        BoxFitEnum.contain => fsdui.coloredText(maxLines:2,'$name - as large as possible while still contained entirely within the box', color: Colors.white),
+        BoxFitEnum.cover => fsdui.coloredText(maxLines:2,'$name - as small as possible while still covering the entire box', color: Colors.white),
+        BoxFitEnum.fitWidth => fsdui.coloredText(maxLines:3,
             '$name - takes full width of parent; child overflows inside the parent vertically, maintaining the aspect ratio',
             color: Colors.white),
-        BoxFitEnum.fitHeight => fco.coloredText(maxLines:3,
+        BoxFitEnum.fitHeight => fsdui.coloredText(maxLines:3,
             '$name - takes full height of parent; child overflows inside the parent horizontally, maintaining the aspect ratio',
             color: Colors.white),
-        BoxFitEnum.none => fco.coloredText(maxLines:3,
+        BoxFitEnum.none => fsdui.coloredText(maxLines:3,
             '$name - aligns the child inside the parent (centred by default) and discards any portion that lies outside the bounds of the parent',
             color: Colors.white),
-        BoxFitEnum.scaleDown => fco.coloredText(maxLines:3,
+        BoxFitEnum.scaleDown => fsdui.coloredText(maxLines:3,
             '$name - Similar to none, scales down to fit inside the parent. Same as "contain": shrinks the child to fit inside the parent',
             color: Colors.white),
       };

@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/measuring/size_aware_widget.dart';
-import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/targets_wrapper_ontap_menu.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/measuring/size_aware_widget.dart';
+import 'package:fsdui/src/snippet/snodes/hotspots/widgets/targets_wrapper_ontap_menu.dart';
 import 'hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
 import 'positioned_target_cover.dart';
 import 'positioned_target_play_btn.dart';
@@ -34,7 +34,7 @@ class TargetsWrapper extends StatefulWidget {
     TargetsWrapperState wrapperState, {
     bool quickly = false,
   }) {
-    if (!fco.canEditAnyContent()) return;
+    if (!fsdui.canEditAnyContent()) return;
 
     var coverGK = tc.gk;
     Rect? targetRect = coverGK!.globalPaintBounds();
@@ -46,7 +46,7 @@ class TargetsWrapper extends StatefulWidget {
     //   sh,
     // );
 
-    Alignment? ta = fco.calcTargetAlignmentWithinWrapper(
+    Alignment? ta = fsdui.calcTargetAlignmentWithinWrapper(
       wrapperRect: wrapperState.wrapperRect,
       targetRect: targetRect,
     );
@@ -88,9 +88,9 @@ class TargetsWrapper extends StatefulWidget {
       decorationBorderRadius: 16,
       animatePointer: false,
       targetPointerType: TargetPointerType.none(),
-      initialCalloutPos: OffsetModel.fromOffset(fco.calloutConfigToolbarPos()),
+      initialCalloutPos: OffsetModel.fromOffset(fsdui.calloutConfigToolbarPos()),
       onDragEndedF: (newPos) {
-        fco.setCalloutConfigToolbarPos(newPos);
+        fsdui.setCalloutConfigToolbarPos(newPos);
       },
       dragHandleHeight: 30,
       followScroll: false,
@@ -107,7 +107,7 @@ class TargetsWrapper extends StatefulWidget {
       },
     );
 
-    fco.showOverlay(
+    fsdui.showOverlay(
       onReadyF: () {},
       calloutConfig: cc,
       calloutContent: HotspotTargetConfigToolbar(
@@ -142,7 +142,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
   // Offset? _lineStartPos;
   // Offset? _lineEndPos;
 
-  bool canAutoPlay() => _canAutoPlay && !fco.canEditAnyContent();
+  bool canAutoPlay() => _canAutoPlay && !fsdui.canEditAnyContent();
 
   // Offset? wrapperPos;
   // Size? _wrapperSize;
@@ -171,7 +171,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     if (context.mounted) {
       return Zoomer.of(context);
     } else {
-      fco.logger.i('zoomer context NOT MOUNTED!');
+      fsdui.logger.i('zoomer context NOT MOUNTED!');
     }
     return null;
   }
@@ -197,25 +197,25 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     _needToMeasureChild = true;
     _canAutoPlay = false;
 
-    fco.afterNextBuildDo(() {
+    fsdui.afterNextBuildDo(() {
       if (!mounted) return;
-      scrollConfig = fco.findAncestorScrollConfig(context);
+      scrollConfig = fsdui.findAncestorScrollConfig(context);
 
       // fco.afterMsDelayDo(1000, (){
       // setState(() {
       measureIWPosAndSize();
 
       // after 2nd build can auto play callouts if not signed in
-      fco.afterMsDelayDo(2000, () {
-        if (mounted && !fco.canEditAnyContent()) _canAutoPlay = true;
+      fsdui.afterMsDelayDo(2000, () {
+        if (mounted && !fsdui.canEditAnyContent()) _canAutoPlay = true;
       });
     });
   }
 
   void autoPlayTargets() {
-    if (fco.canEditAnyContent()) return;
+    if (fsdui.canEditAnyContent()) return;
     for (HotspotTargetModel tc in widget.parentNode.targets) {
-      if (!tc.hasABtn() && !fco.anyPresent([tc.contentCId])) {
+      if (!tc.hasABtn() && !fsdui.anyPresent([tc.contentCId])) {
         tc.showContentCallout(
           justPlaying: true,
           wrapperState: this,
@@ -250,7 +250,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
         // fco.logger.i('TargetGroupWrapper.iwSizeMap[${widget.name}] = ${newPosAndSize.$2!}');
         Size wrapperSize = newPosAndSize.$2!;
         if (wrapperSize.width == 0 && wrapperSize.height == 0) {
-          wrapperSize = fco.scrSize;
+          wrapperSize = fsdui.scrSize;
         }
         wrapperRect = Rect.fromLTWH(
           globalPos.dx,
@@ -258,10 +258,10 @@ class TargetsWrapperState extends State<TargetsWrapper> {
           wrapperSize.width,
           wrapperSize.height,
         );
-        fco.logger.i(
+        fsdui.logger.i(
           'measureIWPosAndSize: wrapper is ${wrapperSize.toString()}',
         );
-        fco.logger.i(
+        fsdui.logger.i(
           'measureIWPosAndSize: aspect ratio is ${wrapperSize.aspectRatio}',
         );
         setState(() {
@@ -271,7 +271,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
       }
     } catch (e) {
       // ignore but then don't update pos
-      fco.logger.i('measureIWPosAndSize! ${e.toString()}');
+      fsdui.logger.i('measureIWPosAndSize! ${e.toString()}');
     }
   }
 
@@ -286,7 +286,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     // when dragging a btn or cover ends
     void droppedBtnOrCover(DragTargetDetails<(TargetId, bool)> details) {
       // ignore drags when toolbar showing
-      if (fco.anyPresent([HotspotTargetConfigToolbar.CID])) {
+      if (fsdui.anyPresent([HotspotTargetConfigToolbar.CID])) {
         refresh(() {});
         return;
       }
@@ -450,17 +450,17 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                   // },
                   onTapUp: (TapUpDetails details) async {
                     // ignore if not in editing mode or if currently showing config toolbar
-                    if (!fco.canEditAnyContent() ||
-                        fco.anyPresent([HotspotTargetConfigToolbar.CID]) ||
-                        fco.snippetBeingEdited != null) {
+                    if (!fsdui.canEditAnyContent() ||
+                        fsdui.anyPresent([HotspotTargetConfigToolbar.CID]) ||
+                        fsdui.snippetBeingEdited != null) {
                       return;
                     }
                     // dismiss any auto-played target callouts
-                    if (fco.canEditAnyContent()) {
+                    if (fsdui.canEditAnyContent()) {
                       bool hidACallout = false;
                       for (HotspotTargetModel tc in widget.parentNode.targets) {
                         if (!tc.hasABtn() &&
-                            fco.anyPresent([tc.contentCId])) {
+                            fsdui.anyPresent([tc.contentCId])) {
                           tc.removeContentCallout();
                           hidACallout = true;
                         }
@@ -478,7 +478,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                     double alY = 0;
                     // pos on wrapperRect
                     var tapPosLocal = details.localPosition;
-                    var tapPosGlobal = fco.translateOffsetForScroll(
+                    var tapPosGlobal = fsdui.translateOffsetForScroll(
                       scrollConfig,
                       details.globalPosition,
                     );
@@ -487,7 +487,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                       width: HotspotTargetModel.DEFAULT_TARGET_RADIUS,
                       height: HotspotTargetModel.DEFAULT_TARGET_RADIUS,
                     );
-                    var screenCenterPos = fco.translateOffsetForScroll(
+                    var screenCenterPos = fsdui.translateOffsetForScroll(
                       scrollConfig,
                       Offset(
                         MediaQuery.of(context).size.width / 2,
@@ -538,8 +538,8 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 
                     // show pulsing indicator
                     setState(() {
-                      fco.afterNextBuildDo(() {
-                        fco.showOverlay(
+                      fsdui.afterNextBuildDo(() {
+                        fsdui.showOverlay(
                           targetGK: pulsingPointGK,
                           calloutConfig: cc,
                           calloutContent: Padding(
@@ -561,7 +561,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                   child: _childBuild(),
                 );
               },
-              onAcceptWithDetails: fco.anyPresent([HotspotTargetConfigToolbar.CID])
+              onAcceptWithDetails: fsdui.anyPresent([HotspotTargetConfigToolbar.CID])
                   ? null
                   : droppedBtnOrCover,
             ),

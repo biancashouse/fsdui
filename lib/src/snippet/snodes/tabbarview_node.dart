@@ -2,9 +2,9 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
 
 part 'tabbarview_node.mapper.dart';
 
@@ -12,7 +12,7 @@ part 'tabbarview_node.mapper.dart';
 class TabBarViewNode extends MC with TabBarViewNodeMappable {
   String tabBarName;
 
-  TabBarViewNode({required this.tabBarName, required super.children});
+  TabBarViewNode({super.name, required this.tabBarName, required super.children});
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
@@ -41,7 +41,8 @@ class TabBarViewNode extends MC with TabBarViewNodeMappable {
       setParent(parentNode);
       //ScrollControllerName? scName = EditablePage.name(context);
       //possiblyHighlightSelectedNode(scName);
-      SnippetBuilderState? spState = SnippetBuilder.of(context);
+      final snippetName = rootNodeOfSnippet()?.name;
+      final spState = snippetName != null ? fsdui.snippetBuilderStates[snippetName] : null;
       TabBarNode? tabBarNode = spState?.tabBars[tabBarName];
       if (tabBarNode == null) {
         return Placeholder();
@@ -49,7 +50,7 @@ class TabBarViewNode extends MC with TabBarViewNodeMappable {
       int numTabNodes = tabBarNode.tabC?.length ?? 0;
       List<Widget> childWidgets = children
           // .map((node) => TabBarViewPage(child: node.toWidget(context, this)))
-          .map((node) => node.buildFlutterWidget(context, this))
+          .map((node) => node.build(context, this))
           .toList();
       try {
         if (numTabNodes != children.length) {
@@ -64,7 +65,7 @@ class TabBarViewNode extends MC with TabBarViewNodeMappable {
           );
         }
       } catch (e) {
-        fco.logger.i('TabBarViewNode.toWidget() failed!');
+        fsdui.logger.i('TabBarViewNode.toWidget() failed!');
         return Error(
           key: createNodeWidgetGK(),
           FLUTTER_TYPE,

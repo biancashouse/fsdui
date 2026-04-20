@@ -2,14 +2,15 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'intrinsic_width_node.mapper.dart';
 
 @MappableClass()
 class IntrinsicWidthNode extends SC with IntrinsicWidthNodeMappable {
   IntrinsicWidthNode({
+    super.name,
     super.child,
   });
 
@@ -43,7 +44,7 @@ class IntrinsicWidthNode extends SC with IntrinsicWidthNodeMappable {
 
       return Center(
             key: createNodeWidgetGK(),
-            child: child?.buildFlutterWidget(context, this),
+            child: child?.build(context, this),
           );
     // } catch (e) {
     //   return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());

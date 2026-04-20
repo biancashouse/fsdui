@@ -2,10 +2,10 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/container_style_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/snodes/container_style_hook.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/container_style_pnodes.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/src/snippet/snodes/container_style_hook.dart';
 
 part 'container_node.mapper.dart';
 
@@ -45,6 +45,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
   // OutlinedBorderProperties? outlinedBorderGroup;
 
   ContainerNode({
+    super.name,
     required this.csPropGroup,
     // this.fillColorValues,
     // this.margin,
@@ -294,7 +295,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
         width: csPropGroup.width,
         height: csPropGroup.height,
         alignment: csPropGroup.alignment?.alignment,
-        child: child?.buildFlutterWidget(context, this),
+        child: child?.build(context, this),
       );
     } catch (e) {
       return Error(

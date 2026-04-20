@@ -27,6 +27,12 @@ class StackNodeMapper extends SubClassMapperBase<StackNode> {
   @override
   final String id = 'StackNode';
 
+  static String? _$name(StackNode v) => v.name;
+  static const Field<StackNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static StackFitEnum _$fit(StackNode v) => v.fit;
   static const Field<StackNode, StackFitEnum> _f$fit = Field(
     'fit',
@@ -59,6 +65,12 @@ class StackNodeMapper extends SubClassMapperBase<StackNode> {
     _$uid,
     mode: FieldMode.member,
   );
+  static List<String>? _$tags(StackNode v) => v.tags;
+  static const Field<StackNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(StackNode v) =>
       v.treeNodeGK;
   static const Field<StackNode, GlobalKey<State<StatefulWidget>>>
@@ -82,11 +94,13 @@ class StackNodeMapper extends SubClassMapperBase<StackNode> {
 
   @override
   final MappableFields<StackNode> fields = const {
+    #name: _f$name,
     #fit: _f$fit,
     #clipBehavior: _f$clipBehavior,
     #alignment: _f$alignment,
     #children: _f$children,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -108,6 +122,7 @@ class StackNodeMapper extends SubClassMapperBase<StackNode> {
 
   static StackNode _instantiate(DecodingData data) {
     return StackNode(
+      name: data.dec(_f$name),
       fit: data.dec(_f$fit),
       clipBehavior: data.dec(_f$clipBehavior),
       alignment: data.dec(_f$alignment),
@@ -178,6 +193,7 @@ abstract class StackNodeCopyWith<$R, $In extends StackNode, $Out>
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
   $R call({
+    String? name,
     StackFitEnum? fit,
     ClipEnum? clipBehavior,
     AlignmentEnum? alignment,
@@ -203,12 +219,14 @@ class _StackNodeCopyWithImpl<$R, $Out>
       );
   @override
   $R call({
+    Object? name = $none,
     StackFitEnum? fit,
     ClipEnum? clipBehavior,
     AlignmentEnum? alignment,
     List<SNode>? children,
   }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (fit != null) #fit: fit,
       if (clipBehavior != null) #clipBehavior: clipBehavior,
       if (alignment != null) #alignment: alignment,
@@ -217,6 +235,7 @@ class _StackNodeCopyWithImpl<$R, $Out>
   );
   @override
   StackNode $make(CopyWithData data) => StackNode(
+    name: data.get(#name, or: $value.name),
     fit: data.get(#fit, or: $value.fit),
     clipBehavior: data.get(#clipBehavior, or: $value.clipBehavior),
     alignment: data.get(#alignment, or: $value.alignment),

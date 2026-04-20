@@ -25,6 +25,12 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
   @override
   final String id = 'IconButtonNode';
 
+  static String? _$name(IconButtonNode v) => v.name;
+  static const Field<IconButtonNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static int? _$iconCodePoint(IconButtonNode v) => v.iconCodePoint;
   static const Field<IconButtonNode, int> _f$iconCodePoint = Field(
     'iconCodePoint',
@@ -84,6 +90,12 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
     _$uid,
     mode: FieldMode.member,
   );
+  static List<String>? _$tags(IconButtonNode v) => v.tags;
+  static const Field<IconButtonNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(IconButtonNode v) =>
       v.treeNodeGK;
   static const Field<IconButtonNode, GlobalKey<State<StatefulWidget>>>
@@ -109,6 +121,7 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
 
   @override
   final MappableFields<IconButtonNode> fields = const {
+    #name: _f$name,
     #iconCodePoint: _f$iconCodePoint,
     #iconFontFamily: _f$iconFontFamily,
     #iconFontPackage: _f$iconFontPackage,
@@ -119,6 +132,7 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
     #onTapHandlerName: _f$onTapHandlerName,
     #child: _f$child,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -141,6 +155,7 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
 
   static IconButtonNode _instantiate(DecodingData data) {
     return IconButtonNode(
+      name: data.dec(_f$name),
       iconCodePoint: data.dec(_f$iconCodePoint),
       iconFontFamily: data.dec(_f$iconFontFamily),
       iconFontPackage: data.dec(_f$iconFontPackage),
@@ -228,6 +243,7 @@ abstract class IconButtonNodeCopyWith<$R, $In extends IconButtonNode, $Out>
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
   $R call({
+    String? name,
     int? iconCodePoint,
     String? iconFontFamily,
     String? iconFontPackage,
@@ -264,6 +280,7 @@ class _IconButtonNodeCopyWithImpl<$R, $Out>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
   $R call({
+    Object? name = $none,
     Object? iconCodePoint = $none,
     Object? iconFontFamily = $none,
     Object? iconFontPackage = $none,
@@ -275,6 +292,7 @@ class _IconButtonNodeCopyWithImpl<$R, $Out>
     Object? child = $none,
   }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (iconCodePoint != $none) #iconCodePoint: iconCodePoint,
       if (iconFontFamily != $none) #iconFontFamily: iconFontFamily,
       if (iconFontPackage != $none) #iconFontPackage: iconFontPackage,
@@ -289,6 +307,7 @@ class _IconButtonNodeCopyWithImpl<$R, $Out>
   );
   @override
   IconButtonNode $make(CopyWithData data) => IconButtonNode(
+    name: data.get(#name, or: $value.name),
     iconCodePoint: data.get(#iconCodePoint, or: $value.iconCodePoint),
     iconFontFamily: data.get(#iconFontFamily, or: $value.iconFontFamily),
     iconFontPackage: data.get(#iconFontPackage, or: $value.iconFontPackage),

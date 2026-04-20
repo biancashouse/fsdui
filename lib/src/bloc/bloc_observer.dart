@@ -1,10 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 class MyGlobalObserver extends BlocObserver {
   @override
   void onEvent(Bloc bloc, Object? event) {
-    fco.logger.i('========================== ${event.toString()}');
+    fsdui.logger.i('========================== ${event.toString()}');
     super.onEvent(bloc, event);
     // fco.logger.i('${bloc.runtimeType} $event');
   }

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 typedef GetImageF = Future<Uint8List?> Function(String storageKey, {bool localOnly});
 
@@ -32,7 +32,7 @@ mixin HasImageInFBStorage {
     if (imageBytes?.isNotEmpty ?? false) {
       imageSize = imageBytes!
           .lengthInBytes; // resetting the size is redundant, hopefully ?
-      fco.logger.i(
+      fsdui.logger.i(
         'getImage() returned memory-cached bytes: $imageSize',
       );
       return imageBytes;
@@ -40,7 +40,7 @@ mixin HasImageInFBStorage {
 
     // stored in local srore i.e. prefs or indexedDB ?
     // fco.logger.i('getting local-store-cached...', name: 'mixin HasImageInFBStorage');
-    final s = fco.localStorage.read(storageKey);
+    final s = fsdui.localStorage.read(storageKey);
     if (s != null) {
       imageBytes = base64Decode(s);
       if (imageBytes != null) {
@@ -52,7 +52,7 @@ mixin HasImageInFBStorage {
 
     if (!localOnly) {
       // so not found locally, is it in firebase ?
-      fco.logger.i('Downloading image from Firebase $storageKey...');
+      fsdui.logger.i('Downloading image from Firebase $storageKey...');
       firebase_storage.FirebaseStorage storage =
           firebase_storage.FirebaseStorage.instance;
       firebase_storage.Reference ref = storage.ref(storageKey);
@@ -71,14 +71,14 @@ mixin HasImageInFBStorage {
         // String url = await ref.getDownloadURL();
         // fco.logger.i('*** $url ***', name: 'mixin HasImageInFBStorage');
         // Image image = Image(image:PCacheImage(url));
-        fco.logger.i(
+        fsdui.logger.i(
             'getImage() returned downloaded bytes from FB Storage: $imageSize');
         imageBytes = downloadedData;
         imageSize = imageBytes!.lengthInBytes;
         // save to local storage
         String s = base64Encode(imageBytes!);
-        await fco.localStorage.write(storageKey, s);
-        fco.logger.i('saved to local store: $storageKey');
+        await fsdui.localStorage.write(storageKey, s);
+        fsdui.logger.i('saved to local store: $storageKey');
         return downloadedData;
       }
 
@@ -90,11 +90,11 @@ mixin HasImageInFBStorage {
           Uint8List? data = await downloadImageData();
           // save (cache) to local storage
           String s = base64Encode(data!);
-          await fco.localStorage.write(storageKey, s);
-          fco.logger.i('saved to local store: $storageKey');
+          await fsdui.localStorage.write(storageKey, s);
+          fsdui.logger.i('saved to local store: $storageKey');
           return data;
         } on firebase_storage.FirebaseException catch (e) {
-          fco.logger.e(
+          fsdui.logger.e(
               '_ensureCommentImagesExistInStorage error again:',
           error: e);
         }

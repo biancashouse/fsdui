@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/edge_insets_editor.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/editors/edge_insets_editor.dart';
 
 class EdgeInsetsPNode extends PNode {
   EdgeInsetsValue? eiValue;

@@ -1,7 +1,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/snodes/abstract_scrollview_node.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/snodes/abstract_scrollview_node.dart';
 
 import '../pnodes/fyi_pnodes.dart';
 
@@ -12,6 +12,7 @@ class CustomScrollViewNode extends ScrollViewNode with CustomScrollViewNodeMappa
   List<SNode> slivers;
 
   CustomScrollViewNode({
+    super.name,
     required this.slivers,
     super.scrollDirection,
     super.shrinkWrap,
@@ -38,7 +39,7 @@ class CustomScrollViewNode extends ScrollViewNode with CustomScrollViewNodeMappa
       controller: sc,
       scrollDirection: scrollDirection.flutterValue ?? Axis.vertical,
       slivers: slivers
-          .map((childNode) => childNode.buildFlutterWidget(context, this))
+          .map((childNode) => childNode.build(context, this))
           .toList(),
     );
   }

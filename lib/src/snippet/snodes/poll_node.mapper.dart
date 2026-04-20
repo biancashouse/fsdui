@@ -24,10 +24,16 @@ class PollNodeMapper extends SubClassMapperBase<PollNode> {
   @override
   final String id = 'PollNode';
 
-  static String _$name(PollNode v) => v.name;
+  static String? _$name(PollNode v) => v.name;
   static const Field<PollNode, String> _f$name = Field(
     'name',
     _$name,
+    opt: true,
+  );
+  static String _$pollName(PollNode v) => v.pollName;
+  static const Field<PollNode, String> _f$pollName = Field(
+    'pollName',
+    _$pollName,
     opt: true,
     def: '',
   );
@@ -81,6 +87,12 @@ class PollNodeMapper extends SubClassMapperBase<PollNode> {
     _$uid,
     mode: FieldMode.member,
   );
+  static List<String>? _$tags(PollNode v) => v.tags;
+  static const Field<PollNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(PollNode v) =>
       v.treeNodeGK;
   static const Field<PollNode, GlobalKey<State<StatefulWidget>>> _f$treeNodeGK =
@@ -105,6 +117,7 @@ class PollNodeMapper extends SubClassMapperBase<PollNode> {
   @override
   final MappableFields<PollNode> fields = const {
     #name: _f$name,
+    #pollName: _f$pollName,
     #title: _f$title,
     #startDate: _f$startDate,
     #endDate: _f$endDate,
@@ -113,6 +126,7 @@ class PollNodeMapper extends SubClassMapperBase<PollNode> {
     #locked: _f$locked,
     #children: _f$children,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -135,6 +149,7 @@ class PollNodeMapper extends SubClassMapperBase<PollNode> {
   static PollNode _instantiate(DecodingData data) {
     return PollNode(
       name: data.dec(_f$name),
+      pollName: data.dec(_f$pollName),
       title: data.dec(_f$title),
       startDate: data.dec(_f$startDate),
       endDate: data.dec(_f$endDate),
@@ -208,6 +223,7 @@ abstract class PollNodeCopyWith<$R, $In extends PollNode, $Out>
   @override
   $R call({
     String? name,
+    String? pollName,
     String? title,
     int? startDate,
     int? endDate,
@@ -243,7 +259,8 @@ class _PollNodeCopyWithImpl<$R, $Out>
       );
   @override
   $R call({
-    String? name,
+    Object? name = $none,
+    String? pollName,
     String? title,
     Object? startDate = $none,
     Object? endDate = $none,
@@ -253,7 +270,8 @@ class _PollNodeCopyWithImpl<$R, $Out>
     List<SNode>? children,
   }) => $apply(
     FieldCopyWithData({
-      if (name != null) #name: name,
+      if (name != $none) #name: name,
+      if (pollName != null) #pollName: pollName,
       if (title != null) #title: title,
       if (startDate != $none) #startDate: startDate,
       if (endDate != $none) #endDate: endDate,
@@ -266,6 +284,7 @@ class _PollNodeCopyWithImpl<$R, $Out>
   @override
   PollNode $make(CopyWithData data) => PollNode(
     name: data.get(#name, or: $value.name),
+    pollName: data.get(#pollName, or: $value.pollName),
     title: data.get(#title, or: $value.title),
     startDate: data.get(#startDate, or: $value.startDate),
     endDate: data.get(#endDate, or: $value.endDate),

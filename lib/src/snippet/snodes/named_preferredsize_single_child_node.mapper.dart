@@ -24,6 +24,12 @@ class NamedPSMapper extends SubClassMapperBase<NamedPS> {
   @override
   final String id = 'NamedPS';
 
+  static String? _$name(NamedPS v) => v.name;
+  static const Field<NamedPS, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static String _$propertyName(NamedPS v) => v.propertyName;
   static const Field<NamedPS, String> _f$propertyName = Field(
     'propertyName',
@@ -39,6 +45,12 @@ class NamedPSMapper extends SubClassMapperBase<NamedPS> {
   static const Field<NamedPS, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(NamedPS v) => v.tags;
+  static const Field<NamedPS, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(NamedPS v) =>
@@ -64,9 +76,11 @@ class NamedPSMapper extends SubClassMapperBase<NamedPS> {
 
   @override
   final MappableFields<NamedPS> fields = const {
+    #name: _f$name,
     #propertyName: _f$propertyName,
     #child: _f$child,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -88,6 +102,7 @@ class NamedPSMapper extends SubClassMapperBase<NamedPS> {
 
   static NamedPS _instantiate(DecodingData data) {
     return NamedPS(
+      name: data.dec(_f$name),
       propertyName: data.dec(_f$propertyName),
       child: data.dec(_f$child),
     );
@@ -153,7 +168,7 @@ abstract class NamedPSCopyWith<$R, $In extends NamedPS, $Out>
   @override
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({String? propertyName, SNode? child});
+  $R call({String? name, String? propertyName, SNode? child});
   NamedPSCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -169,14 +184,20 @@ class _NamedPSCopyWithImpl<$R, $Out>
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
-  $R call({String? propertyName, Object? child = $none}) => $apply(
+  $R call({
+    Object? name = $none,
+    String? propertyName,
+    Object? child = $none,
+  }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (propertyName != null) #propertyName: propertyName,
       if (child != $none) #child: child,
     }),
   );
   @override
   NamedPS $make(CopyWithData data) => NamedPS(
+    name: data.get(#name, or: $value.name),
     propertyName: data.get(#propertyName, or: $value.propertyName),
     child: data.get(#child, or: $value.child),
   );

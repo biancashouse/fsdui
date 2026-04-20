@@ -1,4 +1,4 @@
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 import 'snippet_undo_redo.dart';
 
 class SnippetBeingEdited {
@@ -28,7 +28,7 @@ class SnippetBeingEdited {
     // fco.logger.i('SnippetBeingEdited');
   }
 
-  SnippetRootNode getRootNode() {
+  SNode getRootNode() {
     final root = treeC.roots.first.rootNodeOfSnippet();
     if (root == null) {
       throw Exception('No root node found');
@@ -36,7 +36,7 @@ class SnippetBeingEdited {
     return root;
   }
 
-  void setRootNode(SnippetRootNode newRootNode) {
+  void setRootNode(SNode newRootNode) {
     treeC.roots = [newRootNode];
   }
 

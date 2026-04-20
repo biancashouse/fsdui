@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/model/alignment_model.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/model/alignment_model.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
 
 class TargetsWrapperOnTapMenu extends StatelessWidget {
   final TapUpDetails details;
@@ -36,7 +36,7 @@ class TargetsWrapperOnTapMenu extends StatelessWidget {
                 padding: WidgetStatePropertyAll(EdgeInsets.all(8)),
               ),
               onPressed: () async {
-                fco.dismissAll();
+                fsdui.dismissAll();
                 _createHotspotTarget(context, details, withHotspot);
               },
               child: Text(
@@ -52,7 +52,7 @@ class TargetsWrapperOnTapMenu extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      fco.coloredText(
+                      fsdui.coloredText(
                         'also create a hotspot ?',
                         color: Colors.white,
                       ),
@@ -94,7 +94,7 @@ class TargetsWrapperOnTapMenu extends StatelessWidget {
     TapUpDetails details,
     bool withHotspot,
   ) {
-    if (!fco.canEditAnyContent()) return;
+    if (!fsdui.canEditAnyContent()) return;
     SnippetName? snippetName = parentNode.rootNodeOfSnippet()?.name;
     if (snippetName == null) return;
 
@@ -121,8 +121,8 @@ class TargetsWrapperOnTapMenu extends StatelessWidget {
 
     parentNode.targets = [...parentNode.targets, newTC];
     // widget.parentNode.targets.add(newTC);
-    fco.capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
+    fsdui.capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
     // fco.modelRepo.saveNewVersionOfSnippet(parentNode.rootNodeOfSnippet()!);
-    fco.appInfo.cachedSnippetInfo(parentNode.rootNodeOfSnippet()!.name)?.notifyChange(parentNode.rootNodeOfSnippet()!);
+    fsdui.appInfo.cachedSnippetInfo(parentNode.rootNodeOfSnippet()!.name!)?.notifyChange(parentNode.rootNodeOfSnippet()!);
   }
 }

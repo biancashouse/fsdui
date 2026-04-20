@@ -1,6 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 part 'enum_stepper_type.mapper.dart';
@@ -27,14 +27,14 @@ enum StepperTypeEnum {
         height: 70,
         child: Column(
           children: [
-            fco.coloredText('type:', color: Colors.white),
+            fsdui.coloredText('type:', color: Colors.white),
             Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                fco.coloredText('horizontal', color: Colors.white),
-                fco.coloredText('vertical', color: Colors.white),
+                fsdui.coloredText('horizontal', color: Colors.white),
+                fsdui.coloredText('vertical', color: Colors.white),
               ],
             ),
             StepperTypeEditor(
@@ -47,7 +47,7 @@ enum StepperTypeEnum {
         ),
       );
 
-   Widget toMenuItem() => fco.coloredText(name, color: Colors.white);
+   Widget toMenuItem() => fsdui.coloredText(name, color: Colors.white);
 
   static StepperTypeEnum? of(int? index) => index != null ? StepperTypeEnum.values.elementAtOrNull(index) : null;
 }

@@ -29,6 +29,12 @@ class SingleChildScrollViewNodeMapper
   @override
   final String id = 'SingleChildScrollViewNode';
 
+  static String? _$name(SingleChildScrollViewNode v) => v.name;
+  static const Field<SingleChildScrollViewNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static AxisEnum? _$scrollDirection(SingleChildScrollViewNode v) =>
       v.scrollDirection;
   static const Field<SingleChildScrollViewNode, AxisEnum> _f$scrollDirection =
@@ -46,6 +52,12 @@ class SingleChildScrollViewNodeMapper
   static const Field<SingleChildScrollViewNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(SingleChildScrollViewNode v) => v.tags;
+  static const Field<SingleChildScrollViewNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(
@@ -81,10 +93,12 @@ class SingleChildScrollViewNodeMapper
 
   @override
   final MappableFields<SingleChildScrollViewNode> fields = const {
+    #name: _f$name,
     #scrollDirection: _f$scrollDirection,
     #padding: _f$padding,
     #child: _f$child,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -106,6 +120,7 @@ class SingleChildScrollViewNodeMapper
 
   static SingleChildScrollViewNode _instantiate(DecodingData data) {
     return SingleChildScrollViewNode(
+      name: data.dec(_f$name),
       scrollDirection: data.dec(_f$scrollDirection),
       padding: data.dec(_f$padding),
       child: data.dec(_f$child),
@@ -190,7 +205,12 @@ abstract class SingleChildScrollViewNodeCopyWith<
   @override
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({AxisEnum? scrollDirection, EdgeInsetsValue? padding, SNode? child});
+  $R call({
+    String? name,
+    AxisEnum? scrollDirection,
+    EdgeInsetsValue? padding,
+    SNode? child,
+  });
   SingleChildScrollViewNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -213,11 +233,13 @@ class _SingleChildScrollViewNodeCopyWithImpl<$R, $Out>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
   $R call({
+    Object? name = $none,
     Object? scrollDirection = $none,
     Object? padding = $none,
     Object? child = $none,
   }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (scrollDirection != $none) #scrollDirection: scrollDirection,
       if (padding != $none) #padding: padding,
       if (child != $none) #child: child,
@@ -226,6 +248,7 @@ class _SingleChildScrollViewNodeCopyWithImpl<$R, $Out>
   @override
   SingleChildScrollViewNode $make(CopyWithData data) =>
       SingleChildScrollViewNode(
+        name: data.get(#name, or: $value.name),
         scrollDirection: data.get(#scrollDirection, or: $value.scrollDirection),
         padding: data.get(#padding, or: $value.padding),
         child: data.get(#child, or: $value.child),

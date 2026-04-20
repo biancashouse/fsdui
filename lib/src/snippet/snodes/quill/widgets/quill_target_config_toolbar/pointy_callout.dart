@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/model/quill_target_model.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/model/quill_target_model.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
 
 class PointyTool extends StatefulWidget {
   final CalloutConfig cc;
@@ -35,7 +35,7 @@ class PointyTool extends StatefulWidget {
   }) {
     // GlobalKey? targetGK = tc.gk;
 
-    fco.showOverlay(
+    fsdui.showOverlay(
       // targetGK: targetGK,
       calloutContent: PointyTool(
         cc,
@@ -62,7 +62,7 @@ class PointyTool extends StatefulWidget {
     );
   }
 
-  static bool isShowing() => fco.anyPresent(["arrow-type"]);
+  static bool isShowing() => fsdui.anyPresent(["arrow-type"]);
 }
 
 class _PointyToolState extends State<PointyTool> {
@@ -71,7 +71,7 @@ class _PointyToolState extends State<PointyTool> {
 
   QuillTargetModel get tc => widget.tc;
 
-  CAPIBloC get bloc => fco.capiBloc;
+  CAPIBloC get bloc => fsdui.capiBloc;
 
   @override
   void initState() {
@@ -84,7 +84,7 @@ class _PointyToolState extends State<PointyTool> {
     setState(() => _arrowType = t);
     tc.targetPointerTypeEnum = t;
     widget.onTargetConfigChange?.call(tc);
-    fco.dismiss("arrow-type");
+    fsdui.dismiss("arrow-type");
   }
 
   @override
@@ -158,7 +158,7 @@ class _PointyToolState extends State<PointyTool> {
               tc,
               tc.animatePointer ?? false,
             );
-            fco.dismiss("arrow-type");
+            fsdui.dismiss("arrow-type");
             // fco.afterNextBuildDo(() {
             //   reshowSnippetContentCallout(tc, widget.allowButtonCallouts, widget.justPlaying, widget.onDiscardedF);
             // });

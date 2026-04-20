@@ -2,10 +2,10 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
 
 part 'placeholder_node.mapper.dart';
 
@@ -64,7 +64,7 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
       ];
 
   @override
-  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
+  Widget build(BuildContext context, SNode? parentNode,
       ) {
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);

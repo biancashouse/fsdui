@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 // import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import 'poll_event.dart';
@@ -32,7 +32,7 @@ class PollBloC extends Bloc<PollEvent, PollState> {
     Map<PollOptionId, int> newMap = Map<PollOptionId, int>.of(state.optionVoteCounts);
     newMap[event.optionId] = state.optionVoteCount(event.optionId) + 1;
 
-    final voterId = fco.localStorage.read('vea') ?? 'anon';
+    final voterId = fsdui.localStorage.read('vea') ?? 'anon';
     // save to firestore
     modelRepo.saveVote(
       pollName: state.pollName,

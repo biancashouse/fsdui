@@ -2,13 +2,13 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_cross_axis_alignment.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_wrap_alignment.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_wrap_cross_alignment.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/enum_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_cross_axis_alignment.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_wrap_alignment.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_wrap_cross_alignment.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'wrap_node.mapper.dart';
 
@@ -23,6 +23,7 @@ class WrapNode extends MC with WrapNodeMappable {
   double? runSpacing;
 
   WrapNode({
+    super.name,
     this.direction = AxisEnum.horizontal,
     this.spacing,
     this.runSpacing,
@@ -100,7 +101,7 @@ class WrapNode extends MC with WrapNodeMappable {
       spacing: spacing ?? 0.0,
       runSpacing: runSpacing ?? 0.0,
       children: children
-          .map((node) => node.buildFlutterWidget(context, this))
+          .map((node) => node.build(context, this))
           .toList(),
     );
   }

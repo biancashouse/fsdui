@@ -2,9 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/model/alignment_model.dart';
-import 'package:flutter_content/src/model/size_model.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/model/alignment_model.dart';
+import 'package:fsdui/src/model/size_model.dart';
 
 import 'hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
 
@@ -17,11 +17,7 @@ void showHotspotSnippetContentCallout({
   double minHeight = 0;
 
   Widget content() => SnippetBuilder(
-    snippetName: tc.contentCId,
-    templateSnippet: SnippetRootNode(
-      name: tc.contentCId,
-      child: PlaceholderNode(),
-    ),
+    initialValue: PlaceholderNode(name: tc.contentCId),
     justPlaying: justPlaying,
   );
 
@@ -37,9 +33,9 @@ void showHotspotSnippetContentCallout({
   );
 
   Widget possiblyEditableContent() =>
-      fco.canEditAnyContent() && !justPlaying ? editableContent() : content();
+      fsdui.canEditAnyContent() && !justPlaying ? editableContent() : content();
 
-  final snippetBeingEdited = fco.snippetBeingEdited != null;
+  final snippetBeingEdited = fsdui.snippetBeingEdited != null;
 
   // globalPaintBounds() returns the correctly scaled topLeft, but the
   // rect width and height are the unscaled values!
@@ -58,7 +54,7 @@ void showHotspotSnippetContentCallout({
     alignment: tc.tcAlignment!,
   );
 
-  Offset initialCalloutPosSA = fco.translateOffsetForScroll(
+  Offset initialCalloutPosSA = fsdui.translateOffsetForScroll(
     wrapperState.scrollConfig,
     initialCalloutPos,
   );
@@ -97,8 +93,8 @@ void showHotspotSnippetContentCallout({
     //   tc.tcAlignment?.y ?? 0.0,
     // ),
     initialCalloutPos: initialCalloutPosSA,
-    initialCalloutW: tc.calloutSize?.width,
-    initialCalloutH: tc.calloutSize?.height,
+    initialCalloutW: tc.calloutSize.width,
+    initialCalloutH: tc.calloutSize.height,
     minHeight: minHeight + 4,
     resizeableH: !justPlaying && tc.canResizeH,
     resizeableV: !justPlaying && tc.canResizeV,
@@ -110,7 +106,7 @@ void showHotspotSnippetContentCallout({
       // tc.tcAlignment = AlignmentModel(cc.targetAlignment!.x, cc.targetAlignment!.y);
     },
     onDragEndedF: (Offset newPos) {
-      if ((justPlaying && tc.hasABtn()) || !fco.canEditAnyContent()) return;
+      if ((justPlaying && tc.hasABtn()) || !fsdui.canEditAnyContent()) return;
 
       // update the targetAlignment
       final Rect calloutRect = Rect.fromLTWH(
@@ -120,14 +116,14 @@ void showHotspotSnippetContentCallout({
         tc.calloutSize!.height,
       );
 
-      var targetRectSA = fco.translateRectForScroll(
+      var targetRectSA = fsdui.translateRectForScroll(
         wrapperState.scrollConfig,
         targetRect,
       );
 
       // var calloutRectSA = wrapperState.translateRectForScroll(calloutRect);
 
-      Alignment newAlignment = fco.getAlignmentBetweenRects(
+      Alignment newAlignment = fsdui.getAlignmentBetweenRects(
         targetRectSA,
         calloutRect,
       );
@@ -151,7 +147,7 @@ void showHotspotSnippetContentCallout({
     onDismissedF: () {
       // FCO.parentTW(twName)?.zoomer?.resetTransform();
       // fco.capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
-      fco.dismiss(HotspotTargetConfigToolbar.CID);
+      fsdui.dismiss(HotspotTargetConfigToolbar.CID);
     },
     barrier: tc.hasABtn() && !snippetBeingEdited
         ? CalloutBarrierConfig(
@@ -222,7 +218,7 @@ void showHotspotSnippetContentCallout({
   }
 
   //)
-  fco.showOverlay(
+  fsdui.showOverlay(
     // isHotspotCallout: true,
     // skipOnScreenCheck: justPlaying,
     targetGK: tc.gk,
@@ -300,8 +296,8 @@ Offset getRelativeCalloutTopLeft({
   final double idealY = targetPoint.dy - calloutRect.height / 2;
 
   // 3. Get screen dimensions and define a padding.
-  final screenWidth = fco.scrW;
-  final screenHeight = fco.scrH;
+  final screenWidth = fsdui.scrW;
+  final screenHeight = fsdui.scrH;
   const screenPadding = 8.0;
 
   // 4. Adjust the position to keep the callout on screen, applying padding.

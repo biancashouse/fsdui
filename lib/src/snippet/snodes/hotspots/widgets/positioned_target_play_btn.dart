@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/target_btn_icon_picker.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/snodes/hotspots/widgets/target_btn_icon_picker.dart';
 import 'enum_target_btn_icon.dart';
 import 'hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
 
@@ -20,9 +20,9 @@ class TargetPlayBtn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var snippetBeingEdited = fco.snippetBeingEdited;
+    var snippetBeingEdited = fsdui.snippetBeingEdited;
 
-    bool toolbarPresent = fco.anyPresent([
+    bool toolbarPresent = fsdui.anyPresent([
       HotspotTargetConfigToolbar.CID,
     ], includeHidden: true);
 
@@ -39,7 +39,7 @@ class TargetPlayBtn extends StatelessWidget {
     HotspotTargetModel tc,
     bool toolbarPresent,
   ) {
-    return !fco.canEditAnyContent()
+    return !fsdui.canEditAnyContent()
         ? GestureDetector(
             onTap: () {
               wrapperState.widget.parentNode.playList.toList()
@@ -75,7 +75,7 @@ class TargetPlayBtn extends StatelessWidget {
                   ),
             child: DoubleTappable(
               onTap: () {
-                if (fco.snippetBeingEdited != null) {
+                if (fsdui.snippetBeingEdited != null) {
                   return;
                 }
 
@@ -85,7 +85,7 @@ class TargetPlayBtn extends StatelessWidget {
                 playTarget(context, tc, wrapperState);
               },
               onDoubleTap: () {
-                if (fco.snippetBeingEdited != null) return;
+                if (fsdui.snippetBeingEdited != null) return;
                 wrapperState.setPlayingOrEditingTc(
                   tc,
                   () =>
@@ -93,7 +93,7 @@ class TargetPlayBtn extends StatelessWidget {
                 );
               },
               onLongPressDown: () {
-                if (fco.canEditAnyContent())
+                if (fsdui.canEditAnyContent())
                   playIconPicker(context, tc, wrapperState);
               },
               child: IntegerCircleAvatar(
@@ -158,7 +158,7 @@ class TargetPlayBtn extends StatelessWidget {
     // NOTE - this alignment is only for scaling the wrapper (image)
     // as opposed to tc.calloutAlignment, which is for positioning
     // the callout relative to the target.
-    Alignment? transformAlignment = fco.calcTargetAlignmentWithinWrapper(
+    Alignment? transformAlignment = fsdui.calcTargetAlignmentWithinWrapper(
       wrapperRect: wrapperState.wrapperRect,
       targetRect: targetRect,
     );
@@ -186,7 +186,7 @@ class TargetPlayBtn extends StatelessWidget {
             justPlaying: true,
             wrapperState: wrapperState,
           );
-          fco.afterMsDelayDo(tc.calloutDurationMs, () {
+          fsdui.afterMsDelayDo(tc.calloutDurationMs, () {
             wrapperState.zoomer?.resetTransform(
               afterTransformF: () {
                 wrapperState.setPlayingOrEditingTc(null, () {});
@@ -207,7 +207,7 @@ class TargetPlayBtn extends StatelessWidget {
     // cover will now have been rendered with its gk
     var coverGK = tc.gk;
     if (coverGK == null) return;
-    fco.showOverlay(
+    fsdui.showOverlay(
       calloutConfig: CalloutConfig(
         cId: 'icon-picker',
         initialTargetAlignment: Alignment.center,
@@ -234,7 +234,7 @@ class TargetPlayBtn extends StatelessWidget {
   static void hideNonHotspotsCallouts(TargetsWrapperState wrapperState) {
     for (HotspotTargetModel tc in wrapperState.widget.parentNode.targets) {
       if (!tc.hasABtn()) {
-        fco.hide(tc.contentCId);
+        fsdui.hide(tc.contentCId);
       }
     }
   }
@@ -242,7 +242,7 @@ class TargetPlayBtn extends StatelessWidget {
   static void unhideNonHotspotsCallouts(TargetsWrapperState wrapperState) {
     for (HotspotTargetModel tc in wrapperState.widget.parentNode.targets) {
       if (!tc.hasABtn()) {
-        fco.unhide(tc.contentCId);
+        fsdui.unhide(tc.contentCId);
       }
     }
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/property_button_number_T.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/editors/property_button_number_T.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 enum EdgeInsetsInputModeEnum { all, symmetrical, only }
@@ -32,9 +32,9 @@ class EdgeInsetsPropertyEditor extends HookWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              fco.coloredText('all', color: Colors.white, fontSize: 10),
-              fco.coloredText('Symm.', color: Colors.white, fontSize: 10),
-              fco.coloredText('only', color: Colors.white, fontSize: 10),
+              fsdui.coloredText('all', color: Colors.white, fontSize: 10),
+              fsdui.coloredText('Symm.', color: Colors.white, fontSize: 10),
+              fsdui.coloredText('only', color: Colors.white, fontSize: 10),
             ],
           ),
           SegmentedButton<EdgeInsetsInputModeEnum>(

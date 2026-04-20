@@ -25,10 +25,22 @@ class InlineSpanNodeMapper extends SubClassMapperBase<InlineSpanNode> {
   @override
   final String id = 'InlineSpanNode';
 
+  static String? _$name(InlineSpanNode v) => v.name;
+  static const Field<InlineSpanNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static String _$uid(InlineSpanNode v) => v.uid;
   static const Field<InlineSpanNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(InlineSpanNode v) => v.tags;
+  static const Field<InlineSpanNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(InlineSpanNode v) =>
@@ -56,7 +68,9 @@ class InlineSpanNodeMapper extends SubClassMapperBase<InlineSpanNode> {
 
   @override
   final MappableFields<InlineSpanNode> fields = const {
+    #name: _f$name,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -105,7 +119,7 @@ mixin InlineSpanNodeMappable {
 abstract class InlineSpanNodeCopyWith<$R, $In extends InlineSpanNode, $Out>
     implements SNodeCopyWith<$R, $In, $Out> {
   @override
-  $R call();
+  $R call({String? name});
   InlineSpanNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );

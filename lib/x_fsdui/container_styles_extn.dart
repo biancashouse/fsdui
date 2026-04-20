@@ -1,6 +1,6 @@
 import 'package:fsdui/fsdui.dart';
 
-extension ContainerStylesExtension on FlutterContentMixins {
+extension ContainerStylesExtension on FSDUI_Mixins {
   Map<ContainerStyleName, ContainerStyleProperties> cannedContainerStyles() => {
     // "yellowOnBlack": ContainerStyleProperties(
     //   tsPropGroup: TextStyleProperties(),

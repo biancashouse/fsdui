@@ -4,19 +4,19 @@ import 'dart:math';
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/color_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/text_style_pnodes.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/color_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/text_style_pnodes.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'tabbar_node.mapper.dart';
 
 @MappableClass()
 class TabBarNode extends MC with TabBarNodeMappable {
-  String name;
+  String tabBarName;
   ColorModel? bgColor;
   TextStyleProperties labelTSPropGroup;
   ColorModel? selectedLabelColor;
@@ -26,7 +26,8 @@ class TabBarNode extends MC with TabBarNodeMappable {
   int? selection;
 
   TabBarNode({
-    required this.name,
+    super.name,
+    required this.tabBarName,
     this.bgColor,
     required this.labelTSPropGroup,
     this.selectedLabelColor,
@@ -60,7 +61,7 @@ class TabBarNode extends MC with TabBarNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) {
-    var textStyleName = fco.findTextStyleName(fco.appInfo, labelTSPropGroup);
+    var textStyleName = fsdui.findTextStyleName(fsdui.appInfo, labelTSPropGroup);
     textStyleName = textStyleName != null ? ': $textStyleName' : '';
     return [
       FlutterDocPNode(
@@ -71,11 +72,11 @@ class TabBarNode extends MC with TabBarNodeMappable {
       ),
       StringPNode(
         snode: this,
-        name: 'name',
-        stringValue: name,
+        name: 'tabBarName',
+        stringValue: tabBarName,
         skipHelperText: true,
         onStringChange: (newValue) =>
-            refreshWithUpdate(context, () => name = newValue!),
+            refreshWithUpdate(context, () => tabBarName = newValue!),
         calloutButtonSize: const Size(280, 70),
         calloutWidth: 400,
         numLines: 1,
@@ -175,7 +176,7 @@ class TabBarNode extends MC with TabBarNodeMappable {
     tabC?.dispose();
     tabC = TabController(vsync: spState!, length: numTabs);
     tabC?.addListener(_tabListenerF);
-    spState.tabBars[name] = this;
+    spState.tabBars[tabBarName] = this;
 
     // tabC!.addListener(() {
     //   setState(() {
@@ -200,7 +201,8 @@ class TabBarNode extends MC with TabBarNodeMappable {
       // find transformable scaffold node then its corr state object
       // TransformableScaffoldNode? tsNode = findNearestAncestorOfType(TransformableScaffoldNode) as TransformableScaffoldNode?;
       // TransformableScaffoldState? tState = tsNode?.nodeWidgetGK?.currentState as TransformableScaffoldState?;
-      SnippetBuilderState? spState = SnippetBuilder.of(context);
+      final snippetName = rootNodeOfSnippet()?.name;
+      final spState = snippetName != null ? fsdui.snippetBuilderStates[snippetName] : null;
       _createTabController(spState, children.length);
       List<Widget> tabs = [];
       for (SNode node in children) {
@@ -210,7 +212,7 @@ class TabBarNode extends MC with TabBarNodeMappable {
             // if just text, simply render a Tab with text, otherwise render a Tab with a child widget
             child: node is TextNode
                 ? Tab(key: node.createNodeWidgetGK(), text: (node).text)
-                : Tab(child: node.buildFlutterWidget(context, parentNode)),
+                : Tab(child: node.build(context, parentNode)),
           ),
         );
       }

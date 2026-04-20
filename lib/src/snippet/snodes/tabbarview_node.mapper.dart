@@ -24,6 +24,12 @@ class TabBarViewNodeMapper extends SubClassMapperBase<TabBarViewNode> {
   @override
   final String id = 'TabBarViewNode';
 
+  static String? _$name(TabBarViewNode v) => v.name;
+  static const Field<TabBarViewNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static String _$tabBarName(TabBarViewNode v) => v.tabBarName;
   static const Field<TabBarViewNode, String> _f$tabBarName = Field(
     'tabBarName',
@@ -38,6 +44,12 @@ class TabBarViewNodeMapper extends SubClassMapperBase<TabBarViewNode> {
   static const Field<TabBarViewNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(TabBarViewNode v) => v.tags;
+  static const Field<TabBarViewNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(TabBarViewNode v) =>
@@ -65,9 +77,11 @@ class TabBarViewNodeMapper extends SubClassMapperBase<TabBarViewNode> {
 
   @override
   final MappableFields<TabBarViewNode> fields = const {
+    #name: _f$name,
     #tabBarName: _f$tabBarName,
     #children: _f$children,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -89,6 +103,7 @@ class TabBarViewNodeMapper extends SubClassMapperBase<TabBarViewNode> {
 
   static TabBarViewNode _instantiate(DecodingData data) {
     return TabBarViewNode(
+      name: data.dec(_f$name),
       tabBarName: data.dec(_f$tabBarName),
       children: data.dec(_f$children),
     );
@@ -159,7 +174,7 @@ abstract class TabBarViewNodeCopyWith<$R, $In extends TabBarViewNode, $Out>
   @override
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
-  $R call({String? tabBarName, List<SNode>? children});
+  $R call({String? name, String? tabBarName, List<SNode>? children});
   TabBarViewNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -181,14 +196,17 @@ class _TabBarViewNodeCopyWithImpl<$R, $Out>
         (v) => call(children: v),
       );
   @override
-  $R call({String? tabBarName, List<SNode>? children}) => $apply(
-    FieldCopyWithData({
-      if (tabBarName != null) #tabBarName: tabBarName,
-      if (children != null) #children: children,
-    }),
-  );
+  $R call({Object? name = $none, String? tabBarName, List<SNode>? children}) =>
+      $apply(
+        FieldCopyWithData({
+          if (name != $none) #name: name,
+          if (tabBarName != null) #tabBarName: tabBarName,
+          if (children != null) #children: children,
+        }),
+      );
   @override
   TabBarViewNode $make(CopyWithData data) => TabBarViewNode(
+    name: data.get(#name, or: $value.name),
     tabBarName: data.get(#tabBarName, or: $value.tabBarName),
     children: data.get(#children, or: $value.children),
   );

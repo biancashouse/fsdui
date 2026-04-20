@@ -2,8 +2,8 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/stepper/stepper_with_controller.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/stepper/stepper_with_controller.dart';
 
 part 'step_node.mapper.dart';
 
@@ -14,6 +14,7 @@ class StepNode extends CL with StepNodeMappable {
   NamedSC content;
 
   StepNode({
+    super.name,
     required this.title,
     this.subtitle,
     required this.content,
@@ -28,11 +29,11 @@ class StepNode extends CL with StepNodeMappable {
     //possiblyHighlightSelectedNode(scName);
     return Step(
       isActive: parent.currentStep >= index,
-      title: title.buildFlutterWidget(context, this) ??
-          fco.coloredText('must have a title', color: Colors.red),
-      subtitle: subtitle?.buildFlutterWidget(context, this),
-      content: content.buildFlutterWidget(context, this) ??
-          fco.coloredText('must have content', color: Colors.red),
+      title: title.build(context, this) ??
+          fsdui.coloredText('must have a title', color: Colors.red),
+      subtitle: subtitle?.build(context, this),
+      content: content.build(context, this) ??
+          fsdui.coloredText('must have content', color: Colors.red),
     );
   }
 
@@ -64,7 +65,7 @@ class StepNode extends CL with StepNodeMappable {
 
   @override
   Widget? widgetLogo() => Image.asset(
-    fco.asset('lib/assets/images/pub.dev.png'),
+    fsdui.asset('lib/assets/images/pub.dev.png'),
     width: 16,
   );
 

@@ -1,7 +1,7 @@
 // ignore_for_file: constant_identifier_names, non_constant_identifier_names
 
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/api/editable_page/tappable_node_borders.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/api/editable_page/tappable_node_borders.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'snippet_being_edited.dart';

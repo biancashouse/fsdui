@@ -8,7 +8,7 @@
 // import 'package:flutter/material.dart';
 // import 'package:flutter_test/flutter_test.dart';
 //
-// import 'package:flutter_uml_example/main.dart';
+// import 'package:flutter_uml_example/migrate_snippets.dart';
 //
 // void main() {
 //   testWidgets('Counter increments smoke test', (WidgetTester tester) async {

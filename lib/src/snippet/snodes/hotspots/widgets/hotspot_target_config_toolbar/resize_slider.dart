@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 class ResizeSlider extends StatefulWidget {
   final double value;
@@ -64,11 +64,11 @@ class _ResizeSliderState extends State<ResizeSlider> {
                 });
               },
               onChangeStart: (_) {
-                fco.preventParentCalloutDrag(context);
+                fsdui.preventParentCalloutDrag(context);
                 widget.onDragStartF?.call();
               },
               onChangeEnd: (_) {
-                fco.allowParentCalloutDrag(context);
+                fsdui.allowParentCalloutDrag(context);
                 widget.onDragEndF?.call();
               },
               min: widget.min!,

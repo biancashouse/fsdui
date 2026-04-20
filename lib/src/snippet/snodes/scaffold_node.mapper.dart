@@ -26,6 +26,12 @@ class ScaffoldNodeMapper extends SubClassMapperBase<ScaffoldNode> {
   @override
   final String id = 'ScaffoldNode';
 
+  static String? _$name(ScaffoldNode v) => v.name;
+  static const Field<ScaffoldNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static ColorModel? _$bgColor(ScaffoldNode v) => v.bgColor;
   static const Field<ScaffoldNode, ColorModel> _f$bgColor = Field(
     'bgColor',
@@ -53,6 +59,12 @@ class ScaffoldNodeMapper extends SubClassMapperBase<ScaffoldNode> {
     _$uid,
     mode: FieldMode.member,
   );
+  static List<String>? _$tags(ScaffoldNode v) => v.tags;
+  static const Field<ScaffoldNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(ScaffoldNode v) =>
       v.treeNodeGK;
   static const Field<ScaffoldNode, GlobalKey<State<StatefulWidget>>>
@@ -76,11 +88,13 @@ class ScaffoldNodeMapper extends SubClassMapperBase<ScaffoldNode> {
 
   @override
   final MappableFields<ScaffoldNode> fields = const {
+    #name: _f$name,
     #bgColor: _f$bgColor,
     #appBar: _f$appBar,
     #body: _f$body,
     #canShowEditorLoginBtn: _f$canShowEditorLoginBtn,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -102,6 +116,7 @@ class ScaffoldNodeMapper extends SubClassMapperBase<ScaffoldNode> {
 
   static ScaffoldNode _instantiate(DecodingData data) {
     return ScaffoldNode(
+      name: data.dec(_f$name),
       bgColor: data.dec(_f$bgColor),
       appBar: data.dec(_f$appBar),
       body: data.dec(_f$body),
@@ -176,6 +191,7 @@ abstract class ScaffoldNodeCopyWith<$R, $In extends ScaffoldNode, $Out>
   NamedSCCopyWith<$R, NamedSC, NamedSC> get body;
   @override
   $R call({
+    String? name,
     ColorModel? bgColor,
     NamedPS? appBar,
     NamedSC? body,
@@ -203,12 +219,14 @@ class _ScaffoldNodeCopyWithImpl<$R, $Out>
       $value.body.copyWith.$chain((v) => call(body: v));
   @override
   $R call({
+    Object? name = $none,
     Object? bgColor = $none,
     NamedPS? appBar,
     NamedSC? body,
     Object? canShowEditorLoginBtn = $none,
   }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (bgColor != $none) #bgColor: bgColor,
       if (appBar != null) #appBar: appBar,
       if (body != null) #body: body,
@@ -218,6 +236,7 @@ class _ScaffoldNodeCopyWithImpl<$R, $Out>
   );
   @override
   ScaffoldNode $make(CopyWithData data) => ScaffoldNode(
+    name: data.get(#name, or: $value.name),
     bgColor: data.get(#bgColor, or: $value.bgColor),
     appBar: data.get(#appBar, or: $value.appBar),
     body: data.get(#body, or: $value.body),

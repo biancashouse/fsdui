@@ -16,7 +16,7 @@
 
 import 'dart:math' as math;
 
-import 'package:flutter_content/src/algc/widgets/pdf_point.dart';
+import 'package:fsdui/src/algc/widgets/pdf_point.dart';
 
 
 

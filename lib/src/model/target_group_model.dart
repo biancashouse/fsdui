@@ -1,5 +1,5 @@
 // import 'package:dart_mappable/dart_mappable.dart';
-// import 'package:flutter_content/flutter_content.dart';
+// import 'package:fsdui/fsdui.dart';
 //
 // part 'target_group_model.mapper.dart';
 //

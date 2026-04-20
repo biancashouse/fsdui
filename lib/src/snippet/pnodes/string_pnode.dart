@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/property_callout_button_T.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/editors/property_callout_button_T.dart';
 
 class StringPNode extends PNode {
   String? stringValue;
@@ -57,8 +57,8 @@ class StringPNode extends PNode {
       // calloutSize: calloutSize,
       propertyBtnGK: GlobalKey(debugLabel: ''),
       onChangeF: (s) {
-        fco.dismiss('matches');
-        fco.dismiss('te');
+        fsdui.dismiss('matches');
+        fsdui.dismiss('te');
         onStringChange(stringValue = s);
       },
        

@@ -2,9 +2,9 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/enum_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'align_node.mapper.dart';
 
@@ -13,6 +13,7 @@ class AlignNode extends SC with AlignNodeMappable {
   AlignmentEnum alignment;
 
   AlignNode({
+    super.name,
     required this.alignment,
     super.child,
   });
@@ -64,7 +65,7 @@ class AlignNode extends SC with AlignNodeMappable {
   //     ];
 
   @override
-  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
+  Widget build(BuildContext context, SNode? parentNode,
       ) {
     try {
       setParent(parentNode);
@@ -74,7 +75,7 @@ class AlignNode extends SC with AlignNodeMappable {
       return Align(
         key: createNodeWidgetGK(),
         alignment: alignment.alignment,
-        child: child?.buildFlutterWidget(context, this),
+        child: child?.build(context, this),
       );
     } catch (e) {
       return Error(

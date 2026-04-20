@@ -1,7 +1,7 @@
 // ignore_for_file: camel_case_types
 
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 import 'package:flutter_hooks/flutter_hooks.dart';
 

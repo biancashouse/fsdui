@@ -27,6 +27,12 @@ class WrapNodeMapper extends SubClassMapperBase<WrapNode> {
   @override
   final String id = 'WrapNode';
 
+  static String? _$name(WrapNode v) => v.name;
+  static const Field<WrapNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static AxisEnum? _$direction(WrapNode v) => v.direction;
   static const Field<WrapNode, AxisEnum> _f$direction = Field(
     'direction',
@@ -77,6 +83,12 @@ class WrapNodeMapper extends SubClassMapperBase<WrapNode> {
     _$uid,
     mode: FieldMode.member,
   );
+  static List<String>? _$tags(WrapNode v) => v.tags;
+  static const Field<WrapNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(WrapNode v) =>
       v.treeNodeGK;
   static const Field<WrapNode, GlobalKey<State<StatefulWidget>>> _f$treeNodeGK =
@@ -100,6 +112,7 @@ class WrapNodeMapper extends SubClassMapperBase<WrapNode> {
 
   @override
   final MappableFields<WrapNode> fields = const {
+    #name: _f$name,
     #direction: _f$direction,
     #spacing: _f$spacing,
     #runSpacing: _f$runSpacing,
@@ -108,6 +121,7 @@ class WrapNodeMapper extends SubClassMapperBase<WrapNode> {
     #crossAxisAlignment: _f$crossAxisAlignment,
     #children: _f$children,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -129,6 +143,7 @@ class WrapNodeMapper extends SubClassMapperBase<WrapNode> {
 
   static WrapNode _instantiate(DecodingData data) {
     return WrapNode(
+      name: data.dec(_f$name),
       direction: data.dec(_f$direction),
       spacing: data.dec(_f$spacing),
       runSpacing: data.dec(_f$runSpacing),
@@ -200,6 +215,7 @@ abstract class WrapNodeCopyWith<$R, $In extends WrapNode, $Out>
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
   $R call({
+    String? name,
     AxisEnum? direction,
     double? spacing,
     double? runSpacing,
@@ -228,6 +244,7 @@ class _WrapNodeCopyWithImpl<$R, $Out>
       );
   @override
   $R call({
+    Object? name = $none,
     Object? direction = $none,
     Object? spacing = $none,
     Object? runSpacing = $none,
@@ -237,6 +254,7 @@ class _WrapNodeCopyWithImpl<$R, $Out>
     List<SNode>? children,
   }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (direction != $none) #direction: direction,
       if (spacing != $none) #spacing: spacing,
       if (runSpacing != $none) #runSpacing: runSpacing,
@@ -248,6 +266,7 @@ class _WrapNodeCopyWithImpl<$R, $Out>
   );
   @override
   WrapNode $make(CopyWithData data) => WrapNode(
+    name: data.get(#name, or: $value.name),
     direction: data.get(#direction, or: $value.direction),
     spacing: data.get(#spacing, or: $value.spacing),
     runSpacing: data.get(#runSpacing, or: $value.runSpacing),

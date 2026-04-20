@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/algc/model/m/flowchart_m.dart';
-import 'package:flutter_content/src/algc/model/m/step_m.dart';
-import 'package:flutter_content/src/algc/widgets/flowchart_widget.dart';
-import 'package:flutter_content/src/algc/widgets/painters/step_painter.dart';
-import 'package:flutter_content/src/algc/widgets/pkg_tappable_comment_btn.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/algc/model/m/flowchart_m.dart';
+import 'package:fsdui/src/algc/model/m/step_m.dart';
+import 'package:fsdui/src/algc/widgets/flowchart_widget.dart';
+import 'package:fsdui/src/algc/widgets/painters/step_painter.dart';
+import 'package:fsdui/src/algc/widgets/pkg_tappable_comment_btn.dart';
 
 import 'step_text.dart';
 
@@ -83,7 +83,7 @@ class PkgStepWidget extends StatelessWidget {
     return Positioned(
       left: parentFlowchart.stepListOffsetLeft(theType, theStep: step),
       top: parentFlowchart.stepListOffsetTop(theType, theStep: theStep),
-      child: fco.boxedStep(
+      child: fsdui.boxedStep(
           theColor: Colors.blue,
           width: 10.0,
           height: step.MMM * 2 + step.PPP * 2 + step.TTT,
@@ -235,7 +235,7 @@ class PkgStepWidget extends StatelessWidget {
               step.flowchartLinkRef!,
             );
             if (jsonS != null) {
-              fco.showOverlay(
+              fsdui.showOverlay(
                 calloutConfig: CalloutConfig(
                   cId: flowchart.id,
                   initialCalloutW: FlowchartM.PAGE_VISIBLE_OVERFLOW + flowchart.width,
@@ -267,7 +267,7 @@ class PkgStepWidget extends StatelessWidget {
       final StepM theStep) {
     List<StepM>? stepList =
     theStep.childStepListShowingChanges(theChildListType);
-    if (stepList.isEmpty) fco.logger.i('empty childList! *******');
+    if (stepList.isEmpty) fsdui.logger.i('empty childList! *******');
     if (stepList.isNotEmpty) {
       List<PkgStepWidget> stepWidgets = stepList
           .map((step) =>

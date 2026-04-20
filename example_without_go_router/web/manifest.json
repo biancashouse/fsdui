@@ -1,6 +1,6 @@
 {
-    "name": "flutter_content",
-    "short_name": "flutter_content",
+    "name": "fsdui",
+    "short_name": "fsdui",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

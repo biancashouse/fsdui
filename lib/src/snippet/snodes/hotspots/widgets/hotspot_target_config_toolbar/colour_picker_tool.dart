@@ -1,7 +1,7 @@
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 class ColourPickerTool extends StatelessWidget {
   // final CalloutConfig cc;
@@ -38,7 +38,7 @@ class ColourPickerTool extends StatelessWidget {
                   backgroundColor: WidgetStateProperty.all<Color>(Colors.black),
                 ),
                 onPressed: () => onColorPickedF(Colors.black),
-                child: fco.coloredText('black', color: Colors.white),
+                child: fsdui.coloredText('black', color: Colors.white),
               ),
               TextButton(
                 onPressed: () => onColorPickedF(Colors.transparent),

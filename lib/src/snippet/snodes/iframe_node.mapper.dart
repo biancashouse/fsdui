@@ -23,6 +23,12 @@ class IFrameNodeMapper extends SubClassMapperBase<IFrameNode> {
   @override
   final String id = 'IFrameNode';
 
+  static String? _$name(IFrameNode v) => v.name;
+  static const Field<IFrameNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static String? _$src(IFrameNode v) => v.src;
   static const Field<IFrameNode, String> _f$src = Field(
     'src',
@@ -49,6 +55,12 @@ class IFrameNodeMapper extends SubClassMapperBase<IFrameNode> {
     _$uid,
     mode: FieldMode.member,
   );
+  static List<String>? _$tags(IFrameNode v) => v.tags;
+  static const Field<IFrameNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(IFrameNode v) =>
       v.treeNodeGK;
   static const Field<IFrameNode, GlobalKey<State<StatefulWidget>>>
@@ -72,10 +84,12 @@ class IFrameNodeMapper extends SubClassMapperBase<IFrameNode> {
 
   @override
   final MappableFields<IFrameNode> fields = const {
+    #name: _f$name,
     #src: _f$src,
     #iframeWidth: _f$iframeWidth,
     #iframeHeight: _f$iframeHeight,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -97,6 +111,7 @@ class IFrameNodeMapper extends SubClassMapperBase<IFrameNode> {
 
   static IFrameNode _instantiate(DecodingData data) {
     return IFrameNode(
+      name: data.dec(_f$name),
       src: data.dec(_f$src),
       iframeWidth: data.dec(_f$iframeWidth),
       iframeHeight: data.dec(_f$iframeHeight),
@@ -164,7 +179,12 @@ extension IFrameNodeValueCopy<$R, $Out>
 abstract class IFrameNodeCopyWith<$R, $In extends IFrameNode, $Out>
     implements CLCopyWith<$R, $In, $Out> {
   @override
-  $R call({String? src, double? iframeWidth, double? iframeHeight});
+  $R call({
+    String? name,
+    String? src,
+    double? iframeWidth,
+    double? iframeHeight,
+  });
   IFrameNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -177,16 +197,22 @@ class _IFrameNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<IFrameNode> $mapper =
       IFrameNodeMapper.ensureInitialized();
   @override
-  $R call({Object? src = $none, double? iframeWidth, double? iframeHeight}) =>
-      $apply(
-        FieldCopyWithData({
-          if (src != $none) #src: src,
-          if (iframeWidth != null) #iframeWidth: iframeWidth,
-          if (iframeHeight != null) #iframeHeight: iframeHeight,
-        }),
-      );
+  $R call({
+    Object? name = $none,
+    Object? src = $none,
+    double? iframeWidth,
+    double? iframeHeight,
+  }) => $apply(
+    FieldCopyWithData({
+      if (name != $none) #name: name,
+      if (src != $none) #src: src,
+      if (iframeWidth != null) #iframeWidth: iframeWidth,
+      if (iframeHeight != null) #iframeHeight: iframeHeight,
+    }),
+  );
   @override
   IFrameNode $make(CopyWithData data) => IFrameNode(
+    name: data.get(#name, or: $value.name),
     src: data.get(#src, or: $value.src),
     iframeWidth: data.get(#iframeWidth, or: $value.iframeWidth),
     iframeHeight: data.get(#iframeHeight, or: $value.iframeHeight),

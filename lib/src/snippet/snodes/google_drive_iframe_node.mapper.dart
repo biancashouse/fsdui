@@ -24,10 +24,16 @@ class GoogleDriveIFrameNodeMapper
   @override
   final String id = 'GoogleDriveIFrameNode';
 
-  static String _$name(GoogleDriveIFrameNode v) => v.name;
+  static String? _$name(GoogleDriveIFrameNode v) => v.name;
   static const Field<GoogleDriveIFrameNode, String> _f$name = Field(
     'name',
     _$name,
+    opt: true,
+  );
+  static String _$frameName(GoogleDriveIFrameNode v) => v.frameName;
+  static const Field<GoogleDriveIFrameNode, String> _f$frameName = Field(
+    'frameName',
+    _$frameName,
     opt: true,
     def: '',
   );
@@ -63,6 +69,12 @@ class GoogleDriveIFrameNodeMapper
     _$uid,
     mode: FieldMode.member,
   );
+  static List<String>? _$tags(GoogleDriveIFrameNode v) => v.tags;
+  static const Field<GoogleDriveIFrameNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(
     GoogleDriveIFrameNode v,
   ) => v.treeNodeGK;
@@ -96,11 +108,13 @@ class GoogleDriveIFrameNodeMapper
   @override
   final MappableFields<GoogleDriveIFrameNode> fields = const {
     #name: _f$name,
+    #frameName: _f$frameName,
     #folderId: _f$folderId,
     #resourceKey: _f$resourceKey,
     #iframeWidth: _f$iframeWidth,
     #iframeHeight: _f$iframeHeight,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -124,6 +138,7 @@ class GoogleDriveIFrameNodeMapper
   static GoogleDriveIFrameNode _instantiate(DecodingData data) {
     return GoogleDriveIFrameNode(
       name: data.dec(_f$name),
+      frameName: data.dec(_f$frameName),
       folderId: data.dec(_f$folderId),
       resourceKey: data.dec(_f$resourceKey),
       iframeWidth: data.dec(_f$iframeWidth),
@@ -204,6 +219,7 @@ abstract class GoogleDriveIFrameNodeCopyWith<
   @override
   $R call({
     String? name,
+    String? frameName,
     String? folderId,
     String? resourceKey,
     double? iframeWidth,
@@ -224,14 +240,16 @@ class _GoogleDriveIFrameNodeCopyWithImpl<$R, $Out>
       GoogleDriveIFrameNodeMapper.ensureInitialized();
   @override
   $R call({
-    String? name,
+    Object? name = $none,
+    String? frameName,
     String? folderId,
     String? resourceKey,
     Object? iframeWidth = $none,
     Object? iframeHeight = $none,
   }) => $apply(
     FieldCopyWithData({
-      if (name != null) #name: name,
+      if (name != $none) #name: name,
+      if (frameName != null) #frameName: frameName,
       if (folderId != null) #folderId: folderId,
       if (resourceKey != null) #resourceKey: resourceKey,
       if (iframeWidth != $none) #iframeWidth: iframeWidth,
@@ -241,6 +259,7 @@ class _GoogleDriveIFrameNodeCopyWithImpl<$R, $Out>
   @override
   GoogleDriveIFrameNode $make(CopyWithData data) => GoogleDriveIFrameNode(
     name: data.get(#name, or: $value.name),
+    frameName: data.get(#frameName, or: $value.frameName),
     folderId: data.get(#folderId, or: $value.folderId),
     resourceKey: data.get(#resourceKey, or: $value.resourceKey),
     iframeWidth: data.get(#iframeWidth, or: $value.iframeWidth),

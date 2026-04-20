@@ -1,13 +1,13 @@
 // ignore_for_file: constant_identifier_names
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/bool_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/color_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/text_style_pnodes.dart';
-import 'package:flutter_content/src/snippet/snodes/text_style_hook.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/bool_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/color_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/src/snippet/pnodes/text_style_pnodes.dart';
+import 'package:fsdui/src/snippet/snodes/text_style_hook.dart';
 
 part 'appbar_node.mapper.dart';
 
@@ -53,6 +53,7 @@ class AppBarNode extends CL with AppBarNodeMappable {
   TextStyleProperties titleTextStyle;
 
   AppBarNode({
+    super.name,
     // this.tabBarName,
     this.bgColor,
     this.fgColor,
@@ -150,8 +151,8 @@ class AppBarNode extends CL with AppBarNodeMappable {
       setParent(parentNode); // propagating parents down from root
 
       var actionWidgets = actions.children.isNotEmpty ? actions.toWidgetProperty(context, this) : null;
-      var leadingWidget = leading.child != null ? leading.buildFlutterWidget(context, this) : null;
-      var titleWidget = title.child != null ? title.buildFlutterWidget(context, this) : null;
+      var leadingWidget = leading.child != null ? leading.build(context, this) : null;
+      var titleWidget = title.child != null ? title.build(context, this) : null;
 
       if (hasTabBar()) {
         toolbarHeight = kToolbarHeight;
@@ -175,11 +176,11 @@ class AppBarNode extends CL with AppBarNodeMappable {
           foregroundColor: fgColor?.flutterValue,
           shadowColor: shadowColor?.flutterValue,
           scrolledUnderElevation: scrolledUnderElevation,
-          // bottom: bottomWidget,
+          bottom: bottomWidget,
         );
         return appBar;
       } catch (e) {
-        fco.logger.i('AppBarNode.toWidget() failed! ${e.toString()}');
+        fsdui.logger.i('AppBarNode.toWidget() failed! ${e.toString()}');
         return Material(
           textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
           child: SingleChildScrollView(
@@ -188,7 +189,7 @@ class AppBarNode extends CL with AppBarNodeMappable {
               children: [
                 Icon(Icons.error, color: Colors.red),
                 const Gap(10),
-                fco.coloredText(e.toString()),
+                fsdui.coloredText(e.toString()),
               ],
             ),
           ),

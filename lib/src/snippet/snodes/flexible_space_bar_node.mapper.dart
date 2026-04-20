@@ -26,6 +26,12 @@ class FlexibleSpaceBarNodeMapper
   @override
   final String id = 'FlexibleSpaceBarNode';
 
+  static String? _$name(FlexibleSpaceBarNode v) => v.name;
+  static const Field<FlexibleSpaceBarNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static NamedSC _$title(FlexibleSpaceBarNode v) => v.title;
   static const Field<FlexibleSpaceBarNode, NamedSC> _f$title = Field(
     'title',
@@ -50,6 +56,12 @@ class FlexibleSpaceBarNodeMapper
   static const Field<FlexibleSpaceBarNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(FlexibleSpaceBarNode v) => v.tags;
+  static const Field<FlexibleSpaceBarNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(
@@ -78,11 +90,13 @@ class FlexibleSpaceBarNodeMapper
 
   @override
   final MappableFields<FlexibleSpaceBarNode> fields = const {
+    #name: _f$name,
     #title: _f$title,
     #background: _f$background,
     #centerTitle: _f$centerTitle,
     #titlePadding: _f$titlePadding,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -104,6 +118,7 @@ class FlexibleSpaceBarNodeMapper
 
   static FlexibleSpaceBarNode _instantiate(DecodingData data) {
     return FlexibleSpaceBarNode(
+      name: data.dec(_f$name),
       title: data.dec(_f$title),
       background: data.dec(_f$background),
       centerTitle: data.dec(_f$centerTitle),
@@ -187,6 +202,7 @@ abstract class FlexibleSpaceBarNodeCopyWith<
   get titlePadding;
   @override
   $R call({
+    String? name,
     NamedSC? title,
     NamedSC? background,
     bool? centerTitle,
@@ -217,12 +233,14 @@ class _FlexibleSpaceBarNodeCopyWithImpl<$R, $Out>
       $value.titlePadding?.copyWith.$chain((v) => call(titlePadding: v));
   @override
   $R call({
+    Object? name = $none,
     NamedSC? title,
     NamedSC? background,
     Object? centerTitle = $none,
     Object? titlePadding = $none,
   }) => $apply(
     FieldCopyWithData({
+      if (name != $none) #name: name,
       if (title != null) #title: title,
       if (background != null) #background: background,
       if (centerTitle != $none) #centerTitle: centerTitle,
@@ -231,6 +249,7 @@ class _FlexibleSpaceBarNodeCopyWithImpl<$R, $Out>
   );
   @override
   FlexibleSpaceBarNode $make(CopyWithData data) => FlexibleSpaceBarNode(
+    name: data.get(#name, or: $value.name),
     title: data.get(#title, or: $value.title),
     background: data.get(#background, or: $value.background),
     centerTitle: data.get(#centerTitle, or: $value.centerTitle),

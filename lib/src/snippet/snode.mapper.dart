@@ -26,6 +26,14 @@ class SNodeMapper extends ClassMapperBase<SNode> {
   @override
   final String id = 'SNode';
 
+  static String? _$name(SNode v) => v.name;
+  static const Field<SNode, String> _f$name = Field('name', _$name, opt: true);
+  static List<String>? _$tags(SNode v) => v.tags;
+  static const Field<SNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    opt: true,
+  );
   static String _$uid(SNode v) => v.uid;
   static const Field<SNode, String> _f$uid = Field(
     'uid',
@@ -58,6 +66,8 @@ class SNodeMapper extends ClassMapperBase<SNode> {
 
   @override
   final MappableFields<SNode> fields = const {
+    #name: _f$name,
+    #tags: _f$tags,
     #uid: _f$uid,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
@@ -95,7 +105,7 @@ mixin SNodeMappable {
 
 abstract class SNodeCopyWith<$R, $In extends SNode, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call();
+  $R call({String? name});
   SNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 

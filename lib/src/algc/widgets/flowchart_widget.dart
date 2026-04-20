@@ -1,14 +1,14 @@
 import 'dart:core';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/algc/model/m/flowchart_m.dart';
-import 'package:flutter_content/src/algc/model/m/step_m.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/algc/model/m/flowchart_m.dart';
+import 'package:fsdui/src/algc/model/m/step_m.dart';
 
-// import 'package:flutter_content/src/algc/widgets/painters/flowchart_bg_painter.dart';
-import 'package:flutter_content/src/algc/widgets/painters/screen_flowchart_painter.dart';
-import 'package:flutter_content/src/algc/widgets/pkg_step_widget.dart';
-import 'package:flutter_content/src/algc/widgets/pkg_tappable_comment_btn.dart';
+// import 'package:fsdui/src/algc/widgets/painters/flowchart_bg_painter.dart';
+import 'package:fsdui/src/algc/widgets/painters/screen_flowchart_painter.dart';
+import 'package:fsdui/src/algc/widgets/pkg_step_widget.dart';
+import 'package:fsdui/src/algc/widgets/pkg_tappable_comment_btn.dart';
 
 class FlowchartWidget extends StatelessWidget {
   final String jsonString;
@@ -28,7 +28,7 @@ class FlowchartWidget extends StatelessWidget {
 
       return FlowchartWidgetStack(f, fbUID);
     } catch (e) {
-      fco.logger.e('', error: e);
+      fsdui.logger.e('', error: e);
       return Error(
         "FlowchartWidget",
         color: Colors.red,
@@ -48,7 +48,7 @@ class FlowchartWidgetStack extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    fco.logger.i('FlowchartWidgetStack build');
+    fsdui.logger.i('FlowchartWidgetStack build');
     double w = FlowchartM.PAGE_VISIBLE_OVERFLOW + f.width;
     double h = FlowchartM.PAGE_VISIBLE_OVERFLOW * 4 + f.height;
     // FlowchartM.PAGE_VISIBLE_OVERFLOW * 2 + max(f.height, f.screenPaperH);

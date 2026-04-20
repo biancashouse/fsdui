@@ -1,5 +1,5 @@
 name: example_without_go_router
-description: "Example website project to demo the flutter_content pkg."
+description: "Example website project to demo the fsdui pkg."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 version: 2.9.0
@@ -11,8 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flutter_content:  #any
-    path: ../../flutter_content
+  fsdui:  #any
+    path: ../../fsdui
 
 #  flutter_quill: ^11.5.0
 #  window_manager: ^0.5.1

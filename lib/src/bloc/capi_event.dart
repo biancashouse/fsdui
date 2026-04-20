@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'capi_event.freezed.dart';
@@ -195,7 +195,7 @@ class CAPIEvent with _$CAPIEvent {
   const factory CAPIEvent.exitNodeSelectionMode() = ExitSelectWidgetMode;
 
   const factory CAPIEvent.pushSnippetEditor({
-    required SnippetRootNode rootNode,
+    required SNode rootNode,
     SNode? selectedNode,
   }) = PushSnippetEditor;
 
@@ -269,33 +269,36 @@ class CAPIEvent with _$CAPIEvent {
 
   const factory CAPIEvent.replaceSelectionWith({
     Type? type,
-    SnippetName? snippetName, // only used when type is SnippetRefNode
     SNode? testNode,
   }) = ReplaceSelectionWith;
 
   const factory CAPIEvent.wrapSelectionWith({
     Type? type,
-    SnippetName? snippetName, // only used when type is SnippetRefNode
     SNode? testNode,
   }) = WrapSelectionWith;
 
   const factory CAPIEvent.appendChild({
     Type? type,
     SNode? testNode,
-    SnippetName? snippetName, // only used when type is SnippetRefNode
-    Type? widgetSpanChildType,
-    SNode? testWidgetSpanChildNode,
+    // Type? widgetSpanChildType,
+    // SNode? testWidgetSpanChildNode,
   }) = AppendChild;
+
+  const factory CAPIEvent.prependArticle({
+    required ArticleListViewNode listNode,
+    Type? type,
+    SNode? testNode,
+    // Type? widgetSpanChildType,
+    // SNode? testWidgetSpanChildNode,
+  }) = PrependArticle;
 
   const factory CAPIEvent.addSiblingBefore({
     Type? type,
-    SnippetName? snippetName, // only used when type is SnippetRefNode
     SNode? testNode,
   }) = AddSiblingBefore;
 
   const factory CAPIEvent.addSiblingAfter({
     Type? type,
-    SnippetName? snippetName, // only used when type is SnippetRefNode
     SNode? testNode,
   }) = AddSiblingAfter;
 
@@ -313,16 +316,16 @@ class CAPIEvent with _$CAPIEvent {
   // }) = ReinsertSibling;
   // // reorder sibling in 2 actions: remove, then insert
 
-  const factory CAPIEvent.pasteReplacement({
+  const factory CAPIEvent.pasteReplacement(
     // required STreeNode clipboardNode,
-    Type? widgetSpanChildType,
-  }) = PasteReplacement;
+    // Type? widgetSpanChildType,
+  ) = PasteReplacement;
 
-  const factory CAPIEvent.pasteChild({
+  const factory CAPIEvent.pasteChild(
     // required STreeNode clipboardNode,
-    Type? widgetSpanChildType,
-    SNode? testWidgetSpanChildNode,
-  }) = PasteChild;
+    // Type? widgetSpanChildType,
+    // SNode? testWidgetSpanChildNode,
+  ) = PasteChild;
 
   const factory CAPIEvent.pasteSiblingBefore() = PasteSiblingBefore;
 
@@ -337,7 +340,7 @@ class CAPIEvent with _$CAPIEvent {
   // }) = AddNode;
 
   const factory CAPIEvent.copySnippetJsonToClipboard({
-    required SnippetRootNode rootNode,
+    required SNode rootNode,
   }) = CopySnippetJsonToClipboard;
 
   const factory CAPIEvent.replaceSnippetFromJson({

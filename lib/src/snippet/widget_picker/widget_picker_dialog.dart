@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 import 'quick_pick_panel.dart' show kWidgetPickerCId;
 import 'widget_entry.dart';
 
@@ -23,7 +23,7 @@ class _SnippetItem extends _Item {
 }
 
 /// Content widget for the full searchable widget picker overlay.
-/// Shown via [fco.showOverlay] — no Dialog wrapper needed.
+/// Shown via [fsdui.showOverlay] — no Dialog wrapper needed.
 class WidgetPickerDialog extends StatefulWidget {
   const WidgetPickerDialog({
     super.key,
@@ -107,12 +107,12 @@ class _WidgetPickerDialogState extends State<WidgetPickerDialog> {
   }
 
   void _selectType(Type type) {
-    fco.dismiss(kWidgetPickerCId);
+    fsdui.dismiss(kWidgetPickerCId);
     widget.onTypeSelected(type);
   }
 
   void _selectSnippet(String name) {
-    fco.dismiss(kWidgetPickerCId);
+    fsdui.dismiss(kWidgetPickerCId);
     widget.onSnippetSelected?.call(name);
   }
 
@@ -139,7 +139,7 @@ class _WidgetPickerDialogState extends State<WidgetPickerDialog> {
               if (widget.hasPaste && widget.onPaste != null)
                 TextButton.icon(
                   onPressed: () {
-                    fco.dismiss(kWidgetPickerCId);
+                    fsdui.dismiss(kWidgetPickerCId);
                     widget.onPaste!();
                   },
                   icon: const Icon(Icons.paste, size: 14),
@@ -152,7 +152,7 @@ class _WidgetPickerDialogState extends State<WidgetPickerDialog> {
                 ),
               IconButton(
                 icon: const Icon(Icons.close, size: 18),
-                onPressed: () => fco.dismiss(kWidgetPickerCId),
+                onPressed: () => fsdui.dismiss(kWidgetPickerCId),
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(),
               ),

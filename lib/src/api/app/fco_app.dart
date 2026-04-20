@@ -7,7 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart'
@@ -137,7 +137,7 @@ class FlutterContentAppState extends State<FlutterContentApp>
         SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.transparent),
       );
     } else {
-      fco.logger.i('going full screen');
+      fsdui.logger.i('going full screen');
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     }
 
@@ -161,7 +161,7 @@ class FlutterContentAppState extends State<FlutterContentApp>
 
   // init FlutterContent, which keeps a single CAPIBloC and multiple SnippetBloCs
   Future<CAPIBloC?> _initApp() async {
-    fco.capiBloc = await fco.createCAPIBloC(
+    fsdui.capiBloc = await fsdui.createCAPIBloC(
       appName: widget.appName,
       fbOptions: widget.fbOptions,
       useEmulator: widget.useEmulator,
@@ -171,7 +171,7 @@ class FlutterContentAppState extends State<FlutterContentApp>
     widget.onReadyF?.call();
     SNode.hideAllTargetCovers();
     widget.alsoInitF?.call();
-    return fco.capiBloc;
+    return fsdui.capiBloc;
   }
 
   // ytController = YoutubePlayerController.fromVideoId(
@@ -190,14 +190,14 @@ class FlutterContentAppState extends State<FlutterContentApp>
           return BlocProvider<CAPIBloC>(
             create: (BuildContext context) => snapshot.data!,
             child: ValueListenableBuilder<ThemeMode>(
-              valueListenable: fco.themeModeNotifier,
+              valueListenable: fsdui.themeModeNotifier,
               builder: (context, currentMode, child) =>
               widget.routingConfig != null
                   ? MaterialApp.router(
                 // following line not valid for router;
                 // instead pass navigatorKey: fco.globalNavigatorKey
                 // to GoRouter.routingConfig()
-                routerConfig: fco.router,
+                routerConfig: fsdui.router,
                 localizationsDelegates: const [
                   GlobalMaterialLocalizations.delegate,
                   GlobalCupertinoLocalizations.delegate,
@@ -227,7 +227,7 @@ class FlutterContentAppState extends State<FlutterContentApp>
                 scrollBehavior: const ConstantScrollBehavior(),
               )
                   : MaterialApp(
-                navigatorKey: fco.globalNavigatorKey,
+                navigatorKey: fsdui.globalNavigatorKey,
                 home: widget.home,
                 localizationsDelegates: const [
                   GlobalMaterialLocalizations.delegate,

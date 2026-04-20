@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:fsdui/fsdui.dart';
 
 class FCStepper extends StatefulWidget {
   final StepperNode stepperNode;
@@ -35,7 +35,7 @@ class FCStepperState extends State<FCStepper> {
       onStepContinue: () {
         final isLastStep = currentStep == steps.length - 1;
         if (isLastStep) {
-          fco.logger.i("steps completed.");
+          fsdui.logger.i("steps completed.");
         } else {
           if (currentStep <= steps.length) {
             setState(() {

@@ -4,11 +4,11 @@
 // import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 //
-// import 'package:flutter_content/flutter_content.dart';
-// import 'package:flutter_content/src/model/quill_target_model.dart';
-// import 'package:flutter_content/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
-// import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/colour_picker_tool.dart';
-// import 'package:flutter_content/src/snippet/snodes/quill/widgets/timestamp_embed.dart';
+// import 'package:fsdui/fsdui.dart';
+// import 'package:fsdui/src/model/quill_target_model.dart';
+// import 'package:fsdui/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
+// import 'package:fsdui/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/colour_picker_tool.dart';
+// import 'package:fsdui/src/snippet/snodes/quill/widgets/timestamp_embed.dart';
 // import 'package:flutter_quill/flutter_quill.dart';
 //
 // import 'package:flutter_hooks/flutter_hooks.dart';

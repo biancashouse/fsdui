@@ -24,6 +24,12 @@ class AspectRatioNodeMapper extends SubClassMapperBase<AspectRatioNode> {
   @override
   final String id = 'AspectRatioNode';
 
+  static String? _$name(AspectRatioNode v) => v.name;
+  static const Field<AspectRatioNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static double _$aspectRatio(AspectRatioNode v) => v.aspectRatio;
   static const Field<AspectRatioNode, double> _f$aspectRatio = Field(
     'aspectRatio',
@@ -41,6 +47,12 @@ class AspectRatioNodeMapper extends SubClassMapperBase<AspectRatioNode> {
   static const Field<AspectRatioNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(AspectRatioNode v) => v.tags;
+  static const Field<AspectRatioNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(AspectRatioNode v) =>
@@ -68,9 +80,11 @@ class AspectRatioNodeMapper extends SubClassMapperBase<AspectRatioNode> {
 
   @override
   final MappableFields<AspectRatioNode> fields = const {
+    #name: _f$name,
     #aspectRatio: _f$aspectRatio,
     #child: _f$child,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -92,6 +106,7 @@ class AspectRatioNodeMapper extends SubClassMapperBase<AspectRatioNode> {
 
   static AspectRatioNode _instantiate(DecodingData data) {
     return AspectRatioNode(
+      name: data.dec(_f$name),
       aspectRatio: data.dec(_f$aspectRatio),
       child: data.dec(_f$child),
     );
@@ -162,7 +177,7 @@ abstract class AspectRatioNodeCopyWith<$R, $In extends AspectRatioNode, $Out>
   @override
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({double? aspectRatio, SNode? child});
+  $R call({String? name, double? aspectRatio, SNode? child});
   AspectRatioNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -180,14 +195,17 @@ class _AspectRatioNodeCopyWithImpl<$R, $Out>
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
-  $R call({double? aspectRatio, Object? child = $none}) => $apply(
-    FieldCopyWithData({
-      if (aspectRatio != null) #aspectRatio: aspectRatio,
-      if (child != $none) #child: child,
-    }),
-  );
+  $R call({Object? name = $none, double? aspectRatio, Object? child = $none}) =>
+      $apply(
+        FieldCopyWithData({
+          if (name != $none) #name: name,
+          if (aspectRatio != null) #aspectRatio: aspectRatio,
+          if (child != $none) #child: child,
+        }),
+      );
   @override
   AspectRatioNode $make(CopyWithData data) => AspectRatioNode(
+    name: data.get(#name, or: $value.name),
     aspectRatio: data.get(#aspectRatio, or: $value.aspectRatio),
     child: data.get(#child, or: $value.child),
   );

@@ -1,7 +1,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/snodes/abstract_scrollview_node.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/snodes/abstract_scrollview_node.dart';
 
 import '../pnodes/fyi_pnodes.dart';
 
@@ -9,7 +9,7 @@ part 'pageview_node.mapper.dart';
 
 @MappableClass()
 abstract class PageViewNode extends MC with PageViewNodeMappable {
-  PageViewNode({required super.children});
+  PageViewNode({super.name, required super.children});
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
@@ -29,7 +29,7 @@ abstract class PageViewNode extends MC with PageViewNodeMappable {
     return PageView(
       key: createNodeWidgetGK(),
       children: children
-          .map((childNode) => childNode.buildFlutterWidget(context, this))
+          .map((childNode) => childNode.build(context, this))
           .toList(),
     );
   }

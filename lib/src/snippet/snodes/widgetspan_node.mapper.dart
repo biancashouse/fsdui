@@ -24,6 +24,12 @@ class WidgetSpanNodeMapper extends SubClassMapperBase<WidgetSpanNode> {
   @override
   final String id = 'WidgetSpanNode';
 
+  static String? _$name(WidgetSpanNode v) => v.name;
+  static const Field<WidgetSpanNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static SNode? _$child(WidgetSpanNode v) => v.child;
   static const Field<WidgetSpanNode, SNode> _f$child = Field(
     'child',
@@ -34,6 +40,12 @@ class WidgetSpanNodeMapper extends SubClassMapperBase<WidgetSpanNode> {
   static const Field<WidgetSpanNode, String> _f$uid = Field(
     'uid',
     _$uid,
+    mode: FieldMode.member,
+  );
+  static List<String>? _$tags(WidgetSpanNode v) => v.tags;
+  static const Field<WidgetSpanNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
     mode: FieldMode.member,
   );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(WidgetSpanNode v) =>
@@ -61,8 +73,10 @@ class WidgetSpanNodeMapper extends SubClassMapperBase<WidgetSpanNode> {
 
   @override
   final MappableFields<WidgetSpanNode> fields = const {
+    #name: _f$name,
     #child: _f$child,
     #uid: _f$uid,
+    #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -84,7 +98,7 @@ class WidgetSpanNodeMapper extends SubClassMapperBase<WidgetSpanNode> {
   ]);
 
   static WidgetSpanNode _instantiate(DecodingData data) {
-    return WidgetSpanNode(child: data.dec(_f$child));
+    return WidgetSpanNode(name: data.dec(_f$name), child: data.dec(_f$child));
   }
 
   @override
@@ -151,7 +165,7 @@ abstract class WidgetSpanNodeCopyWith<$R, $In extends WidgetSpanNode, $Out>
     implements InlineSpanNodeCopyWith<$R, $In, $Out> {
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({SNode? child});
+  $R call({String? name, SNode? child});
   WidgetSpanNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -169,11 +183,17 @@ class _WidgetSpanNodeCopyWithImpl<$R, $Out>
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
-  $R call({Object? child = $none}) =>
-      $apply(FieldCopyWithData({if (child != $none) #child: child}));
+  $R call({Object? name = $none, Object? child = $none}) => $apply(
+    FieldCopyWithData({
+      if (name != $none) #name: name,
+      if (child != $none) #child: child,
+    }),
+  );
   @override
-  WidgetSpanNode $make(CopyWithData data) =>
-      WidgetSpanNode(child: data.get(#child, or: $value.child));
+  WidgetSpanNode $make(CopyWithData data) => WidgetSpanNode(
+    name: data.get(#name, or: $value.name),
+    child: data.get(#child, or: $value.child),
+  );
 
   @override
   WidgetSpanNodeCopyWith<$R2, WidgetSpanNode, $Out2> $chain<$R2, $Out2>(

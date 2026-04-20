@@ -1,7 +1,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'hotspots_node.mapper.dart';
@@ -15,6 +15,7 @@ class TargetsWrapperNode extends SC with TargetsWrapperNodeMappable {
   List<HotspotTargetModel> targets;
 
   TargetsWrapperNode({
+    super.name,
     this.aspectRatio,
     this.borderRadius = 0,
     this.targets = const [],
@@ -86,7 +87,7 @@ class TargetsWrapperNode extends SC with TargetsWrapperNodeMappable {
 
   @override
   Widget? widgetLogo() =>
-      Image.asset(fco.asset('lib/assets/images/pub.dev.png'), width: 16);
+      Image.asset(fsdui.asset('lib/assets/images/pub.dev.png'), width: 16);
 
   @override
   String toString() => FLUTTER_TYPE;

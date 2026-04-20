@@ -2,10 +2,10 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/flutter_polls/flutter_poll_option.dart';
-import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
+import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/flutter_polls/flutter_poll_option.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
 
 part 'poll_option_node.mapper.dart';
 
@@ -14,6 +14,7 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
   String text;
 
   PollOptionNode({
+    super.name,
     required this.text,
   });
 
@@ -117,7 +118,7 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
 
   @override
   Widget? widgetLogo() => Image.asset(
-    fco.asset('lib/assets/images/pub.dev.png'),
+    fsdui.asset('lib/assets/images/pub.dev.png'),
     width: 16,
   );
 
