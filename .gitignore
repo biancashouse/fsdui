@@ -53,3 +53,4 @@ app.*.map.json
 /gemini_api_key.txt
 /compals/
 /ios.jic/
+bh-apps.firebase_options.dart
