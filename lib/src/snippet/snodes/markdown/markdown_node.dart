@@ -6,9 +6,9 @@ import 'package:fsdui/src/snippet/pnodes/markdown_pnode.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:fsdui/src/snippet/snodes/markdown/widgets/markdown_ro.dart';
 import 'package:markdown_editor_live/markdown_editor_live.dart';
-import 'package:markdown_widget/config/configs.dart';
-import 'package:markdown_widget/widget/blocks/leaf/link.dart';
-import 'package:markdown_widget/widget/markdown.dart';
+// import 'package:markdown_widget/config/configs.dart';
+// import 'package:markdown_widget/widget/blocks/leaf/link.dart';
+// import 'package:markdown_widget/widget/markdown.dart';
 // import 'package:flutter_markdown/flutter_markdown.dart';
 
 part 'markdown_node.mapper.dart';
@@ -21,29 +21,35 @@ class MarkdownNode extends CL with MarkdownNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    FlutterDocPNode(
-      buttonLabel: 'Markdown',
-      webLink: 'https://pub.dev/packages/flutter_markdown',
-      snode: this,
-      name: 'fyi',
-    ),
+    // FlutterDocPNode(
+    //   buttonLabel: 'Markdown',
+    //   webLink: 'https://pub.dev/packages/flutter_markdown',
+    //   snode: this,
+    //   name: 'fyi',
+    // ),
     FlutterDocPNode(
       buttonLabel: 'Markdown Editor Plus',
       webLink: 'https://pub.dev/packages/markdown_editor_plus',
       snode: this,
       name: 'fyi2',
     ),
-    MarkdownPNode(
+    FYIPNode(
+      label: "editing the markdown...",
+      msg: "You can just close this editor and edit the markdown inline",
       snode: this,
-      name: 'data',
-      stringValue: data,
-      // stringValue: data,
-      onStringChange: (newValue) =>
-          refreshWithUpdate(context, () => data = newValue ?? ''),
-      calloutButtonSize: const Size(280, 3000),
-      calloutWidth: fsdui.scrW * .8,
-      calloutHeight: fsdui.scrH * .8,
+      name: 'fyi',
     ),
+    // MarkdownPNode(
+    //   snode: this,
+    //   name: 'data',
+    //   stringValue: data,
+    //   // stringValue: data,
+    //   onStringChange: (newValue) =>
+    //       refreshWithUpdate(context, () => data = newValue ?? ''),
+    //   calloutButtonSize: const Size(280, 3000),
+    //   calloutWidth: fsdui.scrW * .8,
+    //   calloutHeight: fsdui.scrH * .8,
+    // ),
   ];
 
   @override
@@ -53,42 +59,42 @@ class MarkdownNode extends CL with MarkdownNodeMappable {
       //ScrollControllerName? scName = EditablePage.name(context);
       //possiblyHighlightSelectedNode(scName);
 
-      return fsdui.canEditAnyContent()
+      return fsdui.isArticleEditor() || fsdui.canEditAnyContent()
           ? MarkdownEditor(
               initialValue: data ?? _markdownData,
               onChanged: (s) {},
             )
           : ReadOnlyMarkdown(data ?? _markdownData);
-      final insideListView =
-          parentNode is ListViewNode ||
-          (parentNode?.getParent() is ListViewNode);
-      return MarkdownWidget(
-        key: createNodeWidgetGK(),
-        data: data ?? SAMPLE_MD,
-        shrinkWrap: insideListView,
-        physics: insideListView ? const NeverScrollableScrollPhysics() : null,
-        config: MarkdownConfig(
-          configs: [
-            LinkConfig(
-              // style: TextStyle(
-              //   color: Colors.red,
-              //   decoration: TextDecoration.underline,
-              // ),
-              onTap: (href) async {
-                try {
-                  Uri url = Uri.parse(href);
-                  if (!await launchUrl(url)) {
-                    throw Exception('Could not launch $href');
-                  }
-                } catch (e) {
-                  fsdui.logger.d('Following exception ignored:');
-                  fsdui.logger.e('', error: e);
-                }
-              },
-            ),
-          ],
-        ),
-      );
+      // final insideListView =
+      //     parentNode is ListViewNode ||
+      //     (parentNode?.getParent() is ListViewNode);
+      // return MarkdownWidget(
+      //   key: createNodeWidgetGK(),
+      //   data: data ?? SAMPLE_MD,
+      //   shrinkWrap: insideListView,
+      //   physics: insideListView ? const NeverScrollableScrollPhysics() : null,
+      //   config: MarkdownConfig(
+      //     configs: [
+      //       LinkConfig(
+      //         // style: TextStyle(
+      //         //   color: Colors.red,
+      //         //   decoration: TextDecoration.underline,
+      //         // ),
+      //         onTap: (href) async {
+      //           try {
+      //             Uri url = Uri.parse(href);
+      //             if (!await launchUrl(url)) {
+      //               throw Exception('Could not launch $href');
+      //             }
+      //           } catch (e) {
+      //             fsdui.logger.d('Following exception ignored:');
+      //             fsdui.logger.e('', error: e);
+      //           }
+      //         },
+      //       ),
+      //     ],
+      //   ),
+      // );
     } catch (e) {
       return Error(
         key: createNodeWidgetGK(),

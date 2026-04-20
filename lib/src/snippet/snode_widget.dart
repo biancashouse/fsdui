@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/api/snippet_builder/replace_snippet_with_json_callout.dart';
 import 'package:fsdui/src/snippet/pnodes/editors/property_callout_button_UML.dart';
-import 'package:fsdui/src/snippet/pnodes/editors/property_callout_button_markdown.dart';
+// import 'package:fsdui/src/snippet/pnodes/editors/property_callout_button_markdown.dart';
 
 import 'fancy_tree/tree_controller.dart';
 
@@ -128,25 +128,25 @@ class SNodeWidget extends StatelessWidget {
                   child: Icon(Icons.edit, size: 20, color: Colors.purpleAccent),
                 ),
               // MD
-              if (entry.node is MarkdownNode)
-                InkWell(
-                  onTap: () {
-                    _tappedNode(context);
-                    fsdui.afterNextBuildDo(() {
-                      var markdownNode = entry.node as MarkdownNode;
-                      PropertyButtonMarkdown.showMarkdownEditor(
-                        markdownNode.data ?? markdownNode.SAMPLE_MD,
-                        (String? newValue) {
-                          markdownNode.refreshWithUpdate(
-                            context,
-                            () => markdownNode.data = newValue ?? '',
-                          );
-                        },
-                      );
-                    });
-                  },
-                  child: Icon(Icons.edit, size: 20, color: Colors.purpleAccent),
-                ),
+              // if (entry.node is MarkdownNode)
+              //   InkWell(
+              //     onTap: () {
+              //       _tappedNode(context);
+              //       fsdui.afterNextBuildDo(() {
+              //         var markdownNode = entry.node as MarkdownNode;
+              //         PropertyButtonMarkdown.showMarkdownEditor(
+              //           markdownNode.data ?? markdownNode.SAMPLE_MD,
+              //           (String? newValue) {
+              //             markdownNode.refreshWithUpdate(
+              //               context,
+              //               () => markdownNode.data = newValue ?? '',
+              //             );
+              //           },
+              //         );
+              //       });
+              //     },
+              //     child: Icon(Icons.edit, size: 20, color: Colors.purpleAccent),
+              //   ),
               // NAMED PROPERTY
               if (entry.node.isANamedPropertyNode() &&
                   ((entry.node is NamedSC &&
