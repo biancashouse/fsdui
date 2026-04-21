@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/model/quill_target_model.dart';
 import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+
 // import 'package:fsdui/src/snippet/pnodes/quill_text_pnode.dart';
 import 'package:fsdui/src/snippet/snodes/quill/widgets/quill_viewer.dart';
 import 'package:flutter_quill/flutter_quill.dart';
@@ -14,19 +15,13 @@ import 'widgets/focus_aware_quill_editor.dart';
 
 part 'quill_text_node.mapper.dart';
 
-const k_sampleDeltaJsonString = '''
-    [
-      {"insert":"Hello "},
-      {"attributes":{"bold":true},"insert":"World"},
-      {"insert":"!\n"}
-    ]
-    ''';
+const k_emptyDeltaJsonString = '[{"insert":"\\n"}]';
 
 @MappableClass()
 class QuillTextNode extends CL with QuillTextNodeMappable {
   String deltaJsonString;
 
-  QuillTextNode({super.name, this.deltaJsonString = k_sampleDeltaJsonString});
+  QuillTextNode({super.name, this.deltaJsonString = k_emptyDeltaJsonString});
 
   CalloutId get quillTextToolbarCID => 'quill-toolbar-$uid';
 
@@ -66,7 +61,9 @@ class QuillTextNode extends CL with QuillTextNodeMappable {
     var gk = createNodeWidgetGK();
 
     Widget editor;
-    if (fsdui.canEditAnyContent() && fsdui.snippetBeingEdited == null && !fsdui.capiBloc.showTappableBorderRects()) {
+    if (fsdui.canEditAnyContent() &&
+        fsdui.snippetBeingEdited == null &&
+        !fsdui.capiBloc.showTappableBorderRects()) {
       editor = Material(
         child: FocusAwareQuillEditor(
           key: gk,
@@ -75,16 +72,11 @@ class QuillTextNode extends CL with QuillTextNodeMappable {
           originalDeltaJsonString: deltaJsonString,
           onChange: (String newValue, {bool forceRefresh = false}) {
             deltaJsonString = newValue;
-            // no need to save - user must explicitly tap the triangle | save pending changes menu
-            // final rootNode = rootNodeOfSnippet();
-            // if (rootNode != null) {
-              //fco.modelRepo.saveNewVersionOfSnippet(rootNode);
-              // also broadcast change
-              // SnippetInfoModel? snippetInfo = fco.appInfo.cachedSnippetInfo(rootNode.name);
-              // snippetInfo?.getChangeNotifier().value = rootNode.toJson();
-// ?            }
-            // do when adding a new info embed
-            // if (forceRefresh) fco.forceRefresh();
+            snippetInfo()?.notifyChange(rootNodeOfSnippet()!);
+          },
+          onChangeImmediate: (String newValue, bool isPending) {
+            deltaJsonString = newValue;
+            snippetInfo()?.changesPendingNotifier.value = isPending;
           },
           // onEditWithToolbarBtnPressed: () {
           //   final rootNode = rootNodeOfSnippet();

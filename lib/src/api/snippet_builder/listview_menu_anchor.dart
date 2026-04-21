@@ -38,11 +38,11 @@ class ListViewMenuAnchor extends StatelessWidget {
         _menuItemButtonWithPI(
           onPressed: () async {
             fsdui.capiBloc.add(
-              CAPIEvent.toggleSnippetVisibility(snippetName: snippetInfo.name),
+              CAPIEvent.toggleSnippetVisibility(snippetName: snippetInfo()?.name),
             );
           },
           child: Text(
-            '${snippetInfo.hide ?? false ? 'show' : 'hide'} snippet',
+            '${snippetInfo()?.hide ?? false ? 'show' : 'hide'} snippet',
           ),
         ),
       ],

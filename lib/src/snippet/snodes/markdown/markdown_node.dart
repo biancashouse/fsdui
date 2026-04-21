@@ -28,8 +28,8 @@ class MarkdownNode extends CL with MarkdownNodeMappable {
     //   name: 'fyi',
     // ),
     FlutterDocPNode(
-      buttonLabel: 'Markdown Editor Plus',
-      webLink: 'https://pub.dev/packages/markdown_editor_plus',
+      buttonLabel: 'Markdown Editor Live',
+      webLink: 'https://pub.dev/packages/markdown_editor_live',
       snode: this,
       name: 'fyi2',
     ),
@@ -52,17 +52,24 @@ class MarkdownNode extends CL with MarkdownNodeMappable {
     // ),
   ];
 
+  // non-serialized; captures the Firestore-loaded value on first build
+  String? _originalData;
+
+  static String _norm(String? s) => (s ?? '').trimRight();
+
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     try {
       setParent(parentNode); // propagating parents down from root
-      //ScrollControllerName? scName = EditablePage.name(context);
-      //possiblyHighlightSelectedNode(scName);
+      _originalData ??= data;
 
       return fsdui.isArticleEditor() || fsdui.canEditAnyContent()
           ? MarkdownEditor(
-              initialValue: data ?? _markdownData,
-              onChanged: (s) {},
+              initialValue: data,
+              onChanged: (s) {
+                data = s;
+                snippetInfo()?.changesPendingNotifier.value = (_norm(s) != _norm(_originalData));
+              },
             )
           : ReadOnlyMarkdown(data ?? _markdownData);
       // final insideListView =

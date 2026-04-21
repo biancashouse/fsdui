@@ -173,6 +173,7 @@ export 'package:logger/src/printers/pretty_printer.dart';
 // re-export
 export 'package:url_launcher/url_launcher.dart';
 export 'package:url_launcher/url_launcher_string.dart';
+export 'package:banner_listtile/banner_listtile.dart';
 
 // export 'src/api/routes/dynamic_page_route.dart';
 export 'src/api/routes/editable_page_route.dart';
@@ -335,6 +336,7 @@ export 'x_fsdui/container_styles_extn.dart';
 export 'x_fsdui/google_font_names_extn.dart';
 export 'x_fsdui/routes_extn.dart';
 export 'x_fsdui/text_styles_extn.dart';
+export 'src/snippet/pnodes/groups/text_style_properties.dart';
 export 'src/snippet/pnodes/groups/text_style_properties.dart';
 
 // global instance singleton

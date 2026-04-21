@@ -34,7 +34,7 @@ class QuillTextNodeMapper extends SubClassMapperBase<QuillTextNode> {
     'deltaJsonString',
     _$deltaJsonString,
     opt: true,
-    def: k_sampleDeltaJsonString,
+    def: k_emptyDeltaJsonString,
   );
   static String _$uid(QuillTextNode v) => v.uid;
   static const Field<QuillTextNode, String> _f$uid = Field(

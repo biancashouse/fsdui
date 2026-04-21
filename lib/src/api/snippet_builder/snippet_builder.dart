@@ -269,11 +269,7 @@ class SnippetBuilderState extends State<SnippetBuilder>
 
     bool isPublishedVersion = fsdui.isEditingVersionPublished(snippetName);
 
-    Color triangleColor = Colors.purpleAccent; // in edit mode
-    if (!isPublishedVersion) triangleColor = Colors.deepOrange;
-    if (snippetInfo.changesPending(updatedSnippetJson)) {
-      triangleColor = Colors.yellowAccent;
-    }
+    Color baseTriangleColor = isPublishedVersion ? Colors.purpleAccent : Colors.deepOrange;
 
     // orange indicator when not signed in and
     // showing an unpublished snippet
@@ -302,11 +298,14 @@ class SnippetBuilderState extends State<SnippetBuilder>
         Align(
           alignment: Alignment.topRight,
           child: PointerInterceptor(
-            child: SnippetMenuAnchor(
-              this,
-              anchorWidget: AnchorWidgetEnum.Triangle,
-              triangleColor: triangleColor,
-              snippetInfo: snippetInfo,
+            child: ValueListenableBuilder<bool>(
+              valueListenable: snippetInfo.changesPendingNotifier,
+              builder: (context, isPending, _) => SnippetMenuAnchor(
+                this,
+                anchorWidget: AnchorWidgetEnum.Triangle,
+                triangleColor: isPending ? Colors.yellowAccent : baseTriangleColor,
+                snippetInfo: snippetInfo,
+              ),
             ),
           ),
         ),

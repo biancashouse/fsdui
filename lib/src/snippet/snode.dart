@@ -139,8 +139,11 @@ abstract class SNode extends Node with SNodeMappable {
 
   bool get isASnippetRoot => name != null;
 
-  SnippetInfoModel? get snippetInfo =>
-      isASnippetRoot ? fsdui.appInfo.cachedSnippetInfo(name!) : null;
+  // if part of a snippet, return
+  SnippetInfoModel? snippetInfo() {
+    final name = snippetName;
+    return name != null ? fsdui.appInfo.cachedSnippetInfo(name) : null;
+  }
 
   static bool isHotspotCalloutContent(String sname) =>
       int.tryParse(sname) != null || /*legacy*/ sname.startsWith('T-');
@@ -1301,13 +1304,12 @@ abstract class SNode extends Node with SNodeMappable {
         snippetInfo.publishedVersionId == snippetInfo.editingVersionId;
 
     return fsdui.canEditAnyContent()
-        ? ValueListenableBuilder<String>(
-            // must assume snippetInfo will be in cache
-            valueListenable: snippetInfo.getChangeNotifier(),
-            builder: (context, value, child) => _superEditorBanner(
+        ? ValueListenableBuilder<bool>(
+            valueListenable: snippetInfo.changesPendingNotifier,
+            builder: (context, isPending, child) => _superEditorBanner(
               snippetWidget,
               editingPublishedVersion,
-              snippetInfo.changesPending(value),
+              isPending,
             ),
           )
         : snippetWidget;
@@ -1339,13 +1341,8 @@ abstract class SNode extends Node with SNodeMappable {
       return const Offstage();
     }
 
-    return fsdui.isArticleEditor()
-        ? ValueListenableBuilder<String>(
-            // must assume snippetInfo will be in cache
-            valueListenable: snippetInfo.getChangeNotifier(),
-            builder: (context, value, child) =>
-                _articleEditorBanner(snippetWidget, snippetInfo),
-          )
+    return fsdui.isArticleEditor() || fsdui.canEditAnyContent()
+        ? _articleEditorBanner(snippetWidget, snippetInfo)
         : snippetWidget;
   }
 
@@ -1398,79 +1395,70 @@ abstract class SNode extends Node with SNodeMappable {
   ) {
     return SizedBox(
       width: double.infinity,
-      child: Banner(
-        message: 'edit',
-        location: BannerLocation.topEnd,
-        color: Colors.pink,
-        textStyle: TextStyle(color: Colors.black),
-        child: Stack(
-          children: [
-            snippetWidget,
-            Align(
-              alignment: Alignment.topRight,
-              child: DropdownButton<String>(
-                // key: fco.authIconGK,
-                items: [
-                  _dropdownItemWithPI(
-                    value: 'new-article',
-                    child: Text('+ new article (text)'),
-                  ),
-                  _dropdownItemWithPI(
-                    value: 'new-md',
-                    child: Text('+ new article (markdown)'),
-                  ),
-                  _dropdownItemWithPI(
-                    value: 'yt',
-                    child: Text('+ youtube clip'),
-                  ),
-                ],
-                underline: Offstage(),
-                focusColor: Colors.transparent,
-                icon: PointerInterceptor(
-                  child: Icon(
-                    Icons.more_vert,
-                    color: Colors.purpleAccent,
-                    size: 24,
-                  ),
+      child: Stack(
+        children: [
+          snippetWidget,
+          Align(
+            alignment: Alignment.topRight,
+            child: DropdownButton<String>(
+              // key: fco.authIconGK,
+              items: [
+                _dropdownItemWithPI(
+                  value: 'new-article',
+                  child: Text('+ new article (text)'),
                 ),
-                dropdownColor: Colors.white,
-                onChanged: (value) {
-                  if (this is! ArticleListViewNode) {
-                    return;
-                  }
-                  switch (value) {
-                    case 'new-article':
-                      fsdui.capiBloc.add(
-                        CAPIEvent.prependArticle(
-                          listNode: this as ArticleListViewNode,
-                          type: QuillTextNode,
-                        ),
-                      );
-                      break;
-                    case 'new-md':
-                      fsdui.capiBloc.add(
-                        CAPIEvent.prependArticle(
-                          listNode: this as ArticleListViewNode,
-                          type: MarkdownNode,
-                        ),
-                      );
-                      break;
-                    case 'yt':
-                      fsdui.capiBloc.add(
-                        CAPIEvent.prependArticle(
-                          listNode: this as ArticleListViewNode,
-                          type: YTNode,
-                        ),
-                      );
-                      break;
-                    default:
-                      break;
-                  }
-                },
+                _dropdownItemWithPI(
+                  value: 'new-md',
+                  child: Text('+ new article (markdown)'),
+                ),
+                _dropdownItemWithPI(value: 'yt', child: Text('+ youtube clip')),
+              ],
+              underline: Offstage(),
+              focusColor: Colors.transparent,
+              icon: PointerInterceptor(
+                child: Icon(
+                  Icons.more_vert,
+                  color: Colors.purpleAccent,
+                  size: 24,
+                ),
               ),
+              dropdownColor: Colors.white,
+              onChanged: (value) {
+                if (this is! ArticleListViewNode) {
+                  return;
+                }
+                switch (value) {
+                  case 'new-article':
+                    fsdui.capiBloc.add(
+                      CAPIEvent.prependArticle(
+                        listNode: this as ArticleListViewNode,
+                        type: QuillTextNode,
+                      ),
+                    );
+                    break;
+                  case 'new-md':
+                    fsdui.capiBloc.add(
+                      CAPIEvent.prependArticle(
+                        listNode: this as ArticleListViewNode,
+                        type: MarkdownNode,
+                      ),
+                    );
+                    break;
+                  case 'yt':
+                    fsdui.capiBloc.add(
+                      CAPIEvent.prependArticle(
+                        listNode: this as ArticleListViewNode,
+                        type: YTNode,
+                      ),
+                    );
+                    break;
+                  default:
+                    break;
+                }
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

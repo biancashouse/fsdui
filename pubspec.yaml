@@ -145,6 +145,7 @@ dependencies:
   flutter_callouts:
     path: ../flutter_callouts
   markdown_editor_live: ^0.6.0
+  banner_listtile: ^2.3.0
 
 dev_dependencies:
   flutter_test:

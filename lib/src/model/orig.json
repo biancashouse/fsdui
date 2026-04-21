@@ -1,0 +1,2 @@
+{
+  \"name\":\"/articles\",\"child\":{\"name\":null,\"padding\":null,\"shrinkWrap\":null,\"children\":[{\"name\":null,\"deltaJsonString\":\"    [\n      {\\"insert\\":\\"Hello \\"},\n      {\\"attributes\\":{\\"bold\\":true},\\"insert\\":\\"World\\"},\n      {\\"insert\\":\\"!\n\\"}\n    ]\n    \",\"DK:snode\":\"CL\",\"DK:cl\":\"QuillTextNode\"}],\"DK:snode\":\"CL\",\"DK:cl\":\"ScrollViewNode\",\"DK:scrollview\":\"BoxScrollViewNode\",\"DK:boxscrollview\":\"ListViewNode\",\"DK:listview\":\"ArticleListViewNode\"},\"DK:snode\":\"SC\",\"DK:sc\":\"CenterNode\"}
