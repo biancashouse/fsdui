@@ -325,10 +325,14 @@ class _BoldMarkdownEditorState extends State<_BoldMarkdownEditor> {
     if (event is! KeyDownEvent) return KeyEventResult.ignored;
 
     final isMac = defaultTargetPlatform == TargetPlatform.macOS;
+    final modPressed = isMac ? HardwareKeyboard.instance.isMetaPressed : HardwareKeyboard.instance.isControlPressed;
 
-    if (event.logicalKey == LogicalKeyboardKey.keyB &&
-        (isMac ? HardwareKeyboard.instance.isMetaPressed : HardwareKeyboard.instance.isControlPressed)) {
+    if (event.logicalKey == LogicalKeyboardKey.keyB && modPressed) {
       _toggleBold();
+      return KeyEventResult.handled;
+    }
+    if (event.logicalKey == LogicalKeyboardKey.keyI && modPressed) {
+      _toggleItalic();
       return KeyEventResult.handled;
     }
     if (event.logicalKey == LogicalKeyboardKey.tab) {
@@ -422,6 +426,95 @@ class _BoldMarkdownEditorState extends State<_BoldMarkdownEditor> {
                       : cursor <= closePos     ? cursor - 2
                       : cursor <= closePos + 2 ? closePos - 2
                       :                          cursor - 4;
+
+      _controller.value = TextEditingValue(
+        text: newText,
+        selection: TextSelection.collapsed(offset: newCursor),
+      );
+      widget.onChanged?.call(newText);
+    }
+  }
+
+  (int, int)? _italicRegionAtCursor() {
+    final text = _controller.text;
+    final pos = _controller.selection.baseOffset;
+    if (pos < 0 || pos > text.length) return null;
+
+    int lineStart = pos;
+    while (lineStart > 0 && text[lineStart - 1] != '\n') lineStart--;
+    int lineEnd = pos;
+    while (lineEnd < text.length && text[lineEnd] != '\n') lineEnd++;
+
+    final line = text.substring(lineStart, lineEnd);
+    final posInLine = pos - lineStart;
+
+    // Collect single-* positions, skipping ** pairs
+    final markers = <int>[];
+    for (int i = 0; i < line.length; i++) {
+      if (line[i] == '*') {
+        if (i + 1 < line.length && line[i + 1] == '*') {
+          i++; // skip both chars of **
+        } else {
+          markers.add(i);
+        }
+      }
+    }
+
+    for (int i = 0; i + 1 < markers.length; i += 2) {
+      final open = markers[i];
+      final close = markers[i + 1];
+      if (posInLine >= open && posInLine <= close + 1) {
+        return (lineStart + open, lineStart + close);
+      }
+    }
+    return null;
+  }
+
+  void _toggleItalic() {
+    final sel = _controller.selection;
+    if (!sel.isValid) return;
+    final text = _controller.text;
+
+    if (!sel.isCollapsed) {
+      final selected = text.substring(sel.start, sel.end);
+      if (selected.contains('\n')) return;
+
+      final isItalic = selected.length >= 3
+          && selected[0] == '*' && selected[1] != '*'
+          && selected[selected.length - 1] == '*' && selected[selected.length - 2] != '*';
+      final String newText;
+      final int newStart, newEnd;
+
+      if (isItalic) {
+        final inner = selected.substring(1, selected.length - 1);
+        newText = text.substring(0, sel.start) + inner + text.substring(sel.end);
+        newStart = sel.start;
+        newEnd = sel.start + inner.length;
+      } else {
+        newText = '${text.substring(0, sel.start)}*$selected*${text.substring(sel.end)}';
+        newStart = sel.start + 1;
+        newEnd = sel.end + 1;
+      }
+
+      _controller.value = TextEditingValue(
+        text: newText,
+        selection: TextSelection(baseOffset: newStart, extentOffset: newEnd),
+      );
+      widget.onChanged?.call(newText);
+    } else {
+      final region = _italicRegionAtCursor();
+      if (region == null) return;
+      final (openPos, closePos) = region;
+
+      final inner = text.substring(openPos + 1, closePos);
+      final newText = text.substring(0, openPos) + inner + text.substring(closePos + 1);
+
+      final cursor = sel.baseOffset;
+      final newCursor = cursor <= openPos      ? cursor
+                      : cursor <= openPos + 1  ? openPos
+                      : cursor <= closePos     ? cursor - 1
+                      : cursor <= closePos + 1 ? closePos - 1
+                      :                          cursor - 2;
 
       _controller.value = TextEditingValue(
         text: newText,

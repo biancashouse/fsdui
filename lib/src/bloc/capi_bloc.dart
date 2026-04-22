@@ -1424,7 +1424,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     //   ..treeC = possiblyNewTreeC;
 
     fsdui.appInfo
-        .cachedSnippetInfo(state.snippetBeingEdited!.getRootNode().name!)
+        .cachedSnippetInfo(r.name!)
         ?.notifyChange(r);
 
     emit(
