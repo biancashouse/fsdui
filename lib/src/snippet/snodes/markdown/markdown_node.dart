@@ -1,5 +1,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
+import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:fsdui/src/snippet/pnodes/markdown_pnode.dart';
@@ -64,7 +66,7 @@ class MarkdownNode extends CL with MarkdownNodeMappable {
       _originalData ??= data;
 
       return fsdui.isArticleEditor() || fsdui.canEditAnyContent()
-          ? MarkdownEditor(
+          ? _BoldMarkdownEditor(
               initialValue: data,
               onChanged: (s) {
                 data = s;
@@ -271,4 +273,297 @@ Block code
 
 Try typing here!
 """;
+}
+
+// Wraps MarkdownEditingController directly so we can intercept Cmd/Ctrl+B
+// and toggle bold on the selection without crossing paragraph boundaries.
+// Tab and Enter handling is replicated from the markdown_editor_live package.
+class _BoldMarkdownEditor extends StatefulWidget {
+  final String? initialValue;
+  final ValueChanged<String>? onChanged;
+
+  const _BoldMarkdownEditor({this.initialValue, this.onChanged});
+
+  @override
+  State<_BoldMarkdownEditor> createState() => _BoldMarkdownEditorState();
+}
+
+class _BoldMarkdownEditorState extends State<_BoldMarkdownEditor> {
+  late final MarkdownEditingController _controller;
+  late final FocusNode _focusNode;
+
+  static final _unorderedListPattern = RegExp(r'^([ \t]*)([*+-])([ \t]+)(.*)$');
+  static final _orderedListPattern = RegExp(r'^([ \t]*)(\d+)(\.)([ \t]+)(.*)$');
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = MarkdownEditingController(text: widget.initialValue);
+    _controller.addListener(_onSelectionChanged);
+    _focusNode = FocusNode();
+    _focusNode.addListener(_onFocusChanged);
+  }
+
+  @override
+  void dispose() {
+    _focusNode.removeListener(_onFocusChanged);
+    _controller.removeListener(_onSelectionChanged);
+    _controller.dispose();
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  void _onFocusChanged() {
+    if (!_focusNode.hasFocus) _controller.focusedLine = null;
+  }
+
+  void _onSelectionChanged() {
+    _controller.updateFocusedLineFromSelection();
+  }
+
+  KeyEventResult _handleKeyEvent(FocusNode node, KeyEvent event) {
+    if (event is! KeyDownEvent) return KeyEventResult.ignored;
+
+    final isMac = defaultTargetPlatform == TargetPlatform.macOS;
+
+    if (event.logicalKey == LogicalKeyboardKey.keyB &&
+        (isMac ? HardwareKeyboard.instance.isMetaPressed : HardwareKeyboard.instance.isControlPressed)) {
+      _toggleBold();
+      return KeyEventResult.handled;
+    }
+    if (event.logicalKey == LogicalKeyboardKey.tab) {
+      _insertTab();
+      return KeyEventResult.handled;
+    }
+    if (event.logicalKey == LogicalKeyboardKey.enter) {
+      if (_handleListContinuation()) return KeyEventResult.handled;
+    }
+    return KeyEventResult.ignored;
+  }
+
+  // Returns (openPos, closePos) of the ** pair whose interior contains pos,
+  // by scanning the current line and pairing markers in order.
+  (int, int)? _boldRegionAtCursor() {
+    final text = _controller.text;
+    final pos = _controller.selection.baseOffset;
+    if (pos < 0 || pos > text.length) return null;
+
+    // Determine current line bounds
+    int lineStart = pos;
+    while (lineStart > 0 && text[lineStart - 1] != '\n') lineStart--;
+    int lineEnd = pos;
+    while (lineEnd < text.length && text[lineEnd] != '\n') lineEnd++;
+
+    final line = text.substring(lineStart, lineEnd);
+    final posInLine = pos - lineStart;
+
+    // Collect all ** positions (skip second * of each pair)
+    final markers = <int>[];
+    for (int i = 0; i < line.length - 1; i++) {
+      if (line[i] == '*' && line[i + 1] == '*') {
+        markers.add(i);
+        i++;
+      }
+    }
+
+    // Pair opening/closing markers and check if cursor falls inside
+    for (int i = 0; i + 1 < markers.length; i += 2) {
+      final open = markers[i];
+      final close = markers[i + 1];
+      if (posInLine >= open && posInLine <= close + 2) {
+        return (lineStart + open, lineStart + close);
+      }
+    }
+    return null;
+  }
+
+  void _toggleBold() {
+    final sel = _controller.selection;
+    if (!sel.isValid) return;
+    final text = _controller.text;
+
+    if (!sel.isCollapsed) {
+      // Selection: wrap or unwrap **
+      final selected = text.substring(sel.start, sel.end);
+      if (selected.contains('\n')) return;
+
+      final isBold = selected.startsWith('**') && selected.endsWith('**') && selected.length >= 4;
+      final String newText;
+      final int newStart, newEnd;
+
+      if (isBold) {
+        final inner = selected.substring(2, selected.length - 2);
+        newText = text.substring(0, sel.start) + inner + text.substring(sel.end);
+        newStart = sel.start;
+        newEnd = sel.start + inner.length;
+      } else {
+        newText = '${text.substring(0, sel.start)}**$selected**${text.substring(sel.end)}';
+        newStart = sel.start + 2;
+        newEnd = sel.end + 2;
+      }
+
+      _controller.value = TextEditingValue(
+        text: newText,
+        selection: TextSelection(baseOffset: newStart, extentOffset: newEnd),
+      );
+      widget.onChanged?.call(newText);
+    } else {
+      // Collapsed cursor: remove bold markers if cursor is inside a ** span
+      final region = _boldRegionAtCursor();
+      if (region == null) return;
+      final (openPos, closePos) = region;
+
+      final inner = text.substring(openPos + 2, closePos);
+      final newText = text.substring(0, openPos) + inner + text.substring(closePos + 2);
+
+      final cursor = sel.baseOffset;
+      final newCursor = cursor <= openPos      ? cursor
+                      : cursor <= openPos + 2  ? openPos
+                      : cursor <= closePos     ? cursor - 2
+                      : cursor <= closePos + 2 ? closePos - 2
+                      :                          cursor - 4;
+
+      _controller.value = TextEditingValue(
+        text: newText,
+        selection: TextSelection.collapsed(offset: newCursor),
+      );
+      widget.onChanged?.call(newText);
+    }
+  }
+
+  void _insertTab() {
+    final text = _controller.value.text;
+    final selection = _controller.value.selection;
+    if (!selection.isValid) return;
+    const tabString = '  '; // soft tabs, width 2
+    if (selection.isCollapsed) {
+      final newText = text.substring(0, selection.baseOffset) + tabString + text.substring(selection.baseOffset);
+      _controller.value = TextEditingValue(
+        text: newText,
+        selection: TextSelection.collapsed(offset: selection.baseOffset + tabString.length),
+      );
+    } else {
+      _indentSelectedLines(tabString);
+    }
+  }
+
+  bool _handleListContinuation() {
+    final text = _controller.value.text;
+    final selection = _controller.value.selection;
+    if (!selection.isValid || !selection.isCollapsed) return false;
+
+    final cursor = selection.baseOffset;
+    final lineNum = _lineNumber(cursor);
+    final (lineStart, lineEnd) = _lineRange(lineNum);
+    final line = text.substring(lineStart, lineEnd);
+
+    final unordered = _unorderedListPattern.firstMatch(line);
+    if (unordered != null) {
+      final indent = unordered.group(1)!;
+      final bullet = unordered.group(2)!;
+      final space = unordered.group(3)!;
+      if (unordered.group(4)!.isEmpty) {
+        _removeListPrefix(lineStart, lineEnd);
+      } else {
+        _insertListItem(cursor, '$indent$bullet$space');
+      }
+      return true;
+    }
+
+    final ordered = _orderedListPattern.firstMatch(line);
+    if (ordered != null) {
+      final indent = ordered.group(1)!;
+      final number = int.parse(ordered.group(2)!);
+      final dot = ordered.group(3)!;
+      final space = ordered.group(4)!;
+      if (ordered.group(5)!.isEmpty) {
+        _removeListPrefix(lineStart, lineEnd);
+      } else {
+        _insertListItem(cursor, '$indent${number + 1}$dot$space');
+      }
+      return true;
+    }
+    return false;
+  }
+
+  void _insertListItem(int cursor, String prefix) {
+    final text = _controller.value.text;
+    final newText = '${text.substring(0, cursor)}\n$prefix${text.substring(cursor)}';
+    _controller.value = TextEditingValue(
+      text: newText,
+      selection: TextSelection.collapsed(offset: cursor + 1 + prefix.length),
+    );
+  }
+
+  void _removeListPrefix(int lineStart, int lineEnd) {
+    final text = _controller.value.text;
+    if (lineStart == 0) {
+      _controller.value = TextEditingValue(
+        text: text.substring(lineEnd),
+        selection: const TextSelection.collapsed(offset: 0),
+      );
+    } else {
+      _controller.value = TextEditingValue(
+        text: text.substring(0, lineStart - 1) + text.substring(lineEnd),
+        selection: TextSelection.collapsed(offset: lineStart - 1),
+      );
+    }
+  }
+
+  (int, int) _lineRange(int lineNumber) {
+    final text = _controller.value.text;
+    int current = 0, lineStart = 0;
+    for (int i = 0; i < text.length; i++) {
+      if (current == lineNumber) {
+        int end = i;
+        while (end < text.length && text[end] != '\n') end++;
+        return (lineStart, end);
+      }
+      if (text[i] == '\n') { current++; lineStart = i + 1; }
+    }
+    return current == lineNumber ? (lineStart, text.length) : (0, 0);
+  }
+
+  int _lineNumber(int offset) {
+    final text = _controller.value.text;
+    int line = 0;
+    for (int i = 0; i < offset && i < text.length; i++) {
+      if (text[i] == '\n') line++;
+    }
+    return line;
+  }
+
+  void _indentSelectedLines(String tab) {
+    final text = _controller.value.text;
+    final sel = _controller.value.selection;
+    final startLine = _lineNumber(sel.baseOffset);
+    final endLine = _lineNumber(sel.extentOffset);
+    final lines = text.split('\n');
+    final before = lines.sublist(0, startLine).join('\n');
+    final middle = lines.sublist(startLine, endLine + 1).map((l) => tab + l).join('\n');
+    final after = lines.sublist(endLine + 1).join('\n');
+    final sep = startLine > 0 ? '\n' : '';
+    final sepAfter = endLine < lines.length - 1 ? '\n' : '';
+    _controller.value = TextEditingValue(
+      text: '$before$sep$middle$sepAfter$after',
+      selection: sel,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Focus(
+      focusNode: _focusNode,
+      onKeyEvent: _handleKeyEvent,
+      child: TextField(
+        controller: _controller,
+        onChanged: widget.onChanged,
+        maxLines: null,
+        keyboardType: TextInputType.multiline,
+        decoration: const InputDecoration(
+          contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+        ),
+      ),
+    );
+  }
 }

@@ -332,6 +332,9 @@ class CAPIEvent with _$CAPIEvent {
   const factory CAPIEvent.pasteSiblingAfter() = PasteSiblingAfter;
 
   const factory CAPIEvent.deleteNodeTapped() = DeleteNodeTapped;
+  const factory CAPIEvent.deleteArticle({
+    required SNode articleSnippet,
+}) = DeleteArticle;
 
   const factory CAPIEvent.completeDeletion() = CompleteDeletion;
 

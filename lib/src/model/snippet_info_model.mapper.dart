@@ -55,6 +55,14 @@ class SnippetInfoModelMapper extends ClassMapperBase<SnippetInfoModel> {
     opt: true,
     def: const [],
   );
+  static ValueNotifier<bool> _$changesPendingNotifier(SnippetInfoModel v) =>
+      v.changesPendingNotifier;
+  static const Field<SnippetInfoModel, ValueNotifier<bool>>
+  _f$changesPendingNotifier = Field(
+    'changesPendingNotifier',
+    _$changesPendingNotifier,
+    mode: FieldMode.member,
+  );
 
   @override
   final MappableFields<SnippetInfoModel> fields = const {
@@ -64,6 +72,7 @@ class SnippetInfoModelMapper extends ClassMapperBase<SnippetInfoModel> {
     #autoPublish: _f$autoPublish,
     #hide: _f$hide,
     #versionIds: _f$versionIds,
+    #changesPendingNotifier: _f$changesPendingNotifier,
   };
 
   static SnippetInfoModel _instantiate(DecodingData data) {

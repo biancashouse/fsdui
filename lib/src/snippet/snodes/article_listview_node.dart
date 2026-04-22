@@ -75,8 +75,10 @@ class ArticleListViewNode extends ListViewNode
                   // ),
                   subtitle: childNode.build(context, this),
                   trailing: IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.edit, color: Colors.purpleAccent),
+                    onPressed: () {
+                      fsdui.capiBloc.add(CAPIEvent.deleteArticle(articleSnippet: childNode));
+                    },
+                    icon: const Icon(Icons.delete, color: Colors.red),
                   ),
                 ),
               ),

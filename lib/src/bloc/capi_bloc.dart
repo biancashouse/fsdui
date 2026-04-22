@@ -105,6 +105,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     on<PasteSiblingBefore>((event, emit) => _pasteSiblingBefore(event, emit));
     on<PasteSiblingAfter>((event, emit) => _pasteSiblingAfter(event, emit));
     on<DeleteNodeTapped>((event, emit) => _deleteNodeTapped(event, emit));
+    on<DeleteArticle>((event, emit) => _deleteArticle(event, emit));
     on<CompleteDeletion>((event, emit) => _completeDeletion(event, emit));
     on<SelectedDirectoryOrNode>(
       (event, emit) => _selectedDirectoryOrNode(event, emit),
@@ -572,6 +573,17 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         force: state.force + 1,
       ),
     );
+  }
+
+  Future<void> _deleteArticle(DeleteArticle event, emit) async {
+    event.articleSnippet.removeFromParent();
+    final newSnippet = event.articleSnippet.rootNodeOfSnippet();
+    final snippetName = newSnippet?.snippetName;
+    if (snippetName != null) {
+      fsdui.appInfo.cachedSnippetInfo(snippetName)?.notifyChange(newSnippet!);
+    }
+
+    emit(state.copyWith(force: state.force + 1));
   }
 
   // Future<void> _showCutout(ShowCutout event, emit) async {
@@ -1542,10 +1554,16 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   void _prependChild(SNode selectedNode, emit, SNode newNode) {
     SNode? rootNode = selectedNode.rootNodeOfSnippet();
-    if (rootNode == null) {return;}
+    if (rootNode == null) {
+      return;
+    }
 
-    SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(rootNode.name!);
-    if (snippetInfo == null) {return;}
+    SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(
+      rootNode.name!,
+    );
+    if (snippetInfo == null) {
+      return;
+    }
 
     if (selectedNode is ListViewNode) {
       selectedNode.children.insert(0, newNode);
@@ -1555,11 +1573,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     snippetInfo.notifyChange(rootNode);
     fsdui.modelRepo.saveNewVersionOfSnippet(rootNode);
 
-    emit(
-      state.copyWith(
-        force: state.force + 1,
-      ),
-    );
+    emit(state.copyWith(force: state.force + 1));
   }
 
   void _pasteReplacement(PasteReplacement event, emit) {
