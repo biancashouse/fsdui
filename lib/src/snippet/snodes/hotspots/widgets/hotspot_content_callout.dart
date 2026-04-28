@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/model/alignment_model.dart';
 import 'package:fsdui/src/model/size_model.dart';
@@ -48,8 +47,8 @@ void showHotspotSnippetContentCallout({
     calloutRect: Rect.fromLTWH(
       0,
       0,
-      tc.calloutSize!.width,
-      tc.calloutSize!.height,
+      tc.calloutSize.width,
+      tc.calloutSize.height,
     ),
     alignment: tc.tcAlignment!,
   );
@@ -112,8 +111,8 @@ void showHotspotSnippetContentCallout({
       final Rect calloutRect = Rect.fromLTWH(
         newPos.dx,
         newPos.dy,
-        tc.calloutSize!.width,
-        tc.calloutSize!.height,
+        tc.calloutSize.width,
+        tc.calloutSize.height,
       );
 
       var targetRectSA = fsdui.translateRectForScroll(

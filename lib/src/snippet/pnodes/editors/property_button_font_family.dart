@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/pnodes/editors/property_callout_button.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class PropertyButtonFontFamily extends StatefulWidget {
   final String label;

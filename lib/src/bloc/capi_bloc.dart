@@ -2,13 +2,11 @@ import 'dart:async';
 
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/bloc/snippet_being_edited.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_main_axis_size.dart';
 import 'package:fsdui/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
 
-import '../snippet/snodes/article_listview_node.dart' show ArticleListViewNode;
 
 class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   // late SnippetUndoRedoStack _ur;
@@ -1214,8 +1212,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       }
     } else {
       if ((w is CL && w is! ListViewNode && w is! GridViewNode) ||
-          w is WidgetSpanNode)
+          w is WidgetSpanNode) {
         return;
+      }
       if (selectedNode is InlineSpanNode && w is! InlineSpanNode) return;
       if (w is PollNode && selectedNode is! PollOptionNode) return;
       if (selectedNode is PollOptionNode && w is! PollNode) return;

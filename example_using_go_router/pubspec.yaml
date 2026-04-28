@@ -11,8 +11,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-  banner_listtile: ^2.3.0
-
   fsdui:  #any
     path: ../../fsdui
 
@@ -36,17 +34,3 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
-
-
-
-
-
-
-
-
-
-
-
-
-
-

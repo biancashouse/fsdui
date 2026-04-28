@@ -1,15 +1,12 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/model/size_model.dart';
 import 'package:fsdui/src/snippet/snodes/quill/widgets/quill_target_config_toolbar/quill_target_config_toolbar.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../snippet/pnodes/enums/enum_target_pointer_type.dart';
 import '../snippet/snodes/hotspots/widgets/enum_target_btn_icon.dart';
-import 'alignment_model.dart';
 import 'base_target_model.dart';
 
 part 'quill_target_model.mapper.dart';

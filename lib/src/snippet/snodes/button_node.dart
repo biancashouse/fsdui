@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/pnodes/button_style_pnodes.dart';
 import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:fsdui/src/snippet/pnodes/groups/button_style_properties.dart';
 import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
 import 'package:fsdui/src/snippet/snodes/button_style_hook.dart';
 

@@ -7,7 +7,6 @@ import 'package:fsdui/src/snippet/snodes/quill/widgets/help_icon_embed.dart';
 import 'package:fsdui/src/snippet/snodes/quill/widgets/quill_text_toolbar/quill_text_toolbar.dart';
 
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 /// A Quill editor widget that shows a red border when focused and triggers
 /// an `onChange` callback only when focus is lost and content has changed.

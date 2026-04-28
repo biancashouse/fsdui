@@ -1,5 +1,4 @@
 import 'package:fsdui/fsdui.dart';
-import '../snodes/article_listview_node.dart' show ArticleListViewNode;
 import 'widget_entry.dart';
 
 const List<WidgetEntry> widgetRegistry = [

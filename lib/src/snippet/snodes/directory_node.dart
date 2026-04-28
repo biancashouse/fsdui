@@ -12,6 +12,7 @@ part 'directory_node.mapper.dart';
 
 @MappableClass()
 class DirectoryNode extends MC with DirectoryNodeMappable {
+  @override
   String? name;
 
   DirectoryNode({

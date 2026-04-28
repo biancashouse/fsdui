@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'snippet_info_model.mapper.dart';
 
@@ -167,9 +166,9 @@ class SnippetInfoModel with SnippetInfoModelMappable {
     return i == ids.length - 1 ? null : ids[i + 1];
   }
 
-  VersionId? earliestVersionId() => versionIds?.first;
+  VersionId? earliestVersionId() => versionIds.first;
 
-  VersionId? latestVersionId() => versionIds?.last;
+  VersionId? latestVersionId() => versionIds.last;
 
   bool isFirstVersion() => editingVersionId == earliestVersionId();
 
@@ -200,7 +199,7 @@ class SnippetInfoModel with SnippetInfoModelMappable {
       if (tbd.isNotEmpty) {
         // delete from FB and also from cache
         for (VersionId vId in tbd) {
-          snippetInfo.versionIds?.remove(vId);
+          snippetInfo.versionIds.remove(vId);
           snippetInfo._cachedVersions.remove(vId);
         }
       }

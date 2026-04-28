@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/model/quill_target_model.dart';
-import 'package:fsdui/src/snippet/pnodes/editors/property_button_bool.dart';
 import 'package:fsdui/src/snippet/pnodes/editors/property_button_number_T.dart';
 
 class MoreCalloutConfigSettings extends StatelessWidget {

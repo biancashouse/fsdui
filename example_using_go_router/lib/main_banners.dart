@@ -8,7 +8,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
 }
 
 class ContainerTestView extends StatefulWidget {
-  const ContainerTestView({Key? key}) : super(key: key);
+  const ContainerTestView({super.key});
 
   @override
   State<ContainerTestView> createState() => _ContainerTestViewState();
@@ -71,7 +71,7 @@ class _ContainerTestViewState extends State<ContainerTestView> {
 }
 
 class CustomScreen extends StatelessWidget {
-  const CustomScreen({Key? key}) : super(key: key);
+  const CustomScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -3,7 +3,6 @@ import 'package:fsdui/src/snippet/pnodes/editors/property_callout_button.dart';
 import 'package:fsdui/src/snippet/snodes/widget/fs_folder_tree_and_image_picker.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-import '../../../../fsdui.dart';
 
 class PropertyButtonFSBrowser extends HookWidget {
   final String label;

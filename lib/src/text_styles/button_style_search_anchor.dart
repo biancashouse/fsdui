@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
-import 'package:fsdui/src/snippet/pnodes/groups/button_style_properties.dart';
 import 'package:fsdui/src/text_styles/button_style_suggestions.dart';
 import 'package:fsdui/src/text_styles/style_name_editor.dart';
 

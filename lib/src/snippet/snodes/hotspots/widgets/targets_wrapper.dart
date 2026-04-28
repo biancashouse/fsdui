@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/measuring/size_aware_widget.dart';
 import 'package:fsdui/src/snippet/snodes/hotspots/widgets/targets_wrapper_ontap_menu.dart';
@@ -405,7 +404,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
           clipBehavior: widget.hardEdge ? Clip.hardEdge : Clip.none,
           children: [
             DragTarget<(TargetId, bool)>(
-              builder: (_, __, ___) {
+              builder: (_, _, _) {
                 return GestureDetector(
                   // onLongPressDown: (details) {
                   //   print('*** long press down');

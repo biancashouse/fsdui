@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 
-import 'article_listview_node.dart' show ArticleListViewNode;
 
 part 'listview_node.mapper.dart';
 

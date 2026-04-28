@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/pnodes/editors/property_callout_button.dart';
-import 'package:fsdui/src/snippet/pnodes/groups/button_style_properties.dart';
 import 'package:fsdui/src/text_styles/button_style_search_anchor.dart';
 
 class PropertyButtonButtonStyleNameSearch extends StatelessWidget {

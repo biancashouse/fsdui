@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "$id": "https://biancashouse.com/algorithm.schema.json",
+  "title": "Algorithm",
+  "description": "Any algorithm should conform to this schema",
+  "type": "object",
+  "properties": {
+    "algorithmId": { "type": "string" },
+    "algorithmName": { "type": "string" },
+    "algorithmDescription": { "type": "string" },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    },
+    "steps": {
+      "description": "The root steps of the algorithm",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/known-steps"
+      }
+    }
+  },
+  "required": [
+    "algorithmId",
+    "algorithmName",
+    "steps"
+  ],
+  "$defs": {
+    "known-steps": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/actionStep"
+        },
+        {
+          "$ref": "#/$defs/loopStep"
+        },
+        {
+          "$ref": "#/$defs/decisionStep"
+        },
+        {
+          "$ref": "#/$defs/functionStep"
+        },
+        {
+          "$ref": "#/$defs/awaitFunctionStep"
+        },
+        {
+          "$ref": "#/$defs/asyncFunctionStep"
+        },
+        {
+          "$ref": "#/$defs/returnStep"
+        }
+      ]
+    },
+    "scope": {
+      "type": "array"
+    },
+    "actionStep": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "action" },
+        "txt": { "type": "string" }
+      },
+      "required": ["type", "actionName"]
+    },
+    "loopStep": {
+      "type": "object",
+      "properties": {
+        "type": { "const":  "loop" },
+        "condition": { "type": "string" },
+        "steps": {
+          "allOf": [
+            {
+              "trueSteps": []
+            },
+            {
+              "falseSteps": {
+                "properties": {
+                  "name": {
+                    "const": "B"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "required": ["type", "condition", "steps"]
+    },
+    "decisionStep": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "decision" },
+        "question": { "type": "string" },
+        "trueSteps": { "type": "array", "items": { "$ref": "#/$defs/known-steps" } },
+        "falseSteps": { "type": "array", "items": { "$ref": "#/$defs/known-steps" } }
+      },
+      "required": ["type", "question"]
+    }
+  }
+}

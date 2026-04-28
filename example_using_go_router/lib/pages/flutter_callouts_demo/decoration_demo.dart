@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:fsdui/fsdui.dart';
 
 class DecorationDemoPage extends StatefulWidget {
@@ -161,7 +160,7 @@ class DecorationDemoPageState extends State<DecorationDemoPage> {
   @override
   Widget build(BuildContext context) => PopScope(
     canPop: true,
-    onPopInvokedWithResult: (_, __) {
+    onPopInvokedWithResult: (_, _) {
       fsdui.dismissAll();
     },
     child: SafeArea(

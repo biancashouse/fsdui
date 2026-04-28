@@ -11,7 +11,6 @@ class ListViewMenuAnchor extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final snippetInfo = node.snippetInfo;
-    if (snippetInfo == null) return const Offstage();
     return MenuAnchor(
       builder:
           (BuildContext context, MenuController controller, Widget? child) {

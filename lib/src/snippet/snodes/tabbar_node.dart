@@ -10,7 +10,6 @@ import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/text_style_pnodes.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'tabbar_node.mapper.dart';
 

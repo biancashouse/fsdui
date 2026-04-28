@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'capi_event.freezed.dart';
 

@@ -6,9 +6,7 @@ import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:fsdui/src/snippet/pnodes/int_pnode.dart';
-import 'package:fsdui/src/snippet/snodes/abstract_boxscrollview_node.dart';
 
-import '../pnodes/edge_insets_pnode.dart';
 
 part 'gridview_node.mapper.dart';
 

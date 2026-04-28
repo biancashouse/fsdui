@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/api/editable_page/snippet_editor_side_panel.dart';
 import 'package:fsdui/src/api/editable_page/tappable_node_borders.dart';
@@ -124,19 +123,23 @@ class EditablePageState extends State<EditablePage> {
       },
       buildWhen: (previous, current) {
         if (_needsToPopulateRects) return true;
-        if (previous.activeSnippetName != current.activeSnippetName)
+        if (previous.activeSnippetName != current.activeSnippetName) {
           return true;
+        }
         if ((previous.snippetBeingEdited == null) !=
-            (current.snippetBeingEdited == null))
+            (current.snippetBeingEdited == null)) {
           return true;
+        }
         // update border rects on selection change
         if (previous.snippetBeingEdited?.selectedNode !=
-            current.snippetBeingEdited?.selectedNode)
+            current.snippetBeingEdited?.selectedNode) {
           return true;
+        }
         if ((previous.isSignedInAsSuperEditor !=
                 current.isSignedInAsSuperEditor) &&
-            !fsdui.canEditAnyContent())
+            !fsdui.canEditAnyContent()) {
           return true;
+        }
         if (current.onlyTargetsWrappers) return false;
         return false;
       },

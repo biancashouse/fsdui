@@ -9,9 +9,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-  firebase_core: ^4.2.1
-  cloud_firestore: ^6.1.0
-
   fsdui:  #any
     path: ../../fsdui
     

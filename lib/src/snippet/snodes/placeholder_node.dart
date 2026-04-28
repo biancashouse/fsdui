@@ -11,6 +11,7 @@ part 'placeholder_node.mapper.dart';
 
 @MappableClass()
 class PlaceholderNode extends CL with PlaceholderNodeMappable {
+  @override
   String? name;
 
   // String? centredLabel;

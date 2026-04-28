@@ -2,12 +2,10 @@ import 'dart:math';
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/model/size_model.dart';
 import 'package:fsdui/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
-import 'package:json_annotation/json_annotation.dart';
 
 import '../snippet/pnodes/enums/enum_target_pointer_type.dart';
 import '../snippet/snodes/hotspots/widgets/enum_target_btn_icon.dart';
@@ -285,7 +283,7 @@ class HotspotTargetModel extends TargetConfigModel
     Offset initialCalloutPos = fsdui.calculateCalloutTopLeft(
       // targetRect: inflateRectByFactor_fromCenter(gk!.globalPaintBounds()!, getScale(wrapperState)),
       targetRect: targetRect,
-      calloutRect: Rect.fromLTWH(0, 0, calloutSize!.width, calloutSize!.height),
+      calloutRect: Rect.fromLTWH(0, 0, calloutSize.width, calloutSize.height),
       alignment: tcAlignment!,
     );
 
@@ -326,8 +324,8 @@ class HotspotTargetModel extends TargetConfigModel
       //   tcAlignment?.y ?? 0.0,
       // ),
       initialCalloutPos: initialCalloutPosSA,
-      initialCalloutW: calloutSize?.width,
-      initialCalloutH: calloutSize?.height,
+      initialCalloutW: calloutSize.width,
+      initialCalloutH: calloutSize.height,
       minHeight: minHeight + 4,
       resizeableH: !justPlaying && canResizeH,
       resizeableV: !justPlaying && canResizeV,
@@ -345,8 +343,8 @@ class HotspotTargetModel extends TargetConfigModel
         final Rect calloutRect = Rect.fromLTWH(
           newPos.dx,
           newPos.dy,
-          calloutSize!.width,
-          calloutSize!.height,
+          calloutSize.width,
+          calloutSize.height,
         );
 
         // calc alignment that positions the callout at its final separation

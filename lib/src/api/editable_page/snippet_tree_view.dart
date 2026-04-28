@@ -21,16 +21,7 @@ class SnippetTreeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SnippetTreeController? treeC = snippetBeingEdited.treeC;
-    if (treeC == null) {
-      return Error(
-        "SnippetTreeView",
-        color: Colors.green,
-        size: 32,
-        errorMsg: "null treeC!",
-        key: GlobalKey(),
-      );
-    }
+    final SnippetTreeController treeC = snippetBeingEdited.treeC;
     return TreeView<SNode>(
       shrinkWrap: shrinkWrap,
       physics: shrinkWrap ? const NeverScrollableScrollPhysics() : null,

@@ -2,7 +2,6 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
-import 'package:json_annotation/json_annotation.dart';
 
 part 'hotspots_node.mapper.dart';
 

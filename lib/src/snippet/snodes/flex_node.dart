@@ -5,7 +5,6 @@ import 'package:fsdui/src/snippet/pnodes/enum_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_cross_axis_alignment.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_main_axis_alignment.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_main_axis_size.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../pnodes/fyi_pnodes.dart';
 

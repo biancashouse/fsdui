@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'size_model.dart';
 

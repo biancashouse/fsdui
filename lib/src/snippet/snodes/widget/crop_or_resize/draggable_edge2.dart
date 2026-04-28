@@ -10,7 +10,7 @@ class DraggableEdge2 extends StatelessWidget {
   final double thickness;
   final ImageCropperResizerState parent;
 
-  const DraggableEdge2({required this.side, required this.thickness, required this.parent, Key? key}) : super(key: key);
+  const DraggableEdge2({required this.side, required this.thickness, required this.parent, super.key});
 
   Axis axis() {
     switch (side) {

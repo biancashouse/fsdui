@@ -3,12 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/pnodes/bool_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/enum_pnode.dart';
-import 'package:fsdui/src/snippet/snodes/custom_scrollview_node.dart';
-import 'package:fsdui/src/snippet/snodes/pageview_node.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../pnodes/fyi_pnodes.dart';
-import 'abstract_boxscrollview_node.dart';
 
 part 'abstract_scrollview_node.mapper.dart';
 

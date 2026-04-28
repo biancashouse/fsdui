@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
-import 'package:go_router/go_router.dart';
 
 // same as GoRoute, with onExit to dismiss any callouts
 class EditablePageRoute extends GoRoute {

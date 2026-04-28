@@ -1,7 +1,6 @@
 // ignore_for_file: camel_case_types
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'snippet_menu_anchor.dart'
@@ -230,7 +229,7 @@ class SnippetBuilderState extends State<SnippetBuilder>
                       color: Colors.red,
                       size: 18,
                       errorMsg:
-                          "${snippetName}: ${snapshot.error.toString()}",
+                          "$snippetName: ${snapshot.error.toString()}",
                       key: GlobalKey(),
                     );
                   }

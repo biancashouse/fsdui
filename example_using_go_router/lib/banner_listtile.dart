@@ -134,7 +134,7 @@ class BannerListTile extends StatelessWidget {
   ///Otherwise height & width must be given or it will take all the available space it get.
   ///
   const BannerListTile({
-    Key? key,
+    super.key,
     this.bannerText,
     this.bannerSize = 40.0,
     this.showBanner = true,
@@ -167,7 +167,7 @@ class BannerListTile extends StatelessWidget {
     this.onLongPress,
     this.onHover,
     this.onDoubleTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -1,12 +1,9 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
-import 'package:fsdui/src/snippet/pnodes/bool_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/edge_insets_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/enum_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'singlechildscrollview_node.mapper.dart';
 
@@ -26,7 +23,7 @@ class SingleChildScrollViewNode extends SC
   });
 
   @JsonKey(includeFromJson: false, includeToJson: false)
-  ScrollController _sc = ScrollController();
+  final ScrollController _sc = ScrollController();
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [

@@ -14,6 +14,7 @@ part 'stepper_node.mapper.dart';
 @MappableClass()
 class StepperNode extends MC with StepperNodeMappable {
   StepperTypeEnum type;
+  @override
   String?
       name; // required iot allocate snippet names to step widgets (title, subtitle and content)
 

@@ -1,0 +1,313 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "algorithm.schema.json",
+  "title": "Algorithm",
+  "description": "A schema for storing an Algorithm as JSON",
+  "$comment": "Schema-to-renderer name mapping (see GEOMETRY.md): Action→ActionStep, AwaitFunctionCall→AwaitActionStep, AsyncFunctionCall→AsyncActionStepNode, Function→FunctionStep, Loop→LoopStepNode, Decision→DecisionStepNode, Return→ReturnStep. Rendering notes: (1) Function rect displays 'name' only; 'description' is available for hover/tooltip. (2) Return pill displays 'label' if present, else 'valueExpression' if present, else stringified 'value', else empty.",
+  "type": "object",
+  "required": [
+    "name",
+    "description",
+    "steps"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name of the algorithm"
+    },
+    "description": {
+      "type": "string",
+      "description": "A description of what the algorithm does"
+    },
+    "parameters": {
+      "type": "array",
+      "description": "The input parameters accepted by this algorithm",
+      "items": {
+        "$ref": "#/$defs/Parameter"
+      }
+    },
+    "steps": {
+      "type": "array",
+      "description": "The root list of steps in the algorithm",
+      "items": {
+        "$ref": "#/$defs/Step"
+      }
+    }
+  },
+  "$defs": {
+    "Parameter": {
+      "description": "A named, typed parameter with an optional description and default value.",
+      "type": "object",
+      "required": [
+        "name",
+        "type"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The parameter name"
+        },
+        "type": {
+          "type": "string",
+          "description": "The data type of the parameter (e.g. string, number, boolean, object, array)"
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of what the parameter represents"
+        },
+        "default": {
+          "description": "An optional default value for the parameter (any type)"
+        }
+      }
+    },
+    "Step": {
+      "description": "Abstract base type for all step types. Discriminated by the 'type' property.",
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "discriminator": {
+        "propertyName": "type"
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/Action"
+        },
+        {
+          "$ref": "#/$defs/Loop"
+        },
+        {
+          "$ref": "#/$defs/Decision"
+        },
+        {
+          "$ref": "#/$defs/Function"
+        },
+        {
+          "$ref": "#/$defs/AwaitFunctionCall"
+        },
+        {
+          "$ref": "#/$defs/AsyncFunctionCall"
+        },
+        {
+          "$ref": "#/$defs/Return"
+        }
+      ]
+    },
+    "Action": {
+      "description": "A simple step that performs an action described by text.",
+      "type": "object",
+      "required": [
+        "type",
+        "txt"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "Action"
+        },
+        "txt": {
+          "type": "string",
+          "description": "The text describing the action to perform"
+        }
+      }
+    },
+    "Loop": {
+      "description": "A step that repeats a sequence of steps.",
+      "type": "object",
+      "required": [
+        "type",
+        "txt",
+        "steps"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "Loop"
+        },
+        "txt": {
+          "type": "string",
+          "description": "The loop condition or description"
+        },
+        "steps": {
+          "type": "array",
+          "description": "The steps to execute in each iteration of the loop",
+          "items": {
+            "$ref": "#/$defs/Step"
+          }
+        }
+      }
+    },
+    "Decision": {
+      "description": "A step that branches execution based on a condition.",
+      "type": "object",
+      "required": [
+        "type",
+        "condition",
+        "trueSteps",
+        "falseSteps"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "Decision"
+        },
+        "condition": {
+          "type": "string",
+          "description": "The condition expression to evaluate"
+        },
+        "trueSteps": {
+          "type": "array",
+          "description": "Steps to execute when the condition is true",
+          "items": {
+            "$ref": "#/$defs/Step"
+          }
+        },
+        "falseSteps": {
+          "type": "array",
+          "description": "Steps to execute when the condition is false",
+          "items": {
+            "$ref": "#/$defs/Step"
+          }
+        }
+      }
+    },
+    "Function": {
+      "description": "A reusable named block of steps, callable by its ID.",
+      "type": "object",
+      "required": [
+        "type",
+        "id",
+        "name",
+        "steps"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "Function"
+        },
+        "id": {
+          "type": "string",
+          "description": "A unique identifier for this function, referenced by AwaitFunctionCall and AsyncFunctionCall"
+        },
+        "name": {
+          "type": "string",
+          "description": "A human-readable name for this function"
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of what this function does"
+        },
+        "parameters": {
+          "type": "array",
+          "description": "The input parameters accepted by this function",
+          "items": {
+            "$ref": "#/$defs/Parameter"
+          }
+        },
+        "steps": {
+          "type": "array",
+          "description": "The steps that make up the function body",
+          "items": {
+            "$ref": "#/$defs/Step"
+          }
+        }
+      }
+    },
+    "AwaitFunctionCall": {
+      "description": "A step that calls a Function by ID and blocks until it returns.",
+      "type": "object",
+      "required": [
+        "type",
+        "functionId"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "AwaitFunctionCall"
+        },
+        "label": {
+          "type": "string",
+          "description": "The display label rendered inside the step's rect"
+        },
+        "functionId": {
+          "type": "string",
+          "description": "The ID of the Function to call and await"
+        },
+        "arguments": {
+          "type": "object",
+          "description": "Key-value pairs mapping parameter names to argument values",
+          "additionalProperties": true
+        }
+      }
+    },
+    "AsyncFunctionCall": {
+      "description": "A step that calls a Function asynchronously, with success and failure handlers.",
+      "type": "object",
+      "required": [
+        "type",
+        "functionId",
+        "successSteps",
+        "failedSteps"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "AsyncFunctionCall"
+        },
+        "label": {
+          "type": "string",
+          "description": "The display label rendered inside the step's rect"
+        },
+        "functionId": {
+          "type": "string",
+          "description": "The ID of the Function to call asynchronously"
+        },
+        "arguments": {
+          "type": "object",
+          "description": "Key-value pairs mapping parameter names to argument values",
+          "additionalProperties": true
+        },
+        "successSteps": {
+          "type": "array",
+          "description": "Steps to execute if the async call succeeds",
+          "items": {
+            "$ref": "#/$defs/Step"
+          }
+        },
+        "failedSteps": {
+          "type": "array",
+          "description": "Steps to execute if the async call fails",
+          "items": {
+            "$ref": "#/$defs/Step"
+          }
+        }
+      }
+    },
+    "Return": {
+      "description": "A step that returns from the current algorithm or function, optionally with a value.",
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "Return"
+        },
+        "label": {
+          "type": "string",
+          "description": "The display label rendered inside the return pill. If omitted, the renderer should display valueExpression if present, otherwise stringify value, otherwise leave empty."
+        },
+        "value": {
+          "description": "A literal return value (any type: string, number, boolean, object, or array)"
+        },
+        "valueExpression": {
+          "type": "string",
+          "description": "An expression string evaluated as the return value (e.g. a variable reference or formula)"
+        }
+      }
+    }
+  }
+}

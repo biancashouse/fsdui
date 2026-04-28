@@ -5,7 +5,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 
-import 'crop_image.dart';
 
 class FilePickerPopupMenu extends StatefulWidget {
   const FilePickerPopupMenu({super.key});

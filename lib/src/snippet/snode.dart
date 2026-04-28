@@ -6,7 +6,6 @@ import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/snode_widget.dart';
 import 'package:fsdui/src/api/editable_page/snippet_editor_side_panel.dart';
 import 'package:fsdui/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'widget_picker/quick_pick_panel.dart';
 import 'widget_picker/widget_entry.dart';
@@ -230,7 +229,7 @@ abstract class SNode extends Node with SNodeMappable {
   GlobalKey? _nodeWidgetGK; // gets used in toWidget()
 
   SNode? rootNodeOfSnippet() {
-    if (this.isASnippetRoot) {
+    if (isASnippetRoot) {
       return this;
     } else if (getParent() is! SNode) {
       return null;
@@ -356,7 +355,7 @@ abstract class SNode extends Node with SNodeMappable {
 
   void tappedToEditSnippetNode() {
     // fco.logger.i("${toString()} tapped");
-    SNode? rootNode = this.isASnippetRoot ? this : rootNodeOfSnippet();
+    SNode? rootNode = isASnippetRoot ? this : rootNodeOfSnippet();
     SnippetName? snippetName = rootNode?.name;
     if (snippetName == null) return;
     // maybe a page snippet, so check name in appInfo: maybe prefix with /
@@ -895,7 +894,7 @@ abstract class SNode extends Node with SNodeMappable {
   bool parentIsValid() {
     // this must be a child of it's parent
     final parent = getParent();
-    if (parent == null && this.isASnippetRoot) {
+    if (parent == null && isASnippetRoot) {
       return true; // must be a snippetRootNode; ignore
     }
     if (parent is SC && parent.child == this) return true;
@@ -2770,7 +2769,7 @@ abstract class SNode extends Node with SNodeMappable {
         });
       } else if (action == NodeAction.addChild) {
         // auto-select if its a named child property node
-        if (this.isANamedPropertyNode() && fsdui.selectedNode != this) {
+        if (isANamedPropertyNode() && fsdui.selectedNode != this) {
           fsdui.capiBloc.add(CAPIEvent.selectNode(node: this));
           fsdui.afterNextBuildDo(() {
             fsdui.capiBloc.add(CAPIEvent.appendChild(type: childType));

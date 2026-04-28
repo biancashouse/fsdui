@@ -201,15 +201,6 @@ class StringOrNumberEditorState extends State<StringOrNumberEditor> {
         FilteringTextInputFormatter.allow(RegExp(r'^[\d/.]*$')),
       if (widget.inputType == int)
         FilteringTextInputFormatter.allow(RegExp(r'^[\d]*$')),
-      if (!widget.canExpand)
-        TextInputFormatter.withFunction((oldValue, newValue) {
-          int newLines = newValue.text.split('\n').length;
-          if (newLines > widget.maxLines) {
-            return oldValue;
-          } else {
-            return newValue;
-          }
-        }),
     ];
 
     // Type T = widget.inputType;

@@ -15,10 +15,9 @@ import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart'
 
 // import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
 // import 'package:fsdui/src/snippet/pnodes/uml_string_pnode.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
 // import '../../svg/web_svg_view.dart' show WebSvgView;
-import '../../flutter_uml/lib/flutter_uml.dart';
+import 'package:fsdui/src/flutter_uml/lib/flutter_uml.dart';
 import '../pnodes/decimal_pnode.dart' show DecimalPNode;
 import '../pnodes/uml_string_pnode.dart' show DiagramStringPNode;
 
@@ -60,6 +59,7 @@ flowchart LR
 
 @MappableClass()
 class UMLImageNode extends CL with UMLImageNodeMappable {
+  @override
   String? name;
   String? diagramText;
   double? width;
