@@ -129,7 +129,7 @@ class StorageImageNode extends CL with StorageImageNodeMappable {
         alignment: alignment?.alignment ?? Alignment.center,
         ref: FirebaseStorage.instance.ref(
           fsFullPath ??
-              'gs://${fsdui.firebaseOptions!.storageBucket}/flutter-content-pkg/missing-image.png',
+              'gs://${fsdui.firebaseOptions!.storageBucket}/fsdui/missing-image.png',
         ),
       );
       return widget;

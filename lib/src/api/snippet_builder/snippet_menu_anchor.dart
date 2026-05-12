@@ -76,7 +76,7 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
                           .currentVersionInCache();
                       if (rootNode != null) {
                         fsdui.appInfo
-                            .cachedSnippetInfo(rootNode.name!)
+                            .cachedSnippetInfo(rootNode.name ?? 'unnamed snippet!')
                             ?.notifyChange(rootNode);
                         if (fsdui.anyPresent(
                           [],

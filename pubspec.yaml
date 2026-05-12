@@ -141,12 +141,14 @@ dependencies:
 
   flutter_callouts:
     path: ./packages/flutter_callouts
+    
   banner_listtile: ^2.3.0
   flutter_markdown_plus: ^1.0.7
   markdown: ^7.3.1
   flutter_quill: ^11.5.0
   markdown_quill: ^4.3.0
   json_schema: ^5.2.2
+  markdown_editor_live: ^0.6.0
 
 dev_dependencies:
   flutter_test:

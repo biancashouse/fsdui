@@ -15,34 +15,43 @@ class MarkdownNode extends CL with MarkdownNodeMappable {
   MarkdownNode({super.name, this.md});
 
   @override
-  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) =>
-      [
-        FlutterDocPNode(
-          buttonLabel: 'Markdown Plus',
-          webLink: 'https://pub.dev/packages/flutter_markdown_plus',
-          snode: this,
-          name: 'fyi',
-        ),
-        StringPNode(
-          snode: this,
-          name: 'markdown',
-          nameOnSeparateLine: true,
-          expands: true,
-          numLines: 3,
-          stringValue: md,
-          onStringChange: (newValue) {
-            refreshWithUpdate(context, () => md = newValue ?? '');
-          },
-          calloutButtonSize: const Size(280, 300),
-          calloutWidth: 300,
-        ),
-      ];
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
+    FlutterDocPNode(
+      buttonLabel: 'Markdown Plus',
+      webLink: 'https://pub.dev/packages/flutter_markdown_plus',
+      snode: this,
+      name: 'fyi',
+    ),
+    StringPNode(
+      snode: this,
+      name: 'markdown',
+      nameOnSeparateLine: true,
+      expands: true,
+      numLines: 3,
+      stringValue: md,
+      onStringChange: (newValue) {
+        refreshWithUpdate(context, () => md = newValue ?? '');
+      },
+      calloutButtonSize: const Size(280, 300),
+      calloutWidth: 300,
+    ),
+  ];
 
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     try {
       setParent(parentNode); // propagating parents down from root
-      return MarkdownBody(data: md ?? '');
+      return GestureDetector(
+        onTap: () {
+          fsdui.showToastColor1OnColor2(
+            msg:
+                'direct inline editing here is disable. there are so many great markdown editors out there, we do not want to reinvent the wheel. Just paste your updated text into the snippet editor...',
+            textColor: Colors.yellowAccent,
+            bgColor: Colors.blue,
+          );
+        },
+        child: MarkdownBody(data: md ?? ''),
+      );
     } catch (e) {
       return Error(
         key: createNodeWidgetGK(),
