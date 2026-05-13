@@ -273,7 +273,7 @@ class SNodeWidget extends StatelessWidget {
     if (fsdui.snippetBeingEdited!.aNodeIsSelected && thisWasAlreadySelected) {
       fsdui.hide("floating-clipboard");
       // fco.dismiss(SELECTED_NODE_BORDER_CALLOUT);
-      fsdui.capiBloc.add(CAPIEvent.clearNodeSelection());
+      fsdui.capiBloc.add(ClearNodeSelection());
     } else if (!fsdui.snippetBeingEdited!.aNodeIsSelected ||
         !thisWasAlreadySelected) {
       if (fsdui.appInfo.clipboard != null) {
@@ -286,7 +286,7 @@ class SNodeWidget extends StatelessWidget {
 
       fsdui.dismissAll();
 
-      fsdui.capiBloc.add(CAPIEvent.selectNode(node: entry.node));
+      fsdui.capiBloc.add(SelectNode(node: entry.node));
 
       fsdui.afterNextBuildDo(() {
         pointOutSelectedNode();
@@ -376,7 +376,7 @@ class SNodeWidget extends StatelessWidget {
     fsdui.hide("floating-clipboard");
 
     if (fsdui.snippetBeingEdited!.selectedNode != node) {
-      fsdui.capiBloc.add(CAPIEvent.selectNode(node: node));
+      fsdui.capiBloc.add(SelectNode(node: node));
       fsdui.afterNextBuildDo(() {
         _showNodeWidgetMenu(context, tapPos, node);
       });
@@ -527,7 +527,7 @@ class SNodeWidget extends StatelessWidget {
                             gc?.propertyName == 'content')) {
                       return;
                     }
-                    fsdui.capiBloc.add(CAPIEvent.cutNode(node: node));
+                    fsdui.capiBloc.add(CutNode(node: node));
                     fsdui.afterNextBuildDo(() {
                       fsdui.dismiss('node-actions');
                       if (fsdui.appInfo.clipboard != null) {
@@ -557,7 +557,7 @@ class SNodeWidget extends StatelessWidget {
                   hoverColor: Colors.white30,
                   onPressed: () {
                     fsdui.afterNextBuildDo(() {
-                      fsdui.capiBloc.add(CAPIEvent.copyNode(node: node));
+                      fsdui.capiBloc.add(CopyNode(node: node));
                       fsdui.afterNextBuildDo(() {
                         fsdui.dismiss('node-actions');
                         if (fsdui.appInfo.clipboard != null) {
@@ -586,10 +586,10 @@ class SNodeWidget extends StatelessWidget {
 
                     // bool wasShowingAsRoot = selectedNode == snippetBloc.treeC.roots.first;
                     // STreeNode? parentNode = selectedNode.getParent() as STreeNode?;
-                    fsdui.capiBloc.add(const CAPIEvent.deleteNodeTapped());
+                    fsdui.capiBloc.add(DeleteNodeTapped());
                     fsdui.afterNextBuildDo(() async {
                       await Future.delayed(const Duration(milliseconds: 1000));
-                      fsdui.capiBloc.add(const CAPIEvent.completeDeletion());
+                      fsdui.capiBloc.add(CompleteDeletion());
                       fsdui.afterNextBuildDo(() {
                         fsdui.dismiss('node-actions');
                         // if was tab or tabview, reset the tab Q and controller
@@ -597,7 +597,7 @@ class SNodeWidget extends StatelessWidget {
                         // spState?.resetTabQandC;
                         // redraw tree if deleted node was root
                         // if (wasShowingAsRoot && parentNode != null) {
-                        //   snippetBloc.add(CAPIEvent.selectNode(
+                        //   snippetBloc.add(SelectNode(
                         //     node: parentNode,
                         //     selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
                         //   ));
@@ -628,7 +628,7 @@ class SNodeWidget extends StatelessWidget {
                         //targetGKF: () => targetGK,
                         saveModelF: (s) {
                           fsdui.capiBloc.add(
-                            CAPIEvent.saveNodeAsSnippet(
+                            SaveNodeAsSnippet(
                               node: node,
                               newSnippetName: s,
                             ),
@@ -650,10 +650,10 @@ class SNodeWidget extends StatelessWidget {
                 //     // some properties cannot be deleted
                 //     if (!selectedNode.canBeDeleted()) return;
                 //     fco.dismiss(SELECTED_NODE_BORDER_CALLOUT);
-                //     snippetBloc.add(const CAPIEvent.deleteNodeTapped());
+                //     snippetBloc.add(DeleteNodeTapped());
                 //     fco.afterNextBuildDo(() async {
                 //       await Future.delayed(const Duration(milliseconds: 1000));
-                //       snippetBloc.add(const CAPIEvent.completeDeletion());
+                //       snippetBloc.add(CompleteDeletion());
                 //       fco.afterNextBuildDo(() {
                 //         // if was tab or tabview, reset the tab Q and controller
                 //         SnippetPanelState? spState = SnippetPanel.of(context);

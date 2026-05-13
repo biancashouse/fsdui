@@ -636,7 +636,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
   //
   //   widget.parentNode.targets = [...widget.parentNode.targets, newLine];
   //
-  //   fco.capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
+  //   fco.capiBloc.add(ForceRefresh(onlyTargetsWrappers: true));
   //
   //   final newVersionId = SnippetInfoModel.createNewVersion(
   //     widget.parentNode.rootNodeOfSnippet()!,

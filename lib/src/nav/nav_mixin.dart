@@ -78,7 +78,7 @@ mixin NavMixin {
               switch (value) {
                 case 'sign-in-as-editor':
                   EditablePage.of(context)?.editorPasswordDialog();
-                  fsdui.capiBloc.add(CAPIEvent.forceRefresh());
+                  fsdui.capiBloc.add(ForceRefresh());
                   break;
                 default:
                   if (fsdui.router != null) {
@@ -215,7 +215,7 @@ mixin NavMixin {
   Widget _signOutBtn(context) => TextButton(
     onPressed: () {
       if (!fsdui.anyPresent([HotspotTargetConfigToolbar.CID])) {
-        fsdui.capiBloc.add(CAPIEvent.signedOut());
+        fsdui.capiBloc.add(SignedOut());
         Navigator.pop(context);
       }
     },
@@ -279,7 +279,7 @@ mixin NavMixin {
                 await fsdui.modelRepo.saveAppInfo();
                 await fsdui.modelRepo.deleteSnippet(pagePath);
                 fsdui.appInfo.removeFromCache(pagePath);
-                fsdui.capiBloc.add(CAPIEvent.forceRefresh());
+                fsdui.capiBloc.add(ForceRefresh());
               },
               icon: Icon(Icons.delete, color: Colors.red),
             ),

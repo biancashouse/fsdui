@@ -24,12 +24,6 @@ abstract class ScrollViewNode extends CL with ScrollViewNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    FlutterDocPNode(
-      buttonLabel: 'ScrollView',
-      webLink: 'https://api.flutter.dev/flutter/widgets/ScrollView-class.html',
-      snode: this,
-      name: 'fyi',
-    ),
     EnumPNode<AxisEnum?>(
       snode: this,
       name: 'scrollDirection',
@@ -45,6 +39,12 @@ abstract class ScrollViewNode extends CL with ScrollViewNodeMappable {
       boolValue: shrinkWrap,
       onBoolChange: (newValue) =>
           refreshWithUpdate(context, () => shrinkWrap = newValue),
+    ),
+    FlutterDocPNode(
+      buttonLabel: 'ScrollView',
+      webLink: 'https://api.flutter.dev/flutter/widgets/ScrollView-class.html',
+      snode: this,
+      name: 'fyi',
     ),
   ];
 

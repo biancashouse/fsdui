@@ -46,11 +46,6 @@ class CarouselNode extends MC with CarouselNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    FlutterDocPNode(
-        buttonLabel: 'Carousel',
-        webLink: 'https://pub.dev/packages/carousel_slider',
-        snode: this,
-        name: 'fyi'),
     DecimalPNode(
           snode: this,
           name: 'aspectRatio',
@@ -88,6 +83,11 @@ class CarouselNode extends MC with CarouselNodeMappable {
           onIndexChange: (newValue) => refreshWithUpdate(context,
               () => axis = AxisEnum.of(newValue) ?? AxisEnum.horizontal),
         ),
+    FlutterDocPNode(
+        buttonLabel: 'Carousel',
+        webLink: 'https://pub.dev/packages/carousel_slider',
+        snode: this,
+        name: 'fyi'),
       ];
 
   @override

@@ -78,9 +78,9 @@ class SnippetInfoModel with SnippetInfoModelMappable {
   //   changesPendingNotifier.value = true;
   // }
 
-  void updatePending(String currentJson) {
-    changesPendingNotifier.value = changesPending(currentJson);
-  }
+  // void updatePending(String currentJson) {
+  //   changesPendingNotifier.value = changesPending(currentJson);
+  // }
 
   void notifyChange(SNode changedSnippet) {
     try {
@@ -176,6 +176,10 @@ class SnippetInfoModel with SnippetInfoModelMappable {
 
   static VersionId createNewVersion(SNode snippet) {
     // may require a new SnippetInfo
+    if (snippet.name == null) {
+      throw('createNewVersion(null snippet name!)');
+    }
+
     fsdui.modelRepo.ensureSnippetInfoCached(snippetName: snippet.name!);
     SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(snippet.name!);
 

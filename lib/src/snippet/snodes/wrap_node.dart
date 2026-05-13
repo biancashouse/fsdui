@@ -35,12 +35,6 @@ class WrapNode extends MC with WrapNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    FlutterDocPNode(
-      buttonLabel: 'Wrap',
-      webLink: 'https://api.flutter.dev/flutter/widgets/Wrap-class.html',
-      snode: this,
-      name: 'fyi',
-    ),
     EnumPNode<AxisEnum?>(
       snode: this,
       name: 'direction',
@@ -83,6 +77,12 @@ class WrapNode extends MC with WrapNodeMappable {
         context,
         () => crossAxisAlignment = WrapCrossAlignmentEnumModel.of(newValue),
       ),
+    ),
+    FlutterDocPNode(
+      buttonLabel: 'Wrap',
+      webLink: 'https://api.flutter.dev/flutter/widgets/Wrap-class.html',
+      snode: this,
+      name: 'fyi',
     ),
   ];
 

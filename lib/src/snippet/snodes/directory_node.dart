@@ -12,11 +12,11 @@ part 'directory_node.mapper.dart';
 
 @MappableClass()
 class DirectoryNode extends MC with DirectoryNodeMappable {
-  @override
-  String? name;
+  String? folderName;
 
   DirectoryNode({
-    this.name,
+    super.name,
+    this.folderName,
     required super.children,
   });
 
@@ -24,10 +24,10 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
         StringPNode(
           snode: this,
-          name: 'name',
-          stringValue: name,
+          name: 'folder name',
+          stringValue: folderName,
           onStringChange: (newValue) =>
-              refreshWithUpdate(context,() => name = newValue),
+              refreshWithUpdate(context,() => folderName = newValue),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
         ),

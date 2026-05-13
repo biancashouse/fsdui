@@ -41,7 +41,7 @@ enum WrapAlignmentEnumModel {
         calloutSize: const Size(140, 380),
       );
 
-  List<Widget> allItems(w) => values.map((e) => e.toMenuItem()).toList();
+  List<Widget> allItems(Widget w) => values.map((e) => e.toMenuItem()).toList();
 
   Widget toMenuItem() => Tooltip(
         message: name,
@@ -104,7 +104,7 @@ enum WrapAlignmentEnumModel {
   //       originalEnumIndex: node.WrapAlignment?.index,
   //       onChangeF: (newOption) {
   //         node.WrapAlignment = WrapAlignmentEnumModel.values[newOption];
-  //         node.bloc.add(const CAPIEvent.forceRefresh());
+  //         node.bloc.add(ForceRefresh());
   //       },
   //       wrap: node is! RowNode,
   //       calloutSize: calloutSize(isRow: node is RowNode),

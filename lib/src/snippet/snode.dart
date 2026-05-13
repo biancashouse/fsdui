@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/snode_widget.dart';
 import 'package:fsdui/src/api/editable_page/snippet_editor_side_panel.dart';
+import 'package:fsdui/src/snippet/snodes/crossword_node.dart' show CrosswordNode;
 import 'package:fsdui/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'widget_picker/quick_pick_panel.dart';
@@ -19,6 +20,7 @@ const List<Type> childlessSubClasses = [
   AppBarNode,
   AssetImageNode,
   ChipNode,
+  CrosswordNode,
   FileNode,
   // FirebaseStorageImageNode,
   FlexibleSpaceBarNode,
@@ -732,7 +734,7 @@ abstract class SNode extends Node with SNodeMappable {
     }
 
     fsdui.capiBloc.add(
-      CAPIEvent.pushSnippetEditor(
+      PushSnippetEditor(
         rootNode: rootNode,
         selectedNode: selectedNode,
       ),
@@ -777,7 +779,7 @@ abstract class SNode extends Node with SNodeMappable {
     bool alsoRefreshPropertiesView = false,
   }) {
     assignF.call();
-    fsdui.capiBloc.add(CAPIEvent.changedSnippet());
+    fsdui.capiBloc.add(ChangedSnippet());
     fsdui.afterNextBuildDo(() {
       fsdui.dismiss('pink-overlay');
       SNodeWidget.pointOutSelectedNode();
@@ -1429,25 +1431,25 @@ abstract class SNode extends Node with SNodeMappable {
                 switch (value) {
                   case 'new-article':
                     fsdui.capiBloc.add(
-                      CAPIEvent.prependArticle(
+                      PrependArticle(
                         listNode: this as ArticleListViewNode,
-                        type: QuillTextNode,
+                        nodeType: QuillTextNode,
                       ),
                     );
                     break;
                   case 'new-md':
                     fsdui.capiBloc.add(
-                      CAPIEvent.prependArticle(
+                      PrependArticle(
                         listNode: this as ArticleListViewNode,
-                        type: MarkdownNode,
+                        nodeType: MarkdownNode,
                       ),
                     );
                     break;
                   case 'yt':
                     fsdui.capiBloc.add(
-                      CAPIEvent.prependArticle(
+                      PrependArticle(
                         listNode: this as ArticleListViewNode,
-                        type: YTNode,
+                        nodeType: YTNode,
                       ),
                     );
                     break;
@@ -1736,13 +1738,13 @@ abstract class SNode extends Node with SNodeMappable {
   //         Node clipboardNode = NodeMapper.fromJson(clipboardJson);
   //         switch (action) {
   //           case AddAction.addSiblingBefore:
-  //             bloc.add(CAPIEvent.pasteSiblingBefore(selectedNode: this, clipboardNode: clipboardNode));
+  //             bloc.add(PasteSiblingBefore(selectedNode: this, clipboardNode: clipboardNode));
   //             break;
   //           case AddAction.addSiblingAfter:
-  //             bloc.add(CAPIEvent.pasteSiblingBefore(selectedNode: this, clipboardNode: clipboardNode));
+  //             bloc.add(PasteSiblingBefore(selectedNode: this, clipboardNode: clipboardNode));
   //             break;
   //           case AddAction.addChild:
-  //             bloc.add(CAPIEvent.pasteChild(selectedNode: this, clipboardNode: clipboardNode));
+  //             bloc.add(PasteChild(selectedNode: this, clipboardNode: clipboardNode));
   //             break;
   //           case AddAction.wrapWith:
   //             break;
@@ -2000,26 +2002,26 @@ abstract class SNode extends Node with SNodeMappable {
   void _performTypeAction(Type snippetType, NodeAction action) {
     switch (action) {
       case NodeAction.wrapWith:
-        fsdui.capiBloc.add(CAPIEvent.wrapSelectionWith(type: snippetType));
+        fsdui.capiBloc.add(WrapSelectionWith(nodeType: snippetType));
       case NodeAction.replaceWith:
-        fsdui.capiBloc.add(CAPIEvent.replaceSelectionWith(type: snippetType));
+        fsdui.capiBloc.add(ReplaceSelectionWith(nodeType: snippetType));
         fsdui.afterNextBuildDo(() => fsdui.dismiss('node-actions'));
       case NodeAction.addChild:
         if (isANamedPropertyNode() && fsdui.selectedNode != this) {
-          fsdui.capiBloc.add(CAPIEvent.selectNode(node: this));
+          fsdui.capiBloc.add(SelectNode(node: this));
           fsdui.afterNextBuildDo(() {
-            fsdui.capiBloc.add(CAPIEvent.appendChild(type: snippetType));
+            fsdui.capiBloc.add(AppendChild(nodeType: snippetType));
             fsdui.afterNextBuildDo(() => fsdui.dismiss('node-actions'));
           });
         } else {
-          fsdui.capiBloc.add(CAPIEvent.appendChild(type: snippetType));
+          fsdui.capiBloc.add(AppendChild(nodeType: snippetType));
           fsdui.afterNextBuildDo(() => fsdui.dismiss('node-actions'));
         }
       case NodeAction.addSiblingBefore:
-        fsdui.capiBloc.add(CAPIEvent.addSiblingBefore(type: snippetType));
+        fsdui.capiBloc.add(AddSiblingBefore(nodeType: snippetType));
         fsdui.afterNextBuildDo(() => fsdui.dismiss('node-actions'));
       case NodeAction.addSiblingAfter:
-        fsdui.capiBloc.add(CAPIEvent.addSiblingAfter(type: snippetType));
+        fsdui.capiBloc.add(AddSiblingAfter(nodeType: snippetType));
         fsdui.afterNextBuildDo(() => fsdui.dismiss('node-actions'));
     }
   }
@@ -2031,21 +2033,21 @@ abstract class SNode extends Node with SNodeMappable {
     switch (action) {
       case NodeAction.replaceWith:
         fsdui.capiBloc.add(
-          CAPIEvent.replaceSelectionWith(type: snippet.runtimeType),
+          ReplaceSelectionWith(nodeType: snippet.runtimeType),
         );
         fsdui.afterNextBuildDo(() => fsdui.dismiss('node-actions'));
       case NodeAction.addSiblingBefore:
         fsdui.capiBloc.add(
-          CAPIEvent.addSiblingBefore(type: snippet.runtimeType),
+          AddSiblingBefore(nodeType: snippet.runtimeType),
         );
         fsdui.afterNextBuildDo(() => fsdui.dismiss('node-actions'));
       case NodeAction.addSiblingAfter:
         fsdui.capiBloc.add(
-          CAPIEvent.addSiblingAfter(type: snippet.runtimeType),
+          AddSiblingAfter(nodeType: snippet.runtimeType),
         );
         fsdui.afterNextBuildDo(() => fsdui.dismiss('node-actions'));
       case NodeAction.addChild:
-        fsdui.capiBloc.add(CAPIEvent.appendChild(type: snippet.runtimeType));
+        fsdui.capiBloc.add(AppendChild(nodeType: snippet.runtimeType));
         fsdui.afterNextBuildDo(() => fsdui.dismiss('node-actions'));
       case NodeAction.wrapWith:
         break;
@@ -2055,13 +2057,13 @@ abstract class SNode extends Node with SNodeMappable {
   void _performPasteAction(NodeAction action) {
     switch (action) {
       case NodeAction.replaceWith:
-        fsdui.capiBloc.add(const CAPIEvent.pasteReplacement());
+        fsdui.capiBloc.add(PasteReplacement());
       case NodeAction.addSiblingBefore:
-        fsdui.capiBloc.add(const CAPIEvent.pasteSiblingBefore());
+        fsdui.capiBloc.add(PasteSiblingBefore());
       case NodeAction.addSiblingAfter:
-        fsdui.capiBloc.add(const CAPIEvent.pasteSiblingAfter());
+        fsdui.capiBloc.add(PasteSiblingAfter());
       case NodeAction.addChild:
-        fsdui.capiBloc.add(const CAPIEvent.pasteChild());
+        fsdui.capiBloc.add(PasteChild());
       case NodeAction.wrapWith:
         break;
     }
@@ -2751,7 +2753,7 @@ abstract class SNode extends Node with SNodeMappable {
       if (action == NodeAction.wrapWith) {
         // var treeC = fco.snippetBeingEdited?.treeC;
         // bool navUp = this == treeC?.roots.firstOrNull;
-        fsdui.capiBloc.add(CAPIEvent.wrapSelectionWith(type: childType));
+        fsdui.capiBloc.add(WrapSelectionWith(nodeType: childType));
         // in case need to show more of the tree (higher up)
         // fco.afterNextBuildDo(() {
         //   if (navUp) {
@@ -2761,7 +2763,7 @@ abstract class SNode extends Node with SNodeMappable {
         //   EditablePage.refreshSelectedNodeWidgetBorderOverlay(scName);
         // });
       } else if (action == NodeAction.replaceWith) {
-        fsdui.capiBloc.add(CAPIEvent.replaceSelectionWith(type: childType));
+        fsdui.capiBloc.add(ReplaceSelectionWith(nodeType: childType));
         fsdui.afterNextBuildDo(() {
           fsdui.dismiss('node-actions');
           //   EditablePageState? eps = EditablePage.of(context);
@@ -2770,28 +2772,28 @@ abstract class SNode extends Node with SNodeMappable {
       } else if (action == NodeAction.addChild) {
         // auto-select if its a named child property node
         if (isANamedPropertyNode() && fsdui.selectedNode != this) {
-          fsdui.capiBloc.add(CAPIEvent.selectNode(node: this));
+          fsdui.capiBloc.add(SelectNode(node: this));
           fsdui.afterNextBuildDo(() {
-            fsdui.capiBloc.add(CAPIEvent.appendChild(type: childType));
+            fsdui.capiBloc.add(AppendChild(nodeType: childType));
             fsdui.afterNextBuildDo(() {
               fsdui.dismiss('node-actions');
             });
           });
         } else {
-          fsdui.capiBloc.add(CAPIEvent.appendChild(type: childType));
+          fsdui.capiBloc.add(AppendChild(nodeType: childType));
           fsdui.afterNextBuildDo(() {
             fsdui.dismiss('node-actions');
           });
         }
       } else if (action == NodeAction.addSiblingBefore) {
-        fsdui.capiBloc.add(CAPIEvent.addSiblingBefore(type: childType));
+        fsdui.capiBloc.add(AddSiblingBefore(nodeType: childType));
         fsdui.afterNextBuildDo(() {
           fsdui.dismiss('node-actions');
           //   EditablePageState? eps = EditablePage.of(context);
           //   eps?.showNodeWidgetOverlays();
         });
       } else if (action == NodeAction.addSiblingAfter) {
-        fsdui.capiBloc.add(CAPIEvent.addSiblingAfter(type: childType));
+        fsdui.capiBloc.add(AddSiblingAfter(nodeType: childType));
         fsdui.afterNextBuildDo(() {
           fsdui.dismiss('node-actions');
           // EditablePageState? eps = EditablePage.of(context);
@@ -2809,25 +2811,25 @@ abstract class SNode extends Node with SNodeMappable {
           // CAPIBloC bloc = fco.capiBloc;
           switch (action) {
             case NodeAction.replaceWith:
-              fsdui.capiBloc.add(const CAPIEvent.pasteReplacement());
+              fsdui.capiBloc.add(PasteReplacement());
               fsdui.afterNextBuildDo(() {
                 fsdui.dismiss('node-actions');
               });
               break;
             case NodeAction.addSiblingBefore:
-              fsdui.capiBloc.add(const CAPIEvent.pasteSiblingBefore());
+              fsdui.capiBloc.add(PasteSiblingBefore());
               fsdui.afterNextBuildDo(() {
                 fsdui.dismiss('node-actions');
               });
               break;
             case NodeAction.addSiblingAfter:
-              fsdui.capiBloc.add(const CAPIEvent.pasteSiblingAfter());
+              fsdui.capiBloc.add(PasteSiblingAfter());
               fsdui.afterNextBuildDo(() {
                 fsdui.dismiss('node-actions');
               });
               break;
             case NodeAction.addChild:
-              fsdui.capiBloc.add(const CAPIEvent.pasteChild());
+              fsdui.capiBloc.add(PasteChild());
               fsdui.afterNextBuildDo(() {
                 fsdui.dismiss('node-actions');
               });
@@ -2862,14 +2864,14 @@ abstract class SNode extends Node with SNodeMappable {
             );
             if (action == NodeAction.replaceWith) {
               fsdui.capiBloc.add(
-                CAPIEvent.replaceSelectionWith(type: snippet.runtimeType),
+                ReplaceSelectionWith(nodeType: snippet.runtimeType),
               );
               fsdui.afterNextBuildDo(() {
                 fsdui.dismiss('node-actions');
               });
             } else if (action == NodeAction.addSiblingBefore) {
               fsdui.capiBloc.add(
-                CAPIEvent.addSiblingBefore(type: snippet.runtimeType),
+                AddSiblingBefore(nodeType: snippet.runtimeType),
               );
               // removeNodePropertiesCallout();
               fsdui.afterNextBuildDo(() {
@@ -2877,14 +2879,14 @@ abstract class SNode extends Node with SNodeMappable {
               });
             } else if (action == NodeAction.addSiblingAfter) {
               fsdui.capiBloc.add(
-                CAPIEvent.addSiblingAfter(type: snippet.runtimeType),
+                AddSiblingAfter(nodeType: snippet.runtimeType),
               );
               fsdui.afterNextBuildDo(() {
                 fsdui.dismiss('node-actions');
               });
               // removeNodePropertiesCallout();
             } else if (action == NodeAction.addChild) {
-              fsdui.capiBloc.add(CAPIEvent.appendChild(type: SNode));
+              fsdui.capiBloc.add(AppendChild(nodeType: SNode));
               fsdui.afterNextBuildDo(() {
                 fsdui.dismiss('node-actions');
               });

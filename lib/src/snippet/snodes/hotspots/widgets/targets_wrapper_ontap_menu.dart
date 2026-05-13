@@ -121,7 +121,7 @@ class TargetsWrapperOnTapMenu extends StatelessWidget {
 
     parentNode.targets = [...parentNode.targets, newTC];
     // widget.parentNode.targets.add(newTC);
-    fsdui.capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
+    fsdui.capiBloc.add(ForceRefresh(onlyTargetsWrappers: true));
     // fco.modelRepo.saveNewVersionOfSnippet(parentNode.rootNodeOfSnippet()!);
     fsdui.appInfo.cachedSnippetInfo(parentNode.rootNodeOfSnippet()!.name!)?.notifyChange(parentNode.rootNodeOfSnippet()!);
   }

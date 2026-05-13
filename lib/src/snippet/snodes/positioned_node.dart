@@ -24,12 +24,6 @@ class PositionedNode extends SC with PositionedNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    FlutterDocPNode(
-        buttonLabel: 'Positioned',
-        webLink:
-        'https://api.flutter.dev/flutter/widgets/Positioned-class.html',
-        snode: this,
-        name: 'fyi'),
     DecimalPNode(
           snode: this,
           name: 'top',
@@ -61,6 +55,12 @@ class PositionedNode extends SC with PositionedNodeMappable {
               refreshWithUpdate(context,() => right = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
+    FlutterDocPNode(
+        buttonLabel: 'Positioned',
+        webLink:
+        'https://api.flutter.dev/flutter/widgets/Positioned-class.html',
+        snode: this,
+        name: 'fyi'),
       ];
 
   @override
@@ -110,7 +110,7 @@ class PositionedNode extends SC with PositionedNodeMappable {
   //             originalS: top.toString(),
   //             onChangedF: (newValue) {
   //               top = double.tryParse(newValue);
-  //               bloc.add(const CAPIEvent.forceRefresh());
+  //               bloc.add(ForceRefresh());
   //             },
   //           ),
   //         ),
@@ -123,7 +123,7 @@ class PositionedNode extends SC with PositionedNodeMappable {
   //             originalS: left.toString(),
   //             onChangedF: (newValue) {
   //               left = double.tryParse(newValue);
-  //               bloc.add(const CAPIEvent.forceRefresh());
+  //               bloc.add(ForceRefresh());
   //             },
   //           ),
   //         )
@@ -138,7 +138,7 @@ class PositionedNode extends SC with PositionedNodeMappable {
   //             originalS: bottom.toString(),
   //             onChangedF: (newValue) {
   //               bottom = double.tryParse(newValue);
-  //               bloc.add(const CAPIEvent.forceRefresh());
+  //               bloc.add(ForceRefresh());
   //             },
   //           ),
   //         ),
@@ -151,7 +151,7 @@ class PositionedNode extends SC with PositionedNodeMappable {
   //             originalS: right.toString(),
   //             onChangedF: (newValue) {
   //               right = double.tryParse(newValue);
-  //               bloc.add(const CAPIEvent.forceRefresh());
+  //               bloc.add(ForceRefresh());
   //             },
   //           ),
   //         ),
@@ -163,7 +163,7 @@ class PositionedNode extends SC with PositionedNodeMappable {
   //       //   calloutSize: const Size(140, 80),
   //       //   onChangeF: (newValue) {
   //       //     top = double.tryParse(newValue);
-  //       //     bloc.add(const CAPIEvent.forceRefresh());
+  //       //     bloc.add(ForceRefresh());
   //       //   },
   //       // ),
   //       // NodePropertyButtonString(
@@ -172,7 +172,7 @@ class PositionedNode extends SC with PositionedNodeMappable {
   //       //   calloutSize: const Size(140, 80),
   //       //   onChangeF: (newValue) {
   //       //     left = double.tryParse(newValue);
-  //       //     bloc.add(const CAPIEvent.forceRefresh());
+  //       //     bloc.add(ForceRefresh());
   //       //   },
   //       // ),
   //       // NodePropertyButtonString(
@@ -181,7 +181,7 @@ class PositionedNode extends SC with PositionedNodeMappable {
   //       //   calloutSize: const Size(140, 80),
   //       //   onChangeF: (newValue) {
   //       //     bottom = double.tryParse(newValue);
-  //       //     bloc.add(const CAPIEvent.forceRefresh());
+  //       //     bloc.add(ForceRefresh());
   //       //   },
   //       // ),
   //       // NodePropertyButtonString(
@@ -190,7 +190,7 @@ class PositionedNode extends SC with PositionedNodeMappable {
   //       //   calloutSize: const Size(140, 80),
   //       //   onChangeF: (newValue) {
   //       //     right = double.tryParse(newValue);
-  //       //     bloc.add(const CAPIEvent.forceRefresh());
+  //       //     bloc.add(ForceRefresh());
   //       //   },
   //       // ),
   //     ];

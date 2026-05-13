@@ -5,21 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
 
 part 'placeholder_node.mapper.dart';
 
 @MappableClass()
 class PlaceholderNode extends CL with PlaceholderNodeMappable {
-  @override
-  String? name;
-
-  // String? centredLabel;
   double? width;
   double? height;
 
   PlaceholderNode({
-    this.name,
+    super.name,
     // this.centredLabel,
     this.width,
     this.height,
@@ -27,25 +22,7 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-        FlutterDocPNode(
-            buttonLabel: 'Placeholder',
-            webLink:
-                'https://api.flutter.dev/flutter/widgets/Placeholder-class.html',
-            snode: this,
-            name: 'fyi'),
-        StringPNode(
-          snode: this,
-          name: 'name',
-          expands: false,
-          numLines: 1,
-          // skipHelperText: true,
-          // skipLabelText: true,
-          stringValue: name,
-          onStringChange: (newValue) =>
-              refreshWithUpdate(context, () => name = newValue),
-          calloutButtonSize: const Size(150, 20),
-          calloutWidth: 150,
-        ),
+
         DecimalPNode(
           snode: this,
           name: 'width',
@@ -62,6 +39,12 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
               refreshWithUpdate(context, () => height = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
+        FlutterDocPNode(
+            buttonLabel: 'Placeholder',
+            webLink:
+                'https://api.flutter.dev/flutter/widgets/Placeholder-class.html',
+            snode: this,
+            name: 'fyi'),
       ];
 
   @override
@@ -161,7 +144,7 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
   //           calloutSize: const Size(600, 200),
   //           onChangeF: (s) {
   //             name = s;
-  //             bloc.add(const CAPIEvent.forceRefresh());
+  //             bloc.add(ForceRefresh());
   //           }),
   //       SizedBox(height: 10),
   //       NodePropertyButtonText(
@@ -170,7 +153,7 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
   //           calloutSize: const Size(600, 200),
   //           onChangeF: (s) {
   //             defaultSnippetName = s;
-  //             bloc.add(const CAPIEvent.forceRefresh());
+  //             bloc.add(ForceRefresh());
   //           }),
   //       SizedBox(height: 10),
   //       Row(
@@ -183,7 +166,7 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
   //               originalS: width?.toString() ?? '',
   //               onChangedF: (newWidth) {
   //                 width = double.tryParse(newWidth);
-  //                 bloc.add(const CAPIEvent.forceRefresh());
+  //                 bloc.add(ForceRefresh());
   //               },
   //             ),
   //           ),
@@ -196,7 +179,7 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
   //               originalS: height?.toString() ?? '',
   //               onChangedF: (newHeight) {
   //                 height = double.tryParse(newHeight);
-  //                 bloc.add(const CAPIEvent.forceRefresh());
+  //                 bloc.add(ForceRefresh());
   //               },
   //             ),
   //           ),

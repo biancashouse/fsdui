@@ -23,12 +23,12 @@ class ColumnNode extends FlexNode with ColumnNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    FlutterDocPNode(
-        buttonLabel: 'Column',
-        webLink: 'https://api.flutter.dev/flutter/widgets/Column-class.html',
-        snode: this,
-        name: 'fyi'),
       ...super.propertyNodes(context, parentSNode),
+      FlutterDocPNode(
+          buttonLabel: 'Column',
+          webLink: 'https://api.flutter.dev/flutter/widgets/Column-class.html',
+          snode: this,
+          name: 'fyi'),
       ];
 
   // @override

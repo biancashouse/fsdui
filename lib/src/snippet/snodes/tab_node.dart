@@ -37,12 +37,6 @@ class TabNode extends SC with TabNodeMappable {
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) {
     // fco.logger.i('textStyleName is "$textStyleName"');
     return [
-      FlutterDocPNode(
-        buttonLabel: 'Tab',
-        webLink: 'https://api.flutter.dev/flutter/material/Tab-class.html',
-        snode: this,
-        name: 'fyi',
-      ),
       StringPNode(
         snode: this,
         name: 'text',
@@ -77,6 +71,12 @@ class TabNode extends SC with TabNodeMappable {
       //         }),
       //   ],
       // ),
+      FlutterDocPNode(
+        buttonLabel: 'Tab',
+        webLink: 'https://api.flutter.dev/flutter/material/Tab-class.html',
+        snode: this,
+        name: 'fyi',
+      ),
     ];
   }
 

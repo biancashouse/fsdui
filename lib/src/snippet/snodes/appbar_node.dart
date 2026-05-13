@@ -76,12 +76,6 @@ class AppBarNode extends CL with AppBarNodeMappable {
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) {
     // fco.logger.i("ContainerNode.properties()...");
     return [
-      FlutterDocPNode(
-        buttonLabel: 'AppBar',
-        webLink: 'https://api.flutter.dev/flutter/material/AppBar-class.html',
-        snode: this,
-        name: 'fyi',
-      ),
       // StringPNode(
       //   snode: this,
       //   name: 'TabBar name',
@@ -140,6 +134,12 @@ class AppBarNode extends CL with AppBarNodeMappable {
             }
           });
         },
+      ),
+      FlutterDocPNode(
+        buttonLabel: 'AppBar',
+        webLink: 'https://api.flutter.dev/flutter/material/AppBar-class.html',
+        snode: this,
+        name: 'fyi',
       ),
     ];
   }

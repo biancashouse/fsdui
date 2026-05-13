@@ -33,7 +33,7 @@ class Pages extends StatelessWidget {
                     await fsdui.modelRepo.saveAppInfo();
                     await fsdui.modelRepo.deleteSnippet(label);
                     fsdui.appInfo.removeFromCache(label);
-                    fsdui.capiBloc.add(CAPIEvent.forceRefresh());
+                    fsdui.capiBloc.add(ForceRefresh());
                   },
                   icon: Icon(Icons.delete, color: Colors.red),
                 ),
@@ -62,7 +62,7 @@ class Pages extends StatelessWidget {
                   onPressed: () {
                     // ask user to sign in as editor
                     EditablePage.of(context)?.editorPasswordDialog();
-                    fsdui.capiBloc.add(CAPIEvent.forceRefresh());
+                    fsdui.capiBloc.add(ForceRefresh());
                   },
                   icon: Icon(Icons.edit, color: Colors.white),
                 ),

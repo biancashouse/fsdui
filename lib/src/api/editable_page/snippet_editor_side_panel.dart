@@ -135,7 +135,7 @@ class _PanelHeader extends StatelessWidget {
       fsdui.appInfo.hideClipboard();
     }
     fsdui.dismissAll();
-    fsdui.capiBloc.add(const CAPIEvent.popSnippetEditor());
+    fsdui.capiBloc.add(PopSnippetEditor());
     final rootNode = snippetInfo?.currentVersionInCache();
     if (rootNode != null) {
       snippetInfo!.getChangeNotifier().value = rootNode.toJson();
@@ -163,7 +163,7 @@ class _UndoRedoButtons extends StatelessWidget {
               color: Colors.white,
               disabledColor: Colors.white24,
               onPressed: canUndo
-                  ? () => fsdui.capiBloc.add(const CAPIEvent.undo())
+                  ? () => fsdui.capiBloc.add(Undo())
                   : null,
             ),
             IconButton(
@@ -172,7 +172,7 @@ class _UndoRedoButtons extends StatelessWidget {
               color: Colors.white,
               disabledColor: Colors.white24,
               onPressed: canRedo
-                  ? () => fsdui.capiBloc.add(const CAPIEvent.redo())
+                  ? () => fsdui.capiBloc.add(Redo())
                   : null,
             ),
           ],
@@ -278,7 +278,7 @@ class _TreeAreaState extends State<_TreeArea> {
       builder: (BuildContext context, CAPIState state) => GestureDetector(
         onTap: () {
           fsdui.dismissAll();
-          fsdui.capiBloc.add(CAPIEvent.clearNodeSelection());
+          fsdui.capiBloc.add(ClearNodeSelection());
           fsdui.hide('floating-clipboard');
         },
         child: Material(

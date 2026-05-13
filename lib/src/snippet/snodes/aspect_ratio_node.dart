@@ -20,11 +20,6 @@ class AspectRatioNode extends SC with AspectRatioNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    FlutterDocPNode(
-        buttonLabel: 'AssetImage',
-        webLink: 'https://api.flutter.dev/flutter/painting/AssetImage-class.html',
-        snode: this,
-        name: 'fyi'),
     DecimalPNode(
           snode: this,
           name: 'aspectRatio',
@@ -32,6 +27,11 @@ class AspectRatioNode extends SC with AspectRatioNodeMappable {
           onDoubleChange: (newValue) => refreshWithUpdate(context,() => aspectRatio = newValue ?? 1.0),
           calloutButtonSize: const Size(140, 30),
         ),
+    FlutterDocPNode(
+        buttonLabel: 'AssetImage',
+        webLink: 'https://api.flutter.dev/flutter/painting/AssetImage-class.html',
+        snode: this,
+        name: 'fyi'),
       ];
 
   @override
@@ -74,7 +74,7 @@ class AspectRatioNode extends SC with AspectRatioNodeMappable {
   //       //         aspectRatio = w / h;
   //       //       } else
   //       //         aspectRatio = double.tryParse(s) ?? 1.0;
-  //       //       bloc.add(const CAPIEvent.forceRefresh());
+  //       //       bloc.add(ForceRefresh());
   //       //     }),
   //       // // SizedBox(width: 90, height: 40,
   //       // //   child: DecimalEditor(
@@ -82,7 +82,7 @@ class AspectRatioNode extends SC with AspectRatioNodeMappable {
   //       // //     originalS: aspectRatio.toString() ?? '',
   //       // //     onChangedF: (newAR) {
   //       // //       aspectRatio = double.tryParse(newAR) ?? 1.0;
-  //       // //       bloc.add(const CAPIEvent.forceRefresh());
+  //       // //       bloc.add(ForceRefresh());
   //       // //     },
   //       // //   ),
   //       // // ),

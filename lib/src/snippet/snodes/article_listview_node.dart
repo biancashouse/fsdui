@@ -76,7 +76,7 @@ class ArticleListViewNode extends ListViewNode
                   subtitle: childNode.build(context, this),
                   trailing: IconButton(
                     onPressed: () {
-                      fsdui.capiBloc.add(CAPIEvent.deleteArticle(articleSnippet: childNode));
+                      fsdui.capiBloc.add(DeleteArticle(articleSnippet: childNode));
                     },
                     icon: const Icon(Icons.delete, color: Colors.red),
                   ),

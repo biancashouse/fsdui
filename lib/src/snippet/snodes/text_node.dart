@@ -53,11 +53,6 @@ class TextNode extends CL with TextNodeMappable {
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) {
     // fco.logger.i('textStyleName is "$textStyleName"');
     return [
-      FlutterDocPNode(
-          buttonLabel: 'Text',
-          webLink: 'https://api.flutter.dev/flutter/widgets/Text-class.html',
-          snode: this,
-          name: 'fyi'),
       StringPNode(
         snode: this,
         name: 'text',
@@ -132,6 +127,11 @@ class TextNode extends CL with TextNodeMappable {
           onIndexChange: (newValue) => refreshWithUpdate(
               context, () => textAlign = TextAlignEnum.of(newValue)),
         ),
+      FlutterDocPNode(
+          buttonLabel: 'Text',
+          webLink: 'https://api.flutter.dev/flutter/widgets/Text-class.html',
+          snode: this,
+          name: 'fyi'),
     ];
   }
 
@@ -146,7 +146,7 @@ class TextNode extends CL with TextNodeMappable {
   //             stringValue: text,
   //             onStringChange: (newValue) {
   //               text = newValue;
-  //               bloc.add(const CAPIEvent.forceRefresh());
+  //               bloc.add(ForceRefresh());
   //             },
   //             calloutSize: const Size(200, 240)),
   //         TextStylePropertyGroup(snode: this,
@@ -167,7 +167,7 @@ class TextNode extends CL with TextNodeMappable {
   //           valueIndex: textAlign?.index,
   //           onIndexChange: (newValue) {
   //             textAlign = TextAlignEnum.of(newValue);
-  //             bloc.add(const CAPIEvent.forceRefresh());
+  //             bloc.add(ForceRefresh());
   //           },
   //         ),
   //       ],
@@ -181,7 +181,7 @@ class TextNode extends CL with TextNodeMappable {
   //           calloutSize: const Size(600, 200),
   //           onChangeF: (s) {
   //             text = s;
-  //             bloc.add(const CAPIEvent.forceRefresh());
+  //             bloc.add(ForceRefresh());
   //           }),
   //       const SizedBox(height: 10),
   //       NodePropertyButtonText(
@@ -190,7 +190,7 @@ class TextNode extends CL with TextNodeMappable {
   //           calloutSize: const Size(220, 100),
   //           onChangeF: (s) {
   //             namedTextStyle = s;
-  //             bloc.add(const CAPIEvent.forceRefresh());
+  //             bloc.add(ForceRefresh());
   //           }),
   //       const SizedBox(height: 10),
   //       NodePropertyButtonEnum(
@@ -199,7 +199,7 @@ class TextNode extends CL with TextNodeMappable {
   //         originalEnumIndex: textAlign?.index ?? 0,
   //         onChangeF: (newOption) {
   //           textAlign = TextAlignEnum.values[newOption];
-  //           bloc.add(const CAPIEvent.forceRefresh());
+  //           bloc.add(ForceRefresh());
   //         },
   //         calloutSize: const Size(220, 100),
   //       ),
@@ -229,7 +229,7 @@ class TextNode extends CL with TextNodeMappable {
   //                           onChangedF: (newLH) {
   //                             textStyle ??= TextStyleNodeProperty();
   //                             textStyle!.lineHeight = double.tryParse(newLH);
-  //                             bloc.add(const CAPIEvent.forceRefresh());
+  //                             bloc.add(ForceRefresh());
   //                           },
   //                         ),
   //                       ),
@@ -243,7 +243,7 @@ class TextNode extends CL with TextNodeMappable {
   //                           onChangedF: (newLS) {
   //                             textStyle ??= TextStyleNodeProperty();
   //                             textStyle!.letterSpacing = double.tryParse(newLS);
-  //                             bloc.add(const CAPIEvent.forceRefresh());
+  //                             bloc.add(ForceRefresh());
   //                           },
   //                         ),
   //                       ),
@@ -265,7 +265,7 @@ class TextNode extends CL with TextNodeMappable {
   //                               fco.logger.i("checked: $isChecked");
   //                               textStyle ??= TextStyleNodeProperty();
   //                               textStyle!.fontStyle = (isChecked ?? false) ? FontStyleEnum.italic : null;
-  //                               bloc.add(const CAPIEvent.forceRefresh());
+  //                               bloc.add(ForceRefresh());
   //                             },
   //                           ),
   //                         ),
@@ -280,7 +280,7 @@ class TextNode extends CL with TextNodeMappable {
   //                   onChangeF: (newFamily) {
   //                     textStyle ??= TextStyleNodeProperty();
   //                     textStyle!.fontFamily = newFamily;
-  //                     bloc.add(const CAPIEvent.forceRefresh());
+  //                     bloc.add(ForceRefresh());
   //                   },
   //                 ),
   //                 NodePropertyButtonEnum(
@@ -292,7 +292,7 @@ class TextNode extends CL with TextNodeMappable {
   //                   onChangeF: (newOption) {
   //                     textStyle ??= TextStyleNodeProperty();
   //                     textStyle!.fontSizeName = Material3TextSizeEnum.values[newOption];
-  //                     bloc.add(const CAPIEvent.forceRefresh());
+  //                     bloc.add(ForceRefresh());
   //                   },
   //                   calloutSize: Material3TextSizeEnum.calloutSize,
   //                 ),
@@ -303,7 +303,7 @@ class TextNode extends CL with TextNodeMappable {
   //                   onChangeF: (newOption) {
   //                     textStyle ??= TextStyleNodeProperty();
   //                     textStyle!.fontWeight = FontWeightEnum.values[newOption];
-  //                     bloc.add(const CAPIEvent.forceRefresh());
+  //                     bloc.add(ForceRefresh());
   //                   },
   //                   calloutSize: FontWeightEnum.calloutSize,
   //                 ),
@@ -313,7 +313,7 @@ class TextNode extends CL with TextNodeMappable {
   //                   onChangeF: (newValue) {
   //                     textStyle ??= TextStyleNodeProperty();
   //                     textStyle!.colorValue = newValue;
-  //                     bloc.add(const CAPIEvent.forceRefresh());
+  //                     bloc.add(ForceRefresh());
   //                   },
   //                 ),
   //               ],

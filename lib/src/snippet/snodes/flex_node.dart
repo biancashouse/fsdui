@@ -38,12 +38,6 @@ class FlexNode extends MC with FlexNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    FlutterDocPNode(
-      buttonLabel: 'Flex',
-      webLink: 'https://api.flutter.dev/flutter/widgets/Flex-class.html',
-      snode: this,
-      name: 'fyi',
-    ),
     EnumPNode<AxisEnum?>(
       snode: this,
       name: 'direction',
@@ -79,6 +73,12 @@ class FlexNode extends MC with FlexNodeMappable {
         context,
         () => crossAxisAlignment = CrossAxisAlignmentEnumModel.of(newValue),
       ),
+    ),
+    FlutterDocPNode(
+      buttonLabel: 'Flex',
+      webLink: 'https://api.flutter.dev/flutter/widgets/Flex-class.html',
+      snode: this,
+      name: 'fyi',
     ),
   ];
 
@@ -189,7 +189,7 @@ class FlexNode extends MC with FlexNodeMappable {
   //         originalEnumIndex: mainAxisAlignment?.index,
   //         onChangeF: (newOption) {
   //           mainAxisAlignment = MainAxisAlignmentEnumModel.values[newOption];
-  //           bloc.add(const CAPIEvent.forceRefresh());
+  //           bloc.add(ForceRefresh());
   //         },
   //         wrap: !isRow,
   //         calloutSize: MainAxisAlignmentEnumModel.calloutSize(isRow: isRow),
@@ -206,7 +206,7 @@ class FlexNode extends MC with FlexNodeMappable {
   //               originalValue: mainAxisSize,
   //               onChangedF: (newValue) {
   //                 mainAxisSize = newValue;
-  //                 bloc.add(const CAPIEvent.forceRefresh());
+  //                 bloc.add(ForceRefresh());
   //               },
   //             ),
   //           ],
@@ -218,7 +218,7 @@ class FlexNode extends MC with FlexNodeMappable {
   //       //   originalOption: mainAxisSize?.index,
   //       //   onChangeF: (newOption) {
   //       //     mainAxisSize = NodeMainAxisSize.values[newOption];
-  //       //     bloc.add(const CAPIEvent.forceRefresh());
+  //       //     bloc.add(ForceRefresh());
   //       //   },
   //       //   calloutSize: NodeMainAxisSize.calloutSize,
   //       // ),
@@ -228,7 +228,7 @@ class FlexNode extends MC with FlexNodeMappable {
   //         originalEnumIndex: crossAxisAlignment?.index,
   //         onChangeF: (newOption) {
   //           crossAxisAlignment = CrossAxisAlignmentEnumModel.values[newOption];
-  //           bloc.add(const CAPIEvent.forceRefresh());
+  //           bloc.add(ForceRefresh());
   //         },
   //         wrap: !isRow,
   //         calloutSize: CrossAxisAlignmentEnumModel.calloutSize(isRow: isRow),

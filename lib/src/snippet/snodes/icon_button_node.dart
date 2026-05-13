@@ -78,12 +78,12 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
+    ...super.propertyNodes(context, parentSNode),
     FlutterDocPNode(
         buttonLabel: 'IconButton',
         webLink: 'https://api.flutter.dev/flutter/material/IconButton-class.html',
         snode: this,
         name: 'fyi'),
-    ...super.propertyNodes(context, parentSNode),
   ];
 
   @override

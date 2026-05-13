@@ -43,11 +43,6 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
     var textStyleName = fsdui.findTextStyleName(fsdui.appInfo, tsPropGroup);
     textStyleName = textStyleName != null ? ': $textStyleName' : '';
     return [
-      FlutterDocPNode(
-          buttonLabel: 'TextSpan',
-          webLink: 'https://api.flutter.dev/flutter/painting/TextSpan-class.html',
-          snode: this,
-          name: 'fyi'),
       StringPNode(
         snode: this,
         name: 'text',
@@ -84,6 +79,11 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
           });
         },
       ),
+      FlutterDocPNode(
+          buttonLabel: 'TextSpan',
+          webLink: 'https://api.flutter.dev/flutter/painting/TextSpan-class.html',
+          snode: this,
+          name: 'fyi'),
     ];
   }
 
@@ -155,7 +155,7 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
   //           calloutSize: const Size(600, 200),
   //           onChangeF: (s) {
   //             text = s;
-  //             bloc.add(const CAPIEvent.forceRefresh());
+  //             bloc.add(ForceRefresh());
   //           }),
   //       SizedBox(height: 20),
   //       NodePropertyButtonText(
@@ -164,7 +164,7 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
   //           calloutSize: const Size(80, 200),
   //           onChangeF: (s) {
   //             namedTextStyle = s;
-  //             bloc.add(const CAPIEvent.forceRefresh());
+  //             bloc.add(ForceRefresh());
   //           }),
   //       SizedBox(height: 30),
   //       Text('or custom style...\n'),
@@ -179,7 +179,7 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
   //               onChangedF: (newLH) {
   //                 textStyle ??= TextStyleNodeProperty();
   //                 textStyle!.lineHeight = double.tryParse(newLH);
-  //                 bloc.add(const CAPIEvent.forceRefresh());
+  //                 bloc.add(ForceRefresh());
   //               },
   //             ),
   //           ),
@@ -193,7 +193,7 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
   //               onChangedF: (newLS) {
   //                 textStyle ??= TextStyleNodeProperty();
   //                 textStyle!.letterSpacing = double.tryParse(newLS);
-  //                 bloc.add(const CAPIEvent.forceRefresh());
+  //                 bloc.add(ForceRefresh());
   //               },
   //             ),
   //           ),
@@ -220,7 +220,7 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
   //                   fco.logger.i("checked: $isChecked");
   //                   textStyle ??= TextStyleNodeProperty();
   //                   textStyle!.fontStyle = (isChecked ?? false) ? FontStyleEnum.italic : null;
-  //                   bloc.add(const CAPIEvent.forceRefresh());
+  //                   bloc.add(ForceRefresh());
   //                 },
   //               )
   //             ],
@@ -234,7 +234,7 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
   //         onChangeF: (newFamily) {
   //           textStyle ??= TextStyleNodeProperty();
   //           textStyle!.fontFamily = newFamily;
-  //           bloc.add(const CAPIEvent.forceRefresh());
+  //           bloc.add(ForceRefresh());
   //         },
   //       ),
   //       NodePropertyButtonEnum(
@@ -246,7 +246,7 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
   //         onChangeF: (newOption) {
   //           textStyle ??= TextStyleNodeProperty();
   //           textStyle!.fontSizeName = Material3TextSizeEnum.values[newOption];
-  //           bloc.add(const CAPIEvent.forceRefresh());
+  //           bloc.add(ForceRefresh());
   //         },
   //         calloutSize: Material3TextSizeEnum.calloutSize,
   //       ),
@@ -257,7 +257,7 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
   //         onChangeF: (newOption) {
   //           textStyle ??= TextStyleNodeProperty();
   //           textStyle!.fontWeight = FontWeightEnum.values[newOption];
-  //           bloc.add(const CAPIEvent.forceRefresh());
+  //           bloc.add(ForceRefresh());
   //         },
   //         calloutSize: FontWeightEnum.calloutSize,
   //       ),
@@ -267,7 +267,7 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
   //         onChangeF: (newValue) {
   //           textStyle ??= TextStyleNodeProperty();
   //           textStyle!.colorValue = newValue;
-  //           bloc.add(const CAPIEvent.forceRefresh());
+  //           bloc.add(ForceRefresh());
   //         },
   //       ),
   //     ];

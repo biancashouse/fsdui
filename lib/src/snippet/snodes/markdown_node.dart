@@ -1,8 +1,8 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:markdown_editor_live/markdown_editor_live.dart';
 
 import '../pnodes/string_pnode.dart';
 
@@ -10,30 +10,30 @@ part 'markdown_node.mapper.dart';
 
 @MappableClass()
 class MarkdownNode extends CL with MarkdownNodeMappable {
-  String? md;
+  String? data;
 
-  MarkdownNode({super.name, this.md});
+  MarkdownNode({super.name, this.data});
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  late MarkdownEditingController controller;
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
     FlutterDocPNode(
-      buttonLabel: 'Markdown Plus',
-      webLink: 'https://pub.dev/packages/flutter_markdown_plus',
+      buttonLabel: 'Markdown Editor Live',
+      webLink: 'https://pub.dev/packages/markdown_editor_live',
       snode: this,
       name: 'fyi',
     ),
     StringPNode(
       snode: this,
-      name: 'markdown',
-      nameOnSeparateLine: true,
-      expands: true,
-      numLines: 3,
-      stringValue: md,
-      onStringChange: (newValue) {
-        refreshWithUpdate(context, () => md = newValue ?? '');
-      },
+      name: 'raw markdown',
+      stringValue: data,
+      skipHelperText: true,
+      onStringChange: (newValue) =>
+          refreshWithUpdate(context, () => data = newValue),
       calloutButtonSize: const Size(280, 300),
-      calloutWidth: 300,
+      calloutWidth: 400,
     ),
   ];
 
@@ -41,16 +41,17 @@ class MarkdownNode extends CL with MarkdownNodeMappable {
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     try {
       setParent(parentNode); // propagating parents down from root
-      return GestureDetector(
-        onTap: () {
-          fsdui.showToastColor1OnColor2(
-            msg:
-                'direct inline editing here is disable. there are so many great markdown editors out there, we do not want to reinvent the wheel. Just paste your updated text into the snippet editor...',
-            textColor: Colors.yellowAccent,
-            bgColor: Colors.blue,
-          );
+      return _MarkdownWidget(node: this);
+
+      return MarkdownEditor(
+        initialValue: data ?? _markdownData,
+        onChanged: (s) {
+          if (fsdui.aSnippetIsBeingEdited) {
+            refreshWithUpdate(context, () => data = s);
+          } else {
+            data = s;
+          }
         },
-        child: MarkdownBody(data: md ?? ''),
       );
     } catch (e) {
       return Error(
@@ -67,4 +68,206 @@ class MarkdownNode extends CL with MarkdownNodeMappable {
   String toString() => 'Markdown';
 
   static const String FLUTTER_TYPE = "Markdown";
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final SAMPLE_MD = """
+# Markdown Example
+Markdown allows you to easily include formatted text, images, and even formatted
+Dart code in your app.
+
+## Titles
+
+Setext-style
+
+```
+This is an H1
+=============
+
+This is an H2
+-------------
+```
+
+Atx-style
+
+```
+# This is an H1
+
+## This is an H2
+
+###### This is an H6
+```
+
+Select the valid headers:
+
+- [x] `# hello`
+- [ ] `#hello`
+
+## Links
+
+[Google's Homepage][Google]
+
+```
+[inline-style](https://www.google.com)
+
+[reference-style][Google]
+```
+
+## Images
+
+![Flowers](assets/images/flowers.jpg)
+
+## Tables
+
+|Syntax                                 |Result                               |
+|---------------------------------------|-------------------------------------|
+|`*italic 1*`                           |*italic 1*                           |
+|`_italic 2_`                           | _italic 2_                          |
+|`**bold 1**`                           |**bold 1**                           |
+|`__bold 2__`                           |__bold 2__                           |
+|`This is a ~~strikethrough~~`          |This is a ~~strikethrough~~          |
+|`***italic bold 1***`                  |***italic bold 1***                  |
+|`___italic bold 2___`                  |___italic bold 2___                  |
+|`***~~italic bold strikethrough 1~~***`|***~~italic bold strikethrough 1~~***|
+|`~~***italic bold strikethrough 2***~~`|~~***italic bold strikethrough 2***~~|
+
+## Styling
+Style text as _italic_, __bold__, ~~strikethrough~~, or `inline code`.
+
+- Use bulleted lists
+- To better clarify
+- Your points
+
+## Code blocks
+Formatted Dart code looks really pretty too:
+
+```
+void main() {
+  runApp(FlutterCalloutsApp(
+    home: Scaffold(
+      body: Markdown(data: markdownData),
+    ),
+  ));
+}
+```
+
+## Center Title
+
+###### ※ ※ ※
+
+_* How to implement it see migrate_snippets.dart#L129 in example_using_go_router._
+
+## Custom Syntax
+
+NaOH + Al_2O_3 = NaAlO_2 + H_2O
+
+C_4H_10 = C_2H_6 + C_2H_4
+
+## Markdown widget
+
+This is an example_using_go_router of how to create your own Markdown widget:
+
+    Markdown(data: 'Hello _world_!');
+
+Enjoy!
+
+[Google]: https://www.google.com/
+
+## Line Breaks
+
+This is an example_using_go_router of how to create line breaks (tab or two whitespaces):
+
+line 1
+
+
+line 2
+
+
+
+line 3
+""";
+  String _markdownData = """
+# Markdown Editor Demo
+
+This is a **live** markdown editor.
+
+## Features
+
+- **Bold text**
+- *Italic text*
+- `Inline code`
+- Headers
+
+My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best search engine for privacy").
+
+
+## Nested Lists (Try pressing Tab!)
+
+- Level 1 item
+  - Nested item (press Tab to indent)
+  - Another nested item
+- Back to level 1
+  - Another nested item
+    - Deeply nested item
+
+## Ordered Lists
+
+1. First item
+   1. Nested ordered item
+   2. Another nested item
+2. Second item
+
+```
+Block code
+```
+
+Try typing here!
+""";
+}
+
+class _MarkdownWidget extends StatefulWidget {
+  final MarkdownNode node;
+
+  const _MarkdownWidget({required this.node});
+
+  @override
+  State<_MarkdownWidget> createState() => _MarkdownWidgetState();
+}
+
+class _MarkdownWidgetState extends State<_MarkdownWidget> {
+  late MarkdownEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = MarkdownEditingController(text: widget.node.data ?? '');
+    widget.node.controller = _controller; // keep SNode ref if needed elsewhere
+  }
+
+  @override
+  void didUpdateWidget(_MarkdownWidget old) {
+    super.didUpdateWidget(old);
+    // if the node's data changed externally (e.g. undo), sync the controller
+    if (widget.node.data != _controller.text) {
+      _controller.text = widget.node.data ?? '';
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => StringOrNumberEditor(
+    teC: _controller,
+    inputType: String,
+    originalS: widget.node.data ?? '',
+    onTextChangedF: (s) {},
+    onEditingCompleteF: (s) {},
+    dontAutoFocus: false,
+    bgColor: Colors.white,
+    readOnly: !fsdui.canEditAnyContent(),
+    skipDecoration: !fsdui.canEditAnyContent(),
+  );
 }

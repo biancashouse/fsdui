@@ -5,6 +5,7 @@ import 'package:fsdui/fsdui.dart';
 class EditablePageRoute extends GoRoute {
   final Widget? child;
   final bool zoomable;
+
   // final bool provideNamedScrollController;
 
   static final Map<String, EditablePage> pages = {};
@@ -31,17 +32,20 @@ class EditablePageRoute extends GoRoute {
                    return const Text('EditablePageRoute - missing route path!');
                  } else {
                    return pages[state.path!] ??= EditablePage(
-                     key: ValueKey<String>(path), // provides access to state later
+                     key: ValueKey<String>(path),
+                     // provides access to state later
                      routePath: state.path!,
                      // zoomable: zoomable,
                      // provideNamedScrollController: provideNamedScrollController,
-                     child: child ?? SnippetBuilder(
-                       initialValue: PlaceholderNode(name: state.path!),
-                     ),
+                     child:
+                         child ??
+                         SnippetBuilder(
+                           initialValue: PlaceholderNode(name: state.path!),
+                         ),
                    );
                  }
                }
-             }
+             },
            );
          },
        );

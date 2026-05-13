@@ -59,8 +59,6 @@ flowchart LR
 
 @MappableClass()
 class UMLImageNode extends CL with UMLImageNodeMappable {
-  @override
-  String? name;
   String? diagramText;
   double? width;
   double? height;
@@ -69,7 +67,7 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
   AlignmentEnum? alignment;
 
   UMLImageNode({
-    this.name,
+    super.name,
     this.diagramText,
     this.width,
     this.height,
@@ -100,18 +98,6 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    FlutterDocPNode(
-      buttonLabel: 'PlantUML Reference',
-      webLink: plantumlRef,
-      snode: this,
-      name: 'fyi',
-    ),
-    FlutterDocPNode(
-      buttonLabel: 'Mermaid Reference',
-      webLink: mermaidRef,
-      snode: this,
-      name: 'fyi',
-    ),
     DecimalPNode(
       snode: this,
       name: 'scale',
@@ -145,6 +131,18 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
         });
       },
       calloutButtonSize: const Size(280, 2000),
+    ),
+    FlutterDocPNode(
+      buttonLabel: 'PlantUML Reference',
+      webLink: plantumlRef,
+      snode: this,
+      name: 'fyi',
+    ),
+    FlutterDocPNode(
+      buttonLabel: 'Mermaid Reference',
+      webLink: mermaidRef,
+      snode: this,
+      name: 'fyi',
     ),
   ];
 

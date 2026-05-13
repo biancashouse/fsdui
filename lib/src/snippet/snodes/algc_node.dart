@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/fsdui.dart' hide Field;
 import 'package:fsdui/src/algc/widgets/flowchart_widget.dart';
 import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
 import 'package:http/http.dart' as http;

@@ -28,12 +28,6 @@ class YTNode extends CL with YTNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    FlutterDocPNode(
-      buttonLabel: 'IFrame',
-      webLink: 'https://pub.dev/packages/webview_flutter_web',
-      snode: this,
-      name: 'fyi',
-    ),
     StringPNode(
       snode: this,
       name: 'Youtube Url',
@@ -52,6 +46,12 @@ class YTNode extends CL with YTNodeMappable {
       onDoubleChange: (newValue) =>
           refreshWithUpdate(context, () => scale = newValue ?? 1.0),
       calloutButtonSize: const Size(120, 20),
+    ),
+    FlutterDocPNode(
+      buttonLabel: 'IFrame',
+      webLink: 'https://pub.dev/packages/webview_flutter_web',
+      snode: this,
+      name: 'fyi',
     ),
   ];
 

@@ -24,20 +24,6 @@ class InteractiveViewerNode extends SC with InteractiveViewerNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    FlutterDocPNode(
-      buttonLabel: 'InteractiveViewer',
-      webLink:
-          'https://api.flutter.dev/flutter/widgets/InteractiveViewer-class.html',
-      snode: this,
-      name: 'fyi',
-    ),
-    FYIPNode(
-      label:
-          "The user can transform the child by dragging to pan or pinching to zoom",
-      msg: '',
-      snode: this,
-      name: 'fyi',
-    ),
     DecimalPNode(
       snode: this,
       name: 'minScale',
@@ -53,6 +39,20 @@ class InteractiveViewerNode extends SC with InteractiveViewerNodeMappable {
       onDoubleChange: (newValue) =>
           refreshWithUpdate(context, () => maxScale = newValue),
       calloutButtonSize: const Size(80, 20),
+    ),
+    FlutterDocPNode(
+      buttonLabel: 'InteractiveViewer',
+      webLink:
+          'https://api.flutter.dev/flutter/widgets/InteractiveViewer-class.html',
+      snode: this,
+      name: 'fyi',
+    ),
+    FYIPNode(
+      label:
+          "The user can transform the child by dragging to pan or pinching to zoom",
+      msg: '',
+      snode: this,
+      name: 'fyi',
     ),
   ];
 

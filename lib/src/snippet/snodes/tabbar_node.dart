@@ -60,15 +60,12 @@ class TabBarNode extends MC with TabBarNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) {
-    var textStyleName = fsdui.findTextStyleName(fsdui.appInfo, labelTSPropGroup);
+    var textStyleName = fsdui.findTextStyleName(
+      fsdui.appInfo,
+      labelTSPropGroup,
+    );
     textStyleName = textStyleName != null ? ': $textStyleName' : '';
     return [
-      FlutterDocPNode(
-        buttonLabel: 'TabBar',
-        webLink: 'https://api.flutter.dev/flutter/material/TabBar-class.html',
-        snode: this,
-        name: 'fyi',
-      ),
       StringPNode(
         snode: this,
         name: 'tabBarName',
@@ -153,6 +150,12 @@ class TabBarNode extends MC with TabBarNodeMappable {
         }),
         calloutButtonSize: const Size(130, 20),
       ),
+      FlutterDocPNode(
+        buttonLabel: 'TabBar',
+        webLink: 'https://api.flutter.dev/flutter/material/TabBar-class.html',
+        snode: this,
+        name: 'fyi',
+      ),
     ];
   }
 
@@ -170,21 +173,6 @@ class TabBarNode extends MC with TabBarNodeMappable {
     }
   }
 
-  void _createTabController(SnippetBuilderState? spState, int numTabs) {
-    if (!(spState?.mounted ?? false)) return;
-    tabC?.dispose();
-    tabC = TabController(vsync: spState!, length: numTabs);
-    tabC?.addListener(_tabListenerF);
-    spState.tabBars[tabBarName] = this;
-
-    // tabC!.addListener(() {
-    //   setState(() {
-    //     _tabQ.clear();
-    //     tabC?.animateTo(tabC?.index??0);
-    //   });
-    // });
-  }
-
   void resetTabQandC() {
     prevTabQ.clear();
     selection = 0;
@@ -193,60 +181,23 @@ class TabBarNode extends MC with TabBarNodeMappable {
 
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
-    try {
-      setParent(parentNode);
-      //ScrollControllerName? scName = EditablePage.name(context);
-      //possiblyHighlightSelectedNode(scName);
-      // find transformable scaffold node then its corr state object
-      // TransformableScaffoldNode? tsNode = findNearestAncestorOfType(TransformableScaffoldNode) as TransformableScaffoldNode?;
-      // TransformableScaffoldState? tState = tsNode?.nodeWidgetGK?.currentState as TransformableScaffoldState?;
-      final snippetName = rootNodeOfSnippet()?.name;
-      final spState = snippetName != null ? fsdui.snippetBuilderStates[snippetName] : null;
-      _createTabController(spState, children.length);
-      List<Widget> tabs = [];
-      for (SNode node in children) {
-        tabs.add(
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            // if just text, simply render a Tab with text, otherwise render a Tab with a child widget
-            child: node is TextNode
-                ? Tab(key: node.createNodeWidgetGK(), text: (node).text)
-                : Tab(child: node.build(context, parentNode)),
-          ),
-        );
-      }
-      final tabBar = TabBar(
-        key: createNodeWidgetGK(),
-        controller: tabC,
-        tabs: tabs,
-        labelColor: selectedLabelColor?.flutterValue,
-        unselectedLabelColor: unselectedLabelColor?.flutterValue,
-        labelPadding: EdgeInsets.all(10),
-        labelStyle: labelTSPropGroup.toTextStyle(context),
-        indicatorColor: indicatorColor?.flutterValue,
-        indicatorWeight: indicatorWeight = 2.0,
-        indicator: BoxDecoration(
-          border: Border.all(color: Colors.white, width: 2),
-          borderRadius: BorderRadius.circular(10.0),
+    setParent(parentNode);
+    final snippetName = rootNodeOfSnippet()?.name;
+    final spState = snippetName != null
+        ? fsdui.snippetBuilderStates[snippetName]
+        : null;
+    if (spState == null) return const Placeholder();
+    return PreferredSize(
+      preferredSize: const Size.fromHeight(100), //tabBar.preferredSize,
+      child: Container(
+        color: bgColor?.flutterValue ?? Colors.grey,
+        child: TabBarWidget(
+          node: this,
+          spState: spState,
+          parentNode: parentNode,
         ),
-      );
-      tabC?.index = min(selection ?? 0, children.length - 1);
-      return PreferredSize(
-        preferredSize: const Size.fromHeight(100), //tabBar.preferredSize,
-        child: Container(
-          color: bgColor?.flutterValue ?? Colors.grey,
-          child: tabBar,
-        ),
-      );
-    } catch (e) {
-      return Error(
-        key: createNodeWidgetGK(),
-        FLUTTER_TYPE,
-        color: Colors.red,
-        size: 16,
-        errorMsg: e.toString(),
-      );
-    }
+      ),
+    );
   }
 
   @override
@@ -270,3 +221,89 @@ class TabBarNode extends MC with TabBarNodeMappable {
 //         child: tabBar,
 //       );
 // }
+
+class TabBarWidget extends StatefulWidget {
+  final TabBarNode node;
+  final SnippetBuilderState spState;
+  final SNode? parentNode;
+
+  const TabBarWidget({
+    required this.node,
+    required this.spState,
+    this.parentNode,
+  });
+
+  @override
+  State<TabBarWidget> createState() => TabBarWidgetState();
+}
+
+class TabBarWidgetState extends State<TabBarWidget> {
+  late TabController _tabC;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabC = TabController(
+      vsync: widget.spState,
+      length: widget.node.children.length,
+    );
+    _tabC.addListener(_tabListenerF);
+    widget.node.tabC = _tabC;
+    widget.spState.tabBars[widget.node.tabBarName] = widget.node;
+  }
+
+  @override
+  void didUpdateWidget(TabBarWidget old) {
+    super.didUpdateWidget(old);
+    final newLength = widget.node.children.length;
+    if (_tabC.length != newLength) {
+      _tabC.removeListener(_tabListenerF);
+      _tabC.dispose();
+      _tabC = TabController(vsync: widget.spState, length: newLength);
+      _tabC.addListener(_tabListenerF);
+      widget.node.tabC = _tabC;
+      widget.spState.tabBars[widget.node.tabBarName] = widget.node;
+    }
+    _tabC.index = min(widget.node.selection ?? 0, newLength - 1);
+  }
+
+  void _tabListenerF() => widget.node._tabListenerF();
+
+  @override
+  void dispose() {
+    _tabC.removeListener(_tabListenerF);
+    _tabC.dispose();
+    widget.node.tabC = null;
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> tabs = [];
+    for (SNode node in widget.node.children) {
+      tabs.add(
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: node is TextNode
+              ? Tab(key: node.createNodeWidgetGK(), text: (node).text)
+              : Tab(child: node.build(context, widget.parentNode)),
+        ),
+      );
+    }
+    return TabBar(
+      key: widget.node.createNodeWidgetGK(),
+      controller: _tabC,
+      tabs: tabs,
+      labelColor: widget.node.selectedLabelColor?.flutterValue,
+      unselectedLabelColor: widget.node.unselectedLabelColor?.flutterValue,
+      labelPadding: EdgeInsets.all(10),
+      labelStyle: widget.node.labelTSPropGroup.toTextStyle(context),
+      indicatorColor: widget.node.indicatorColor?.flutterValue,
+      indicatorWeight: widget.node.indicatorWeight ?? 2.0,
+      indicator: BoxDecoration(
+        border: Border.all(color: Colors.white, width: 2),
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+    );
+  }
+}

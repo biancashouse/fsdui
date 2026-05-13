@@ -20,12 +20,6 @@ abstract class BoxScrollViewNode extends ScrollViewNode with BoxScrollViewNodeMa
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    FlutterDocPNode(
-      buttonLabel: 'BoxScrollView',
-      webLink: 'https://api.flutter.dev/flutter/widgets/BoxScrollView-class.html',
-      snode: this,
-      name: 'fyi',
-    ),
     ...super.propertyNodes(context, parentSNode),
 
     PNode /*Group*/ (
@@ -42,7 +36,12 @@ abstract class BoxScrollViewNode extends ScrollViewNode with BoxScrollViewNodeMa
         ),
       ],
     ),
-
+    FlutterDocPNode(
+      buttonLabel: 'BoxScrollView',
+      webLink: 'https://api.flutter.dev/flutter/widgets/BoxScrollView-class.html',
+      snode: this,
+      name: 'fyi',
+    ),
   ];
 
 }

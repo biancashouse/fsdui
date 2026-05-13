@@ -51,12 +51,12 @@ class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
+    ...super.propertyNodes(context, parentSNode),
     FlutterDocPNode(
         buttonLabel: 'MenuItemButton',
         webLink: 'https://api.flutter.dev/flutter/material/MenuItemButton-class.html',
         snode: this,
         name: 'fyi'),
-    ...super.propertyNodes(context, parentSNode),
   ];
 
   @override
@@ -72,7 +72,7 @@ class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
             onPressed: () {
               // if (destinationPanelOrPlaceholderName != null) {
               //   destinationSnippetName ??= '$destinationPanelOrPlaceholderName:default-snippet';
-              //   capiBloc.add(CAPIEvent.setPanelOrPlaceholderSnippet(
+              //   capiBloc.add(SetPanelSnippet(
               //     snippetName: destinationSnippetName!,
               //     panelName: destinationPanelOrPlaceholderName!,
               //   ));

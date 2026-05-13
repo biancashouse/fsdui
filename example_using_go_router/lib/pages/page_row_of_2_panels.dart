@@ -13,7 +13,6 @@ class Page_RowOf2Panels extends StatelessWidget {
         children: [
           Expanded(
             child: SnippetBuilder(
-              // panelName: 'panel1',
               initialValue: PaddingNode(
                 name: 'panels-demo1-panel1',
                 padding: EdgeInsetsValue(

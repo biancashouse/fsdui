@@ -37,11 +37,6 @@ class IFrameNode extends CL with IFrameNodeMappable {
         //   calloutButtonSize: const Size(280, 70),
         //   calloutSize: const Size(280, 80),
         // ),
-        FlutterDocPNode(
-            buttonLabel: 'IFrame',
-            webLink: 'https://pub.dev/packages/webview_flutter_web',
-            snode: this,
-            name: 'fyi'),
         StringPNode(
           snode: this,
           name: 'src',
@@ -67,6 +62,11 @@ class IFrameNode extends CL with IFrameNodeMappable {
               refreshWithUpdate(context, () => iframeHeight = newValue ?? 800),
           calloutButtonSize: const Size(160, 20),
         ),
+        FlutterDocPNode(
+            buttonLabel: 'IFrame',
+            webLink: 'https://pub.dev/packages/webview_flutter_web',
+            snode: this,
+            name: 'fyi'),
       ];
 
   // @override
@@ -77,7 +77,7 @@ class IFrameNode extends CL with IFrameNodeMappable {
   //           calloutSize: const Size(600, 200),
   //           onChangeF: (s) {
   //             name = s;
-  //             bloc.add(const CAPIEvent.forceRefresh());
+  //             bloc.add(ForceRefresh());
   //           }),
   //       const SizedBox(height: 10),
   //       NodePropertyButtonText(
@@ -86,7 +86,7 @@ class IFrameNode extends CL with IFrameNodeMappable {
   //           calloutSize: const Size(600, 200),
   //           onChangeF: (s) {
   //             src = s;
-  //             bloc.add(const CAPIEvent.forceRefresh());
+  //             bloc.add(ForceRefresh());
   //           }),
   //       const SizedBox(height: 10),
   //       Row(
@@ -99,7 +99,7 @@ class IFrameNode extends CL with IFrameNodeMappable {
   //               originalS: iframeWidth.toString(),
   //               onChangedF: (newWidth) {
   //                 iframeWidth = double.tryParse(newWidth) ?? 595;
-  //                 bloc.add(const CAPIEvent.forceRefresh());
+  //                 bloc.add(ForceRefresh());
   //               },
   //             ),
   //           ),
@@ -112,7 +112,7 @@ class IFrameNode extends CL with IFrameNodeMappable {
   //               originalS: iframeHeight.toString(),
   //               onChangedF: (newHeight) {
   //                 iframeHeight = double.tryParse(newHeight) ?? 842;
-  //                 bloc.add(const CAPIEvent.forceRefresh());
+  //                 bloc.add(ForceRefresh());
   //               },
   //             ),
   //           ),

@@ -11,6 +11,7 @@ import 'package:firebase_storage/firebase_storage.dart'
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
+import 'package:fsdui/src/api/snippet_builder/snippet_builder.dart';
 import 'package:fsdui/src/bloc/snippet_being_edited.dart';
 import 'package:fsdui/src/model/firestore_model_repo.dart';
 import 'package:fsdui/src/snippet/fancy_tree/tree_controller.dart';
@@ -40,6 +41,7 @@ import 'package:fsdui/src/snippet/snodes/filled_button_node.dart';
 import 'package:fsdui/src/snippet/snodes/flex_node.dart';
 import 'package:fsdui/src/snippet/snodes/flexible_node.dart';
 import 'package:fsdui/src/snippet/snodes/flexible_space_bar_node.dart';
+import 'package:fsdui/src/bloc/capi_event.dart';
 
 // import 'package:fsdui/src/snippet/snodes/quill/widgets/focus_notifier.dart';
 import 'package:fsdui/src/snippet/snodes/storage_image_node.dart';
@@ -108,9 +110,7 @@ import 'package:fsdui/x_fsdui/text_styles_extn.dart';
 // import 'package:fsdui/src/snippet/snodes/widget/fs_folder_node.dart';
 import 'package:go_router/go_router.dart';
 
-import 'fsdui.dart' show SnippetBuilderState;
 import 'src/bloc/capi_bloc.dart';
-import 'src/bloc/capi_event.dart';
 import 'src/model/app_info_model.dart';
 import 'src/model/model_repo.dart';
 import 'src/nav/nav_mixin.dart';
@@ -124,7 +124,7 @@ export 'package:cloud_firestore/cloud_firestore.dart';
 export 'package:firebase_core/firebase_core.dart';
 export 'package:firebase_auth/firebase_auth.dart';
 export 'package:firebase_storage/firebase_storage.dart';
-export 'package:firebase_ui_storage/firebase_ui_storage.dart' show StorageImage;
+export 'package:firebase_ui_storage/firebase_ui_storage.dart';
 export 'package:google_sign_in/google_sign_in.dart';
 export 'package:go_router/go_router.dart';
 export 'package:flutter_bloc/flutter_bloc.dart';
@@ -376,7 +376,7 @@ class FSDUI_Mixins
     RoutingConfig? routingConfig,
     String? initialRoutePath,
     bool skipAssetPkgName =
-    false, // would only use true when pkg dir is actually inside current project
+        false, // would only use true when pkg dir is actually inside current project
   }) async {
     await initLocalStorage();
 
@@ -453,8 +453,7 @@ class FSDUI_Mixins
       roots: [fsRootFolderNode],
       childrenProvider: (FSFolderNode node) => node.children,
       parentProvider: (FSFolderNode node) => node.getParent() as FSFolderNode?,
-    )
-      ..expand(fsRootFolderNode);
+    )..expand(fsRootFolderNode);
 
     // fco.logger.i('init 7. ${fco.stopwatch.elapsedMilliseconds}');
 
@@ -462,11 +461,11 @@ class FSDUI_Mixins
     return CAPIBloC(
       modelRepo: modelRepo,
       isSignedInAsSuperEditor:
-      localStorage.read("signed-in-as-super-editor") ?? false,
+          localStorage.read("signed-in-as-super-editor") ?? false,
       isSignedInAsArticleEditor:
-      localStorage.read("signed-in-as-article-editor") ?? false,
+          localStorage.read("signed-in-as-article-editor") ?? false,
       isSignedInAsGuestEditor:
-      localStorage.read("signed-in-as-guest-editor") ?? false,
+          localStorage.read("signed-in-as-guest-editor") ?? false,
     );
   }
 
@@ -507,7 +506,6 @@ class FSDUI_Mixins
   }
 
   bool isArticleEditor() => capiBloc.state.isSignedInAsArticleEditor;
-
   bool isGuestEditor() => capiBloc.state.isSignedInAsGuestEditor;
 
   GlobalKey authIconGK = GlobalKey();
@@ -718,7 +716,7 @@ class FSDUI_Mixins
   final List<String> googleFontNames = [];
 
   final Map<String, void Function(BuildContext, GlobalKey?)> namedCallbacks =
-  {};
+      {};
 
   Map<TextStyleName, TextStyleProperties> namedTextStyles = {};
   Map<ButtonStyleName, ButtonStyleProperties> namedButtonStyles = {};
@@ -744,22 +742,20 @@ class FSDUI_Mixins
   // set when user taps a snippet triangle
   // final inEditMode = ValueNotifier<bool>(false);
 
-  void forceRefresh({bool onlyTargetsWrappers = false}) =>
-      fsdui.capiBloc.add(
-        CAPIEvent.forceRefresh(onlyTargetsWrappers: onlyTargetsWrappers),
-      );
+  void forceRefresh({bool onlyTargetsWrappers = false}) => fsdui.capiBloc.add(
+    ForceRefresh(onlyTargetsWrappers: onlyTargetsWrappers),
+  );
 
   Offset calloutConfigToolbarPos() =>
       _calloutConfigToolbarPos ??
-          Offset(
-            scrW / 2 - 600,
-            calloutConfigToolbarAtTopOfScreen ? 10 : scrH - 90,
-          );
+      Offset(
+        scrW / 2 - 600,
+        calloutConfigToolbarAtTopOfScreen ? 10 : scrH - 90,
+      );
 
   Offset quillTextToolbarPos() =>
       _quillTextToolbarPos ??
-          Offset(
-              scrW / 2 - 600, quillTextToolbarAtTopOfScreen ? 10 : scrH - 90);
+      Offset(scrW / 2 - 600, quillTextToolbarAtTopOfScreen ? 10 : scrH - 90);
 
   void setCalloutConfigToolbarPos(Offset newPos) =>
       _calloutConfigToolbarPos = newPos;
@@ -767,9 +763,7 @@ class FSDUI_Mixins
   void setQuillTextToolbarPos(Offset newPos) => _quillTextToolbarPos = newPos;
 
   Offset devToolsFABPos(context) =>
-      _devToolsFABPos ?? Offset(40, MediaQuery
-          .sizeOf(context)
-          .height - 100);
+      _devToolsFABPos ?? Offset(40, MediaQuery.sizeOf(context).height - 100);
 
   void setDevToolsFABPos(Offset newPos) => _devToolsFABPos = newPos;
 
@@ -777,8 +771,10 @@ class FSDUI_Mixins
 
   final Map<HandlerName, void Function(BuildContext)> _handlers = {};
 
-  void Function(BuildContext p1) registerHandler(HandlerName name,
-      void Function(BuildContext) f,) => _handlers[name] = f;
+  void Function(BuildContext p1) registerHandler(
+    HandlerName name,
+    void Function(BuildContext) f,
+  ) => _handlers[name] = f;
 
   void Function(BuildContext)? namedHandler(HandlerName name) =>
       _handlers[name];
@@ -870,12 +866,11 @@ class FSDUI_Mixins
     EdgeInsets padding = const EdgeInsets.all(20.0),
     BoxFit? fit,
     Key? key,
-  }) =>
-      fca.networkPicWithFadeIn(
-          url: FirebaseStorage.instance
-              .refFromURL("gs://YOUR_BUCKET/images/stars.jpg")
-              .fullPath
-      );
+  }) => fca.networkPicWithFadeIn(
+    url: FirebaseStorage.instance
+        .refFromURL("gs://YOUR_BUCKET/images/stars.jpg")
+        .fullPath,
+  );
 
   // Widget fetchImage(String url) => Center(
   //   child: Image(
@@ -956,9 +951,9 @@ class FSDUI_Mixins
     final blue = floatToInt8(color.b);
 
     return '${alpha.toRadixString(16).padLeft(2, '0')}'
-        '${red.toRadixString(16).padLeft(2, '0')}'
-        '${green.toRadixString(16).padLeft(2, '0')}'
-        '${blue.toRadixString(16).padLeft(2, '0')}'
+            '${red.toRadixString(16).padLeft(2, '0')}'
+            '${green.toRadixString(16).padLeft(2, '0')}'
+            '${blue.toRadixString(16).padLeft(2, '0')}'
         .toUpperCase();
   }
 
@@ -1014,11 +1009,10 @@ class FSDUI_Mixins
             : 0.0,
       );
 
-  Rect translateRectForScroll(ScrollConfig? config, Rect r) =>
-      Rect.fromPoints(
-        translateOffsetForScroll(config, r.topLeft),
-        translateOffsetForScroll(config, r.bottomRight),
-      );
+  Rect translateRectForScroll(ScrollConfig? config, Rect r) => Rect.fromPoints(
+    translateOffsetForScroll(config, r.topLeft),
+    translateOffsetForScroll(config, r.bottomRight),
+  );
 
   void initializeMappers() {
     // This function just needs to exist. Its primary purpose is to force the
@@ -1106,5 +1100,5 @@ class FSDUI_Mixins
     ColumnNodeMapper.ensureInitialized();
   }
 
-// lib/src/init.dart
+  // lib/src/init.dart
 }

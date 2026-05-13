@@ -26,19 +26,6 @@ class FlexibleNode extends SC with FlexibleNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    FlutterDocPNode(
-      buttonLabel: 'Flexible',
-      webLink: 'https://api.flutter.dev/flutter/widgets/Flexible-class.html',
-      snode: this,
-      name: 'fyi',
-    ),
-    FYIPNode(
-      label: "Constraint Imposed on Child: 'Tight' in the main axis.",
-      msg:
-          "Forces the child to take exactly the allocated remaining space in a Row or Column.",
-      snode: this,
-      name: 'fyi',
-    ),
     IntPNode(
       snode: this,
       name: 'flex',
@@ -55,6 +42,19 @@ class FlexibleNode extends SC with FlexibleNodeMappable {
         context,
         () => FlexFitEnum.of(newValue ?? FlexFitEnum.loose.index),
       ),
+    ),
+    FlutterDocPNode(
+      buttonLabel: 'Flexible',
+      webLink: 'https://api.flutter.dev/flutter/widgets/Flexible-class.html',
+      snode: this,
+      name: 'fyi',
+    ),
+    FYIPNode(
+      label: "Constraint Imposed on Child: 'Tight' in the main axis.",
+      msg:
+          "Forces the child to take exactly the allocated remaining space in a Row or Column.",
+      snode: this,
+      name: 'fyi',
     ),
   ];
 
@@ -104,7 +104,7 @@ class FlexibleNode extends SC with FlexibleNodeMappable {
   //             originalS: flex.toString(),
   //             onChangedF: (newFlex) {
   //               flex = int.tryParse(newFlex) ?? 1;
-  //               bloc.add(const CAPIEvent.forceRefresh());
+  //               bloc.add(ForceRefresh());
   //             },
   //           ),
   //         ),
@@ -130,7 +130,7 @@ class FlexibleNode extends SC with FlexibleNodeMappable {
   //               originalValue: fit,
   //               onChangedF: (newValue) {
   //                 fit = newValue ?? FlexFitEnum.loose;
-  //                 bloc.add(const CAPIEvent.forceRefresh());
+  //                 bloc.add(ForceRefresh());
   //               },
   //             ),
   //           ],

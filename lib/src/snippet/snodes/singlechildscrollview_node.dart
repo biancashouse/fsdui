@@ -27,13 +27,6 @@ class SingleChildScrollViewNode extends SC
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    FlutterDocPNode(
-      buttonLabel: 'SingleChildScrollView',
-      webLink:
-          'https://api.flutter.dev/flutter/widgets/SingleChildScrollView-class.html',
-      snode: this,
-      name: 'fyi',
-    ),
     EnumPNode<AxisEnum?>(
       snode: this,
       name: 'scrollDirection',
@@ -56,6 +49,13 @@ class SingleChildScrollViewNode extends SC
               refreshWithUpdate(context, () => padding = newValue),
         ),
       ],
+    ),
+    FlutterDocPNode(
+      buttonLabel: 'SingleChildScrollView',
+      webLink:
+          'https://api.flutter.dev/flutter/widgets/SingleChildScrollView-class.html',
+      snode: this,
+      name: 'fyi',
     ),
   ];
 

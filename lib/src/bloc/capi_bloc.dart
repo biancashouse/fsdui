@@ -7,6 +7,8 @@ import 'package:fsdui/src/bloc/snippet_being_edited.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_main_axis_size.dart';
 import 'package:fsdui/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
 
+import '../snippet/snodes/crossword_node.dart' show CrosswordNode;
+
 
 class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   // late SnippetUndoRedoStack _ur;
@@ -898,6 +900,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
                 child: childNode,
               ),
       // const (ContentSnippetRootNode) => ContentSnippetRootNode(name: 'content', child: childNode),
+      const (CrosswordNode) => CrosswordNode(),
       const (CustomScrollViewNode) => CustomScrollViewNode(slivers: []),
       const (DefaultTextStyleNode) => DefaultTextStyleNode(
         child: childNode,
@@ -1193,11 +1196,11 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
     SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
     SNode? selectedNodeParent = selectedNode.getParent() as SNode?;
-    SNode w = event.type != null
+    SNode w = event.nodeType != null
         ? _typeAsATreeNode(
-            event.type!,
+            event.nodeType!,
             selectedNode,
-            "_wrapWith() missing ${event.type.toString()}",
+            "_wrapWith() missing ${event.nodeType.toString()}",
           )
         : event.testNode!;
 
@@ -1326,13 +1329,13 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     _pushUndo();
 
     SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
-    if (event.type == selectedNode.runtimeType) return;
+    if (event.nodeType == selectedNode.runtimeType) return;
 
-    SNode newNode = event.type != null
+    SNode newNode = event.nodeType != null
         ? _typeAsATreeNode(
-            event.type!,
+            event.nodeType!,
             null,
-            "_replaceWith() missing ${event.type.toString()}",
+            "_replaceWith() missing ${event.nodeType.toString()}",
           )
         : event.testNode!;
     _replaceWithNewNodeOrClipboard(selectedNode, emit, newNode);
@@ -1439,11 +1442,11 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     _pushUndo();
 
     SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
-    SNode newNode = event.type != null
+    SNode newNode = event.nodeType != null
         ? _typeAsATreeNode(
-            event.type!,
+            event.nodeType!,
             null,
-            "_addChild() missing ${event.type.toString()}",
+            "_addChild() missing ${event.nodeType.toString()}",
           )
         : event.testNode!;
     _addOrPasteChild(selectedNode, emit, newNode);
@@ -1540,11 +1543,11 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   void _prependArticle(PrependArticle event, emit) {
     _pushUndo();
 
-    SNode newNode = event.type != null
+    SNode newNode = event.nodeType != null
         ? _typeAsATreeNode(
-            event.type!,
+            event.nodeType!,
             null,
-            "_addChild() missing ${event.type.toString()}",
+            "_addChild() missing ${event.nodeType.toString()}",
           )
         : event.testNode!;
 
@@ -1603,11 +1606,11 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
     List<SNode>? siblings = selectedNode.maybeSiblings();
     if (siblings == null) return;
-    SNode newNode = event.type != null
+    SNode newNode = event.nodeType != null
         ? _typeAsATreeNode(
-            event.type!,
+            event.nodeType!,
             null,
-            "_addSiblingBefore() missing ${event.type.toString()}",
+            "_addSiblingBefore() missing ${event.nodeType.toString()}",
           )
         : event.testNode!;
     int i = siblings.indexOf(selectedNode);

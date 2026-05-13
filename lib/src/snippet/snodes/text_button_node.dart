@@ -27,12 +27,12 @@ class TextButtonNode extends ButtonNode with TextButtonNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
+    ...super.propertyNodes(context, parentSNode),
     FlutterDocPNode(
         buttonLabel: 'TextButton',
         webLink: 'https://api.flutter.dev/flutter/material/TextButton-class.html',
         snode: this,
         name: 'fyi'),
-    ...super.propertyNodes(context, parentSNode),
   ];
 
   @override

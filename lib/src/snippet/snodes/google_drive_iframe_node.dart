@@ -83,7 +83,7 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
   //           calloutSize: const Size(600, 200),
   //           onChangeF: (s) {
   //             name = s;
-  //             bloc.add(const CAPIEvent.forceRefresh());
+  //             bloc.add(ForceRefresh());
   //           }),
   //       const SizedBox(height: 10),
   //       NodePropertyButtonText(
@@ -92,7 +92,7 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
   //           calloutSize: const Size(600, 200),
   //           onChangeF: (s) {
   //             folderId = s;
-  //             bloc.add(const CAPIEvent.forceRefresh());
+  //             bloc.add(ForceRefresh());
   //           }),
   //       const SizedBox(height: 10),
   //       NodePropertyButtonText(
@@ -101,7 +101,7 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
   //           calloutSize: const Size(600, 200),
   //           onChangeF: (s) {
   //             resourceKey = s;
-  //             bloc.add(const CAPIEvent.forceRefresh());
+  //             bloc.add(ForceRefresh());
   //           }),
   //       const SizedBox(height: 10),
   //       Row(
@@ -114,7 +114,7 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
   //               originalS: iframeWidth.toString(),
   //               onChangedF: (newWidth) {
   //                 iframeWidth = double.tryParse(newWidth) ?? 595;
-  //                 bloc.add(const CAPIEvent.forceRefresh());
+  //                 bloc.add(ForceRefresh());
   //               },
   //             ),
   //           ),
@@ -127,7 +127,7 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
   //               originalS: iframeHeight.toString(),
   //               onChangedF: (newHeight) {
   //                 iframeHeight = double.tryParse(newHeight) ?? 842;
-  //                 bloc.add(const CAPIEvent.forceRefresh());
+  //                 bloc.add(ForceRefresh());
   //               },
   //             ),
   //           ),

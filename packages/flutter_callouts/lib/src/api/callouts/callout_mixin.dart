@@ -514,23 +514,28 @@ mixin CalloutMixin {
         break;
     }
 
+    final w = width ?? fca.scrW * .8;
+    final h = height ?? 80;
     var cc = CalloutConfig(
       cId: 'toast-${gravity.toString()}',
       gravity: gravity,
       decorationFillColors: ColorOrGradient.color(bgColor ?? Colors.white),
-      initialCalloutW: width ?? fca.scrW * .8,
-      initialCalloutH: height ?? 80,
+      initialCalloutW: w,
+      initialCalloutH: h,
       contentTranslateX: contentTranslateX,
       contentTranslateY: contentTranslateY,
       showcpi: showCPI,
       onlyOnce: onlyOnce,
       showCloseButton: showCloseButton,
       elevation: 10,
+      decorationBorderRadius: 24,
     );
 
     showToastOverlay(
       calloutConfig: cc,
-      calloutContent: Center(
+      calloutContent: Container(
+        alignment: Alignment.center,
+        width: w, height: h,
         child: Padding(
           padding: const EdgeInsets.all(18.0),
           child: fca.coloredText(

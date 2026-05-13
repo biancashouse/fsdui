@@ -24,11 +24,6 @@ class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    FlutterDocPNode(
-        buttonLabel: 'SubMenuItemButton',
-        webLink: 'https://api.flutter.dev/flutter/material/SubmenuButton-class.html',
-        snode: this,
-        name: 'fyi'),
     StringPNode(
           snode: this,
           name: 'itemLabel',
@@ -38,6 +33,11 @@ class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
         ),
+    FlutterDocPNode(
+        buttonLabel: 'SubMenuItemButton',
+        webLink: 'https://api.flutter.dev/flutter/material/SubmenuButton-class.html',
+        snode: this,
+        name: 'fyi'),
       ];
 
   // @override
@@ -48,7 +48,7 @@ class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
   //           calloutSize: const Size(600, 200),
   //           onChangeF: (s) {
   //             itemLabel = s;
-  //             bloc.add(const CAPIEvent.forceRefresh());
+  //             bloc.add(ForceRefresh());
   //           }),
   //     ];
 

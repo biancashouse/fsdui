@@ -34,12 +34,6 @@ class RichTextNode extends CL with RichTextNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    FlutterDocPNode(
-        buttonLabel: 'RichText',
-        webLink:
-        'https://api.flutter.dev/flutter/widgets/RichText-class.html',
-        snode: this,
-        name: 'fyi'),
     EnumPNode<TextAlignEnum?>(
           snode: this,
           name: 'textAlign',
@@ -76,6 +70,12 @@ class RichTextNode extends CL with RichTextNodeMappable {
           onIndexChange: (newValue) =>
               refreshWithUpdate(context,() => TextDirectionEnum.of(newValue)),
         ),
+    FlutterDocPNode(
+        buttonLabel: 'RichText',
+        webLink:
+        'https://api.flutter.dev/flutter/widgets/RichText-class.html',
+        snode: this,
+        name: 'fyi'),
       ];
 
   @override
@@ -124,7 +124,7 @@ class RichTextNode extends CL with RichTextNodeMappable {
   //       originalEnumIndex: textAlign?.index??0,
   //       onChangeF: (newOption) {
   //         textAlign = TextAlignEnum.values[newOption];
-  //         bloc.add(const CAPIEvent.forceRefresh());
+  //         bloc.add(ForceRefresh());
   //       },
   //       calloutSize: calloutSize,
   //     ),
@@ -134,7 +134,7 @@ class RichTextNode extends CL with RichTextNodeMappable {
   //       originalEnumIndex: textDirection?.index,
   //       onChangeF: (newOption) {
   //         textDirection = TextDirectionEnum.values[newOption];
-  //         bloc.add(const CAPIEvent.forceRefresh());
+  //         bloc.add(ForceRefresh());
   //       },
   //       calloutSize: TextDirectionEnum.calloutSize,
   //     ),
@@ -144,7 +144,7 @@ class RichTextNode extends CL with RichTextNodeMappable {
   //       originalEnumIndex: overflow?.index,
   //       onChangeF: (newOption) {
   //         overflow = TextOverflowEnum.values[newOption];
-  //         bloc.add(const CAPIEvent.forceRefresh());
+  //         bloc.add(ForceRefresh());
   //       },
   //       calloutSize: TextOverflowEnum.calloutSize,
   //     ),
@@ -157,7 +157,7 @@ class RichTextNode extends CL with RichTextNodeMappable {
   //         originalS: (textScaleFactor ?? 1.0).toString(),
   //         onChangedF: (newTSF) {
   //           textScaleFactor = double.tryParse(newTSF);
-  //           bloc.add(const CAPIEvent.forceRefresh());
+  //           bloc.add(ForceRefresh());
   //         },
   //       ),
   //     ),

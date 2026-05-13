@@ -21,9 +21,10 @@ class EditablePage extends StatefulWidget {
   });
 
   // allow a page widget to find its parent EditablePage
-  static EditablePageState? of(BuildContext context) => context.mounted
-      ? context.findAncestorStateOfType<EditablePageState>()
-      : null;
+  static EditablePageState? of(BuildContext context) =>
+      context.mounted
+          ? context.findAncestorStateOfType<EditablePageState>()
+          : null;
 
   // static ScrollController? ancestorSc(BuildContext context, Axis? axis) {
   //   ScrollableState? scrollableState = Scrollable.maybeOf(context, axis: axis);
@@ -63,7 +64,9 @@ class EditablePageState extends State<EditablePage> {
     SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(
       fsdui.capiBloc.state.activeSnippetName != null
           ? fsdui.capiBloc.state.activeSnippetName!
-          : fsdui.capiBloc.state.snippetBeingEdited?.getRootNode().name ?? '???',
+          : fsdui.capiBloc.state.snippetBeingEdited
+          ?.getRootNode()
+          .name ?? '???',
     );
     rootNode = snippetInfo?.currentVersionInCache();
     // traverse node
@@ -91,7 +94,7 @@ class EditablePageState extends State<EditablePage> {
     // print('build - borderRects: ${borderRects.length}');
     return BlocConsumer<CAPIBloC, CAPIState>(
       listenWhen: (prev, curr) =>
-          prev.activeSnippetName != curr.activeSnippetName ||
+      prev.activeSnippetName != curr.activeSnippetName ||
           (prev.snippetBeingEdited == null) !=
               (curr.snippetBeingEdited == null) ||
           prev.snippetBeingEdited?.selectedNode !=
@@ -136,7 +139,7 @@ class EditablePageState extends State<EditablePage> {
           return true;
         }
         if ((previous.isSignedInAsSuperEditor !=
-                current.isSignedInAsSuperEditor) &&
+            current.isSignedInAsSuperEditor) &&
             !fsdui.canEditAnyContent()) {
           return true;
         }
@@ -148,7 +151,7 @@ class EditablePageState extends State<EditablePage> {
         final builtWidget = GestureDetector(
           onTap: () {
             if (bloc.showTappableBorderRects()) {
-              bloc.add(CAPIEvent.exitNodeSelectionMode());
+              bloc.add(ExitSelectWidgetMode());
             }
           },
           child: Material(child: _pageStack(bloc)),
@@ -163,30 +166,35 @@ class EditablePageState extends State<EditablePage> {
   void _tappedToEditSnippetAndSelectNode(SNode node) {
     SNode? rootNode = node.rootNodeOfSnippet();
     if (rootNode == null) return;
-    SnippetName? snippetName = rootNode.name;
-    // maybe a page snippet, so check name in appInfo: maybe prefix with /
-    // var names = fco.appInfo.snippetNames;
-    if (fsdui.appInfo.snippetNames.contains('/$snippetName')) {
-      snippetName = '/$snippetName';
-    }
+    try {
+      SnippetName snippetName = rootNode.name!;
+      // maybe a page snippet, so check name in appInfo: maybe prefix with /
+      // var names = fco.appInfo.snippetNames;
+      if (fsdui.appInfo.snippetNames.contains('/$snippetName')) {
+        snippetName = '/$snippetName';
+      }
 
-    if (SNode.isHotspotCalloutContent(snippetName!)) {
-      final cc = fsdui.findOE(snippetName)?.calloutConfig;
-      cc?.rebuild(() {
-        cc
-          ..barrier = null
-          ..targetPointerType = TargetPointerType.none();
-      });
-    }
+      if (SNode.isHotspotCalloutContent(snippetName)) {
+        final cc = fsdui
+            .findOE(snippetName)
+            ?.calloutConfig;
+        cc?.rebuild(() {
+          cc
+            ..barrier = null
+            ..targetPointerType = TargetPointerType.none();
+        });
+      }
 
-    pushThenShowNamedSnippetWithNodeSelected(rootNode, node);
+      pushThenShowNamedSnippetWithNodeSelected(rootNode, node);
+    } catch(e) {
+      throw(e.toString());
+    }
   }
 
-  void pushThenShowNamedSnippetWithNodeSelected(
-    SNode rootNode,
-    SNode selectedNode, {
-    HotspotTargetModel? targetBeingConfigured,
-  }) {
+  void pushThenShowNamedSnippetWithNodeSelected(SNode rootNode,
+      SNode selectedNode, {
+        HotspotTargetModel? targetBeingConfigured,
+      }) {
     var snippetRootContext = rootNode.nodeWidgetGK?.currentContext;
     if (snippetRootContext == null) {
       fsdui.showToast(
@@ -199,7 +207,7 @@ class EditablePageState extends State<EditablePage> {
     }
 
     context.read<CAPIBloC>().add(
-      CAPIEvent.pushSnippetEditor(
+      PushSnippetEditor(
         rootNode: rootNode,
         selectedNode: selectedNode,
       ),
@@ -242,7 +250,9 @@ class EditablePageState extends State<EditablePage> {
         bloc.showTappableBorderRects() || bloc.aSnippetIsBeingEdited();
     final snippetName =
         bloc.state.activeSnippetName ??
-        bloc.state.snippetBeingEdited?.getRootNode().name;
+            bloc.state.snippetBeingEdited
+                ?.getRootNode()
+                .name;
 
     return Stack(
       children: [
@@ -251,9 +261,9 @@ class EditablePageState extends State<EditablePage> {
           SnippetBuilder(
             // the snippet should already exist in the cache at this point
             initialValue: TextNode(
-              name: snippetName,
-              text: 'Missing Snippet: $snippetName !',
-              tsPropGroup: TextStyleProperties(color: ColorModel.red())
+                name: snippetName,
+                text: 'Missing Snippet: $snippetName !',
+                tsPropGroup: TextStyleProperties(color: ColorModel.red())
             ),
             onLayoutDone: () {
               if (_needsToPopulateRects && mounted) {
@@ -281,8 +291,9 @@ class EditablePageState extends State<EditablePage> {
             onNodeTapped: (node) {
               if (bloc.aSnippetIsBeingEdited()) {
                 fsdui.dismiss('pink-overlay');
-                bloc.add(CAPIEvent.selectNode(node: node));
-                fsdui.afterNextBuildDo(() => SNodeWidget.pointOutSelectedNode());
+                bloc.add(SelectNode(node: node));
+                fsdui.afterNextBuildDo(() =>
+                    SNodeWidget.pointOutSelectedNode());
               } else {
                 if (node is QuillTextNode || node is MarkdownNode) return;
                 _tappedToEditSnippetAndSelectNode(node);
@@ -341,13 +352,13 @@ class EditablePageState extends State<EditablePage> {
                   // print(s);
                   if (fsdui.appInfo.superEditorPasswords.contains(s)) {
                     fsdui.dismissAll();
-                    fsdui.capiBloc.add(CAPIEvent.signedInAsSuperEditor());
+                    fsdui.capiBloc.add(SignedInAsSuperEditor());
                   } else if (fsdui.appInfo.articleEditorPasswords.contains(s)) {
                     fsdui.dismissAll();
-                    fsdui.capiBloc.add(CAPIEvent.signedInAsArticleEditor());
+                    fsdui.capiBloc.add(SignedInAsArticleEditor());
                   } else if (s == 'GUEST') {
                     fsdui.dismissAll();
-                    fsdui.capiBloc.add(CAPIEvent.signedInAsGuestEditor());
+                    fsdui.capiBloc.add(SignedInAsGuestEditor());
                   }
                 },
                 onEscapedF: (_) {
@@ -374,7 +385,7 @@ class EditablePageState extends State<EditablePage> {
                   children: [
                     TextSpan(
                       text:
-                          'If you\'d like to see how editing works in an\n'
+                      'If you\'d like to see how editing works in an\n'
                           'app built with our ',
                       style: TextStyle(fontWeight: FontWeight.normal),
                     ),
@@ -384,7 +395,7 @@ class EditablePageState extends State<EditablePage> {
                     ),
                     TextSpan(
                       text:
-                          ' package,\nuse password "GUEST".\n'
+                      ' package,\nuse password "GUEST".\n'
                           'Any changes you make will be discarded when\n'
                           'you leave this browser tab, or sign out.',
                       style: TextStyle(fontWeight: FontWeight.normal),
@@ -466,7 +477,8 @@ class EditablePageState extends State<EditablePage> {
                       pageName,
                     )) {
                   // jsArray issue
-                  List<String> newList = fsdui.appInfo.anonymousUserEditablePages
+                  List<String> newList = fsdui.appInfo
+                      .anonymousUserEditablePages
                       .toList();
                   newList.add(pageName);
                   fsdui.appInfo.anonymousUserEditablePages = newList;
@@ -550,10 +562,12 @@ class SelectionCutoutPainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     // 2. Create the cutout path
-    final cutoutPath = Path()..addRect(cutoutRect);
+    final cutoutPath = Path()
+      ..addRect(cutoutRect);
 
     // 3. Create the full canvas path
-    final fullCanvasPath = Path()..addRect(Offset.zero & size);
+    final fullCanvasPath = Path()
+      ..addRect(Offset.zero & size);
 
     // 4. Combine the paths using difference
     final combinedPath = Path.combine(

@@ -36,12 +36,6 @@ class PollNode extends MC with PollNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-        FlutterDocPNode(
-            buttonLabel: 'Poll',
-            webLink:
-                'https://pub.dev/packages/flutter_polls',
-            snode: this,
-            name: 'fyi'),
         StringPNode(
           snode: this,
           name: 'pollName',
@@ -102,6 +96,12 @@ class PollNode extends MC with PollNodeMappable {
         //   calloutButtonSize: const Size(280, 70),
         //   calloutSize: const Size(280, 140),
         // ),
+        FlutterDocPNode(
+            buttonLabel: 'Poll',
+            webLink:
+                'https://pub.dev/packages/flutter_polls',
+            snode: this,
+            name: 'fyi'),
       ];
 
   @override

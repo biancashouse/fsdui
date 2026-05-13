@@ -30,24 +30,24 @@ mixin WidgetHelperMixin {
     if (width != null && height != null) {
       return !SHOW_BOXED && (force == null)
           ? Container(
-              color: theBgColor,
-              width: width,
-              height: height,
-              child: theChild,
-            )
+        color: theBgColor,
+        width: width,
+        height: height,
+        child: theChild,
+      )
           : Container(
-              padding: EdgeInsets.all(thePadding!),
-              decoration: BoxDecoration(
-                color: theBgColor,
-                border: Border.all(width: theBorderWidth),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(notRounded != null ? 0.0 : 16.0),
-                ),
-              ),
-              width: width,
-              height: height,
-              child: theChild,
-            );
+        padding: EdgeInsets.all(thePadding!),
+        decoration: BoxDecoration(
+          color: theBgColor,
+          border: Border.all(width: theBorderWidth),
+          borderRadius: BorderRadius.all(
+            Radius.circular(notRounded != null ? 0.0 : 16.0),
+          ),
+        ),
+        width: width,
+        height: height,
+        child: theChild,
+      );
     } else {
       return emptyZeroSizedContainer();
     }
@@ -91,26 +91,27 @@ mixin WidgetHelperMixin {
   //   }
   // }
 
-  Widget boxChild({required Widget child, Color? bgColor}) => Material(
-    elevation: 20,
-    child: Container(
-      padding: const EdgeInsets.all(10),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: bgColor,
-        border: Border.all(),
-        boxShadow: [
-          if (bgColor != null)
-            BoxShadow(
-              color: Colors.white.withValues(alpha: .5),
-              spreadRadius: 5,
-              blurRadius: 10,
-            ),
-        ],
-      ),
-      child: child,
-    ),
-  );
+  Widget boxChild({required Widget child, Color? bgColor}) =>
+      Material(
+        elevation: 20,
+        child: Container(
+          padding: const EdgeInsets.all(10),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: bgColor,
+            border: Border.all(),
+            boxShadow: [
+              if (bgColor != null)
+                BoxShadow(
+                  color: Colors.white.withValues(alpha: .5),
+                  spreadRadius: 5,
+                  blurRadius: 10,
+                ),
+            ],
+          ),
+          child: child,
+        ),
+      );
 
   // visually guides user to type CR when the text overflows the max width.
   // achieved by preventing the auto wrap and showing the overflow slightly
@@ -261,24 +262,25 @@ mixin WidgetHelperMixin {
   //  }
   //}
 
-  Text text16(
-    String s, {
+  Text text16(String s, {
     Color theBgColor = Colors.white,
     Color color = Colors.black,
-  }) => Text(
-    s,
-    style: TextStyle(
-      fontSize: 16,
-      color: color,
-      background: bgPaint(theBgColor),
-    ),
-  );
+  }) =>
+      Text(
+        s,
+        style: TextStyle(
+          fontSize: 16,
+          color: color,
+          background: bgPaint(theBgColor),
+        ),
+      );
 
-  Text text18(String s, {Color theBgColor = Colors.white, key}) => Text(
-    s,
-    key: key,
-    style: const TextStyle(fontSize: 18, color: Colors.black),
-  );
+  Text text18(String s, {Color theBgColor = Colors.white, key}) =>
+      Text(
+        s,
+        key: key,
+        style: const TextStyle(fontSize: 18, color: Colors.black),
+      );
 
   Text text24(String s, {Color theBgColor = Colors.white}) =>
       Text(s, style: TextStyle(fontSize: 24, background: bgPaint(theBgColor)));
@@ -372,14 +374,28 @@ mixin WidgetHelperMixin {
     double? width,
     double? height,
     double padding = 20,
-  }) => Container(
-    key: gk,
-    padding: EdgeInsets.all(padding),
-    alignment: alignment,
-    width: width,
-    height: height,
-    child: toolTip == null
-        ? FadeInImage(
+  }) =>
+      Container(
+        key: gk,
+        padding: EdgeInsets.all(padding),
+        alignment: alignment,
+        width: width,
+        height: height,
+        child: toolTip == null
+            ? FadeInImage(
+          fadeInDuration: const Duration(milliseconds: 200),
+          alignment: alignment,
+          placeholder: const AssetImage(
+            'lib/assets/images/loading-icon-256x256.png',
+            package: 'flutter_callouts',
+          ),
+          image: MemoryImage(bytes),
+          width: width,
+          height: height,
+        )
+            : Tooltip(
+          message: toolTip,
+          child: FadeInImage(
             fadeInDuration: const Duration(milliseconds: 200),
             alignment: alignment,
             placeholder: const AssetImage(
@@ -389,22 +405,9 @@ mixin WidgetHelperMixin {
             image: MemoryImage(bytes),
             width: width,
             height: height,
-          )
-        : Tooltip(
-            message: toolTip,
-            child: FadeInImage(
-              fadeInDuration: const Duration(milliseconds: 200),
-              alignment: alignment,
-              placeholder: const AssetImage(
-                'lib/assets/images/loading-icon-256x256.png',
-                package: 'flutter_callouts',
-              ),
-              image: MemoryImage(bytes),
-              width: width,
-              height: height,
-            ),
           ),
-  );
+        ),
+      );
 
   // Widget networkPic({required String url, Alignment alignment = Alignment.center, double width = 512, double height = 512, double padding = 20}) =>
   //     Container(
@@ -427,38 +430,39 @@ mixin WidgetHelperMixin {
     double height = 512,
     double padding = 20,
     BorderRadius radius = BorderRadius.zero,
-  }) => Container(
-    padding: EdgeInsets.all(padding),
-    alignment: alignment,
-    width: width,
-    height: height,
-    child: kIsWeb
-        ? ImageNetwork(
-            image: url,
-            //imageCache: CachedNetworkImageProvider(url),
-            height: 512,
-            width: 512,
-            duration: 1500,
-            curve: Curves.easeIn,
-            onPointer: true,
-            debugPrint: false,
-            fitAndroidIos: BoxFit.cover,
-            fitWeb: BoxFitWeb.contain,
-            onLoading: const CircularProgressIndicator(
-              color: Colors.indigoAccent,
-            ),
-            borderRadius: radius,
-          )
-        : FadeInImage.memoryNetwork(
-            alignment: alignment,
-            placeholder: base64Decode(
-              'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAyVBMVEUAAAC9vsDCw8W9v8G9vsD29/fr7O29vsDm5+jx8fK/wML29vf///+9vsHR0tPm5+jt7u7w8PHr7Ozc3d7n6OnExcfGx8nJyszMzM7V1tjZ2tvf4OG9vsDHyMrp6uvIycu9v8HAwcTPz9HCw8W9vsC9vsDBwsTj5OXj5OXW19i9vsDm5+jw8PHy8vL09fW9vsDFxsjJyszAwsS9vsDU1dbLzM7Y2drb3N3c3d7e3+DHyMrBwsTh4uPR0tPDxcfa293R0tTV1ti9vsAll6RJAAAAQnRSTlMA7+t/MAZHQDYjHxABv6xSQjEgFgzi2M7Emop0cGVLD/ryt7Cfj3dmYWBgWjgsGd/Cv7SvopSSg4B6eHZrQjkyKx1dd0xhAAAA9klEQVR4AYWPeXOCMBBHFxIgCQKC3KCo1Wprtfd98/0/VBPb6TC0Wd+/783+ZqELrQkRoIMujFbiaLTwpESC029reB7919d7u6SgYaE8aUCivW84oEUY0lPQc408pxBqHxCIHGiw4Lxtl5h35ALFglouAAaZTj00OJ7NrvDANI/Q4PlQMDbNFA3ekiQRaHGRpmM0eMqyyxgLRlme4ydu8/n8Az3h+37xiRWv/k1RRlhxUtyVD8yCXwaDflHeP1Zr5sIey3WtfvFeVS+rTWAzFobhNhrFf4omWK03wcS2h8OzLd/1TyhiNvkJQu5amocjznm0i6HDF1RMG1aMA/PYAAAAAElFTkSuQmCC',
-            ),
-            image: url,
-            width: width,
-            height: height,
+  }) =>
+      Container(
+        padding: EdgeInsets.all(padding),
+        alignment: alignment,
+        width: width,
+        height: height,
+        child: kIsWeb
+            ? ImageNetwork(
+          image: url,
+          //imageCache: CachedNetworkImageProvider(url),
+          height: 512,
+          width: 512,
+          duration: 1500,
+          curve: Curves.easeIn,
+          onPointer: true,
+          debugPrint: false,
+          fitAndroidIos: BoxFit.cover,
+          fitWeb: BoxFitWeb.contain,
+          onLoading: const CircularProgressIndicator(
+            color: Colors.indigoAccent,
           ),
-  );
+          borderRadius: radius,
+        )
+            : FadeInImage.memoryNetwork(
+          alignment: alignment,
+          placeholder: base64Decode(
+            'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAyVBMVEUAAAC9vsDCw8W9v8G9vsD29/fr7O29vsDm5+jx8fK/wML29vf///+9vsHR0tPm5+jt7u7w8PHr7Ozc3d7n6OnExcfGx8nJyszMzM7V1tjZ2tvf4OG9vsDHyMrp6uvIycu9v8HAwcTPz9HCw8W9vsC9vsDBwsTj5OXj5OXW19i9vsDm5+jw8PHy8vL09fW9vsDFxsjJyszAwsS9vsDU1dbLzM7Y2drb3N3c3d7e3+DHyMrBwsTh4uPR0tPDxcfa293R0tTV1ti9vsAll6RJAAAAQnRSTlMA7+t/MAZHQDYjHxABv6xSQjEgFgzi2M7Emop0cGVLD/ryt7Cfj3dmYWBgWjgsGd/Cv7SvopSSg4B6eHZrQjkyKx1dd0xhAAAA9klEQVR4AYWPeXOCMBBHFxIgCQKC3KCo1Wprtfd98/0/VBPb6TC0Wd+/783+ZqELrQkRoIMujFbiaLTwpESC029reB7919d7u6SgYaE8aUCivW84oEUY0lPQc408pxBqHxCIHGiw4Lxtl5h35ALFglouAAaZTj00OJ7NrvDANI/Q4PlQMDbNFA3ekiQRaHGRpmM0eMqyyxgLRlme4ydu8/n8Az3h+37xiRWv/k1RRlhxUtyVD8yCXwaDflHeP1Zr5sIey3WtfvFeVS+rTWAzFobhNhrFf4omWK03wcS2h8OzLd/1TyhiNvkJQu5amocjznm0i6HDF1RMG1aMA/PYAAAAAElFTkSuQmCC',
+          ),
+          image: url,
+          width: width,
+          height: height,
+        ),
+      );
 
   // Widget assetPic(
   //         {required String path,
@@ -489,24 +493,25 @@ mixin WidgetHelperMixin {
     EdgeInsets padding = const EdgeInsets.all(20.0),
     BoxFit? fit,
     Key? key,
-  }) => Container(
-    padding: padding,
-    alignment: alignment,
-    width: width,
-    height: height,
-    child: FadeInImage(
-      key: key,
-      alignment: alignment,
-      placeholder: const AssetImage(
-        'lib/assets/images/loading-icon-256x256.png',
-        package: 'flutter_callouts',
-      ),
-      image: AssetImage(path),
-      width: width,
-      height: height,
-      fit: fit,
-    ),
-  );
+  }) =>
+      Container(
+        padding: padding,
+        alignment: alignment,
+        width: width,
+        height: height,
+        child: FadeInImage(
+          key: key,
+          alignment: alignment,
+          placeholder: const AssetImage(
+            'lib/assets/images/loading-icon-256x256.png',
+            package: 'flutter_callouts',
+          ),
+          image: AssetImage(path),
+          width: width,
+          height: height,
+          fit: fit,
+        ),
+      );
 
   // Size calculateTextSize({
   //   required String text,
@@ -526,12 +531,10 @@ mixin WidgetHelperMixin {
   //   return numLines > 1 ? Size(textPainter.size.width, textPainter.size.height) : textPainter.size;
   // }
 
-  double calculateAutoscaleFontSize(
-    String text,
-    TextStyle style,
-    double startFontSize,
-    double maxWidth,
-  ) {
+  double calculateAutoscaleFontSize(String text,
+      TextStyle style,
+      double startFontSize,
+      double maxWidth,) {
     final textPainter = TextPainter(textDirection: TextDirection.ltr);
 
     var currentFontSize = startFontSize;
@@ -553,27 +556,31 @@ mixin WidgetHelperMixin {
     return currentFontSize;
   }
 
-  Paint linePaint(Color theColor, {double theThickness = 1.5}) => Paint()
-    ..color = theColor
-    ..strokeCap = StrokeCap.round
-    ..style = PaintingStyle.stroke
-    ..strokeWidth = theThickness;
+  Paint linePaint(Color theColor, {double theThickness = 1.5}) =>
+      Paint()
+        ..color = theColor
+        ..strokeCap = StrokeCap.round
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = theThickness;
 
-  Paint thickLinePaint(Color theColor) => Paint()
-    ..color = theColor
-    ..strokeCap = StrokeCap.round
-    ..style = PaintingStyle.stroke
-    ..strokeWidth = 3.5;
+  Paint thickLinePaint(Color theColor) =>
+      Paint()
+        ..color = theColor
+        ..strokeCap = StrokeCap.round
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 3.5;
 
-  Paint veryThickLinePaint(Color theColor) => Paint()
-    ..color = theColor
-    ..strokeCap = StrokeCap.round
-    ..style = PaintingStyle.stroke
-    ..strokeWidth = 5.0;
+  Paint veryThickLinePaint(Color theColor) =>
+      Paint()
+        ..color = theColor
+        ..strokeCap = StrokeCap.round
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 5.0;
 
-  Paint bgPaint(Color theColor) => Paint()
-    ..color = theColor
-    ..style = PaintingStyle.fill;
+  Paint bgPaint(Color theColor) =>
+      Paint()
+        ..color = theColor
+        ..style = PaintingStyle.fill;
 
   Paint bgLinearGradientPaint(List<Color> theColors, Rect rect) {
     final LinearGradient linearGradient = LinearGradient(
@@ -583,7 +590,8 @@ mixin WidgetHelperMixin {
       colors: theColors,
     );
 
-    return Paint()..shader = linearGradient.createShader(rect);
+    return Paint()
+      ..shader = linearGradient.createShader(rect);
   }
 
   Paint bgRadialGradientPaint(List<Color> theColors, Rect rect, double radius) {
@@ -634,20 +642,23 @@ mixin WidgetHelperMixin {
   TextStyle whiteHeadingText() =>
       const TextStyle(color: Colors.white, fontWeight: FontWeight.w900);
 
-  ButtonStyle syncStyle() => ElevatedButton.styleFrom(
-    backgroundColor: Colors.grey[200], // background
-    foregroundColor: Colors.black, // foreground
-  );
+  ButtonStyle syncStyle() =>
+      ElevatedButton.styleFrom(
+        backgroundColor: Colors.grey[200], // background
+        foregroundColor: Colors.black, // foreground
+      );
 
-  ButtonStyle blackOnGrey() => ElevatedButton.styleFrom(
-    backgroundColor: Colors.grey[200], // background
-    foregroundColor: Colors.black, // foreground
-  );
+  ButtonStyle blackOnGrey() =>
+      ElevatedButton.styleFrom(
+        backgroundColor: Colors.grey[200], // background
+        foregroundColor: Colors.black, // foreground
+      );
 
-  ButtonStyle redOnGrey() => ElevatedButton.styleFrom(
-    backgroundColor: Colors.grey[200], // background
-    foregroundColor: Colors.red, // foreground
-  );
+  ButtonStyle redOnGrey() =>
+      ElevatedButton.styleFrom(
+        backgroundColor: Colors.grey[200], // background
+        foregroundColor: Colors.red, // foreground
+      );
 
   // https://flutter.dev/docs/release/breaking-changes/buttons
   // default old button styles
@@ -670,39 +681,39 @@ mixin WidgetHelperMixin {
       borderRadius: BorderRadius.all(Radius.circular(2)),
     ),
     TextStyle? textStyle,
-  }) => ElevatedButton.styleFrom(
-    elevation: elevation,
-    backgroundColor: backgroundColor,
-    foregroundColor: foregroundColor,
-    textStyle: textStyle,
-    minimumSize: minimumSize,
-    padding: padding,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(2)),
-    ),
-  );
-
-  final ButtonStyle outlineButtonStyle =
-      OutlinedButton.styleFrom(
-        backgroundColor: Colors.black87,
-        minimumSize: const Size(88, 36),
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+  }) =>
+      ElevatedButton.styleFrom(
+        elevation: elevation,
+        backgroundColor: backgroundColor,
+        foregroundColor: foregroundColor,
+        textStyle: textStyle,
+        minimumSize: minimumSize,
+        padding: padding,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(2)),
         ),
-      ).copyWith(
-        side: WidgetStateProperty.resolveWith<BorderSide>((
-          Set<WidgetState> states,
-        ) {
-          return BorderSide(
-            // color: Theme.of(context).colorScheme.primary,
-            color: states.contains(WidgetState.pressed)
-                ? Colors.orange
-                : Colors.grey,
-            width: 1,
-          );
-        }),
       );
+
+  final ButtonStyle outlineButtonStyle =
+  OutlinedButton.styleFrom(
+    backgroundColor: Colors.black87,
+    minimumSize: const Size(88, 36),
+    padding: const EdgeInsets.symmetric(horizontal: 16),
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(2)),
+    ),
+  ).copyWith(
+    side: WidgetStateProperty.resolveWith<BorderSide>((
+        Set<WidgetState> states,) {
+      return BorderSide(
+        // color: Theme.of(context).colorScheme.primary,
+        color: states.contains(WidgetState.pressed)
+            ? Colors.orange
+            : Colors.grey,
+        width: 1,
+      );
+    }),
+  );
 
   Widget blink(Widget child) => Blink(child: child);
 
@@ -785,23 +796,23 @@ mixin WidgetHelperMixin {
             color: bgColor,
             borderRadius: left == 0
                 ? const BorderRadius.only(
-                    bottomLeft: Radius.circular(16.0),
-                    bottomRight: Radius.circular(16.0),
-                  )
+              bottomLeft: Radius.circular(16.0),
+              bottomRight: Radius.circular(16.0),
+            )
                 : right == 0
                 ? const BorderRadius.only(
-                    topLeft: Radius.circular(16.0),
-                    topRight: Radius.circular(16.0),
-                  )
+              topLeft: Radius.circular(16.0),
+              topRight: Radius.circular(16.0),
+            )
                 : top == 0
                 ? const BorderRadius.only(
-                    bottomLeft: Radius.circular(16.0),
-                    bottomRight: Radius.circular(16.0),
-                  )
+              bottomLeft: Radius.circular(16.0),
+              bottomRight: Radius.circular(16.0),
+            )
                 : const BorderRadius.only(
-                    topLeft: Radius.circular(16.0),
-                    topRight: Radius.circular(16.0),
-                  ),
+              topLeft: Radius.circular(16.0),
+              topRight: Radius.circular(16.0),
+            ),
             boxShadow: [
               BoxShadow(color: borderColor, blurRadius: 3, spreadRadius: 2),
             ],
@@ -812,8 +823,7 @@ mixin WidgetHelperMixin {
     );
   }
 
-  Widget coloredText(
-    String s, {
+  Widget coloredText(String s, {
     double? fontSize,
     Color? color,
     String? fontFamily,
@@ -824,10 +834,12 @@ mixin WidgetHelperMixin {
     int? maxLines,
     TextOverflow? overflow,
     double edgeInsetValue = 0.0,
+    TextAlign textAlign = TextAlign.center,
   }) {
     Text txt = Text(
       s,
       textScaler: TextScaler.linear(scaleFactor),
+      textAlign: textAlign,
       // textScaleFactor: scaleFactor,
       style: TextStyle(
         inherit: true,
@@ -839,25 +851,26 @@ mixin WidgetHelperMixin {
         fontStyle: fontStyle,
       ),
       maxLines: maxLines,
-      softWrap: (maxLines ?? 0) > 1,
+      softWrap: (maxLines ?? 9999) > 1,
       overflow: overflow,
     );
     return edgeInsetValue > 0.0
         ? Center(
-            child: Padding(padding: EdgeInsets.all(edgeInsetValue), child: txt),
-          )
+      child: Padding(padding: EdgeInsets.all(edgeInsetValue), child: txt),
+    )
         : txt;
   }
 
-  Text purpleText(String s, {double? fontSize, String? family}) => Text(
-    s,
-    style: TextStyle(
-      inherit: true,
-      color: Colors.purple,
-      fontSize: fontSize,
-      fontFamily: family,
-    ),
-  );
+  Text purpleText(String s, {double? fontSize, String? family}) =>
+      Text(
+        s,
+        style: TextStyle(
+          inherit: true,
+          color: Colors.purple,
+          fontSize: fontSize,
+          fontFamily: family,
+        ),
+      );
 
   TextStyle enclosureLabelTextStyle = const TextStyle(
     fontSize: 14,
@@ -884,23 +897,30 @@ mixin WidgetHelperMixin {
     );
   }
 
-  Widget boxedText({String text = '', Color? color}) => Container(
-    padding: const EdgeInsets.all(8),
-    decoration: BoxDecoration(
-      color: Colors.yellow[50],
-      border: Border.all(width: 1),
-    ),
-    child: Text(text),
-  );
+  Widget boxedText({String text = '', Color? color}) =>
+      Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Colors.yellow[50],
+          border: Border.all(width: 1),
+        ),
+        child: Text(text),
+      );
+
+  String asset(String name) {
+    // only need to specify the asset pkg when used by a client project; i.e. not within the flutter_content project itself
+    return fca.skipAssetPkgName ? name : 'packages/flutter_content/$name';
+  }
 
   Widget gap(double gap) => Gap(gap);
 
-  Image loadingImage256() => Image(
-    image: AssetImage(
-      'lib/assets/images/loading-icon-256x256.png',
-      package: 'flutter_callouts',
-    ),
-  );
+  Image loadingImage256() =>
+      Image(
+        image: AssetImage(
+          'lib/assets/images/loading-icon-256x256.png',
+          package: 'flutter_callouts',
+        ),
+      );
 }
 
 extension ExtendedOffset on Offset {

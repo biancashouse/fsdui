@@ -20,6 +20,7 @@ class CLMapper extends SubClassMapperBase<CL> {
       AppBarNodeMapper.ensureInitialized();
       AssetImageNodeMapper.ensureInitialized();
       ChipNodeMapper.ensureInitialized();
+      CrosswordNodeMapper.ensureInitialized();
       FileNodeMapper.ensureInitialized();
       FlexibleSpaceBarNodeMapper.ensureInitialized();
       StorageImageNodeMapper.ensureInitialized();

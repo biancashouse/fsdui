@@ -27,12 +27,12 @@ class FilledButtonNode extends ButtonNode with FilledButtonNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
+    ...super.propertyNodes(context, parentSNode),
     FlutterDocPNode(
         buttonLabel: 'FilledButton',
         webLink: 'https://api.flutter.dev/flutter/material/FilledButton-class.html',
         snode: this,
         name: 'fyi'),
-    ...super.propertyNodes(context, parentSNode),
   ];
 
   @override

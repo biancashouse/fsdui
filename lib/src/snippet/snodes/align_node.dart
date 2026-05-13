@@ -20,11 +20,6 @@ class AlignNode extends SC with AlignNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-        FlutterDocPNode(
-            buttonLabel: 'Align',
-            webLink: 'https://api.flutter.dev/flutter/widgets/Align-class.html',
-            snode: this,
-            name: 'fyi'),
         EnumPNode<AlignmentEnum?>(
           snode: this,
           name: 'alignment',
@@ -34,6 +29,11 @@ class AlignNode extends SC with AlignNodeMappable {
               () => alignment =
                   AlignmentEnum.of(newIndex ?? AlignmentEnum.topLeft.index)!),
         ),
+        FlutterDocPNode(
+            buttonLabel: 'Align',
+            webLink: 'https://api.flutter.dev/flutter/widgets/Align-class.html',
+            snode: this,
+            name: 'fyi'),
       ];
 
   // @override
@@ -44,7 +44,7 @@ class AlignNode extends SC with AlignNodeMappable {
   //         originalEnumIndex: alignmentIndex,
   //         onChangeF: (newIndex) {
   //           alignmentIndex = newIndex;
-  //           bloc.add(const CAPIEvent.forceRefresh());
+  //           bloc.add(ForceRefresh());
   //         },
   //         calloutSize: AlignmentEnumModel.calloutSize,
   //       ),
@@ -58,7 +58,7 @@ class AlignNode extends SC with AlignNodeMappable {
   //         originalEnumIndex: alignment.index,
   //         onChangeF: (newOption) {
   //           alignment = AlignmentEnumModel.values[newOption];
-  //           bloc.add(const CAPIEvent.forceRefresh());
+  //           bloc.add(ForceRefresh());
   //         },
   //         calloutSize: calloutSize,
   //       ),

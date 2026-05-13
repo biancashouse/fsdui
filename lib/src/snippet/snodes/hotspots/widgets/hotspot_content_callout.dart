@@ -130,7 +130,7 @@ void showHotspotSnippetContentCallout({
       tc.setAlignment(AlignmentModel(newAlignment.x, newAlignment.y));
       tc.closeThenReopenContentCallout(wrapperState);
     },
-    draggable: true || !justPlaying,
+    draggable: true,// || !justPlaying,
     scaleTarget: tc.transformScale,
     // separation: 100,
     // barrierOpacity: .1,

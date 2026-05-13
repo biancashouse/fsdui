@@ -32,12 +32,6 @@ class ScaffoldNode extends CL with ScaffoldNodeMappable {
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) {
     // fco.logger.i("ContainerNode.properties()...");
     return [
-      FlutterDocPNode(
-        buttonLabel: 'Scaffold',
-        webLink: 'https://api.flutter.dev/flutter/material/Scaffold-class.html',
-        snode: this,
-        name: 'fyi',
-      ),
       ColorPNode(
         snode: this,
         name: 'background color',
@@ -53,6 +47,12 @@ class ScaffoldNode extends CL with ScaffoldNodeMappable {
       //   onIntChange: (newValue) => refreshWithUpdate(context,() => numTabs = newValue ?? 0),
       //   calloutButtonSize: const Size(130, 20),
       // ),
+      FlutterDocPNode(
+        buttonLabel: 'Scaffold',
+        webLink: 'https://api.flutter.dev/flutter/material/Scaffold-class.html',
+        snode: this,
+        name: 'fyi',
+      ),
     ];
   }
 

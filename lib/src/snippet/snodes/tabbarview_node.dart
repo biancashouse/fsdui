@@ -16,12 +16,6 @@ class TabBarViewNode extends MC with TabBarViewNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    FlutterDocPNode(
-      buttonLabel: 'TabBarView',
-      webLink: 'https://api.flutter.dev/flutter/material/TabBarView-class.html',
-      snode: this,
-      name: 'fyi',
-    ),
     StringPNode(
       snode: this,
       name: 'TabBar name',
@@ -32,6 +26,12 @@ class TabBarViewNode extends MC with TabBarViewNodeMappable {
       calloutButtonSize: const Size(280, 70),
       calloutWidth: 400,
       numLines: 1,
+    ),
+    FlutterDocPNode(
+      buttonLabel: 'TabBarView',
+      webLink: 'https://api.flutter.dev/flutter/material/TabBarView-class.html',
+      snode: this,
+      name: 'fyi',
     ),
   ];
 

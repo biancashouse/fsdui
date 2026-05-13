@@ -19,6 +19,7 @@ class CustomScrollViewNode extends ScrollViewNode with CustomScrollViewNodeMappa
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
+    ...super.propertyNodes(context, parentSNode),
     FlutterDocPNode(
       buttonLabel: 'CustomScrollView',
       webLink:
@@ -26,7 +27,6 @@ class CustomScrollViewNode extends ScrollViewNode with CustomScrollViewNodeMappa
       snode: this,
       name: 'fyi',
     ),
-    ...super.propertyNodes(context, parentSNode),
   ];
 
   @override

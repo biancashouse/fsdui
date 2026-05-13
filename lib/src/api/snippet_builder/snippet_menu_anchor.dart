@@ -154,7 +154,7 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
                 // enter select widget mode
                 //
                 bloc.add(
-                  CAPIEvent.enterNodeSelectionMode(
+                  EnterSelectWidgetMode(
                     snippetName: snippetInfo.name,
                   ),
                 );
@@ -168,7 +168,7 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
                   (KeyEvent event) {
                     if (event.logicalKey == LogicalKeyboardKey.escape) {
                       // if (bloc.showTappableBorderRects()) {
-                      bloc.add(CAPIEvent.exitNodeSelectionMode());
+                      bloc.add(ExitSelectWidgetMode());
                       // }
                     }
                     return false;
@@ -236,7 +236,7 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
             MenuItemButton(
               onPressed: () {
                 _discardPendingChanges(snippetInfo);
-                fsdui.capiBloc.add(CAPIEvent.forceSnippetRefresh());
+                fsdui.capiBloc.add(ForceSnippetRefresh());
               },
               child: fsdui.coloredText(
                 'discard pending change(s)',
@@ -247,7 +247,7 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
             _menuItemButtonWithPI(
               onPressed: () {
                 fsdui.capiBloc.add(
-                  CAPIEvent.publishSnippet(
+                  PublishSnippet(
                     snippetName: snippetInfo.name,
                     versionId: snippetInfo.editingVersionId,
                   ),
@@ -263,7 +263,7 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
           _menuItemButtonWithPI(
             onPressed: () {
               fsdui.capiBloc.add(
-                CAPIEvent.toggleAutoPublishingOfSnippet(
+                ToggleAutoPublishingOfSnippet(
                   snippetName: snippetInfo.name,
                 ),
               );
@@ -281,7 +281,7 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
           _menuItemButtonWithPI(
             onPressed: () async {
               fsdui.capiBloc.add(
-                CAPIEvent.copySnippetJsonToClipboard(
+                CopySnippetJsonToClipboard(
                   rootNode: snippetInfo.currentVersionInCache()!,
                 ),
               );
@@ -291,7 +291,7 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
           _menuItemButtonWithPI(
             onPressed: () async {
               fsdui.capiBloc.add(
-                CAPIEvent.replaceSnippetFromJson(
+                ReplaceSnippetFromJson(
                   snippetBeingReplaced: snippetInfo.name,
                   snippetJson: null,
                 ),
@@ -304,7 +304,7 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
             _menuItemButtonWithPI(
               onPressed: () async {
                 fsdui.capiBloc.add(
-                  CAPIEvent.toggleSnippetVisibility(
+                  ToggleSnippetVisibility(
                     snippetName: snippetInfo.name,
                   ),
                 );
@@ -390,7 +390,7 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
   ) {
     if (versionId == null) return;
     fsdui.capiBloc.add(
-      CAPIEvent.revertSnippet(
+      RevertSnippet(
         snippetName: snippetInfo.name,
         versionId: fsdui.removeNonNumeric(versionId),
       ),
@@ -405,7 +405,7 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
       fsdui.appInfo.hideClipboard();
       // exitEditModeF();
       // fco.capiBloc
-      //     .add(const CAPIEvent.popSnippetEditor());
+      //     .add(PopSnippetEditor());
       // fco.dismiss(snippetName, skipOnDismiss: true);
       final revertedVersion = snippetInfo.currentVersionInCache();
       if (revertedVersion != null) {

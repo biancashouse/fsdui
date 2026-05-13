@@ -37,7 +37,7 @@ class ListViewMenuAnchor extends StatelessWidget {
         _menuItemButtonWithPI(
           onPressed: () async {
             fsdui.capiBloc.add(
-              CAPIEvent.toggleSnippetVisibility(snippetName: snippetInfo()?.name),
+              ToggleSnippetVisibility(snippetName: snippetInfo()?.name),
             );
           },
           child: Text(

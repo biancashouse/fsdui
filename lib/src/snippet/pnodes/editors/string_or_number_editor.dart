@@ -6,6 +6,7 @@ import '../../../../fsdui.dart';
 /// https://www.flutterbeads.com/multiline-textfield-in-flutter/
 ///
 class StringOrNumberEditor extends StatefulWidget {
+  final TextEditingController? teC;
   final String Function()? prompt;
   final String Function()? inputDecorationLabel;
   final String originalS;
@@ -14,6 +15,8 @@ class StringOrNumberEditor extends StatefulWidget {
   final void Function(String)? onEscapedF;
   final void Function(String)? onTabF;
   final Widget? prefixIcon;
+  final bool? readOnly;
+  final bool? skipDecoration;
 
   // final bool expands;
   final int maxLines;
@@ -28,6 +31,7 @@ class StringOrNumberEditor extends StatefulWidget {
   final TextAlignF? textAlignF;
 
   const StringOrNumberEditor({
+    this.teC,
     this.prompt,
     this.inputDecorationLabel,
     required this.originalS,
@@ -46,6 +50,8 @@ class StringOrNumberEditor extends StatefulWidget {
     this.passwordHelp,
     this.textStyleF,
     this.textAlignF,
+    this.readOnly,
+    this.skipDecoration,
     super.key,
   });
 
@@ -69,12 +75,13 @@ class StringOrNumberEditorState extends State<StringOrNumberEditor> {
 
         // We only want to act on the key press (down event), not the release.
         if (event is! KeyUpEvent) {
-          final isShiftPressed = HardwareKeyboard.instance.physicalKeysPressed.any(
+          final isShiftPressed = HardwareKeyboard.instance.physicalKeysPressed
+              .any(
                 (key) => <PhysicalKeyboardKey>{
-              PhysicalKeyboardKey.shiftLeft,
-              PhysicalKeyboardKey.shiftRight,
-            }.contains(key),
-          );
+                  PhysicalKeyboardKey.shiftLeft,
+                  PhysicalKeyboardKey.shiftRight,
+                }.contains(key),
+              );
 
           // --- Core Logic ---
 
@@ -93,13 +100,15 @@ class StringOrNumberEditorState extends State<StringOrNumberEditor> {
           }
 
           // 3. Handle Escape key, but again, only on the initial key down.
-          if (event.physicalKey == PhysicalKeyboardKey.escape && event is KeyDownEvent) {
+          if (event.physicalKey == PhysicalKeyboardKey.escape &&
+              event is KeyDownEvent) {
             widget.onEscapedF?.call(widget.originalS);
             return KeyEventResult.handled;
           }
 
           // 4. Handle Tab key, but again, only on the initial key down.
-          if (event.physicalKey == PhysicalKeyboardKey.tab && event is KeyDownEvent) {
+          if (event.physicalKey == PhysicalKeyboardKey.tab &&
+              event is KeyDownEvent) {
             widget.onTabF?.call(_txtController.text);
             return KeyEventResult.handled;
           }
@@ -110,9 +119,12 @@ class StringOrNumberEditorState extends State<StringOrNumberEditor> {
       },
     );
 
-
-    _txtController = TextEditingController();
-    _txtController.text = widget.originalS;
+    if (widget.teC != null) {
+      _txtController = widget.teC!;
+    } else {
+      _txtController = TextEditingController();
+      _txtController.text = widget.originalS;
+    }
     if (!widget.dontAutoFocus) {
       fsdui.afterNextBuildDo(() {
         _focusNode.requestFocus();
@@ -163,38 +175,44 @@ class StringOrNumberEditorState extends State<StringOrNumberEditor> {
     //   keyboardType = const TextInputType.numberWithOptions(decimal: true);
     // }
 
-    InputDecoration inputDecoration = widget.isPassword
-        ? InputDecoration(
-      // border: const,
-      //hintText: "Password",
-      labelText: _txtController.text.isEmpty ? "Password" : '',
-      // labelStyle: Useful.enclosureLabelTextStyle,
-      labelStyle: const TextStyle(
-          fontSize: 10, fontFamily: 'monospace', color: Colors.grey),
-      // floatingLabelStyle: const TextStyle(fontSize: 18, fontFamily: 'monospace', color: Colors.grey),
-      helperText: widget.passwordHelp,
-      helperStyle: const TextStyle(color: Colors.green),
-      suffixIcon: IconButton(
-        icon: Icon(
-            passwordVisible ? Icons.visibility : Icons.visibility_off),
-        onPressed: () {
-          setState(
-                () {
-              passwordVisible = !passwordVisible;
-            },
-          );
-        },
-      ),
-      // contentPadding: const EdgeInsets.all(TextEditor.CONTENT_PADDING),
-      alignLabelWithHint: true,
-      filled: false,
-    )
-        : InputDecoration(
-      labelText: widget.inputDecorationLabel?.call(),
-      border: const OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.black26),
-      ),
-    );
+    InputDecoration? inputDecoration;
+
+    if (!(widget.skipDecoration ?? false)) {
+      inputDecoration = widget.isPassword
+          ? InputDecoration(
+              // border: const,
+              //hintText: "Password",
+              labelText: _txtController.text.isEmpty ? "Password" : '',
+              // labelStyle: Useful.enclosureLabelTextStyle,
+              labelStyle: const TextStyle(
+                fontSize: 10,
+                fontFamily: 'monospace',
+                color: Colors.grey,
+              ),
+              // floatingLabelStyle: const TextStyle(fontSize: 18, fontFamily: 'monospace', color: Colors.grey),
+              helperText: widget.passwordHelp,
+              helperStyle: const TextStyle(color: Colors.green),
+              suffixIcon: IconButton(
+                icon: Icon(
+                  passwordVisible ? Icons.visibility : Icons.visibility_off,
+                ),
+                onPressed: () {
+                  setState(() {
+                    passwordVisible = !passwordVisible;
+                  });
+                },
+              ),
+              // contentPadding: const EdgeInsets.all(TextEditor.CONTENT_PADDING),
+              alignLabelWithHint: true,
+              filled: false,
+            )
+          : InputDecoration(
+              labelText: widget.inputDecorationLabel?.call(),
+              border: const OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.black26),
+              ),
+            );
+    }
 
     var inputFormatters = [
       if (widget.inputType == double)
@@ -207,19 +225,24 @@ class StringOrNumberEditorState extends State<StringOrNumberEditor> {
     // bool isAString =  (sameType<widget.inputType, String>());
 
     return Container(
-      color: Colors.white,
+      color: Colors.transparent,
       padding: const EdgeInsets.symmetric(horizontal: 2),
-      alignment:
-      widget.inputType == String ? Alignment.centerLeft : Alignment.center,
+      alignment: widget.inputType == String
+          ? Alignment.centerLeft
+          : Alignment.center,
       child: widget.inputType == String
           ? _stringTextField(inputFormatters, inputDecoration)
           : _numberTextField(inputFormatters, inputDecoration),
     );
   }
 
-  Widget _stringTextField(inputFormatters, inputDecoration) => FocusScope(
+  Widget _stringTextField(
+    List<TextInputFormatter>? inputFormatters,
+    InputDecoration? inputDecoration,
+  ) => FocusScope(
     canRequestFocus: true,
     child: TextField(
+      readOnly: widget.readOnly ?? false,
       controller: _txtController,
       maxLines: widget.isPassword
           ? 1
@@ -237,10 +260,11 @@ class StringOrNumberEditorState extends State<StringOrNumberEditor> {
       style: widget.textStyleF != null
           ? (widget.textStyleF!).call()
           : TextStyle(
-          fontSize: 18,
-          fontFamily: 'monospace',
-          letterSpacing: 2,
-          color: Colors.blue[900]),
+              fontSize: 18,
+              fontFamily: 'monospace',
+              letterSpacing: 2,
+              color: Colors.blue[900],
+            ),
       textAlign: widget.textAlignF != null
           ? (widget.textAlignF!).call()
           : TextAlign.left,
@@ -262,12 +286,18 @@ class StringOrNumberEditorState extends State<StringOrNumberEditor> {
     ),
   );
 
-  Widget _numberTextField(inputFormatters, inputDecoration) => FocusScope(
+  Widget _numberTextField(
+    List<TextInputFormatter>? inputFormatters,
+    InputDecoration? inputDecoration,
+  ) => FocusScope(
     canRequestFocus: true,
     child: TextField(
       maxLines: 1,
       style: const TextStyle(
-          fontSize: 16, fontFamily: 'monospace', color: Colors.black),
+        fontSize: 16,
+        fontFamily: 'monospace',
+        color: Colors.black,
+      ),
       controller: _txtController,
       inputFormatters: inputFormatters,
       decoration: inputDecoration,

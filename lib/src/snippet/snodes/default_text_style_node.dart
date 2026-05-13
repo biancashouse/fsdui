@@ -38,11 +38,6 @@ class DefaultTextStyleNode extends SC with DefaultTextStyleNodeMappable {
     var textStyleName = fsdui.findTextStyleName(fsdui.appInfo, tsPropGroup);
     textStyleName = textStyleName != null ? ': $textStyleName' : '';
     return [
-      FlutterDocPNode(
-          buttonLabel: 'DefaultTextStyle',
-          webLink: 'https://api.flutter.dev/flutter/widgets/DefaultTextStyle-class.html',
-          snode: this,
-          name: 'fyi'),
       TextStylePNode /*Group*/ (
         snode: this,
         name: 'textStyle',
@@ -63,6 +58,11 @@ class DefaultTextStyleNode extends SC with DefaultTextStyleNodeMappable {
         onIndexChange: (newValue) =>
             refreshWithUpdate(context, () => TextAlignEnum.of(newValue)),
       ),
+      FlutterDocPNode(
+          buttonLabel: 'DefaultTextStyle',
+          webLink: 'https://api.flutter.dev/flutter/widgets/DefaultTextStyle-class.html',
+          snode: this,
+          name: 'fyi'),
     ];
   }
 
@@ -110,7 +110,7 @@ class DefaultTextStyleNode extends SC with DefaultTextStyleNodeMappable {
   //           calloutSize: const Size(80, 200),
   //           onChangeF: (s) {
   //             namedTextStyle = s;
-  //             bloc.add(const CAPIEvent.forceRefresh());
+  //             bloc.add(ForceRefresh());
   //           }),
   //       const SizedBox(height: 10),
   //       NodePropertyButtonColor(
@@ -119,7 +119,7 @@ class DefaultTextStyleNode extends SC with DefaultTextStyleNodeMappable {
   //         onChangeF: (newValue) {
   //           textStyle ??= TextStyleNodeProperty();
   //           textStyle!.colorValue = newValue;
-  //           bloc.add(const CAPIEvent.forceRefresh());
+  //           bloc.add(ForceRefresh());
   //         },
   //       ),
   //       NodePropertyButtonEnum(
@@ -129,7 +129,7 @@ class DefaultTextStyleNode extends SC with DefaultTextStyleNodeMappable {
   //         onChangeF: (newOption) {
   //           textStyle ??= TextStyleNodeProperty();
   //           textStyle!.fontSizeName = Material3TextSizeEnum.values[newOption];
-  //           bloc.add(const CAPIEvent.forceRefresh());
+  //           bloc.add(ForceRefresh());
   //         },
   //         calloutSize: calloutSize,
   //       ),
@@ -140,7 +140,7 @@ class DefaultTextStyleNode extends SC with DefaultTextStyleNodeMappable {
   //         onChangeF: (newFamily) {
   //           textStyle ??= TextStyleNodeProperty();
   //           textStyle!.fontFamily = newFamily;
-  //           bloc.add(const CAPIEvent.forceRefresh());
+  //           bloc.add(ForceRefresh());
   //         },
   //       ),
   //       NodePropertyButtonStyleLineHeight(
@@ -149,14 +149,14 @@ class DefaultTextStyleNode extends SC with DefaultTextStyleNodeMappable {
   //           onChangeF: (newLH) {
   //             textStyle ??= TextStyleNodeProperty();
   //             textStyle!.lineHeight = newLH;
-  //             bloc.add(const CAPIEvent.forceRefresh());
+  //             bloc.add(ForceRefresh());
   //           }),
   //       NodePropertyButtonTextAlign(
   //         label: 'textAlign',
   //         textAlign: textAlign,
   //         onChangeF: (newTA) {
   //           textAlign = newTA;
-  //           bloc.add(const CAPIEvent.forceRefresh());
+  //           bloc.add(ForceRefresh());
   //         },
   //       ),
   //     ];

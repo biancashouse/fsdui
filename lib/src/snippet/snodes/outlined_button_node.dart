@@ -33,12 +33,12 @@ class OutlinedButtonNode extends ButtonNode with OutlinedButtonNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
+    ...super.propertyNodes(context, parentSNode),
     FlutterDocPNode(
         buttonLabel: 'OutlinedButton',
         webLink: 'https://api.flutter.dev/flutter/material/OutlinedButton-class.html',
         snode: this,
         name: 'fyi'),
-    ...super.propertyNodes(context, parentSNode),
   ];
 
   @override
