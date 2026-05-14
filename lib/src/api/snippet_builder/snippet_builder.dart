@@ -41,9 +41,7 @@ class SnippetBuilder extends StatefulWidget {
   State<SnippetBuilder> createState() => SnippetBuilderState();
 }
 
-class SnippetBuilderState extends State<SnippetBuilder>
-    with TickerProviderStateMixin {
-  Map<String, TabBarNode> tabBars = {};
+class SnippetBuilderState extends State<SnippetBuilder> {
 
   // ZoomerState? get parentTSState => Zoomer.of(context);
 

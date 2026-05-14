@@ -4,29 +4,19 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
 
 part 'tabbarview_node.mapper.dart';
 
 @MappableClass()
 class TabBarViewNode extends MC with TabBarViewNodeMappable {
-  String tabBarName;
 
-  TabBarViewNode({super.name, required this.tabBarName, required super.children});
+  TabBarViewNode({super.name, required super.children});
+
+  TabBarNode? get tabBarNode =>
+      rootNodeOfSnippet()?.findDescendant(TabBarNode) as TabBarNode?;
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    StringPNode(
-      snode: this,
-      name: 'TabBar name',
-      stringValue: tabBarName,
-      skipHelperText: true,
-      onStringChange: (newValue) =>
-          refreshWithUpdate(context, () => tabBarName = newValue!),
-      calloutButtonSize: const Size(280, 70),
-      calloutWidth: 400,
-      numLines: 1,
-    ),
     FlutterDocPNode(
       buttonLabel: 'TabBarView',
       webLink: 'https://api.flutter.dev/flutter/material/TabBarView-class.html',
@@ -37,50 +27,37 @@ class TabBarViewNode extends MC with TabBarViewNodeMappable {
 
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
-    try {
-      setParent(parentNode);
-      //ScrollControllerName? scName = EditablePage.name(context);
-      //possiblyHighlightSelectedNode(scName);
-      final snippetName = rootNodeOfSnippet()?.name;
-      final spState = snippetName != null ? fsdui.snippetBuilderStates[snippetName] : null;
-      TabBarNode? tabBarNode = spState?.tabBars[tabBarName];
-      if (tabBarNode == null) {
-        return Placeholder();
-      }
-      int numTabNodes = tabBarNode.tabC?.length ?? 0;
-      List<Widget> childWidgets = children
-          // .map((node) => TabBarViewPage(child: node.toWidget(context, this)))
-          .map((node) => node.build(context, this))
-          .toList();
-      try {
-        if (numTabNodes != children.length) {
-          throw Exception(
-            'TabBar and TabBarView do not have matching number of children!',
-          );
-        } else {
-          return TabBarView(
-            key: createNodeWidgetGK(),
-            controller: tabBarNode.tabC,
-            children: childWidgets,
-          );
-        }
-      } catch (e) {
-        fsdui.logger.i('TabBarViewNode.toWidget() failed!');
-        return Error(
-          key: createNodeWidgetGK(),
-          FLUTTER_TYPE,
-          errorMsg: e.toString(),
-        );
-      }
-    } catch (e) {
+    setParent(parentNode);
+    final tb = tabBarNode;
+    if (tb == null) {
       return Error(
         key: createNodeWidgetGK(),
         FLUTTER_TYPE,
-        color: Colors.red,
-        size: 16,
-        errorMsg: e.toString(),
+        errorMsg: 'No TabBarNode found in snippet tree.',
       );
     }
+    return ValueListenableBuilder<TabController?>(
+      valueListenable: tb.tabCNotifier,
+      builder: (context, controller, _) {
+        if (controller == null) return const SizedBox.shrink();
+        final childWidgets = children
+            .map((node) => node.build(context, this))
+            .toList();
+        if (tb.children.length != children.length) {
+          return Error(
+            key: createNodeWidgetGK(),
+            FLUTTER_TYPE,
+            errorMsg: 'TabBar (${tb.children.length}) and TabBarView '
+                '(${children.length}) child counts do not match.',
+          );
+        }
+        return TabBarView(
+          key: createNodeWidgetGK(),
+          controller: controller,
+          children: childWidgets,
+        );
+      },
+    );
   }
 
   @override

@@ -937,12 +937,6 @@ abstract class SNode extends Node with SNodeMappable {
 
   void validateTree() {
     _setParents(null);
-    //ensure no tabs have empty text
-    if (this is TextNode &&
-        (this as TextNode).text.isEmpty &&
-        getParent() is TabBarNode) {
-      (this as TextNode).text = 'new tab';
-    }
     // ensure No. tabs matches No. tab views
     TabBarNode? tabBar = findDescendant(TabBarNode) as TabBarNode?;
     TabBarViewNode? tabBarView =
@@ -951,10 +945,7 @@ abstract class SNode extends Node with SNodeMappable {
       tabBarView?.children.add(PlaceholderNode()..setParent(tabBarView));
     } else if ((tabBar?.children.length ?? 0) <
         (tabBarView?.children.length ?? 0)) {
-      tabBar?.children.add(
-        TextNode(text: ' fixed tab', tsPropGroup: TextStyleProperties())
-          ..setParent(tabBar),
-      );
+      tabBar?.children.add(TabNode(text: 'Tab')..setParent(tabBar));
     }
     // bool doubleCheck = anyMissingParents();
     // fco.logger.i("missing parents: $doubleCheck");
@@ -984,25 +975,9 @@ abstract class SNode extends Node with SNodeMappable {
     return false;
   }
 
-  bool isAScaffoldTabWidget() {
-    if (getParent() is TabBarNode) {
-      var tabBarParent = getParent();
-      if (tabBarParent is NamedPS && tabBarParent.propertyName == 'bottom') {
-        return true;
-      }
-    }
-    return false;
-  }
+  bool isAScaffoldTabWidget() => getParent() is TabBarNode;
 
-  bool isAScaffoldTabViewWidget() {
-    if (getParent() is TabBarViewNode) {
-      var tabBarViewParent = getParent();
-      if (tabBarViewParent?.getParent() is AppBarNode) {
-        return true;
-      }
-    }
-    return false;
-  }
+  bool isAScaffoldTabViewWidget() => getParent() is TabBarViewNode;
 
   bool isAStepNodeTitleOrContentPropertyWidget() {
     var node = getParent()?.getParent();

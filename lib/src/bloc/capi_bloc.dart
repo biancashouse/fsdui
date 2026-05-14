@@ -627,10 +627,10 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     if (sel.isAScaffoldTabWidget() && !sel.hasChildren()) {
       int index = (selParent as TabBarNode).children.indexOf(sel);
       selParent.children.remove(sel);
-      ScaffoldNode? scaffold =
-          selParent.getParent()?.getParent()?.getParent() as ScaffoldNode?;
-      if (scaffold?.body.child is TabBarViewNode?) {
-        (scaffold!.body.child as TabBarViewNode).children.removeAt(index);
+      final root = selParent.rootNodeOfSnippet();
+      final tabBarView = root?.findDescendant(TabBarViewNode) as TabBarViewNode?;
+      if (index < (tabBarView?.children.length ?? 0)) {
+        tabBarView?.children.removeAt(index);
       }
       newSel = selParent;
       return newSel;
@@ -640,14 +640,10 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     if (sel.isAScaffoldTabViewWidget() && !sel.hasChildren()) {
       int index = (selParent as TabBarViewNode).children.indexOf(sel);
       selParent.children.remove(sel);
-      ScaffoldNode? scaffold =
-          selParent.getParent()?.getParent() as ScaffoldNode?;
-      if (scaffold?.appBar is AppBarNode) {
-        AppBarNode appbar = scaffold?.appBar as AppBarNode;
-        SNode? bottomChild = appbar.bottom.child;
-        if (bottomChild is TabBarNode) {
-          bottomChild.children.removeAt(index);
-        }
+      final root = selParent.rootNodeOfSnippet();
+      final tabBar = root?.findDescendant(TabBarNode) as TabBarNode?;
+      if (index < (tabBar?.children.length ?? 0)) {
+        tabBar?.children.removeAt(index);
       }
       newSel = selParent;
       return newSel;
@@ -831,7 +827,6 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   SNode _typeAsATreeNode(Type t, SNode? childNode, String notFoundMsg) {
     // in case tabbar specified
-    final uniqueTabBarName = DateTime.now().millisecondsSinceEpoch.toString();
     return switch (t) {
       const (AlignNode) => AlignNode(
         child: childNode,
@@ -1161,12 +1156,10 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       const (TargetsWrapperNode) => TargetsWrapperNode(child: childNode),
       const (TabNode) => TabNode(text: 'new tab'),
       const (TabBarNode) => TabBarNode(
-        tabBarName: uniqueTabBarName,
         labelTSPropGroup: TextStyleProperties(),
         children: childNode != null ? [childNode] : [],
       ),
       const (TabBarViewNode) => TabBarViewNode(
-        tabBarName: uniqueTabBarName,
         children: childNode != null ? [childNode] : [],
       ),
       const (TextButtonNode) => TextButtonNode(
@@ -1490,14 +1483,10 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
                 TabBarNode,
               )
               as TabBarNode?;
-      SNode newTab = TextNode(
-        text: 'new tab',
-        tsPropGroup: TextStyleProperties(),
-      );
+      SNode newTab = TabNode(text: 'new tab');
       tabBarNode?.children.add(newTab);
       newTab.setParent(tabBarNode);
       selectedNode.children.add(newNode);
-      // scaffoldNode?.numTabs++;
     } else if (selectedNode is SC) {
       selectedNode.child = newNode;
     } else if (selectedNode is GridViewNode) {
@@ -1720,8 +1709,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
               as TabBarNode?;
       tabBarNode?.children.insert(
         i,
-        TextNode(text: 'new tab', tsPropGroup: TextStyleProperties())
-          ..setParent(tabBarNode),
+        TabNode(text: 'new tab')..setParent(tabBarNode),
       );
       parent.children.insert(i, newNode..setParent(parent));
     } else {

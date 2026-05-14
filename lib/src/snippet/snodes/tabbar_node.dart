@@ -8,14 +8,12 @@ import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/pnodes/color_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/text_style_pnodes.dart';
 
 part 'tabbar_node.mapper.dart';
 
 @MappableClass()
 class TabBarNode extends MC with TabBarNodeMappable {
-  String tabBarName;
   ColorModel? bgColor;
   TextStyleProperties labelTSPropGroup;
   ColorModel? selectedLabelColor;
@@ -26,7 +24,6 @@ class TabBarNode extends MC with TabBarNodeMappable {
 
   TabBarNode({
     super.name,
-    required this.tabBarName,
     this.bgColor,
     required this.labelTSPropGroup,
     this.selectedLabelColor,
@@ -37,9 +34,17 @@ class TabBarNode extends MC with TabBarNodeMappable {
     required super.children,
   });
 
+  ///  - TabBarNode.tabC is now a getter/setter backed by tabCNotifier (ValueNotifier<TabController?>). All existing call sites
+  //   (tabC?.index, tabC?.dispose, etc.) work identically — they see the same TabController? value.
+  //   - TabBarViewNode.buildFlutterWidget wraps the TabBarView in a ValueListenableBuilder on tb.tabCNotifier. On first build controller
+  //   is null → renders SizedBox.shrink() (invisible, no crash). The moment TabBarWidgetState.initState sets widget.node.tabC = _tabC,
+  //   tabCNotifier fires, the builder re-runs with the real controller, and the TabBarView appears — no polling, no post-frame callbacks,
+  //   no forced BLoC refresh needed.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  // used when a TabBar and TabBarView are used in a snippet's Scaffold
-  TabController? tabC;
+  final tabCNotifier = ValueNotifier<TabController?>(null);
+
+  TabController? get tabC => tabCNotifier.value;
+  set tabC(TabController? c) => tabCNotifier.value = c;
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   final List<int> prevTabQ = [];
@@ -66,17 +71,6 @@ class TabBarNode extends MC with TabBarNodeMappable {
     );
     textStyleName = textStyleName != null ? ': $textStyleName' : '';
     return [
-      StringPNode(
-        snode: this,
-        name: 'tabBarName',
-        stringValue: tabBarName,
-        skipHelperText: true,
-        onStringChange: (newValue) =>
-            refreshWithUpdate(context, () => tabBarName = newValue!),
-        calloutButtonSize: const Size(280, 70),
-        calloutWidth: 400,
-        numLines: 1,
-      ),
       PNode /*Group*/ (
         snode: this,
         name: 'colours',
@@ -182,23 +176,56 @@ class TabBarNode extends MC with TabBarNodeMappable {
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     setParent(parentNode);
-    final snippetName = rootNodeOfSnippet()?.name;
-    final spState = snippetName != null
-        ? fsdui.snippetBuilderStates[snippetName]
-        : null;
-    if (spState == null) return const Placeholder();
     return PreferredSize(
       preferredSize: const Size.fromHeight(100), //tabBar.preferredSize,
       child: Container(
         color: bgColor?.flutterValue ?? Colors.grey,
         child: TabBarWidget(
           node: this,
-          spState: spState,
           parentNode: parentNode,
         ),
       ),
     );
   }
+
+  @override
+  Widget insertItemMenuAnchor(
+    BuildContext context, {
+    required NodeAction action,
+    String? label,
+    Color? bgColor,
+    String? tooltip,
+    key,
+  }) {
+    if (action == NodeAction.addChild) {
+      return IconButton(
+        key: key,
+        padding: EdgeInsets.zero,
+        onPressed: () => fsdui.capiBloc.add(AppendChild(nodeType: TabNode)),
+        icon: Icon(Icons.add_box, color: bgColor),
+        tooltip: 'Add Tab',
+        iconSize: 40,
+      );
+    }
+    return super.insertItemMenuAnchor(
+      context,
+      action: action,
+      label: label,
+      bgColor: bgColor,
+      tooltip: tooltip,
+      key: key,
+    );
+  }
+
+  @override
+  List<Widget> menuAnchorWidgets_Append(
+    BuildContext context,
+    NodeAction action,
+    bool? skipHeading,
+  ) => [
+    ...super.menuAnchorWidgets_Heading(context, action),
+    menuItemButton(context, "Tab", TabNode, action),
+  ];
 
   @override
   String toString() => FLUTTER_TYPE;
@@ -224,12 +251,10 @@ class TabBarNode extends MC with TabBarNodeMappable {
 
 class TabBarWidget extends StatefulWidget {
   final TabBarNode node;
-  final SnippetBuilderState spState;
   final SNode? parentNode;
 
   const TabBarWidget({
     required this.node,
-    required this.spState,
     this.parentNode,
   });
 
@@ -237,19 +262,25 @@ class TabBarWidget extends StatefulWidget {
   State<TabBarWidget> createState() => TabBarWidgetState();
 }
 
-class TabBarWidgetState extends State<TabBarWidget> {
+class TabBarWidgetState extends State<TabBarWidget>
+    with SingleTickerProviderStateMixin {
   late TabController _tabC;
 
   @override
   void initState() {
     super.initState();
     _tabC = TabController(
-      vsync: widget.spState,
+      vsync: this,
       length: widget.node.children.length,
     );
     _tabC.addListener(_tabListenerF);
-    widget.node.tabC = _tabC;
-    widget.spState.tabBars[widget.node.tabBarName] = widget.node;
+    // Deferring via addPostFrameCallback means the notification fires
+    // after the current frame's build/layout/paint is fully complete, at
+    // which point setState from ValueListenableBuilder is legal and the
+    // TabBarView renders correctly.
+    fsdui.afterNextBuildDo((){
+      widget.node.tabC = _tabC;
+    });
   }
 
   @override
@@ -259,12 +290,21 @@ class TabBarWidgetState extends State<TabBarWidget> {
     if (_tabC.length != newLength) {
       _tabC.removeListener(_tabListenerF);
       _tabC.dispose();
-      _tabC = TabController(vsync: widget.spState, length: newLength);
+      _tabC = TabController(vsync: this, length: newLength);
       _tabC.addListener(_tabListenerF);
       widget.node.tabC = _tabC;
-      widget.spState.tabBars[widget.node.tabBarName] = widget.node;
     }
-    _tabC.index = min(widget.node.selection ?? 0, newLength - 1);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final selected = fsdui.selectedNode;
+      final selectedIdx = selected is TabNode
+          ? widget.node.children.indexOf(selected)
+          : -1;
+      final targetIdx = selectedIdx >= 0
+          ? selectedIdx
+          : min(widget.node.selection ?? 0, widget.node.children.length - 1);
+      _tabC.animateTo(targetIdx);
+    });
   }
 
   void _tabListenerF() => widget.node._tabListenerF();
@@ -284,9 +324,7 @@ class TabBarWidgetState extends State<TabBarWidget> {
       tabs.add(
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: node is TextNode
-              ? Tab(key: node.createNodeWidgetGK(), text: (node).text)
-              : Tab(child: node.build(context, widget.parentNode)),
+          child: node.build(context, widget.node),
         ),
       );
     }
