@@ -30,7 +30,6 @@ class Page_Home extends StatelessWidget {
               bottom: NamedPS(
                 propertyName: 'bottom',
                 child: TabBarNode(
-                  tabBarName: uniqueTabBarName,
                   labelTSPropGroup: TextStyleProperties(),
                   children: [
                     TextNode(text: 'Tab 1', tsPropGroup: TextStyleProperties()),
@@ -43,7 +42,6 @@ class Page_Home extends StatelessWidget {
           body: NamedSC(
             propertyName: 'body',
             child: TabBarViewNode(
-              tabBarName: uniqueTabBarName,
               children: [
                 ContainerNode(
                   csPropGroup: ContainerStyleProperties(

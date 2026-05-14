@@ -233,7 +233,6 @@ bool test_AppBarNode() {
     bottom: NamedPS(
       propertyName: 'bottom',
       child: TabBarNode(
-        tabBarName: 'some-tabbar-name',
         labelTSPropGroup: TextStyleProperties(),
         children: [
           TextNode(text: 'tab 1', tsPropGroup: TextStyleProperties()),

@@ -67,6 +67,9 @@ class MarkdownNodeMapper extends SubClassMapperBase<MarkdownNode> {
   static GlobalKey<State<StatefulWidget>>? _$nodeGK(MarkdownNode v) => v.nodeGK;
   static const Field<MarkdownNode, GlobalKey<State<StatefulWidget>>> _f$nodeGK =
       Field('nodeGK', _$nodeGK, mode: FieldMode.member);
+  static MarkdownEditingController _$controller(MarkdownNode v) => v.controller;
+  static const Field<MarkdownNode, MarkdownEditingController> _f$controller =
+      Field('controller', _$controller, mode: FieldMode.member);
   static String _$SAMPLE_MD(MarkdownNode v) => v.SAMPLE_MD;
   static const Field<MarkdownNode, String> _f$SAMPLE_MD = Field(
     'SAMPLE_MD',
@@ -84,6 +87,7 @@ class MarkdownNodeMapper extends SubClassMapperBase<MarkdownNode> {
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeGK: _f$nodeGK,
+    #controller: _f$controller,
     #SAMPLE_MD: _f$SAMPLE_MD,
   };
 
