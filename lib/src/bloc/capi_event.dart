@@ -264,3 +264,9 @@ Redo();
 final class ForceSnippetRefresh extends CAPIEvent {
 ForceSnippetRefresh();
 }
+
+final class ReorderSibling extends CAPIEvent {
+  ReorderSibling({required this.node, required this.newSiblingIndex});
+  final SNode node;
+  final int newSiblingIndex;
+}

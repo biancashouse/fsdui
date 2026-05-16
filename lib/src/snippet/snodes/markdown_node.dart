@@ -41,7 +41,7 @@ class MarkdownNode extends CL with MarkdownNodeMappable {
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     try {
       setParent(parentNode); // propagating parents down from root
-      return _MarkdownWidget(node: this);
+      return _MarkdownWidget(key: ObjectKey(this), node: this);
 
       return MarkdownEditor(
         initialValue: data ?? _markdownData,
@@ -227,7 +227,7 @@ Try typing here!
 class _MarkdownWidget extends StatefulWidget {
   final MarkdownNode node;
 
-  const _MarkdownWidget({required this.node});
+  const _MarkdownWidget({super.key, required this.node});
 
   @override
   State<_MarkdownWidget> createState() => _MarkdownWidgetState();
@@ -256,7 +256,9 @@ class _MarkdownWidgetState extends State<_MarkdownWidget> {
 
   @override
   void dispose() {
-    _controller.dispose();
+    // Only dispose if this state still owns the controller — a new
+    // _MarkdownWidgetState may have already replaced node.controller.
+    if (widget.node.controller != _controller) _controller.dispose();
     super.dispose();
   }
 

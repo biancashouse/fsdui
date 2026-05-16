@@ -125,6 +125,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // on<PageAdded>((event, emit) => _pageAdded(event, emit));
     on<Undo>((event, emit) => _undo(event, emit));
     on<Redo>((event, emit) => _redo(event, emit));
+    on<ReorderSibling>((event, emit) => _reorderSibling(event, emit));
   }
 
   void _signedInAsSuperEditor(SignedInAsSuperEditor event, emit) async {
@@ -1686,6 +1687,21 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
               .indexOf(selectedNode);
       _pasteSiblingAt(clipboardNode, emit, i + 1);
     }
+  }
+
+  void _reorderSibling(ReorderSibling event, emit) {
+    final snippetBeingEdited = state.snippetBeingEdited;
+    if (snippetBeingEdited == null) return;
+    final siblings = event.node.maybeSiblings();
+    if (siblings == null || !siblings.contains(event.node)) return;
+    siblings.remove(event.node);
+    siblings.insert(event.newSiblingIndex.clamp(0, siblings.length), event.node);
+    snippetBeingEdited.treeC.rebuild();
+    final rootNode = snippetBeingEdited.getRootNode();
+    if (rootNode.name != null) {
+      fsdui.appInfo.cachedSnippetInfo(rootNode.name!)?.notifyChange(rootNode);
+    }
+    emit(state.copyWith(force: state.force + 1));
   }
 
   void _addSiblingAt(SNode newNode, emit, int i) {
