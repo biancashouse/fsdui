@@ -248,9 +248,16 @@ class _MarkdownWidgetState extends State<_MarkdownWidget> {
   @override
   void didUpdateWidget(_MarkdownWidget old) {
     super.didUpdateWidget(old);
-    // if the node's data changed externally (e.g. undo), sync the controller
+    // Sync controller when node.data changed externally (e.g. undo).
+    // Deferred to post-frame to avoid the Flutter web assertion
+    // "DOM element of this text editing strategy is not currently active",
+    // which fires when controller.text is set while the field is unfocused.
     if (widget.node.data != _controller.text) {
-      _controller.text = widget.node.data ?? '';
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted && widget.node.data != _controller.text) {
+          _controller.text = widget.node.data ?? '';
+        }
+      });
     }
   }
 
@@ -274,7 +281,7 @@ class _MarkdownWidgetState extends State<_MarkdownWidget> {
       widget.node.snippetInfo()?.notifyChange(widget.node.rootNodeOfSnippet()!);
     },
     onEditingCompleteF: (s) {},
-    dontAutoFocus: false,
+    dontAutoFocus: true,
     bgColor: Colors.white,
     readOnly: !fsdui.canEditAnyContent(),
     skipDecoration: !fsdui.canEditAnyContent(),

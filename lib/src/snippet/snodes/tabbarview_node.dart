@@ -53,10 +53,18 @@ class TabBarViewNode extends MC with TabBarViewNodeMappable {
         }
         // Stable key preserves the element across controller changes, preventing
         // element teardown mid-animation (assert(attached) in getTransformTo).
-        return TabBarView(
-          key: createNodeWidgetGK(),
-          controller: controller,
-          children: childWidgets,
+        // Listener.onPointerDown fires on the very first touch event, before
+        // scroll physics run. unfocus() schedules a microtask that detaches the
+        // active web DOM input element; because microtasks run between Dart
+        // event-loop tasks the DOM is detached before the swipe's layout frame,
+        // preventing "targeted input element must be the active input element".
+        return Listener(
+          onPointerDown: (_) => FocusManager.instance.primaryFocus?.unfocus(),
+          child: TabBarView(
+            key: createNodeWidgetGK(),
+            controller: controller,
+            children: childWidgets,
+          ),
         );
       },
     );

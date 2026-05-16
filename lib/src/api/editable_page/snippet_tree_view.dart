@@ -33,6 +33,18 @@ class _SnippetTreeViewState extends State<SnippetTreeView> {
     super.dispose();
   }
 
+  // requestFocus() schedules a microtask that detaches the active web DOM
+  // input element. Because microtasks run between Dart event-loop tasks, the
+  // DOM is detached before the next frame's layout runs (triggered by the
+  // setState inside _reorderSibling), so updateElementPlacement never sees an
+  // active-but-moved element — fixing the Flutter web assertion without
+  // deferring the dispatch to a post-frame callback (which broke focus).
+  void _reorder(SNode node, int newIndex) {
+    _focusNode.requestFocus();
+    fsdui.dismissAll();
+    fsdui.capiBloc.add(ReorderSibling(node: node, newSiblingIndex: newIndex));
+  }
+
   KeyEventResult _handleKeyEvent(FocusNode _, KeyEvent event) {
     if (event is! KeyDownEvent) return KeyEventResult.ignored;
     final key = event.logicalKey;
@@ -48,13 +60,11 @@ class _SnippetTreeViewState extends State<SnippetTreeView> {
     if (idx < 0) return KeyEventResult.ignored;
 
     if (key == LogicalKeyboardKey.arrowUp && idx > 0) {
-      fsdui.dismissAll();
-      fsdui.capiBloc.add(ReorderSibling(node: selected, newSiblingIndex: idx - 1));
+      _reorder(selected, idx - 1);
       return KeyEventResult.handled;
     }
     if (key == LogicalKeyboardKey.arrowDown && idx < siblings.length - 1) {
-      fsdui.dismissAll();
-      fsdui.capiBloc.add(ReorderSibling(node: selected, newSiblingIndex: idx + 1));
+      _reorder(selected, idx + 1);
       return KeyEventResult.handled;
     }
     return KeyEventResult.ignored;
