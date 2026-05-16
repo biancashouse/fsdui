@@ -18,22 +18,6 @@ library flutter_callouts;
 // import 'flutter_callouts.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
-// import 'package:flutter_callouts/src/lines/line_mixin.dart';
-
-// import 'package:logger/logger.dart';
-//
-// import 'package:flutter_callouts/src/kbd_mixin.dart';
-// import 'package:flutter_callouts/src/ls_mixin.dart';
-// import 'package:flutter_callouts/src/measuring_mixin.dart';
-// import 'src/api/callouts/callout_mixin.dart';
-// import 'src/canvas/canvas_mixin.dart';
-// import 'src/feature_discovery/discovery_mixin.dart';
-// import 'src/gotits_mixin.dart';
-// import 'src/root_context_mixin.dart';
-// import 'src/system_mixin.dart';
-// import 'src/widget/widget_helper_mixin.dart';
-// import 'src/api/callouts/globalkey_extn.dart';
-
 export 'src/api/callouts/callout_config.dart';
 
 // export mixin

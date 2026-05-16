@@ -61,8 +61,11 @@ class Pages extends StatelessWidget {
                 child: IconButton(
                   onPressed: () {
                     // ask user to sign in as editor
-                    EditablePage.of(context)?.editorPasswordDialog();
                     fsdui.capiBloc.add(ForceRefresh());
+                    final ePage = EditablePage.of(context);
+                    fsdui.afterMsDelayDo(500, (){
+                      ePage?.editorPasswordDialog();
+                    });
                   },
                   icon: Icon(Icons.edit, color: Colors.white),
                 ),

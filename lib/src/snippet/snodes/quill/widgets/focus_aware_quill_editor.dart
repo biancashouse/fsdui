@@ -133,7 +133,7 @@ class _FocusAwareQuillEditorState extends State<FocusAwareQuillEditor> {
   void _focusListener() {
     if (!_focusNode.hasFocus) {
       // LOST FOCUS
-      print('lost focus');
+      // print('lost focus');
       if (_isDirty) {
         final newJson = jsonEncode(_controller.document.toDelta().toJson());
         widget.onChange(newJson);
@@ -150,7 +150,7 @@ class _FocusAwareQuillEditorState extends State<FocusAwareQuillEditor> {
       // }
     } else {
       // GAINED FOCUS
-      print('gained focus');
+      // print('gained focus');
       if (fsdui.quillTextToolbarCIDVN.value != widget.parentSNode.quillTextToolbarCID) {
         if (fsdui.quillTextToolbarCIDVN.value != null) {
           fsdui.dismiss(fsdui.quillTextToolbarCIDVN.value!);

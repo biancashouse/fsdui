@@ -63,6 +63,7 @@ const List<Type> singleChildSubClasses = [
   SliverFloatingHeaderNode,
   SliverResizingHeaderNode,
   SliverToBoxAdapterNode,
+  TabDataNode,
   TabNode,
   TargetsWrapperNode,
 ];
@@ -70,6 +71,7 @@ const List<Type> singleChildSubClasses = [
 const List<Type> multiChildSubClasses = [
   CarouselNode,
   DirectoryNode,
+  DynamicTabBarNode,
   FlexNode,
   NamedMC,
   MenuBarNode,
@@ -727,7 +729,7 @@ abstract class SNode extends Node with SNodeMappable {
       fsdui.showToast(
         msg: "This node is not visible right now",
         bgColor: Colors.white,
-        textColor: Colors.red,
+        textColor: Colors.purple,
         removeAfterMs: 5000,
       );
       return;
@@ -866,7 +868,13 @@ abstract class SNode extends Node with SNodeMappable {
   // List<String> sensibleParents() => const [];
 
   GlobalKey? createNodeWidgetGK() {
-    // print('--- createNodeGK --- ${toString()}');
+    // Always return the same stable key for this node instance.
+    // Gating on canEditAnyContent() caused key null→GK churn on sign-in,
+    // triggering _activateRecursively for every widget in the tree.
+    // Creating a new key each build (old behaviour) caused element teardown
+    // mid-animation (assert(attached) in getTransformTo). Stable-always is
+    // correct: same element is preserved across every rebuild.
+    if (_nodeWidgetGK != null) return _nodeWidgetGK;
     String debugLabel = toString();
     if (this is TextNode) {
       debugLabel += (this as TextNode).text;
@@ -2339,6 +2347,8 @@ abstract class SNode extends Node with SNodeMappable {
             menuChildren: [
               menuItemButton(context, "TabBar", TabBarNode, action),
               menuItemButton(context, "TabBarView", TabBarViewNode, action),
+              menuItemButton(context, "DynamicTabBar", DynamicTabBarNode, action),
+              menuItemButton(context, "TabData", TabDataNode, action),
             ],
             child: fsdui.coloredText("tab bar", fontWeight: FontWeight.normal),
           ),
@@ -2623,6 +2633,8 @@ abstract class SNode extends Node with SNodeMappable {
                 menuItemButton(context, "Tab", TabNode, action),
                 menuItemButton(context, "TabBar", TabBarNode, action),
                 menuItemButton(context, "TabBarView", TabBarViewNode, action),
+                menuItemButton(context, "DynamicTabBar", DynamicTabBarNode, action),
+                menuItemButton(context, "TabData", TabDataNode, action),
               ],
               child: fsdui.coloredText(
                 "tab bar",

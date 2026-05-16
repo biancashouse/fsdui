@@ -37,6 +37,7 @@ class SCMapper extends SubClassMapperBase<SC> {
       SliverFloatingHeaderNodeMapper.ensureInitialized();
       SliverResizingHeaderNodeMapper.ensureInitialized();
       SliverToBoxAdapterNodeMapper.ensureInitialized();
+      TabDataNodeMapper.ensureInitialized();
       TabNodeMapper.ensureInitialized();
       TargetsWrapperNodeMapper.ensureInitialized();
       SNodeMapper.ensureInitialized();
@@ -97,7 +98,7 @@ abstract class SCCopyWith<$R, $In extends SC, $Out>
     implements SNodeCopyWith<$R, $In, $Out> {
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({String? name, SNode? child});
+  $R call({SNode? child});
   SCCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 

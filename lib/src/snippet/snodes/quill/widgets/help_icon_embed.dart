@@ -221,24 +221,20 @@ class HelpIconEmbedBuilder implements EmbedBuilder {
     );
   }
 
+  // The !targetCtx.mounted catches the common case where the widget
+  // unmounted. The !renderObject.attached catches the rarer case where
+  // the render object was explicitly detached but the context object
+  // still exists. Both need to be there because mounted and attached
+  // can diverge in edge cases (e.g., during transitional layout phases).
   Rect? _getTargetRect(BuildContext targetCtx) {
-    RenderObject? renderObject;
-    Rect? paintBounds;
     try {
-      renderObject = targetCtx.findRenderObject();
-
-      if (renderObject == null) {
-        fsdui.logger.i('GlobalKeyExtension: findRenderObject returned null.');
-        return null;
-      }
-      paintBounds = renderObject.paintBounds;
-
+      if (!targetCtx.mounted) return null;
+      final renderObject = targetCtx.findRenderObject();
+      if (renderObject == null || !renderObject.attached) return null;
       final translation = renderObject.getTransformTo(null).getTranslation();
-
-      final offset = Offset(translation.x, translation.y);
-      return paintBounds.shift(offset);
+      return renderObject.paintBounds.shift(Offset(translation.x, translation.y));
     } catch (e) {
-      fsdui.logger.i('paintBounds = renderObject?.paintBounds - ${e.toString()}');
+      fsdui.logger.i('_getTargetRect failed: ${e.toString()}');
       return null;
     }
   }

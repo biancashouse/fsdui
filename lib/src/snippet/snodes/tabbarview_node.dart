@@ -45,12 +45,14 @@ class TabBarViewNode extends MC with TabBarViewNodeMappable {
             .toList();
         if (tb.children.length != children.length) {
           return Error(
-            key: createNodeWidgetGK(),
+            key: const ValueKey('tabbarview-mismatch'),
             FLUTTER_TYPE,
             errorMsg: 'TabBar (${tb.children.length}) and TabBarView '
                 '(${children.length}) child counts do not match.',
           );
         }
+        // Stable key preserves the element across controller changes, preventing
+        // element teardown mid-animation (assert(attached) in getTransformTo).
         return TabBarView(
           key: createNodeWidgetGK(),
           controller: controller,

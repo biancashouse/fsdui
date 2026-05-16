@@ -77,8 +77,11 @@ mixin NavMixin {
             onChanged: (value) {
               switch (value) {
                 case 'sign-in-as-editor':
-                  EditablePage.of(context)?.editorPasswordDialog();
                   fsdui.capiBloc.add(ForceRefresh());
+                  final ePage = EditablePage.of(context);
+                  fsdui.afterMsDelayDo(500, (){
+                    ePage?.editorPasswordDialog();
+                  });
                   break;
                 default:
                   if (fsdui.router != null) {

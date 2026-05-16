@@ -68,7 +68,7 @@ class _Page_HomeState extends State<Page_Home> {
     final uniqueTabBarName = DateTime.now().millisecondsSinceEpoch.toString();
     SnippetBuilder sp = SnippetBuilder(
       initialValue:  ScaffoldNode(
-          name: 'home-scaffold-with-tabs-2',
+          name: 'home-scaffold-with-tabs-3',
           appBar: NamedPS(
             propertyName: 'appBar',
             child: AppBarNode(

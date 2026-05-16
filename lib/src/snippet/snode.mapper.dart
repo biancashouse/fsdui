@@ -105,7 +105,7 @@ mixin SNodeMappable {
 
 abstract class SNodeCopyWith<$R, $In extends SNode, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call({String? name});
+  $R call();
   SNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 

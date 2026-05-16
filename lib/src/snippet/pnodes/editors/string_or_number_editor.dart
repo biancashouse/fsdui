@@ -17,6 +17,7 @@ class StringOrNumberEditor extends StatefulWidget {
   final Widget? prefixIcon;
   final bool? readOnly;
   final bool? skipDecoration;
+  final bool ignoreEnterKey;
 
   // final bool expands;
   final int maxLines;
@@ -52,6 +53,7 @@ class StringOrNumberEditor extends StatefulWidget {
     this.textAlignF,
     this.readOnly,
     this.skipDecoration,
+    this.ignoreEnterKey = false,
     super.key,
   });
 
@@ -71,7 +73,7 @@ class StringOrNumberEditorState extends State<StringOrNumberEditor> {
 
     _focusNode = FocusNode(
       onKeyEvent: (node, event) {
-        final isEnterPressed = event.physicalKey == PhysicalKeyboardKey.enter;
+        final isEnterPressed = !widget.ignoreEnterKey && event.physicalKey == PhysicalKeyboardKey.enter;
 
         // We only want to act on the key press (down event), not the release.
         if (event is! KeyUpEvent) {
@@ -136,7 +138,12 @@ class StringOrNumberEditorState extends State<StringOrNumberEditor> {
 
   @override
   void dispose() {
-    _txtController.dispose();
+    _focusNode.dispose();
+    // Only dispose the controller if we created it; when teC is provided by
+    // the caller, the caller owns it and is responsible for disposing it.
+    if (widget.teC == null) {
+      _txtController.dispose();
+    }
     super.dispose();
   }
 

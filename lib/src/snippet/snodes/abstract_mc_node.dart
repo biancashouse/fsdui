@@ -1,6 +1,8 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:fsdui/fsdui.dart';
 
+import 'dynamic_tabbar_node.dart';
+
 part 'abstract_mc_node.mapper.dart';
 
 @MappableClass(discriminatorKey: 'DK:mc', includeSubClasses: multiChildSubClasses,

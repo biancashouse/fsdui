@@ -62,7 +62,7 @@ class SnippetBuilderState extends State<SnippetBuilder> {
 
     // register snippetBuilderState i.o.t. access its state
     fsdui.snippetBuilderStates[widget.initialValue.name!] = this;
-    print('fsdui.snippetBuilderStates[${widget.initialValue.name}] = $this');
+    // print('fsdui.snippetBuilderStates[${widget.initialValue.name}] = $this');
 
     widget.handlers?.forEach((key, value) {
       fsdui.registerHandler(key, value);
@@ -101,13 +101,16 @@ class SnippetBuilderState extends State<SnippetBuilder> {
         .cachedSnippetInfo(widget.initialValue.name!)
         ?.getChangeNotifier();
 
-    return fsdui.canEditAnyContent() && notifier != null
+    // Always use ValueListenableBuilder<String> when notifier is available so
+    // the top-level widget type is stable. If we conditioned on
+    // canEditAnyContent(), signing in would change the widget type
+    // (BlocBuilder → ValueListenableBuilder), tearing down the entire subtree
+    // and causing lifecycle assertions on any _KeepAliveTabPage elements.
+    return notifier != null
         ? ValueListenableBuilder<String>(
-      // must assume snippetInfo will be in cache
-      valueListenable: notifier,
-      builder: (context, value, child) =>
-          buildWithBloc(updatedSnippetJson: value),
-    )
+            valueListenable: notifier,
+            builder: (context, value, _) => buildWithBloc(updatedSnippetJson: value),
+          )
         : buildWithBloc(updatedSnippetJson: '');
   }
 

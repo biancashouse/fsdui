@@ -19,6 +19,7 @@ class MCMapper extends SubClassMapperBase<MC> {
       NamedMCMapper.ensureInitialized();
       CarouselNodeMapper.ensureInitialized();
       DirectoryNodeMapper.ensureInitialized();
+      DynamicTabBarNodeMapper.ensureInitialized();
       FlexNodeMapper.ensureInitialized();
       MenuBarNodeMapper.ensureInitialized();
       PageViewNodeMapper.ensureInitialized();

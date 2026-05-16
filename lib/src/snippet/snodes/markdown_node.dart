@@ -235,11 +235,13 @@ class _MarkdownWidget extends StatefulWidget {
 
 class _MarkdownWidgetState extends State<_MarkdownWidget> {
   late MarkdownEditingController _controller;
+  GlobalKey? gk;
 
   @override
   void initState() {
     super.initState();
     _controller = MarkdownEditingController(text: widget.node.data ?? '');
+    gk = widget.node.createNodeWidgetGK();
     widget.node.controller = _controller; // keep SNode ref if needed elsewhere
   }
 
@@ -260,14 +262,20 @@ class _MarkdownWidgetState extends State<_MarkdownWidget> {
 
   @override
   Widget build(BuildContext context) => StringOrNumberEditor(
+    key: gk,
     teC: _controller,
     inputType: String,
+    maxLines: 5,
     originalS: widget.node.data ?? '',
-    onTextChangedF: (s) {},
+    onTextChangedF: (s) {
+      widget.node.data = s;
+      widget.node.snippetInfo()?.notifyChange(widget.node.rootNodeOfSnippet()!);
+    },
     onEditingCompleteF: (s) {},
     dontAutoFocus: false,
     bgColor: Colors.white,
     readOnly: !fsdui.canEditAnyContent(),
     skipDecoration: !fsdui.canEditAnyContent(),
+    ignoreEnterKey: true,
   );
 }

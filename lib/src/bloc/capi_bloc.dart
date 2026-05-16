@@ -8,7 +8,8 @@ import 'package:fsdui/src/snippet/pnodes/enums/enum_main_axis_size.dart';
 import 'package:fsdui/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
 
 import '../snippet/snodes/crossword_node.dart' show CrosswordNode;
-
+import '../snippet/snodes/dynamic_tabbar_node.dart';
+import '../snippet/snodes/tabdata_node.dart';
 
 class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   // late SnippetUndoRedoStack _ur;
@@ -628,7 +629,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       int index = (selParent as TabBarNode).children.indexOf(sel);
       selParent.children.remove(sel);
       final root = selParent.rootNodeOfSnippet();
-      final tabBarView = root?.findDescendant(TabBarViewNode) as TabBarViewNode?;
+      final tabBarView =
+          root?.findDescendant(TabBarViewNode) as TabBarViewNode?;
       if (index < (tabBarView?.children.length ?? 0)) {
         tabBarView?.children.removeAt(index);
       }
@@ -1162,6 +1164,10 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       const (TabBarViewNode) => TabBarViewNode(
         children: childNode != null ? [childNode] : [],
       ),
+      const (TabDataNode) => TabDataNode(),
+      const (DynamicTabBarNode) => DynamicTabBarNode(children: [
+        TabDataNode()
+      ]),
       const (TextButtonNode) => TextButtonNode(
         child: TextNode(text: 'some-text', tsPropGroup: TextStyleProperties()),
         bsPropGroup: ButtonStyleProperties(tsPropGroup: TextStyleProperties()),
@@ -1287,8 +1293,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
     if (selectedNodeParent == null) {
       // wrapping the snippet root - transfer its name to the wrapper and update treeC
+      // Do NOT null out selectedNode.name for the same reason as in _replaceWithNewNodeOrClipboard.
       w.name = selectedNode.name;
-      selectedNode.name = null;
       possiblyNewTreeC = SnippetTreeController(
         roots: [w],
         childrenProvider: SNode.childrenProvider,
@@ -1349,18 +1355,19 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
       if (parent == null) {
         // sel is the snippet root - transfer its name to the replacement
+        // Do NOT null out sel.name: sel may still be referenced as widget.initialValue
+        // in a SnippetBuilder (e.g. the cached PlaceholderNode in EditablePageRoute),
+        // and clearing it causes initState to throw when that widget remounts.
         r.name = sel.name;
-        sel.name = null;
-        if (sel is PlaceholderNode) {
-          SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(
-            r.name!,
-          );
-          if (snippetInfo != null) {
-            VersionId? currVersionId = snippetInfo.currentVersionId();
-            if (currVersionId != null) {
-              //snippetInfo.removeVersionFromCache(currVersionId);
-              snippetInfo.cacheVersion(currVersionId, r);
-            }
+        // Always update the cache to point to the new root, not just for
+        // PlaceholderNode. SnippetBuilder renders via currentVersionInCache(),
+        // which is the same object as the active root for property edits but
+        // becomes stale on root replacement without this update.
+        SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(r.name!);
+        if (snippetInfo != null) {
+          VersionId? currVersionId = snippetInfo.currentVersionId();
+          if (currVersionId != null) {
+            snippetInfo.cacheVersion(currVersionId, r);
           }
         }
       } else if (parent is SC) {
@@ -1418,9 +1425,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     //   ..selectedNode = r
     //   ..treeC = possiblyNewTreeC;
 
-    fsdui.appInfo
-        .cachedSnippetInfo(r.name!)
-        ?.notifyChange(r);
+    if (parent == null) {
+      fsdui.appInfo.cachedSnippetInfo(r.name!)?.notifyChange(r);
+    }
 
     emit(
       state.copyWith(

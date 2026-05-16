@@ -7,23 +7,18 @@ import 'package:flutter_callouts/flutter_callouts.dart';
 mixin MeasuringMixin {
 
   Rect? findGlobalRect(GlobalKey key) {
-    final RenderObject? renderObject = key.currentContext?.findRenderObject();
-
-    if (renderObject == null) {
+    try {
+      final RenderObject? renderObject = key.currentContext?.findRenderObject();
+      if (renderObject == null || !renderObject.attached) return null;
+      if (renderObject is RenderBox) {
+        final Offset globalOffset = renderObject.localToGlobal(Offset.zero);
+        return renderObject.paintBounds.translate(globalOffset.dx, globalOffset.dy);
+      } else {
+        final translation = renderObject.getTransformTo(null).getTranslation();
+        return renderObject.paintBounds.translate(translation.x, translation.y);
+      }
+    } catch (e) {
       return null;
-    }
-
-    if (renderObject is RenderBox) {
-      final Offset globalOffset = renderObject.localToGlobal(Offset.zero);
-
-      Rect bounds = renderObject.paintBounds;
-      bounds = bounds.translate(globalOffset.dx, globalOffset.dy);
-      return bounds;
-    } else {
-      Rect bounds = renderObject.paintBounds;
-      final translation = renderObject.getTransformTo(null).getTranslation();
-      bounds = bounds.translate(translation.x, translation.y);
-      return bounds;
     }
   }
 

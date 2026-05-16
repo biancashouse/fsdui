@@ -41,6 +41,10 @@ extension GlobalKeyExtension on GlobalKey {
         fca.logger.i('GlobalKeyExtension: findRenderObject returned null.');
         return null;
       }
+      // A deactivated element (e.g. an off-screen TabBarView page) has
+      // mounted==true but its render object is detached. getTransformTo
+      // asserts attached, so bail out before calling it.
+      if (!renderObject.attached) return null;
       paintBounds = renderObject.paintBounds;
 
       if (!_alreadyGaveGlobalPosAndSizeWarning &&

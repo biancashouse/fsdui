@@ -33,22 +33,22 @@ class SnippetInfoModel with SnippetInfoModelMappable {
     final normLatest = _normaliseJson(latestJson);
     final normOriginal = _normaliseJson(_originalEditingJson ?? '');
     final changed = normLatest != normOriginal;
-    if (changed) {
-      print('lengths: ${normLatest.length} vs ${normOriginal.length}');
-      for (int i = 0; i < normLatest.length && i < normOriginal.length; i++) {
-        if (normLatest[i] != normOriginal[i]) {
-          print('first diff at char $i: '
-              'latest=${normLatest[i].codeUnits} '
-              'original=${normOriginal[i].codeUnits}');
-          print('latest context:   ...${normLatest.substring((i - 20).clamp(0, normLatest.length), (i + 20).clamp(0, normLatest.length))}...');
-          print('original context: ...${normOriginal.substring((i - 20).clamp(0, normOriginal.length), (i + 20).clamp(0, normOriginal.length))}...');
-          break;
-        }
-      }
-      if (normLatest.length != normOriginal.length) {
-        print('trailing diff — latest tail: ${normLatest.substring(normOriginal.length.clamp(0, normLatest.length))}');
-      }
-    }
+    // if (changed) {
+    //   print('lengths: ${normLatest.length} vs ${normOriginal.length}');
+    //   for (int i = 0; i < normLatest.length && i < normOriginal.length; i++) {
+    //     if (normLatest[i] != normOriginal[i]) {
+    //       print('first diff at char $i: '
+    //           'latest=${normLatest[i].codeUnits} '
+    //           'original=${normOriginal[i].codeUnits}');
+    //       print('latest context:   ...${normLatest.substring((i - 20).clamp(0, normLatest.length), (i + 20).clamp(0, normLatest.length))}...');
+    //       print('original context: ...${normOriginal.substring((i - 20).clamp(0, normOriginal.length), (i + 20).clamp(0, normOriginal.length))}...');
+    //       break;
+    //     }
+    //   }
+    //   if (normLatest.length != normOriginal.length) {
+    //     print('trailing diff — latest tail: ${normLatest.substring(normOriginal.length.clamp(0, normLatest.length))}');
+    //   }
+    // }
     return changed;
   }
 

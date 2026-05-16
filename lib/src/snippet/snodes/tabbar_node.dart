@@ -287,15 +287,25 @@ class TabBarWidgetState extends State<TabBarWidget>
   void didUpdateWidget(TabBarWidget old) {
     super.didUpdateWidget(old);
     final newLength = widget.node.children.length;
+    bool recreated = false;
     if (_tabC.length != newLength) {
       _tabC.removeListener(_tabListenerF);
       _tabC.dispose();
       _tabC = TabController(vsync: this, length: newLength);
       _tabC.addListener(_tabListenerF);
-      widget.node.tabC = _tabC;
+      recreated = true;
     }
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
+      // Assign tabC after the build phase to avoid firing tabCNotifier
+      // (→ setState on _TabBarViewWidgetState) during build.
+      if (recreated) widget.node.tabC = _tabC;
+      // Don't interfere with a tab animation already in progress.
+      // During animation, selection hasn't been updated yet by _tabListenerF
+      // (which fires only when !indexIsChanging), so targetIdx would be stale
+      // and animateTo would reverse the ongoing animation — causing
+      // _TabBarViewState to call getTransformTo on transitional render objects.
+      if (_tabC.indexIsChanging) return;
       final selected = fsdui.selectedNode;
       final selectedIdx = selected is TabNode
           ? widget.node.children.indexOf(selected)
@@ -303,7 +313,9 @@ class TabBarWidgetState extends State<TabBarWidget>
       final targetIdx = selectedIdx >= 0
           ? selectedIdx
           : min(widget.node.selection ?? 0, widget.node.children.length - 1);
-      _tabC.animateTo(targetIdx);
+      if (_tabC.index != targetIdx) {
+        _tabC.animateTo(targetIdx);
+      }
     });
   }
 

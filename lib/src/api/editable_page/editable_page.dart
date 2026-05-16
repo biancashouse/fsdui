@@ -199,7 +199,7 @@ class EditablePageState extends State<EditablePage> {
     if (snippetRootContext == null) {
       fsdui.showToast(
         msg: "This node is not visible right now",
-        bgColor: Colors.white,
+        bgColor: Colors.yellow,
         textColor: Colors.red,
         removeAfterMs: 5000,
       );

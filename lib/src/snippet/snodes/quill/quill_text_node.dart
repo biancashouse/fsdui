@@ -61,6 +61,7 @@ class QuillTextNode extends CL with QuillTextNodeMappable {
     var gk = createNodeWidgetGK();
 
     Widget editor;
+
     if (fsdui.canEditAnyContent() &&
         fsdui.snippetBeingEdited == null &&
         !fsdui.capiBloc.showTappableBorderRects()) {

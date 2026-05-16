@@ -61,6 +61,8 @@ final List<WidgetEntry> widgetRegistry = [
   const WidgetEntry(label: 'Tab', type: TabNode, category: WidgetCategory.navigation),
   const WidgetEntry(label: 'TabBar', type: TabBarNode, category: WidgetCategory.navigation),
   const WidgetEntry(label: 'TabBarView', type: TabBarViewNode, category: WidgetCategory.navigation),
+  const WidgetEntry(label: 'DynamicTabBar', type: DynamicTabBarNode, category: WidgetCategory.navigation),
+  const WidgetEntry(label: 'TabData', type: TabDataNode, category: WidgetCategory.navigation),
   // image
   const WidgetEntry(label: 'Algorithm', type: AlgCNode, category: WidgetCategory.image, keywords: ['algc', 'diagram']),
   const WidgetEntry(label: 'Asset Image', type: AssetImageNode, category: WidgetCategory.image, keywords: ['image', 'asset', 'local']),

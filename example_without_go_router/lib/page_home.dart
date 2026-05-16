@@ -10,7 +10,7 @@ class Page_Home extends StatelessWidget {
     final uniqueTabBarName = DateTime.now().millisecondsSinceEpoch.toString();
     SnippetBuilder sp = SnippetBuilder(
       initialValue: ScaffoldNode(
-          name: 'home-scaffold-with-tabs',
+          name: 'home-scaffold-with-tabs-3',
           appBar: NamedPS(
             propertyName: 'appBar',
             child: AppBarNode(
