@@ -76,7 +76,9 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
                           .currentVersionInCache();
                       if (rootNode != null) {
                         fsdui.appInfo
-                            .cachedSnippetInfo(rootNode.name ?? 'unnamed snippet!')
+                            .cachedSnippetInfo(
+                              rootNode.name ?? 'unnamed snippet!',
+                            )
                             ?.notifyChange(rootNode);
                         if (fsdui.anyPresent(
                           [],
@@ -96,7 +98,7 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
                     },
                     child: CustomPaint(
                       size: const Size(40, 40),
-                      painter: TRTriangle(triangleColor!),
+                      painter: TRTriangle(triangleColor ?? Colors.lime),
                     ),
                   ),
                 )
@@ -153,11 +155,7 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
                 //
                 // enter select widget mode
                 //
-                bloc.add(
-                  EnterSelectWidgetMode(
-                    snippetName: snippetInfo.name,
-                  ),
-                );
+                bloc.add(EnterSelectWidgetMode(snippetName: snippetInfo.name));
                 // fco.afterNextBuildDo(() {
                 // setup key handler to exit widget selection mode
                 fsdui.removeKeystrokeHandler(
@@ -228,7 +226,10 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
                   fsdui.forceRefresh();
                 }
               },
-              child: const Text('save pending change(s) to firestore'),
+              child: ListTile(
+                tileColor: Colors.lightBlue,
+                title: const Text('save pending change(s) to firestore'),
+              ),
             ),
           if (snippetInfo.changesPending(
             snippetInfo.currentVersionInCache()?.toJson(),
@@ -238,9 +239,9 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
                 _discardPendingChanges(snippetInfo);
                 fsdui.capiBloc.add(ForceSnippetRefresh());
               },
-              child: fsdui.coloredText(
-                'discard pending change(s)',
-                color: Colors.red,
+              child: ListTile(
+                tileColor: Colors.red,
+                title: const Text('discard pending change(s)'),
               ),
             ),
           if (snippetInfo.editingVersionId != snippetInfo.publishedVersionId)
@@ -263,9 +264,7 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
           _menuItemButtonWithPI(
             onPressed: () {
               fsdui.capiBloc.add(
-                ToggleAutoPublishingOfSnippet(
-                  snippetName: snippetInfo.name,
-                ),
+                ToggleAutoPublishingOfSnippet(snippetName: snippetInfo.name),
               );
             },
             child: snippetInfo.autoPublish ?? fsdui.appInfo.autoPublishDefault
@@ -280,11 +279,13 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
           ),
           _menuItemButtonWithPI(
             onPressed: () async {
-              fsdui.capiBloc.add(
-                CopySnippetJsonToClipboard(
-                  rootNode: snippetInfo.currentVersionInCache()!,
-                ),
-              );
+              if (snippetInfo.currentVersionInCache() != null) {
+                fsdui.capiBloc.add(
+                  CopySnippetJsonToClipboard(
+                    rootNode: snippetInfo.currentVersionInCache()!,
+                  ),
+                );
+              }
             },
             child: const Text('copy snippet JSON to clipboard'),
           ),
@@ -304,9 +305,7 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
             _menuItemButtonWithPI(
               onPressed: () async {
                 fsdui.capiBloc.add(
-                  ToggleSnippetVisibility(
-                    snippetName: snippetInfo.name,
-                  ),
+                  ToggleSnippetVisibility(snippetName: snippetInfo.name),
                 );
               },
               child: Text(
@@ -419,8 +418,8 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
         newTreeC.expand(revertedVersion);
         newTreeC.rebuild();
 
-        fsdui.snippetBeingEdited!
-          ..setRootNode(revertedVersion)
+        fsdui.snippetBeingEdited
+          ?..setRootNode(revertedVersion)
           ..selectedNode = revertedVersion
           ..showProperties = false
           ..treeC = newTreeC;

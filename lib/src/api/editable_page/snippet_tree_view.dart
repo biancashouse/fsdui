@@ -48,10 +48,12 @@ class _SnippetTreeViewState extends State<SnippetTreeView> {
     if (idx < 0) return KeyEventResult.ignored;
 
     if (key == LogicalKeyboardKey.arrowUp && idx > 0) {
+      fsdui.dismissAll();
       fsdui.capiBloc.add(ReorderSibling(node: selected, newSiblingIndex: idx - 1));
       return KeyEventResult.handled;
     }
     if (key == LogicalKeyboardKey.arrowDown && idx < siblings.length - 1) {
+      fsdui.dismissAll();
       fsdui.capiBloc.add(ReorderSibling(node: selected, newSiblingIndex: idx + 1));
       return KeyEventResult.handled;
     }
