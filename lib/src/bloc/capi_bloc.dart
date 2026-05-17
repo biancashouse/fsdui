@@ -126,6 +126,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     on<Undo>((event, emit) => _undo(event, emit));
     on<Redo>((event, emit) => _redo(event, emit));
     on<ReorderSibling>((event, emit) => _reorderSibling(event, emit));
+    on<ToggleNodeProperties>((event, emit) => _toggleNodeProperties(event, emit));
   }
 
   void _signedInAsSuperEditor(SignedInAsSuperEditor event, emit) async {
@@ -406,7 +407,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       jsonBeforeAnyChange: event.rootNode.toJson(),
       treeC: newTreeC()..expandAll(),
       selectedNode: event.selectedNode,
-      showProperties: true,
+      showProperties: false,
       nodeBeingDeleted: null,
     )..setRootNode(event.rootNode);
 
@@ -509,8 +510,6 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // }
     // state.snippetBeingEdited!.treeC = possiblyNewTreeC;
     state.snippetBeingEdited!.selectedNode = event.node;
-    // state.snippetBeingEdited!.selectedTreeNodeGK = event.selectedTreeNodeGK;
-    state.snippetBeingEdited!.showProperties = true;
     state.snippetBeingEdited!.nodeBeingDeleted = null;
     state.snippetBeingEdited!.treeC.rebuild();
 
@@ -1687,6 +1686,13 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
               .indexOf(selectedNode);
       _pasteSiblingAt(clipboardNode, emit, i + 1);
     }
+  }
+
+  void _toggleNodeProperties(ToggleNodeProperties event, emit) {
+    final sbe = state.snippetBeingEdited;
+    if (sbe == null || sbe.selectedNode == null) return;
+    sbe.showProperties = !sbe.showProperties;
+    emit(state.copyWith(force: state.force + 1));
   }
 
   void _reorderSibling(ReorderSibling event, emit) {

@@ -185,6 +185,25 @@ class SNodeWidget extends StatelessWidget {
           )
         else
           const SizedBox(height: 30),
+        if (fsdui.selectedNode == entry.node)
+          Tooltip(
+            message: fsdui.snippetBeingEdited?.showProperties ?? false
+                ? 'hide'
+                : 'show properties',
+            child: GestureDetector(
+              onTap: () => fsdui.capiBloc.add(ToggleNodeProperties()),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: Icon(
+                  fsdui.snippetBeingEdited?.showProperties ?? false
+                      ? Icons.edit_off
+                      : Icons.edit,
+                  size: 16,
+                  color: Colors.purpleAccent,
+                ),
+              ),
+            ),
+          ),
       ],
     );
     // });
@@ -532,10 +551,7 @@ class SNodeWidget extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.black,
-        border: Border.all(
-          color: Colors.yellowAccent,
-          width: 8,
-        ),
+        border: Border.all(color: Colors.yellowAccent, width: 8),
         borderRadius: BorderRadiusGeometry.circular(16),
       ),
       child: Column(
@@ -747,7 +763,6 @@ class SNodeWidget extends StatelessWidget {
             ),
         ],
       ),
-
     );
   }
 

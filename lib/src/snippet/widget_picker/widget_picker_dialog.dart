@@ -50,11 +50,21 @@ class WidgetPickerDialog extends StatefulWidget {
 
 class _WidgetPickerDialogState extends State<WidgetPickerDialog> {
   final _controller = TextEditingController();
+  final _focusNode = FocusNode();
   String _query = '';
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _focusNode.requestFocus();
+    });
+  }
 
   @override
   void dispose() {
     _controller.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -164,7 +174,7 @@ class _WidgetPickerDialogState extends State<WidgetPickerDialog> {
           padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
           child: TextField(
             controller: _controller,
-            autofocus: true,
+            focusNode: _focusNode,
             decoration: const InputDecoration(
               hintText: 'Search widgets...',
               prefixIcon: Icon(Icons.search, size: 18),

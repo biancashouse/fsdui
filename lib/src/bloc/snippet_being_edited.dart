@@ -21,7 +21,7 @@ class SnippetBeingEdited {
     this.selectedNode,
     // this.selectedTreeNodeGK,
     this.showTree = true,
-    this.showProperties = true,
+    this.showProperties = false,
     this.nodeBeingDeleted,
     required this.jsonBeforeAnyChange,
   }) {

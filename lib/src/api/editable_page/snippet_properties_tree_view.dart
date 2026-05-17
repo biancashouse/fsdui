@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:fsdui/src/snippet/fancy_tree/tree_controller.dart';
 import 'package:fsdui/src/snippet/fancy_tree/tree_indentation.dart';
 import 'package:fsdui/src/snippet/fancy_tree/tree_view.dart';
@@ -8,12 +9,12 @@ import 'package:fsdui/src/snippet/pnode_widget.dart';
 class PropertiesTreeView extends StatelessWidget {
   final PNodeTreeController treeC;
   final SNode sNode;
-  // final bool allowButtonCallouts;
+  final bool showDocs;
 
   PropertiesTreeView({
     required this.treeC,
     required this.sNode,
-    // this.allowButtonCallouts = false,
+    this.showDocs = true,
     super.key,
   }) {
     // // reinstate expansions
@@ -35,6 +36,10 @@ class PropertiesTreeView extends StatelessWidget {
         treeController: treeC,
         // filter or all
         nodeBuilder: (BuildContext context, TreeEntry<PNode> entry) {
+          if (!showDocs &&
+              (entry.node is FYIPNode || entry.node is FlutterDocPNode)) {
+            return const SizedBox.shrink();
+          }
           return TreeIndentation(
             guide: const IndentGuide.connectingLines(
               color: Colors.blueAccent,

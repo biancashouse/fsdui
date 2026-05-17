@@ -199,7 +199,8 @@ class _PanelBody extends StatelessWidget {
         return Column(
           children: [
             Expanded(child: _TreeArea()),
-            if (pTreeC != null) ...[
+            if (pTreeC != null &&
+                (state.snippetBeingEdited?.showProperties ?? false)) ...[
               const Divider(height: 1, thickness: 1, color: Colors.purple),
               Expanded(
                 child: _PropertiesArea(
@@ -294,19 +295,45 @@ class _TreeAreaState extends State<_TreeArea> {
   }
 }
 
-class _PropertiesArea extends StatelessWidget {
+class _PropertiesArea extends StatefulWidget {
+  // Static so the preference survives node-selection rebuilds.
+  static bool showDocs = false;
+
   final SNode selectedNode;
   final PNodeTreeController pTreeC;
 
   const _PropertiesArea({required this.selectedNode, required this.pTreeC});
 
   @override
+  State<_PropertiesArea> createState() => _PropertiesAreaState();
+}
+
+class _PropertiesAreaState extends State<_PropertiesArea> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.purple,
         automaticallyImplyLeading: false,
-        title: fsdui.coloredText('Properties', color: Colors.white),
+        title: fsdui.coloredText(
+          '${widget.selectedNode.toString()} Properties',
+          color: Colors.white,
+          fontSize: 16,
+        ),
+        actions: [
+          Row(
+            children: [
+              Text('show\ndocs', style: TextStyle(color: Colors.white70, fontSize: 12)),
+              Checkbox(
+                value: _PropertiesArea.showDocs,
+                onChanged: (v) =>
+                    setState(() => _PropertiesArea.showDocs = v ?? true),
+                side: const BorderSide(color: Colors.white54),
+                activeColor: Colors.purpleAccent,
+              ),
+            ],
+          ),
+        ],
       ),
       body: Material(
         color: Colors.blue[50],
@@ -319,7 +346,11 @@ class _PropertiesArea extends StatelessWidget {
             child: SizedBox(
               width: kSidePanelWidth - 20,
               height: 1000,
-              child: PropertiesTreeView(treeC: pTreeC, sNode: selectedNode),
+              child: PropertiesTreeView(
+                treeC: widget.pTreeC,
+                sNode: widget.selectedNode,
+                showDocs: _PropertiesArea.showDocs,
+              ),
             ),
           ),
         ),

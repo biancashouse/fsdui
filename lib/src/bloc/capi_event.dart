@@ -270,3 +270,7 @@ final class ReorderSibling extends CAPIEvent {
   final SNode node;
   final int newSiblingIndex;
 }
+
+final class ToggleNodeProperties extends CAPIEvent {
+  ToggleNodeProperties();
+}
