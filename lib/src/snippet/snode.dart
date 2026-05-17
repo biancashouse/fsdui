@@ -49,6 +49,7 @@ const List<Type> singleChildSubClasses = [
   ConstrainedBoxNode,
   ContainerNode,
   DefaultTextStyleNode,
+  ExpandedNode,
   FlexibleNode,
   NamedSC,
   NamedPS,

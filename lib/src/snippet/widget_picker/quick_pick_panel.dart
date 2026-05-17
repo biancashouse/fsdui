@@ -174,8 +174,11 @@ class _QuickPickPanelState extends State<QuickPickPanel> {
             ),
           ),
         ],
-        // Search field.
+        // Search field — stable key so Flutter reuses the element when the
+        // chips section above is conditionally added/removed (which shifts
+        // the Column slot index and would otherwise break focus).
         Padding(
+          key: const ValueKey('widget-picker-search'),
           padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
           child: TextField(
             controller: _controller,
