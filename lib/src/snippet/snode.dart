@@ -2055,22 +2055,25 @@ abstract class SNode extends Node with SNodeMappable {
 
   void _openQuickPick(NodeAction action) {
     final recommended = recommendedEntries(action);
-    if (recommended.isEmpty) {
-      _openFullPicker(action);
-      return;
-    }
+    final allCandidates = _allCandidatesForAction(action);
+    final snippetNames = List<String>.from(fsdui.appInfo.snippetNames)..sort();
     final hasPaste =
         fsdui.appInfo.clipboard != null && action != NodeAction.wrapWith;
 
+    fsdui.dismiss('node-actions');
     fsdui.showOverlay(
       calloutConfig: CalloutConfig(
         cId: kWidgetPickerCId,
-        initialCalloutW: 320,
-        initialCalloutH: 300,
+        initialCalloutW: 380,
+        initialCalloutH: (fsdui.scrH * 0.65).clamp(300, 520),
         decorationFillColors: ColorOrGradient.color(Colors.white),
-        initialTargetAlignment: Alignment.bottomLeft,
-        initialCalloutAlignment: Alignment.topLeft,
-        finalSeparation: 4,
+        // initialTargetAlignment: fsdui.snippetEditorPanelOnRight
+        //     ? Alignment.centerLeft
+        //     : Alignment.centerRight,
+        // initialCalloutAlignment: fsdui.snippetEditorPanelOnRight
+        //     ? Alignment.centerRight
+        //     : Alignment.centerLeft,
+        finalSeparation: 60,
         decorationBorderRadius: 12,
         elevation: 8,
         barrier: CalloutBarrierConfig(closeOnTapped: true),
@@ -2078,45 +2081,14 @@ abstract class SNode extends Node with SNodeMappable {
       calloutContent: QuickPickPanel(
         action: action,
         recommended: recommended,
-        hasPaste: hasPaste,
-        onPaste: hasPaste ? () => _performPasteAction(action) : null,
-        onTypeSelected: (type) => _performTypeAction(type, action),
-        onSnippetSelected: (name) => _performSnippetAction(name, action),
-        onMorePressed: () => _openFullPicker(action),
-      ),
-      targetGK: treeNodeGK,
-    );
-  }
-
-  void _openFullPicker(NodeAction action) {
-    final allCandidates = _allCandidatesForAction(action);
-    final snippetNames = List<String>.from(fsdui.appInfo.snippetNames)..sort();
-    final hasPaste =
-        fsdui.appInfo.clipboard != null && action != NodeAction.wrapWith;
-
-    fsdui.showOverlay(
-      calloutConfig: CalloutConfig(
-        cId: kWidgetPickerCId,
-        initialCalloutW: 420,
-        initialCalloutH: 300,
-        decorationFillColors: ColorOrGradient.color(Colors.white),
-        initialTargetAlignment: Alignment.bottomLeft,
-        initialCalloutAlignment: Alignment.topLeft,
-        finalSeparation: 4,
-        decorationBorderRadius: 12,
-        elevation: 8,
-        barrier: CalloutBarrierConfig(closeOnTapped: true),
-      ),
-      calloutContent: WidgetPickerDialog(
-        action: action,
         candidates: allCandidates,
         hasPaste: hasPaste,
         onPaste: hasPaste ? () => _performPasteAction(action) : null,
         onTypeSelected: (type) => _performTypeAction(type, action),
-        snippetNames: snippetNames,
         onSnippetSelected: (name) => _performSnippetAction(name, action),
+        snippetNames: snippetNames,
       ),
-      targetGK: treeNodeGK,
+      // targetGK: treeNodeGK,
     );
   }
 
