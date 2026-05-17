@@ -66,12 +66,6 @@ class ChipNode extends CL with ChipNodeMappable {
     var textStyleName = fsdui.findTextStyleName(fsdui.appInfo, labelTSPropGroup);
     textStyleName = textStyleName != null ? ': $textStyleName' : '';
     return [
-      FlutterDocPNode(
-        buttonLabel: 'Chip',
-        webLink: 'https://api.flutter.dev/flutter/material/Chip-class.html',
-        snode: this,
-        name: 'fyi',
-      ),
       StringPNode(
         snode: this,
         name: 'label',
@@ -204,6 +198,12 @@ class ChipNode extends CL with ChipNodeMappable {
         calloutButtonSize: const Size(280, 70),
         calloutWidth: 280,
       ),
+      FlutterDocPNode(
+        buttonLabel: 'Chip',
+        webLink: 'https://api.flutter.dev/flutter/material/Chip-class.html',
+        snode: this,
+        name: 'fyi',
+      ),
     ];
   }
 
@@ -299,7 +299,7 @@ class ChipNode extends CL with ChipNodeMappable {
     //   destinationSnippetName ??=
     //       '$destinationPanelOrPlaceholderName:default-snippet';
     //   capiBloc.add(
-    //     CAPIEvent.setPanelOrPlaceholderSnippet(
+    //     SetPanelSnippet(
     //       snippetName: destinationSnippetName!,
     //       panelName: destinationPanelOrPlaceholderName!,
     //     ),

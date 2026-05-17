@@ -68,7 +68,7 @@ class _Page_HomeState extends State<Page_Home> {
     final uniqueTabBarName = DateTime.now().millisecondsSinceEpoch.toString();
     SnippetBuilder sp = SnippetBuilder(
       initialValue:  ScaffoldNode(
-          name: 'home-scaffold-with-tabs',
+          name: 'home-scaffold-with-tabs-3',
           appBar: NamedPS(
             propertyName: 'appBar',
             child: AppBarNode(
@@ -86,23 +86,23 @@ class _Page_HomeState extends State<Page_Home> {
               leading: NamedSC(propertyName: 'leading'),
               bottom: NamedPS(
                 propertyName: 'bottom',
-                child: TabBarNode(
-                  tabBarName: uniqueTabBarName,
-                  labelTSPropGroup: TextStyleProperties(),
-                  children: [
-                    TextNode(text: 'tab 1', tsPropGroup: TextStyleProperties()),
-                    TextNode(text: 'Tab 2', tsPropGroup: TextStyleProperties()),
-                  ],
-                ),
+                // child: TabBarNode(
+                //   tabBarName: uniqueTabBarName,
+                //   labelTSPropGroup: TextStyleProperties(),
+                //   children: [
+                //     TextNode(text: 'tab 1', tsPropGroup: TextStyleProperties()),
+                //     TextNode(text: 'Tab 2', tsPropGroup: TextStyleProperties()),
+                //   ],
+                // ),
               ),
             ),
           ),
           body: NamedSC(
             propertyName: 'body',
-            child: TabBarViewNode(
-              tabBarName: uniqueTabBarName,
-              children: [PlaceholderNode(), PlaceholderNode()],
-            ),
+            // child: TabBarViewNode(
+            //   tabBarName: uniqueTabBarName,
+            //   children: [PlaceholderNode(), PlaceholderNode()],
+            // ),
           ),
       ),
 

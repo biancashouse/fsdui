@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/pages.dart';
 import 'package:fsdui/src/route_observer.dart';
-import 'package:go_router/go_router.dart';
 
 extension RoutesExtension on FSDUI_Mixins {
   // extract go routes

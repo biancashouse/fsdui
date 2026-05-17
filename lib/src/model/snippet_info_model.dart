@@ -1,9 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'snippet_info_model.mapper.dart';
 
@@ -30,7 +30,36 @@ class SnippetInfoModel with SnippetInfoModelMappable {
 
   bool changesPending(String? latestJson) {
     if (latestJson == null || latestJson.isEmpty) return false;
-    return latestJson != _originalEditingJson;
+    final normLatest = _normaliseJson(latestJson);
+    final normOriginal = _normaliseJson(_originalEditingJson ?? '');
+    final changed = normLatest != normOriginal;
+    // if (changed) {
+    //   print('lengths: ${normLatest.length} vs ${normOriginal.length}');
+    //   for (int i = 0; i < normLatest.length && i < normOriginal.length; i++) {
+    //     if (normLatest[i] != normOriginal[i]) {
+    //       print('first diff at char $i: '
+    //           'latest=${normLatest[i].codeUnits} '
+    //           'original=${normOriginal[i].codeUnits}');
+    //       print('latest context:   ...${normLatest.substring((i - 20).clamp(0, normLatest.length), (i + 20).clamp(0, normLatest.length))}...');
+    //       print('original context: ...${normOriginal.substring((i - 20).clamp(0, normOriginal.length), (i + 20).clamp(0, normOriginal.length))}...');
+    //       break;
+    //     }
+    //   }
+    //   if (normLatest.length != normOriginal.length) {
+    //     print('trailing diff — latest tail: ${normLatest.substring(normOriginal.length.clamp(0, normLatest.length))}');
+    //   }
+    // }
+    return changed;
+  }
+
+  String _normaliseJson(String json) {
+    if (json.isEmpty) return '';
+    try {
+      return jsonEncode(jsonDecode(json.trim()));
+    } catch (e) {
+      print('_normaliseJson failed: $e — first 100 chars: ${json.substring(0, json.length.clamp(0, 100))}');
+      return json.trim();
+    }
   }
 
   // original editing version used to detect changes
@@ -40,11 +69,27 @@ class SnippetInfoModel with SnippetInfoModelMappable {
   // used by changesPending
   final _jsonValueNotifier = ValueNotifier<String>('');
 
+  // lightweight notifier for pending-change indicator — updated per keystroke
+  final changesPendingNotifier = ValueNotifier<bool>(false);
+
   ValueNotifier<String> getChangeNotifier() => _jsonValueNotifier;
 
+  // void markPending() {
+  //   changesPendingNotifier.value = true;
+  // }
+
+  // void updatePending(String currentJson) {
+  //   changesPendingNotifier.value = changesPending(currentJson);
+  // }
+
   void notifyChange(SNode changedSnippet) {
-    getChangeNotifier().value = changedSnippet.toJson();
-    print('notifyChange() - changes pending is ${changesPending(changedSnippet.toJson())}');
+    try {
+      final json = changedSnippet.toJson();
+      getChangeNotifier().value = json;
+      changesPendingNotifier.value = changesPending(json);
+    } catch (e) {
+      print(e);
+    }
   }
 
   // static void debug() {
@@ -98,6 +143,7 @@ class SnippetInfoModel with SnippetInfoModelMappable {
     _cachedVersions[versionId] = rootNode;
     // so we can determine whether any changes are pending
     _originalEditingJson = rootNode.toJson();
+    changesPendingNotifier.value = false;
   }
 
   SNode? cachedVersion(VersionId versionId) =>
@@ -120,9 +166,9 @@ class SnippetInfoModel with SnippetInfoModelMappable {
     return i == ids.length - 1 ? null : ids[i + 1];
   }
 
-  VersionId? earliestVersionId() => versionIds?.first;
+  VersionId? earliestVersionId() => versionIds.first;
 
-  VersionId? latestVersionId() => versionIds?.last;
+  VersionId? latestVersionId() => versionIds.last;
 
   bool isFirstVersion() => editingVersionId == earliestVersionId();
 
@@ -130,6 +176,10 @@ class SnippetInfoModel with SnippetInfoModelMappable {
 
   static VersionId createNewVersion(SNode snippet) {
     // may require a new SnippetInfo
+    if (snippet.name == null) {
+      throw('createNewVersion(null snippet name!)');
+    }
+
     fsdui.modelRepo.ensureSnippetInfoCached(snippetName: snippet.name!);
     SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(snippet.name!);
 
@@ -153,7 +203,7 @@ class SnippetInfoModel with SnippetInfoModelMappable {
       if (tbd.isNotEmpty) {
         // delete from FB and also from cache
         for (VersionId vId in tbd) {
-          snippetInfo.versionIds?.remove(vId);
+          snippetInfo.versionIds.remove(vId);
           snippetInfo._cachedVersions.remove(vId);
         }
       }

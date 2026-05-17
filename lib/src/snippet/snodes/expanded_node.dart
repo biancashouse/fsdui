@@ -15,6 +15,15 @@ class ExpandedNode extends FlexibleNode with ExpandedNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
+    IntPNode(
+      snode: this,
+      name: 'flex',
+      intValue: flex,
+      onIntChange: (newValue) =>
+          refreshWithUpdate(context, () => flex = newValue ?? 1),
+      calloutButtonSize: const Size(70, 30),
+      viaButton: false,
+    ),
     FlutterDocPNode(
       buttonLabel: 'Expanded',
       webLink: 'https://api.flutter.dev/flutter/widgets/Expanded-class.html',
@@ -27,15 +36,6 @@ class ExpandedNode extends FlexibleNode with ExpandedNodeMappable {
           "Forces the child to take exactly the allocated remaining space in a Row or Column.",
       snode: this,
       name: 'fyi',
-    ),
-    IntPNode(
-      snode: this,
-      name: 'flex',
-      intValue: flex,
-      onIntChange: (newValue) =>
-          refreshWithUpdate(context, () => flex = newValue ?? 1),
-      calloutButtonSize: const Size(70, 30),
-      viaButton: false,
     ),
   ];
 
@@ -83,7 +83,7 @@ class ExpandedNode extends FlexibleNode with ExpandedNodeMappable {
   //             originalS: flex.toString(),
   //             onChangedF: (newFlex) {
   //               flex = int.tryParse(newFlex) ?? 1;
-  //               bloc.add(const CAPIEvent.forceRefresh());
+  //               bloc.add(ForceRefresh());
   //             },
   //           ),
   //         ),
@@ -96,7 +96,7 @@ class ExpandedNode extends FlexibleNode with ExpandedNodeMappable {
   //       //   calloutSize: const Size(140, 80),
   //       //   onChangeF: (newFlex) {
   //       //     flex = int.tryParse(newFlex) ?? 1;
-  //       //     bloc.add(const CAPIEvent.forceRefresh());
+  //       //     bloc.add(ForceRefresh());
   //       //   },
   //       // ),
   //     ];

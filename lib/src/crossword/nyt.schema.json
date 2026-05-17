@@ -1,0 +1,209 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "nyt-crossword",
+  "title": "NYT Crossword Puzzle",
+  "description": "A single NYT crossword puzzle as stored in this archive.",
+  "type": "object",
+  "required": [
+    "answers",
+    "author",
+    "clues",
+    "copyright",
+    "date",
+    "dow",
+    "editor",
+    "grid",
+    "gridnums",
+    "publisher",
+    "size",
+    "title"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "acrossmap": {
+      "type": ["null", "object"],
+      "description": "Unused; always null in this archive."
+    },
+    "admin": {
+      "type": ["boolean", "null"],
+      "description": "Administrative flag; always false or null."
+    },
+    "answers": {
+      "type": "object",
+      "description": "Solved answers, grouped by direction.",
+      "required": ["across", "down"],
+      "additionalProperties": false,
+      "properties": {
+        "across": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1
+        },
+        "down": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1
+        }
+      }
+    },
+    "author": {
+      "type": "string",
+      "description": "Puzzle constructor(s)."
+    },
+    "autowrap": {
+      "type": ["boolean", "null"],
+      "description": "Unused; always null in this archive."
+    },
+    "bbars": {
+      "type": ["array", "null"],
+      "description": "Bottom-bar positions (encoded cell indices). Null when absent.",
+      "items": { "type": "integer", "minimum": 0 }
+    },
+    "circles": {
+      "type": ["array", "null"],
+      "description": "Per-cell circle indicators (parallel to grid). Non-zero marks a circled cell. Null when absent.",
+      "items": { "type": "integer", "minimum": 0 }
+    },
+    "clues": {
+      "type": "object",
+      "description": "Clue text, grouped by direction. Each string is formatted as \"<number>. <clue text>\".",
+      "required": ["across", "down"],
+      "additionalProperties": false,
+      "properties": {
+        "across": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "down": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        }
+      }
+    },
+    "code": {
+      "type": ["string", "null"],
+      "description": "Unused; always null in this archive."
+    },
+    "copyright": {
+      "type": "string",
+      "description": "Copyright notice, e.g. \"2004, The New York Times\".",
+      "examples": ["2004, The New York Times"]
+    },
+    "date": {
+      "type": "string",
+      "description": "Publication date in M/D/YYYY format (no zero-padding).",
+      "pattern": "^\\d{1,2}/\\d{1,2}/\\d{4}$",
+      "examples": ["2/20/2004", "12/31/2017"]
+    },
+    "dow": {
+      "type": "string",
+      "description": "Day of the week.",
+      "enum": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    },
+    "downmap": {
+      "type": ["null", "object"],
+      "description": "Unused; always null in this archive."
+    },
+    "editor": {
+      "type": "string",
+      "description": "Puzzle editor, e.g. \"Will Shortz\"."
+    },
+    "grid": {
+      "type": "array",
+      "description": "Flat row-major grid. Length equals size.cols × size.rows. Each element is one of: a single uppercase letter (normal cell), \".\" (black square), \" \" (blank/unfilled cell), or a multi-character string for a rebus cell (e.g. \"DUCK\", \"AND\", \"&\").",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "gridnums": {
+      "type": "array",
+      "description": "Clue-start numbers, parallel to grid. Positive integer where a numbered clue starts; 0 otherwise. Length equals size.cols × size.rows.",
+      "items": { "type": "integer", "minimum": 0 },
+      "minItems": 1
+    },
+    "hastitle": {
+      "type": ["boolean", "null"],
+      "description": "Whether the puzzle has a standalone title (present in newer files only)."
+    },
+    "hold": {
+      "type": ["string", "null"],
+      "description": "Unused; always null in this archive."
+    },
+    "id": {
+      "type": ["string", "integer", "null"],
+      "description": "Internal puzzle identifier. Null in most entries."
+    },
+    "id2": {
+      "type": ["string", "integer", "null"],
+      "description": "Secondary internal identifier. Null in most entries."
+    },
+    "interpretcolors": {
+      "type": ["string", "null"],
+      "description": "When non-null, the string \"true\" signals that circle shading should be interpreted as colors."
+    },
+    "jnotes": {
+      "type": ["string", "null"],
+      "description": "Constructor or judge notes, if any."
+    },
+    "key": {
+      "type": ["string", "null"],
+      "description": "Unused; always null in this archive."
+    },
+    "mini": {
+      "type": ["boolean", "null"],
+      "description": "True if this is a mini puzzle. Null/false for standard puzzles."
+    },
+    "notepad": {
+      "type": ["string", "null"],
+      "description": "Notepad text shown to solvers, if any."
+    },
+    "publisher": {
+      "type": "string",
+      "description": "Publisher name.",
+      "const": "The New York Times"
+    },
+    "rbars": {
+      "type": ["array", "null"],
+      "description": "Right-bar positions (encoded cell indices). Null when absent.",
+      "items": { "type": "integer", "minimum": 0 }
+    },
+    "shadecircles": {
+      "type": ["string", "null"],
+      "description": "When non-null, the string \"true\" indicates circles should be rendered as shaded squares."
+    },
+    "size": {
+      "type": "object",
+      "description": "Grid dimensions. Most puzzles are 15×15 (weekday) or 21×21 (Sunday).",
+      "required": ["cols", "rows"],
+      "additionalProperties": false,
+      "properties": {
+        "cols": { "type": "integer", "minimum": 1 },
+        "rows": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "title": {
+      "type": "string",
+      "description": "Formatted puzzle title, e.g. \"NY TIMES, FRI, FEB 20, 2004\"."
+    },
+    "track": {
+      "type": ["string", "null"],
+      "description": "Unused; always null in this archive."
+    },
+    "type": {
+      "type": ["string", "integer", "null"],
+      "description": "Puzzle type code. Null in this archive."
+    },
+    "uniclue": {
+      "type": ["boolean", "null"],
+      "description": "Whether the puzzle uses a single unified clue list (present in newer files only)."
+    },
+    "valid": {
+      "type": ["boolean", "null"],
+      "description": "Validity flag (present in a small number of files)."
+    }
+  }
+}

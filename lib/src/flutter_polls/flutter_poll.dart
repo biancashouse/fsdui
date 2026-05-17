@@ -3,7 +3,6 @@ library;
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/bloc/poll_bloc.dart';
 import 'package:fsdui/src/bloc/poll_state.dart';

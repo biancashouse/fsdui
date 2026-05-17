@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:fsdui/fsdui.dart';
 
 /// it's important to add the mixin, because callouts are animated

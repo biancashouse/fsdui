@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 
-import 'article_listview_node.dart' show ArticleListViewNode;
 
 part 'listview_node.mapper.dart';
 
@@ -20,13 +19,13 @@ class ListViewNode extends BoxScrollViewNode with ListViewNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
+    ...super.propertyNodes(context, parentSNode),
     FlutterDocPNode(
       buttonLabel: 'ListView',
       webLink: 'https://api.flutter.dev/flutter/widgets/ListView-class.html',
       snode: this,
       name: 'fyi',
     ),
-    ...super.propertyNodes(context, parentSNode),
   ];
 
   @override

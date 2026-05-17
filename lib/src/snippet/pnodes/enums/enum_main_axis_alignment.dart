@@ -124,7 +124,7 @@ enum MainAxisAlignmentEnumModel  {
   //       originalEnumIndex: node.mainAxisAlignment?.index,
   //       onChangeF: (newOption) {
   //         node.mainAxisAlignment = MainAxisAlignmentEnumModel.values[newOption];
-  //         node.bloc.add(const CAPIEvent.forceRefresh());
+  //         node.bloc.add(ForceRefresh());
   //       },
   //       wrap: node is! RowNode,
   //       calloutSize: calloutSize(isRow: node is RowNode),

@@ -4,7 +4,6 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:fsdui/src/snippet/pnodes/groups/button_style_properties.dart';
 import 'package:fsdui/src/snippet/snodes/button_style_hook.dart';
 
 part 'outlined_button_node.mapper.dart';
@@ -34,12 +33,12 @@ class OutlinedButtonNode extends ButtonNode with OutlinedButtonNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
+    ...super.propertyNodes(context, parentSNode),
     FlutterDocPNode(
         buttonLabel: 'OutlinedButton',
         webLink: 'https://api.flutter.dev/flutter/material/OutlinedButton-class.html',
         snode: this,
         name: 'fyi'),
-    ...super.propertyNodes(context, parentSNode),
   ];
 
   @override

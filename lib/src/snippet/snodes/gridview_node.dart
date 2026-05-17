@@ -6,9 +6,7 @@ import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:fsdui/src/snippet/pnodes/int_pnode.dart';
-import 'package:fsdui/src/snippet/snodes/abstract_boxscrollview_node.dart';
 
-import '../pnodes/edge_insets_pnode.dart';
 
 part 'gridview_node.mapper.dart';
 
@@ -32,12 +30,6 @@ class GridViewNode extends BoxScrollViewNode with GridViewNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    FlutterDocPNode(
-        buttonLabel: 'GridView',
-        webLink: 'https://api.flutter.dev/flutter/widgets/GridView-class.html',
-        snode: this,
-        name: 'fyi'),
-
     ...super.propertyNodes(context, parentSNode),
 
     IntPNode(
@@ -64,6 +56,11 @@ class GridViewNode extends BoxScrollViewNode with GridViewNodeMappable {
           refreshWithUpdate(context, () => crossAxisSpacing = newValue),
       calloutButtonSize: const Size(130, 20),
     ),
+    FlutterDocPNode(
+        buttonLabel: 'GridView',
+        webLink: 'https://api.flutter.dev/flutter/widgets/GridView-class.html',
+        snode: this,
+        name: 'fyi'),
   ];
 
   @override

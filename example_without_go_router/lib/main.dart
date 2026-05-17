@@ -59,7 +59,7 @@ void main({bool useEmulator = false}) {
       if (testSNodeSerialization()) {
         runApp(
           FlutterContentApp(
-            appName: 'flutter-content-example-without-go-router',
+            appName: 'fsdui-example-without-go-router',
             home: Page_Home(),
             materialAppThemeF: () => ThemeData(
               colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

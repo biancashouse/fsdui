@@ -1,0 +1,31 @@
+name: flutter_callouts_example
+description: "A Flutter Callouts demo project."
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.9.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  webview_flutter: ^4.13.0
+  webview_flutter_wkwebview: ^3.22.0
+  webview_flutter_web: ^0.2.3+4
+  webview_flutter_android: ^4.7.0
+  webview_flutter_platform_interface: ^2.13.1
+
+  window_manager: ^0.5.1
+  flutter_callouts:
+    path: ../packages/flutter_callouts
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: any
+
+flutter:
+
+  uses-material-design: true

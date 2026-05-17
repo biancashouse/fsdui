@@ -73,6 +73,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.4"
+  banner_listtile:
+    dependency: "direct main"
+    description:
+      name: banner_listtile
+      sha256: "8a8b9f6712a51147cf0eb9b57c58233b5154e5d88b672df83bc23a4479701757"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.0"
   bloc:
     dependency: transitive
     description:
@@ -393,14 +401,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.11"
-  dev_grid:
-    dependency: "direct main"
-    description:
-      name: dev_grid
-      sha256: c5afda04ae6485ad9c3eda18e1087c13440c1d5e7653cc74d2b0fad48ff7c592
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.3"
   device_info_plus:
     dependency: transitive
     description:
@@ -433,6 +433,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.0"
+  dynamic_tabbar:
+    dependency: "direct main"
+    description:
+      name: dynamic_tabbar
+      sha256: "017be3705f70e353e579b7a7d56bb19b5c112072b4532bc8bd68767c4a6fc3fe"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.9"
   email_validator:
     dependency: "direct main"
     description:
@@ -705,7 +713,7 @@ packages:
   flutter_callouts:
     dependency: "direct main"
     description:
-      path: "../flutter_callouts"
+      path: "packages/flutter_callouts"
       relative: true
     source: path
     version: "10.1.0"
@@ -778,6 +786,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_markdown_plus:
+    dependency: "direct main"
+    description:
+      name: flutter_markdown_plus
+      sha256: "039177906850278e8fb1cd364115ee0a46281135932fa8ecea8455522166d2de"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.7"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -1060,6 +1076,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.9.0"
+  json_schema:
+    dependency: "direct main"
+    description:
+      name: json_schema
+      sha256: f37d9c3fdfe8c9aae55fdfd5af815d24ce63c3a0f6a2c1f0982c30f43643fa1a
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.2.2"
   json_serializable:
     dependency: "direct dev"
     description:
@@ -1125,13 +1149,13 @@ packages:
     source: hosted
     version: "0.0.3"
   markdown:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: markdown
-      sha256: "935e23e1ff3bc02d390bad4d4be001208ee92cc217cb5b5a6c19bc14aaa318c1"
+      sha256: ee85086ad7698b42522c6ad42fe195f1b9898e4d974a1af4576c1a3a176cada9
       url: "https://pub.dev"
     source: hosted
-    version: "7.3.0"
+    version: "7.3.1"
   markdown_editor_live:
     dependency: "direct main"
     description:
@@ -1140,6 +1164,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.0"
+  markdown_quill:
+    dependency: "direct main"
+    description:
+      name: markdown_quill
+      sha256: b378c3f268f488f1146bf8e2abdc0d45133a914e2efaa4f601cc9e6118af2fbe
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.3.0"
   matcher:
     dependency: transitive
     description:
@@ -1492,6 +1524,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.1"
+  rfc_6901:
+    dependency: transitive
+    description:
+      name: rfc_6901
+      sha256: "6a43b1858dca2febaf93e15639aa6b0c49ccdfd7647775f15a499f872b018154"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.1"
   rotated_corner_decoration:
     dependency: "direct main"
     description:
@@ -1761,6 +1801,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  uri:
+    dependency: transitive
+    description:
+      name: uri
+      sha256: "889eea21e953187c6099802b7b4cf5219ba8f3518f604a1033064d45b1b8268a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   url_launcher:
     dependency: "direct main"
     description:

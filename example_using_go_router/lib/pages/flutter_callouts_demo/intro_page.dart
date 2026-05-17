@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'callout_following_scroll_demo.dart';
 import 'toast_demo.dart';

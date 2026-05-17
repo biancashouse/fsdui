@@ -14,23 +14,16 @@ part 'stepper_node.mapper.dart';
 @MappableClass()
 class StepperNode extends MC with StepperNodeMappable {
   StepperTypeEnum type;
-  String?
-      name; // required iot allocate snippet names to step widgets (title, subtitle and content)
+  // String? name; // required iot allocate snippet names to step widgets (title, subtitle and content)
 
   StepperNode({
     this.type = StepperTypeEnum.vertical,
-    this.name,
+    super.name,
     required super.children, // can only be StepNodes
   });
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-        FlutterDocPNode(
-            buttonLabel: 'Stepper',
-            webLink:
-                'https://api.flutter.dev/flutter/material/Stepper-class.html',
-            snode: this,
-            name: 'fyi'),
         EnumPNode<StepperTypeEnum?>(
           snode: this,
           name: 'type',
@@ -50,6 +43,12 @@ class StepperNode extends MC with StepperNodeMappable {
           calloutButtonSize: const Size(280, 20),
           calloutWidth: 280,
         ),
+        FlutterDocPNode(
+            buttonLabel: 'Stepper',
+            webLink:
+                'https://api.flutter.dev/flutter/material/Stepper-class.html',
+            snode: this,
+            name: 'fyi'),
       ];
 
   @override

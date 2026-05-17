@@ -2,7 +2,6 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart' show Colors;
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/api/clipboard/clipboard_view.dart';
-import 'package:fsdui/src/snippet/pnodes/groups/button_style_properties.dart';
 
 part 'app_info_model.mapper.dart';
 

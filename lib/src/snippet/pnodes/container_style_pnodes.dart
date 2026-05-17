@@ -5,7 +5,6 @@ import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/edge_insets_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/editors/property_button_search_container_styles.dart';
 import 'package:fsdui/src/snippet/pnodes/enum_pnode.dart';
-import 'package:fsdui/src/snippet/pnodes/enums/enum_decoration_shape.dart';
 import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:fsdui/src/snippet/pnodes/gradient_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/size_pnode.dart';

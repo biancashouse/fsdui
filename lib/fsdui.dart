@@ -11,6 +11,7 @@ import 'package:firebase_storage/firebase_storage.dart'
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
+import 'package:fsdui/src/api/snippet_builder/snippet_builder.dart';
 import 'package:fsdui/src/bloc/snippet_being_edited.dart';
 import 'package:fsdui/src/model/firestore_model_repo.dart';
 import 'package:fsdui/src/snippet/fancy_tree/tree_controller.dart';
@@ -40,6 +41,7 @@ import 'package:fsdui/src/snippet/snodes/filled_button_node.dart';
 import 'package:fsdui/src/snippet/snodes/flex_node.dart';
 import 'package:fsdui/src/snippet/snodes/flexible_node.dart';
 import 'package:fsdui/src/snippet/snodes/flexible_space_bar_node.dart';
+import 'package:fsdui/src/bloc/capi_event.dart';
 
 // import 'package:fsdui/src/snippet/snodes/quill/widgets/focus_notifier.dart';
 import 'package:fsdui/src/snippet/snodes/storage_image_node.dart';
@@ -56,7 +58,7 @@ import 'package:fsdui/src/snippet/snodes/intrinsic_height_node.dart';
 import 'package:fsdui/src/snippet/snodes/intrinsic_width_node.dart';
 import 'package:fsdui/src/snippet/snodes/article_listview_node.dart';
 import 'package:fsdui/src/snippet/snodes/listview_node.dart';
-import 'package:fsdui/src/snippet/snodes/markdown/markdown_node.dart';
+import 'package:fsdui/src/snippet/snodes/markdown_node.dart';
 import 'package:fsdui/src/snippet/snodes/menu_bar_node.dart';
 import 'package:fsdui/src/snippet/snodes/menu_item_button_node.dart';
 import 'package:fsdui/src/snippet/snodes/abstract_mc_node.dart';
@@ -87,6 +89,8 @@ import 'package:fsdui/src/snippet/snodes/submenu_button_node.dart';
 import 'package:fsdui/src/snippet/snodes/tab_node.dart';
 import 'package:fsdui/src/snippet/snodes/tabbar_node.dart';
 import 'package:fsdui/src/snippet/snodes/tabbarview_node.dart';
+import 'package:fsdui/src/snippet/snodes/dynamic_tabbar_node.dart';
+import 'package:fsdui/src/snippet/snodes/tabdata_node.dart';
 import 'package:fsdui/src/snippet/snodes/text_button_node.dart';
 import 'package:fsdui/src/snippet/snodes/text_node.dart';
 import 'package:fsdui/src/snippet/snodes/uml_image_node.dart';
@@ -108,9 +112,7 @@ import 'package:fsdui/x_fsdui/text_styles_extn.dart';
 // import 'package:fsdui/src/snippet/snodes/widget/fs_folder_node.dart';
 import 'package:go_router/go_router.dart';
 
-import 'fsdui.dart' show SnippetBuilderState;
 import 'src/bloc/capi_bloc.dart';
-import 'src/bloc/capi_event.dart';
 import 'src/model/app_info_model.dart';
 import 'src/model/model_repo.dart';
 import 'src/nav/nav_mixin.dart';
@@ -124,36 +126,16 @@ export 'package:cloud_firestore/cloud_firestore.dart';
 export 'package:firebase_core/firebase_core.dart';
 export 'package:firebase_auth/firebase_auth.dart';
 export 'package:firebase_storage/firebase_storage.dart';
+export 'package:firebase_ui_storage/firebase_ui_storage.dart';
 export 'package:google_sign_in/google_sign_in.dart';
 export 'package:go_router/go_router.dart';
+export 'package:flutter_bloc/flutter_bloc.dart';
+export 'package:flutter_callouts/flutter_callouts.dart';
+export 'package:google_fonts/google_fonts.dart';
+export 'package:freezed_annotation/freezed_annotation.dart';
 
-// re-export callout callout related s.t. apps using this package don't need to include the callouts pkg in pubspec
-export 'package:flutter_callouts/src/widget/double_tappable.dart';
-export 'package:flutter_callouts/src/api/callouts/scroll_config.dart';
+// re-export callout related s.t. apps using this package don't need to include the callouts pkg in pubspec
 export 'src/api/mouse_info_viewer.dart';
-export 'package:flutter_callouts/src/api/callouts/callout_config.dart';
-export 'package:flutter_callouts/src/lines/line.dart';
-export 'package:flutter_callouts/src/api/callouts/coord.dart';
-export 'package:flutter_callouts/src/api/callouts/callout_using_overlayportal.dart';
-export 'package:flutter_callouts/src/api/callouts/dotted_decoration.dart';
-export 'package:flutter_callouts/src/api/callouts/globalkey_extn.dart';
-export 'package:flutter_callouts/src/api/callouts/rect_extn.dart';
-export 'package:flutter_callouts/src/canvas/canvas_mixin.dart';
-export 'package:flutter_callouts/src/debouncer/debouncer.dart';
-export 'package:flutter_callouts/src/feature_discovery/discovery_controller.dart';
-export 'package:flutter_callouts/src/feature_discovery/featured_widget.dart';
-export 'package:flutter_callouts/src/feature_discovery/flat_icon_button_with_callout_player.dart';
-export 'package:flutter_callouts/src/gotits_mixin.dart';
-export 'package:flutter_callouts/src/measuring/measure_sizebox.dart';
-export 'package:flutter_callouts/src/system_mixin.dart';
-export 'package:flutter_callouts/src/typedefs.dart';
-export 'package:flutter_callouts/src/widget/blink.dart';
-export 'package:flutter_callouts/src/widget/constant_scroll_behavior.dart';
-export 'package:flutter_callouts/src/widget/error.dart';
-export 'package:flutter_callouts/src/widget/widget_helper_mixin.dart';
-export 'package:flutter_callouts/src/api/callouts/color_or_gradient.dart';
-export 'package:flutter_callouts/src/api/callouts/decoration_shape.dart';
-export 'package:flutter_callouts/src/api/callouts/target_pointer_type.dart';
 
 export 'package:fsdui/src/model/firestore_model_repo.dart';
 export 'package:fsdui/src/model/model_repo.dart';
@@ -165,14 +147,11 @@ export 'package:fsdui/src/api/alignment_extn.dart';
 // export 'package:file_picker/src/file_picker_result.dart';
 // export 'package:file_picker/src/platform_file.dart';
 export 'package:gap/src/widgets/gap.dart';
-export 'package:logger/src/log_event.dart';
-export 'package:logger/src/log_filter.dart';
-export 'package:logger/src/logger.dart';
-export 'package:logger/src/printers/pretty_printer.dart';
 
 // re-export
 export 'package:url_launcher/url_launcher.dart';
 export 'package:url_launcher/url_launcher_string.dart';
+export 'package:banner_listtile/banner_listtile.dart';
 
 // export 'src/api/routes/dynamic_page_route.dart';
 export 'src/api/routes/editable_page_route.dart';
@@ -251,7 +230,7 @@ export 'src/snippet/snodes/listview_node.dart';
 export 'src/snippet/snodes/gridview_node.dart';
 export 'src/snippet/snodes/pageview_node.dart';
 export 'src/snippet/snodes/interactiveviewer_node.dart';
-export 'src/dev_grid/dev_grid.dart';
+// export 'src/dev_grid/dev_grid.dart';
 
 // export 'src/snippet/snodes/fs_folder_node.dart';
 export 'src/snippet/snodes/gap_node.dart';
@@ -266,7 +245,7 @@ export 'src/snippet/snodes/hotspots/widgets/targets_wrapper.dart';
 export 'src/snippet/snodes/icon_button_node.dart';
 export 'src/snippet/snodes/iframe_node.dart';
 export 'src/snippet/snodes/inlinespan_node.dart';
-export 'src/snippet/snodes/markdown/markdown_node.dart';
+export 'src/snippet/snodes/markdown_node.dart';
 export 'src/snippet/snodes/menu_bar_node.dart';
 export 'src/snippet/snodes/menu_item_button_node.dart';
 export 'src/snippet/snodes/abstract_mc_node.dart';
@@ -294,8 +273,10 @@ export 'src/snippet/snodes/step_node.dart';
 export 'src/snippet/snodes/stepper_node.dart';
 export 'src/snippet/snodes/submenu_button_node.dart';
 export 'src/snippet/snodes/subtitle_snippet_root_node.dart';
+export 'src/snippet/snodes/dynamic_tabbar_node.dart';
 export 'src/snippet/snodes/tabbar_node.dart';
 export 'src/snippet/snodes/tabbarview_node.dart';
+export 'src/snippet/snodes/tabdata_node.dart';
 export 'src/snippet/snodes/text_button_node.dart';
 export 'src/snippet/snodes/text_node.dart';
 export 'src/snippet/snodes/quill/quill_text_node.dart';
@@ -766,7 +747,7 @@ class FSDUI_Mixins
   // final inEditMode = ValueNotifier<bool>(false);
 
   void forceRefresh({bool onlyTargetsWrappers = false}) => fsdui.capiBloc.add(
-    CAPIEvent.forceRefresh(onlyTargetsWrappers: onlyTargetsWrappers),
+    ForceRefresh(onlyTargetsWrappers: onlyTargetsWrappers),
   );
 
   Offset calloutConfigToolbarPos() =>
@@ -880,6 +861,70 @@ class FSDUI_Mixins
     // only need to specify the asset pkg when used by a client project; i.e. not within the fsdui project itself
     return fca.skipAssetPkgName ? name : 'packages/fsdui/$name';
   }
+
+  Widget fbStoragePicWithFadeIn({
+    required String path,
+    Alignment alignment = Alignment.center,
+    double? width,
+    double? height,
+    EdgeInsets padding = const EdgeInsets.all(20.0),
+    BoxFit? fit,
+    Key? key,
+  }) => fca.networkPicWithFadeIn(
+    url: FirebaseStorage.instance
+        .refFromURL("gs://YOUR_BUCKET/images/stars.jpg")
+        .fullPath,
+  );
+
+  // Widget fetchImage(String url) => Center(
+  //   child: Image(
+  //     width: width,
+  //     height: height,
+  //     fit: fit?.flutterValue,
+  //     alignment: alignment?.flutterValue ?? Alignment.center,
+  //     image: FirebaseImageProvider(
+  //       FirebaseUrl(url),
+  //       // Specify CacheOptions to control file fetching and caching behavior.
+  //       options: const CacheOptions(
+  //         // Always fetch the latest file from the server and do not cache the file.
+  //         // default is Source.cacheServer which will fetch try to fetch the image from the cache and then hit server if the image not found in the cache.
+  //         source: Source.server,
+  //         // Check if the image is updated on the server or not, if updated then download the latest image otherwise use the cached image.
+  //         // Will only be used if the options.source is Source.cacheServer
+  //         checkIfFileUpdatedOnServer: true,
+  //       ),
+  //       // Use this to save files in desired directory in system's temporary directory
+  //       // Optional. default is "flutter_cached_image"
+  //       // subDir: "custom_cache_directory",
+  //     ),
+  //     errorBuilder: (context, error, stackTrace) {
+  //       // [ImageNotFoundException] will be thrown if image does not exist on server.
+  //       if (error is ImageNotFoundException) {
+  //         // Handle ImageNotFoundException and show a user-friendly message.
+  //         return const Text('Image not found on Cloud Storage.');
+  //       } else {
+  //         // Handle other errors.
+  //         return Text('Error loading image: $error');
+  //       }
+  //     },
+  //     // The loading progress may not be accurate as Firebase Storage API
+  //     // does not provide a stream of bytes downloaded. The progress updates only at the start and end of the loading process.
+  //     loadingBuilder: (_, Widget child, ImageChunkEvent? loadingProgress) {
+  //       if (loadingProgress == null) {
+  //         // Show the loaded image if loading is complete.
+  //         return child;
+  //       } else {
+  //         // Show a loading indicator with progress information.
+  //         return CircularProgressIndicator(
+  //           value: loadingProgress.expectedTotalBytes != null
+  //               ? loadingProgress.cumulativeBytesLoaded /
+  //               (loadingProgress.expectedTotalBytes ?? 1)
+  //               : null,
+  //         );
+  //       }
+  //     },
+  //   ),
+  // );
 
   // stolen from quill, because not exported
   Color hexToColor(String? hexString) {
@@ -1044,8 +1089,10 @@ class FSDUI_Mixins
     StackNodeMapper.ensureInitialized();
     StepperNodeMapper.ensureInitialized();
     SubmenuButtonNodeMapper.ensureInitialized();
+    DynamicTabBarNodeMapper.ensureInitialized();
     TabBarNodeMapper.ensureInitialized();
     TabBarViewNodeMapper.ensureInitialized();
+    TabDataNodeMapper.ensureInitialized();
     WrapNodeMapper.ensureInitialized();
     // Buttons
     ElevatedButtonNodeMapper.ensureInitialized();

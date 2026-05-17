@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:fsdui/src/snippet/pnodes/int_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
 import 'package:fsdui/src/snippet/snodes/iframe/iframe.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
@@ -29,12 +28,6 @@ class YTNode extends CL with YTNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    FlutterDocPNode(
-      buttonLabel: 'IFrame',
-      webLink: 'https://pub.dev/packages/webview_flutter_web',
-      snode: this,
-      name: 'fyi',
-    ),
     StringPNode(
       snode: this,
       name: 'Youtube Url',
@@ -53,6 +46,12 @@ class YTNode extends CL with YTNodeMappable {
       onDoubleChange: (newValue) =>
           refreshWithUpdate(context, () => scale = newValue ?? 1.0),
       calloutButtonSize: const Size(120, 20),
+    ),
+    FlutterDocPNode(
+      buttonLabel: 'IFrame',
+      webLink: 'https://pub.dev/packages/webview_flutter_web',
+      snode: this,
+      name: 'fyi',
     ),
   ];
 

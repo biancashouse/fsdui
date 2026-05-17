@@ -11,7 +11,6 @@ class ListViewMenuAnchor extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final snippetInfo = node.snippetInfo;
-    if (snippetInfo == null) return const Offstage();
     return MenuAnchor(
       builder:
           (BuildContext context, MenuController controller, Widget? child) {
@@ -38,11 +37,11 @@ class ListViewMenuAnchor extends StatelessWidget {
         _menuItemButtonWithPI(
           onPressed: () async {
             fsdui.capiBloc.add(
-              CAPIEvent.toggleSnippetVisibility(snippetName: snippetInfo.name),
+              ToggleSnippetVisibility(snippetName: snippetInfo()?.name),
             );
           },
           child: Text(
-            '${snippetInfo.hide ?? false ? 'show' : 'hide'} snippet',
+            '${snippetInfo()?.hide ?? false ? 'show' : 'hide'} snippet',
           ),
         ),
       ],

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/snodes/widget/fs_folder_node.dart';
 

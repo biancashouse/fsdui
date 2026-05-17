@@ -2,13 +2,14 @@ import 'dart:async';
 
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/bloc/snippet_being_edited.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_main_axis_size.dart';
 import 'package:fsdui/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
 
-import '../snippet/snodes/article_listview_node.dart' show ArticleListViewNode;
+import '../snippet/snodes/crossword_node.dart' show CrosswordNode;
+import '../snippet/snodes/dynamic_tabbar_node.dart';
+import '../snippet/snodes/tabdata_node.dart';
 
 class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   // late SnippetUndoRedoStack _ur;
@@ -105,6 +106,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     on<PasteSiblingBefore>((event, emit) => _pasteSiblingBefore(event, emit));
     on<PasteSiblingAfter>((event, emit) => _pasteSiblingAfter(event, emit));
     on<DeleteNodeTapped>((event, emit) => _deleteNodeTapped(event, emit));
+    on<DeleteArticle>((event, emit) => _deleteArticle(event, emit));
     on<CompleteDeletion>((event, emit) => _completeDeletion(event, emit));
     on<SelectedDirectoryOrNode>(
       (event, emit) => _selectedDirectoryOrNode(event, emit),
@@ -123,6 +125,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // on<PageAdded>((event, emit) => _pageAdded(event, emit));
     on<Undo>((event, emit) => _undo(event, emit));
     on<Redo>((event, emit) => _redo(event, emit));
+    on<ReorderSibling>((event, emit) => _reorderSibling(event, emit));
   }
 
   void _signedInAsSuperEditor(SignedInAsSuperEditor event, emit) async {
@@ -574,6 +577,17 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     );
   }
 
+  Future<void> _deleteArticle(DeleteArticle event, emit) async {
+    event.articleSnippet.removeFromParent();
+    final newSnippet = event.articleSnippet.rootNodeOfSnippet();
+    final snippetName = newSnippet?.snippetName;
+    if (snippetName != null) {
+      fsdui.appInfo.cachedSnippetInfo(snippetName)?.notifyChange(newSnippet!);
+    }
+
+    emit(state.copyWith(force: state.force + 1));
+  }
+
   // Future<void> _showCutout(ShowCutout event, emit) async {
   //   if (state.snippetBeingEdited?.aNodeIsNotSelected??false) return;
   //
@@ -615,10 +629,11 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     if (sel.isAScaffoldTabWidget() && !sel.hasChildren()) {
       int index = (selParent as TabBarNode).children.indexOf(sel);
       selParent.children.remove(sel);
-      ScaffoldNode? scaffold =
-          selParent.getParent()?.getParent()?.getParent() as ScaffoldNode?;
-      if (scaffold?.body.child is TabBarViewNode?) {
-        (scaffold!.body.child as TabBarViewNode).children.removeAt(index);
+      final root = selParent.rootNodeOfSnippet();
+      final tabBarView =
+          root?.findDescendant(TabBarViewNode) as TabBarViewNode?;
+      if (index < (tabBarView?.children.length ?? 0)) {
+        tabBarView?.children.removeAt(index);
       }
       newSel = selParent;
       return newSel;
@@ -628,14 +643,10 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     if (sel.isAScaffoldTabViewWidget() && !sel.hasChildren()) {
       int index = (selParent as TabBarViewNode).children.indexOf(sel);
       selParent.children.remove(sel);
-      ScaffoldNode? scaffold =
-          selParent.getParent()?.getParent() as ScaffoldNode?;
-      if (scaffold?.appBar is AppBarNode) {
-        AppBarNode appbar = scaffold?.appBar as AppBarNode;
-        SNode? bottomChild = appbar.bottom.child;
-        if (bottomChild is TabBarNode) {
-          bottomChild.children.removeAt(index);
-        }
+      final root = selParent.rootNodeOfSnippet();
+      final tabBar = root?.findDescendant(TabBarNode) as TabBarNode?;
+      if (index < (tabBar?.children.length ?? 0)) {
+        tabBar?.children.removeAt(index);
       }
       newSel = selParent;
       return newSel;
@@ -819,7 +830,6 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   SNode _typeAsATreeNode(Type t, SNode? childNode, String notFoundMsg) {
     // in case tabbar specified
-    final uniqueTabBarName = DateTime.now().millisecondsSinceEpoch.toString();
     return switch (t) {
       const (AlignNode) => AlignNode(
         child: childNode,
@@ -888,6 +898,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
                 child: childNode,
               ),
       // const (ContentSnippetRootNode) => ContentSnippetRootNode(name: 'content', child: childNode),
+      const (CrosswordNode) => CrosswordNode(),
       const (CustomScrollViewNode) => CustomScrollViewNode(slivers: []),
       const (DefaultTextStyleNode) => DefaultTextStyleNode(
         child: childNode,
@@ -1148,14 +1159,16 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       const (TargetsWrapperNode) => TargetsWrapperNode(child: childNode),
       const (TabNode) => TabNode(text: 'new tab'),
       const (TabBarNode) => TabBarNode(
-        tabBarName: uniqueTabBarName,
         labelTSPropGroup: TextStyleProperties(),
         children: childNode != null ? [childNode] : [],
       ),
       const (TabBarViewNode) => TabBarViewNode(
-        tabBarName: uniqueTabBarName,
         children: childNode != null ? [childNode] : [],
       ),
+      const (TabDataNode) => TabDataNode(),
+      const (DynamicTabBarNode) => DynamicTabBarNode(children: [
+        TabDataNode()
+      ]),
       const (TextButtonNode) => TextButtonNode(
         child: TextNode(text: 'some-text', tsPropGroup: TextStyleProperties()),
         bsPropGroup: ButtonStyleProperties(tsPropGroup: TextStyleProperties()),
@@ -1183,11 +1196,11 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
     SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
     SNode? selectedNodeParent = selectedNode.getParent() as SNode?;
-    SNode w = event.type != null
+    SNode w = event.nodeType != null
         ? _typeAsATreeNode(
-            event.type!,
+            event.nodeType!,
             selectedNode,
-            "_wrapWith() missing ${event.type.toString()}",
+            "_wrapWith() missing ${event.nodeType.toString()}",
           )
         : event.testNode!;
 
@@ -1202,8 +1215,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       }
     } else {
       if ((w is CL && w is! ListViewNode && w is! GridViewNode) ||
-          w is WidgetSpanNode)
+          w is WidgetSpanNode) {
         return;
+      }
       if (selectedNode is InlineSpanNode && w is! InlineSpanNode) return;
       if (w is PollNode && selectedNode is! PollOptionNode) return;
       if (selectedNode is PollOptionNode && w is! PollNode) return;
@@ -1280,8 +1294,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
     if (selectedNodeParent == null) {
       // wrapping the snippet root - transfer its name to the wrapper and update treeC
+      // Do NOT null out selectedNode.name for the same reason as in _replaceWithNewNodeOrClipboard.
       w.name = selectedNode.name;
-      selectedNode.name = null;
       possiblyNewTreeC = SnippetTreeController(
         roots: [w],
         childrenProvider: SNode.childrenProvider,
@@ -1315,13 +1329,13 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     _pushUndo();
 
     SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
-    if (event.type == selectedNode.runtimeType) return;
+    if (event.nodeType == selectedNode.runtimeType) return;
 
-    SNode newNode = event.type != null
+    SNode newNode = event.nodeType != null
         ? _typeAsATreeNode(
-            event.type!,
+            event.nodeType!,
             null,
-            "_replaceWith() missing ${event.type.toString()}",
+            "_replaceWith() missing ${event.nodeType.toString()}",
           )
         : event.testNode!;
     _replaceWithNewNodeOrClipboard(selectedNode, emit, newNode);
@@ -1342,18 +1356,19 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
       if (parent == null) {
         // sel is the snippet root - transfer its name to the replacement
+        // Do NOT null out sel.name: sel may still be referenced as widget.initialValue
+        // in a SnippetBuilder (e.g. the cached PlaceholderNode in EditablePageRoute),
+        // and clearing it causes initState to throw when that widget remounts.
         r.name = sel.name;
-        sel.name = null;
-        if (sel is PlaceholderNode) {
-          SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(
-            r.name!,
-          );
-          if (snippetInfo != null) {
-            VersionId? currVersionId = snippetInfo.currentVersionId();
-            if (currVersionId != null) {
-              //snippetInfo.removeVersionFromCache(currVersionId);
-              snippetInfo.cacheVersion(currVersionId, r);
-            }
+        // Always update the cache to point to the new root, not just for
+        // PlaceholderNode. SnippetBuilder renders via currentVersionInCache(),
+        // which is the same object as the active root for property edits but
+        // becomes stale on root replacement without this update.
+        SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(r.name!);
+        if (snippetInfo != null) {
+          VersionId? currVersionId = snippetInfo.currentVersionId();
+          if (currVersionId != null) {
+            snippetInfo.cacheVersion(currVersionId, r);
           }
         }
       } else if (parent is SC) {
@@ -1411,9 +1426,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     //   ..selectedNode = r
     //   ..treeC = possiblyNewTreeC;
 
-    fsdui.appInfo
-        .cachedSnippetInfo(state.snippetBeingEdited!.getRootNode().name!)
-        ?.notifyChange(r);
+    if (parent == null) {
+      fsdui.appInfo.cachedSnippetInfo(r.name!)?.notifyChange(r);
+    }
 
     emit(
       state.copyWith(
@@ -1428,11 +1443,11 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     _pushUndo();
 
     SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
-    SNode newNode = event.type != null
+    SNode newNode = event.nodeType != null
         ? _typeAsATreeNode(
-            event.type!,
+            event.nodeType!,
             null,
-            "_addChild() missing ${event.type.toString()}",
+            "_addChild() missing ${event.nodeType.toString()}",
           )
         : event.testNode!;
     _addOrPasteChild(selectedNode, emit, newNode);
@@ -1476,14 +1491,10 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
                 TabBarNode,
               )
               as TabBarNode?;
-      SNode newTab = TextNode(
-        text: 'new tab',
-        tsPropGroup: TextStyleProperties(),
-      );
+      SNode newTab = TabNode(text: 'new tab');
       tabBarNode?.children.add(newTab);
       newTab.setParent(tabBarNode);
       selectedNode.children.add(newNode);
-      // scaffoldNode?.numTabs++;
     } else if (selectedNode is SC) {
       selectedNode.child = newNode;
     } else if (selectedNode is GridViewNode) {
@@ -1529,11 +1540,11 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   void _prependArticle(PrependArticle event, emit) {
     _pushUndo();
 
-    SNode newNode = event.type != null
+    SNode newNode = event.nodeType != null
         ? _typeAsATreeNode(
-            event.type!,
+            event.nodeType!,
             null,
-            "_addChild() missing ${event.type.toString()}",
+            "_addChild() missing ${event.nodeType.toString()}",
           )
         : event.testNode!;
 
@@ -1542,10 +1553,16 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   void _prependChild(SNode selectedNode, emit, SNode newNode) {
     SNode? rootNode = selectedNode.rootNodeOfSnippet();
-    if (rootNode == null) {return;}
+    if (rootNode == null) {
+      return;
+    }
 
-    SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(rootNode.name!);
-    if (snippetInfo == null) {return;}
+    SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(
+      rootNode.name!,
+    );
+    if (snippetInfo == null) {
+      return;
+    }
 
     if (selectedNode is ListViewNode) {
       selectedNode.children.insert(0, newNode);
@@ -1555,11 +1572,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     snippetInfo.notifyChange(rootNode);
     fsdui.modelRepo.saveNewVersionOfSnippet(rootNode);
 
-    emit(
-      state.copyWith(
-        force: state.force + 1,
-      ),
-    );
+    emit(state.copyWith(force: state.force + 1));
   }
 
   void _pasteReplacement(PasteReplacement event, emit) {
@@ -1590,11 +1603,11 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
     List<SNode>? siblings = selectedNode.maybeSiblings();
     if (siblings == null) return;
-    SNode newNode = event.type != null
+    SNode newNode = event.nodeType != null
         ? _typeAsATreeNode(
-            event.type!,
+            event.nodeType!,
             null,
-            "_addSiblingBefore() missing ${event.type.toString()}",
+            "_addSiblingBefore() missing ${event.nodeType.toString()}",
           )
         : event.testNode!;
     int i = siblings.indexOf(selectedNode);
@@ -1676,6 +1689,21 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     }
   }
 
+  void _reorderSibling(ReorderSibling event, emit) {
+    final snippetBeingEdited = state.snippetBeingEdited;
+    if (snippetBeingEdited == null) return;
+    final siblings = event.node.maybeSiblings();
+    if (siblings == null || !siblings.contains(event.node)) return;
+    siblings.remove(event.node);
+    siblings.insert(event.newSiblingIndex.clamp(0, siblings.length), event.node);
+    snippetBeingEdited.treeC.rebuild();
+    final rootNode = snippetBeingEdited.getRootNode();
+    if (rootNode.name != null) {
+      fsdui.appInfo.cachedSnippetInfo(rootNode.name!)?.notifyChange(rootNode);
+    }
+    emit(state.copyWith(force: state.force + 1));
+  }
+
   void _addSiblingAt(SNode newNode, emit, int i) {
     // state.snippetBeingEdited?.newVersion();
     SNode rootNode = state.snippetBeingEdited!.getRootNode();
@@ -1704,8 +1732,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
               as TabBarNode?;
       tabBarNode?.children.insert(
         i,
-        TextNode(text: 'new tab', tsPropGroup: TextStyleProperties())
-          ..setParent(tabBarNode),
+        TabNode(text: 'new tab')..setParent(tabBarNode),
       );
       parent.children.insert(i, newNode..setParent(parent));
     } else {

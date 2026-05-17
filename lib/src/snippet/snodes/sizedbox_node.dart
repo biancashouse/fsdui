@@ -17,18 +17,6 @@ class SizedBoxNode extends SC with SizedBoxNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    FlutterDocPNode(
-      buttonLabel: 'SizedBox',
-      webLink: 'https://api.flutter.dev/flutter/widgets/SizedBox-class.html',
-      snode: this,
-      name: 'fyi',
-    ),
-    FYIPNode(
-      label: "Constraint Imposed on Child: 'Tight' in specified dimensions",
-      msg: "forces its child to be a specific, fixed size.",
-      snode: this,
-      name: 'fyi',
-    ),
     if (!(expand ?? false))
       DecimalPNode(
         snode: this,
@@ -47,6 +35,25 @@ class SizedBoxNode extends SC with SizedBoxNodeMappable {
             refreshWithUpdate(context, () => height = newValue),
         calloutButtonSize: const Size(80, 20),
       ),
+    BoolPNode(
+      snode: this,
+      name: 'expand',
+      boolValue: expand,
+      onBoolChange: (newValue) =>
+          refreshWithUpdate(context, () => expand = newValue),
+    ),
+    FlutterDocPNode(
+      buttonLabel: 'SizedBox',
+      webLink: 'https://api.flutter.dev/flutter/widgets/SizedBox-class.html',
+      snode: this,
+      name: 'fyi',
+    ),
+    FYIPNode(
+      label: "Constraint Imposed on Child: 'Tight' in specified dimensions",
+      msg: "forces its child to be a specific, fixed size.",
+      snode: this,
+      name: 'fyi',
+    ),
     FYIPNode(
       label: "Creates a box that will become as large as its parent allows.",
       msg:
@@ -55,13 +62,6 @@ class SizedBoxNode extends SC with SizedBoxNodeMappable {
           "      height = double.infinity;",
       snode: this,
       name: 'fyi',
-    ),
-    BoolPNode(
-      snode: this,
-      name: 'expand',
-      boolValue: expand,
-      onBoolChange: (newValue) =>
-          refreshWithUpdate(context, () => expand = newValue),
     ),
   ];
 

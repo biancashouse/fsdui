@@ -30,6 +30,12 @@ class DirectoryNodeMapper extends SubClassMapperBase<DirectoryNode> {
     _$name,
     opt: true,
   );
+  static String? _$folderName(DirectoryNode v) => v.folderName;
+  static const Field<DirectoryNode, String> _f$folderName = Field(
+    'folderName',
+    _$folderName,
+    opt: true,
+  );
   static List<SNode> _$children(DirectoryNode v) => v.children;
   static const Field<DirectoryNode, List<SNode>> _f$children = Field(
     'children',
@@ -73,6 +79,7 @@ class DirectoryNodeMapper extends SubClassMapperBase<DirectoryNode> {
   @override
   final MappableFields<DirectoryNode> fields = const {
     #name: _f$name,
+    #folderName: _f$folderName,
     #children: _f$children,
     #uid: _f$uid,
     #tags: _f$tags,
@@ -98,6 +105,7 @@ class DirectoryNodeMapper extends SubClassMapperBase<DirectoryNode> {
   static DirectoryNode _instantiate(DecodingData data) {
     return DirectoryNode(
       name: data.dec(_f$name),
+      folderName: data.dec(_f$folderName),
       children: data.dec(_f$children),
     );
   }
@@ -167,7 +175,7 @@ abstract class DirectoryNodeCopyWith<$R, $In extends DirectoryNode, $Out>
   @override
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
-  $R call({String? name, List<SNode>? children});
+  $R call({String? name, String? folderName, List<SNode>? children});
   DirectoryNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -187,15 +195,21 @@ class _DirectoryNodeCopyWithImpl<$R, $Out>
         (v) => call(children: v),
       );
   @override
-  $R call({Object? name = $none, List<SNode>? children}) => $apply(
+  $R call({
+    Object? name = $none,
+    Object? folderName = $none,
+    List<SNode>? children,
+  }) => $apply(
     FieldCopyWithData({
       if (name != $none) #name: name,
+      if (folderName != $none) #folderName: folderName,
       if (children != null) #children: children,
     }),
   );
   @override
   DirectoryNode $make(CopyWithData data) => DirectoryNode(
     name: data.get(#name, or: $value.name),
+    folderName: data.get(#folderName, or: $value.folderName),
     children: data.get(#children, or: $value.children),
   );
 

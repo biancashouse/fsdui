@@ -14,7 +14,6 @@ import 'package:fsdui/src/snippet/pnodes/enums/enum_stepper_type.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_text_align.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_text_direction.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_text_overflow.dart';
-import 'package:fsdui/src/snippet/pnodes/enums/enum_decoration_shape.dart';
 
 import 'enums/enum_target_pointer_type.dart';
 import 'enums/enum_wrap_alignment.dart';

@@ -8,7 +8,6 @@ import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/enum_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_boxfit.dart';
 import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'asset_image_node.mapper.dart';
 

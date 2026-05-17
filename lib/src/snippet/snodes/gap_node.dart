@@ -17,12 +17,6 @@ class GapNode extends CL with GapNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-        FlutterDocPNode(
-            buttonLabel: 'Gap',
-            webLink:
-                'https://pub.dev/packages/gap',
-            snode: this,
-            name: 'fyi'),
         DecimalPNode(
           snode: this,
           name: 'gap',
@@ -31,6 +25,12 @@ class GapNode extends CL with GapNodeMappable {
               refreshWithUpdate(context, () => gap = newValue ?? 0),
           calloutButtonSize: const Size(60, 30),
         ),
+        FlutterDocPNode(
+            buttonLabel: 'Gap',
+            webLink:
+                'https://pub.dev/packages/gap',
+            snode: this,
+            name: 'fyi'),
       ];
 
   // @override
@@ -41,7 +41,7 @@ class GapNode extends CL with GapNodeMappable {
   //           calloutSize: const Size(600, 200),
   //           onChangeF: (s) {
   //             snippetName = s;
-  //             bloc.add(const CAPIEvent.forceRefresh());
+  //             bloc.add(ForceRefresh());
   //           }),
   //     ];
 

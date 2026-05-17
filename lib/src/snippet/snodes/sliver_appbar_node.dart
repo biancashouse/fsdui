@@ -45,13 +45,6 @@ class SliverAppBarNode extends AppBarNode with SliverAppBarNodeMappable {
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) {
     // fco.logger.i("ContainerNode.properties()...");
     return [
-      FlutterDocPNode(
-        buttonLabel: 'SliverAppBar',
-        webLink:
-            'https://api.flutter.dev/flutter/material/SliverAppBar-class.html',
-        snode: this,
-        name: 'fyi',
-      ),
       DecimalPNode(
         snode: this,
         name: 'collapsedHeight',
@@ -69,6 +62,13 @@ class SliverAppBarNode extends AppBarNode with SliverAppBarNodeMappable {
         calloutButtonSize: const Size(130, 20),
       ),
       ...super.propertyNodes(context, parentSNode),
+      FlutterDocPNode(
+        buttonLabel: 'SliverAppBar',
+        webLink:
+            'https://api.flutter.dev/flutter/material/SliverAppBar-class.html',
+        snode: this,
+        name: 'fyi',
+      ),
     ];
   }
 

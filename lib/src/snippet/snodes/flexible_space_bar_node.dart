@@ -27,12 +27,6 @@ class FlexibleSpaceBarNode extends CL with FlexibleSpaceBarNodeMappable {
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) {
     // fco.logger.i("ContainerNode.properties()...");
     return [
-      FlutterDocPNode(
-        buttonLabel: 'FlexibleSpaceBar',
-        webLink: 'https://api.flutter.dev/flutter/material/FlexibleSpaceBar-class.html',
-        snode: this,
-        name: 'fyi',
-      ),
       BoolPNode(
         snode: this,
         name: 'centerTitle',
@@ -58,7 +52,14 @@ class FlexibleSpaceBarNode extends CL with FlexibleSpaceBarNodeMappable {
             },
           ),
         ],
-      ),    ];
+      ),
+      FlutterDocPNode(
+        buttonLabel: 'FlexibleSpaceBar',
+        webLink: 'https://api.flutter.dev/flutter/material/FlexibleSpaceBar-class.html',
+        snode: this,
+        name: 'fyi',
+      ),
+    ];
   }
 
   @override

@@ -1,11 +1,11 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/bool_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/color_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
-
-// import 'package:fsdui/src/snippet/snodes/appbar_with_menubar_node.dart';
-// import 'package:fsdui/src/snippet/snodes/appbar_with_tabbar_node.dart';
 
 part 'scaffold_node.mapper.dart';
 
@@ -17,27 +17,17 @@ class ScaffoldNode extends CL with ScaffoldNodeMappable {
   NamedSC body;
   bool? canShowEditorLoginBtn;
 
-  // int numTabs;
-
   ScaffoldNode({
     super.name,
     this.bgColor,
     required this.appBar,
     required this.body,
-    // this.numTabs = 0,
     this.canShowEditorLoginBtn,
   });
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) {
-    // fco.logger.i("ContainerNode.properties()...");
     return [
-      FlutterDocPNode(
-        buttonLabel: 'Scaffold',
-        webLink: 'https://api.flutter.dev/flutter/material/Scaffold-class.html',
-        snode: this,
-        name: 'fyi',
-      ),
       ColorPNode(
         snode: this,
         name: 'background color',
@@ -46,61 +36,37 @@ class ScaffoldNode extends CL with ScaffoldNodeMappable {
             refreshWithUpdate(context, () => bgColor = newValue),
         calloutButtonSize: const Size(200, 20),
       ),
-      // IntPNode(
+      // BoolPNode(
       //   snode: this,
-      //   name: 'Number of Tabs',
-      //   intValue: numTabs,
-      //   onIntChange: (newValue) => refreshWithUpdate(context,() => numTabs = newValue ?? 0),
-      //   calloutButtonSize: const Size(130, 20),
+      //   name: 'use TabBar',
+      //   boolValue: useTabBar,
+      //   onBoolChange: (newValue) =>
+      //       refreshWithUpdate(context, () => useTabBar = newValue),
       // ),
+      FlutterDocPNode(
+        buttonLabel: 'Scaffold',
+        webLink: 'https://api.flutter.dev/flutter/material/Scaffold-class.html',
+        snode: this,
+        name: 'fyi',
+      ),
     ];
   }
 
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
-    // if (parentNode == null) throw Exception("parent is null!");
     setParent(parentNode);
-    //ScrollControllerName? scName = EditablePage.name(context);
-    //possiblyHighlightSelectedNode(scName);
-
-    // bool usingTabs = appBar?.bottom?.child is TabBarNode;
-
-    var appBarProp = appBar.child != null ? appBar.buildPreferredSizeFlutterWidget(context, this) : null;
+    // if (useTabBar ?? false) {
+    //   return ScaffoldWithTabBarWidget(node: this);
+    // }
+    var appBarProp = appBar.child != null
+        ? appBar.buildPreferredSizeFlutterWidget(context, this)
+        : null;
     return Scaffold(
       key: createNodeWidgetGK(),
       backgroundColor: bgColor?.flutterValue,
       appBar: appBarProp,
-      // guaranteed the widget is actually an AppBar
       body: body.child != null ? body.build(context, this) : null,
     );
-
-    // try {
-    //   bool showPencil = !fco.canEditContent();
-    //   return Stack(
-    //     children: [
-    //       scaffold,
-    //       if (showPencil && (canShowEditorLoginBtn??false))
-    //         Align(
-    //           alignment: Alignment.topRight,
-    //           child: IconButton(
-    //             onPressed: () {
-    //               // ask user to sign in as editor
-    //               EditablePage.of(context)?.editorPasswordDialog();
-    //             },
-    //             icon: const Icon(Icons.edit, color: Colors.white),
-    //           ),
-    //         ),
-    //     ],
-    //   );
-    // } catch (e) {
-    //   return Error(
-    //     key: createNodeWidgetGK(),
-    //     FLUTTER_TYPE,
-    //     color: Colors.red,
-    //     size: 16,
-    //     errorMsg: e.toString(),
-    //   );
-    // }
   }
 
   @override
@@ -108,14 +74,10 @@ class ScaffoldNode extends CL with ScaffoldNodeMappable {
     BuildContext context,
     NodeAction action,
     bool? skipHeading,
-    
   ) {
     return [
       ...super.menuAnchorWidgets_Heading(context, action),
       menuItemButton(context, "AppBar", AppBarNode, action),
-      // menuItemButton(context, "AppBar with TabBar", AppBarWithTabBarNode, action),
-      // menuItemButton(context, "AppBar with MenuBar", AppBarWithMenuBarNode, action),
-      // menuItemButton(context, "PollOption", PollOptionNode, action),
     ];
   }
 
@@ -126,7 +88,6 @@ class ScaffoldNode extends CL with ScaffoldNodeMappable {
   SNode removeFromParent() {
     var parent = getParent() as SNode?;
 
-    // actually not possible, only snippetrootnode has no parent
     if (parent == null) {
       return this;
     }
@@ -154,5 +115,63 @@ class ScaffoldNode extends CL with ScaffoldNodeMappable {
   String toString() => FLUTTER_TYPE;
 
   static const String FLUTTER_TYPE = "Scaffold";
+}
 
+class ScaffoldWithTabBarWidget extends StatefulWidget {
+  final ScaffoldNode node;
+
+  const ScaffoldWithTabBarWidget({required this.node, super.key});
+
+  static ScaffoldWithTabBarWidgetState? of(BuildContext context) =>
+      context.findAncestorStateOfType<ScaffoldWithTabBarWidgetState>();
+
+  @override
+  State<ScaffoldWithTabBarWidget> createState() =>
+      ScaffoldWithTabBarWidgetState();
+}
+
+class ScaffoldWithTabBarWidgetState extends State<ScaffoldWithTabBarWidget> {
+  TabBarNode? get tabBarNode =>
+      widget.node.findDescendant(TabBarNode) as TabBarNode?;
+
+  TabBarViewNode? get tabBarViewNode =>
+      widget.node.findDescendant(TabBarViewNode) as TabBarViewNode?;
+
+  void _warnIfOutOfSync() {
+    final tb = tabBarNode;
+    final tbv = tabBarViewNode;
+    if (tb != null && tbv != null && tb.children.length != tbv.children.length) {
+      fsdui.logger.w(
+        'ScaffoldWithTabBar: TabBarNode (${tb.children.length} tabs) '
+        'and TabBarViewNode (${tbv.children.length} views) are out of sync!',
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _warnIfOutOfSync();
+  }
+
+  @override
+  void didUpdateWidget(ScaffoldWithTabBarWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _warnIfOutOfSync();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final appBarProp = widget.node.appBar.child != null
+        ? widget.node.appBar.buildPreferredSizeFlutterWidget(context, widget.node)
+        : null;
+    return Scaffold(
+      key: widget.node.createNodeWidgetGK(),
+      backgroundColor: widget.node.bgColor?.flutterValue,
+      appBar: appBarProp,
+      body: widget.node.body.child != null
+          ? widget.node.body.build(context, widget.node)
+          : null,
+    );
+  }
 }

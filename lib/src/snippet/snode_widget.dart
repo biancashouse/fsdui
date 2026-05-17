@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/api/snippet_builder/replace_snippet_with_json_callout.dart';
 import 'package:fsdui/src/snippet/pnodes/editors/property_callout_button_UML.dart';
-import 'package:fsdui/src/snippet/pnodes/editors/property_callout_button_markdown.dart';
+// import 'package:fsdui/src/snippet/pnodes/editors/property_callout_button_markdown.dart';
 
 import 'fancy_tree/tree_controller.dart';
 
@@ -48,7 +47,9 @@ class SNodeWidget extends StatelessWidget {
         ? Colors.transparent
         : entry.node.isASnippetRoot
         ? Colors.black
-        : fsdui.selectedNode == entry.node ? Colors.yellowAccent : Colors.white;
+        : fsdui.selectedNode == entry.node
+        ? Colors.yellowAccent
+        : Colors.white;
 
     // fco.logger.d('SNodeWidget build (${entry.node.toString()}, ${entry.node.uid}, ${entry.node.nodeWidgetGK.toString()})');
     return Row(
@@ -113,10 +114,12 @@ class SNodeWidget extends StatelessWidget {
                     _tappedNode(context);
                     fsdui.afterNextBuildDo(() {
                       var umlImageNode = entry.node as UMLImageNode;
-                      final teC = TextEditingController(text: umlImageNode.diagramText);
+                      final teC = TextEditingController(
+                        text: umlImageNode.diagramText,
+                      );
                       PropertyButtonUML.showUMLEditor(
-                        context:context,
-                        teC:teC,
+                        context: context,
+                        teC: teC,
                         onChangeF: (String newText) {
                           umlImageNode.refreshWithUpdate(context, () {
                             umlImageNode.diagramText = newText;
@@ -128,25 +131,25 @@ class SNodeWidget extends StatelessWidget {
                   child: Icon(Icons.edit, size: 20, color: Colors.purpleAccent),
                 ),
               // MD
-              if (entry.node is MarkdownNode)
-                InkWell(
-                  onTap: () {
-                    _tappedNode(context);
-                    fsdui.afterNextBuildDo(() {
-                      var markdownNode = entry.node as MarkdownNode;
-                      PropertyButtonMarkdown.showMarkdownEditor(
-                        markdownNode.data ?? markdownNode.SAMPLE_MD,
-                        (String? newValue) {
-                          markdownNode.refreshWithUpdate(
-                            context,
-                            () => markdownNode.data = newValue ?? '',
-                          );
-                        },
-                      );
-                    });
-                  },
-                  child: Icon(Icons.edit, size: 20, color: Colors.purpleAccent),
-                ),
+              // if (entry.node is MarkdownNode)
+              //   InkWell(
+              //     onTap: () {
+              //       _tappedNode(context);
+              //       fsdui.afterNextBuildDo(() {
+              //         var markdownNode = entry.node as MarkdownNode;
+              //         PropertyButtonMarkdown.showMarkdownEditor(
+              //           markdownNode.data ?? markdownNode.SAMPLE_MD,
+              //           (String? newValue) {
+              //             markdownNode.refreshWithUpdate(
+              //               context,
+              //               () => markdownNode.data = newValue ?? '',
+              //             );
+              //           },
+              //         );
+              //       });
+              //     },
+              //     child: Icon(Icons.edit, size: 20, color: Colors.purpleAccent),
+              //   ),
               // NAMED PROPERTY
               if (entry.node.isANamedPropertyNode() &&
                   ((entry.node is NamedSC &&
@@ -188,7 +191,7 @@ class SNodeWidget extends StatelessWidget {
   }
 
   Widget _name(BuildContext context) {
-    final isRootNode = entry.node .isASnippetRoot;
+    final isRootNode = entry.node.isASnippetRoot;
     return Tooltip(
       message: isRootNode && entry.node.getParent() != null
           ? 'double tap to edit this snippet'
@@ -205,10 +208,9 @@ class SNodeWidget extends StatelessWidget {
           if (entry.node.isANamedPropertyNode()) return;
 
           // if (!entry.node.isASnippetRoot) {
-            _longPressedNode(context, details.globalPosition, entry.node);
-            // return;
+          _longPressedNode(context, details.globalPosition, entry.node);
+          // return;
           // }
-
         },
         // onTapUp: (TapUpDetails details) {
         //   if (entry.node is AppBarNode) {
@@ -274,7 +276,7 @@ class SNodeWidget extends StatelessWidget {
     if (fsdui.snippetBeingEdited!.aNodeIsSelected && thisWasAlreadySelected) {
       fsdui.hide("floating-clipboard");
       // fco.dismiss(SELECTED_NODE_BORDER_CALLOUT);
-      fsdui.capiBloc.add(CAPIEvent.clearNodeSelection());
+      fsdui.capiBloc.add(ClearNodeSelection());
     } else if (!fsdui.snippetBeingEdited!.aNodeIsSelected ||
         !thisWasAlreadySelected) {
       if (fsdui.appInfo.clipboard != null) {
@@ -287,7 +289,7 @@ class SNodeWidget extends StatelessWidget {
 
       fsdui.dismissAll();
 
-      fsdui.capiBloc.add(CAPIEvent.selectNode(node: entry.node));
+      fsdui.capiBloc.add(SelectNode(node: entry.node));
 
       fsdui.afterNextBuildDo(() {
         pointOutSelectedNode();
@@ -377,7 +379,7 @@ class SNodeWidget extends StatelessWidget {
     fsdui.hide("floating-clipboard");
 
     if (fsdui.snippetBeingEdited!.selectedNode != node) {
-      fsdui.capiBloc.add(CAPIEvent.selectNode(node: node));
+      fsdui.capiBloc.add(SelectNode(node: node));
       fsdui.afterNextBuildDo(() {
         _showNodeWidgetMenu(context, tapPos, node);
       });
@@ -387,28 +389,46 @@ class SNodeWidget extends StatelessWidget {
   }
 
   void _showNodeWidgetMenu(BuildContext context, Offset tapPos, SNode node) {
+    final scrollCtx = node.nodeGK?.currentContext;
+    if (scrollCtx != null && scrollCtx.mounted) {
+      Scrollable.ensureVisible(
+        scrollCtx,
+        duration: const Duration(milliseconds: 150),
+        curve: Curves.easeOut,
+        alignment: 0.5,
+      ).then((_) {
+        if (context.mounted) _doShowNodeWidgetMenu(context, node);
+      });
+    } else {
+      _doShowNodeWidgetMenu(context, node);
+    }
+  }
+
+  void _doShowNodeWidgetMenu(BuildContext context, SNode node) {
     fsdui.showOverlay(
       calloutConfig: CalloutConfig(
         cId: 'node-actions',
-        initialCalloutW: 400,
+        initialCalloutW: 240,
         initialCalloutH:
             node is! NamedSC && node is! NamedMC && node is! NamedPS
-            ? node.parentCanHaveMultipleVerticalChildren()
-                  ? 310
-                  : 210
+            ? 210
             : 120,
-        initialTargetAlignment: fsdui.snippetEditorPanelOnRight ? Alignment.centerLeft : Alignment.centerRight,
-        initialCalloutAlignment: fsdui.snippetEditorPanelOnRight ? Alignment.centerRight : Alignment.centerLeft,
-        finalSeparation: 300,
+        initialTargetAlignment: fsdui.snippetEditorPanelOnRight
+            ? Alignment.centerLeft
+            : Alignment.centerRight,
+        initialCalloutAlignment: fsdui.snippetEditorPanelOnRight
+            ? Alignment.centerRight
+            : Alignment.centerLeft,
+        finalSeparation: 60,
         targetPointerType: TargetPointerType.thin_line(),
         bubbleOrTargetPointerColor: Colors.white,
         animatePointer: true,
-        barrier: CalloutBarrierConfig(
-          color: Colors.black,
-          opacity: .4,
-          // excludeTargetFromBarrier: true,
-        ),
+        barrier: CalloutBarrierConfig(color: Colors.black, opacity: .4),
         toDelta: -20,
+        followScroll: false,
+        // decorationBorderRadius: 16,
+        // decorationBorderColors: ColorOrGradient.color(Colors.yellow),
+        // decorationBorderThickness: 8,
       ),
       calloutContent: nodeButtons(context, node),
       targetGK: node.treeNodeGK,
@@ -482,7 +502,7 @@ class SNodeWidget extends StatelessWidget {
       ),
       style: TextStyle(
         color:
-            node .isASnippetRoot ||
+            node.isASnippetRoot ||
                 entry.node is NamedSC ||
                 entry.node is NamedPS ||
                 entry.node is NamedMC
@@ -503,15 +523,25 @@ class SNodeWidget extends StatelessWidget {
     double trashButtonOpacity =
         !fsdui.aNodeIsSelected ||
             // !node.canRemove() ||
-            (node .isASnippetRoot && node.getParent() == null) ||
+            (node.isASnippetRoot && node.getParent() == null) ||
             (gc is NamedSC? &&
                 gc?.getParent() is StepNode &&
                 (gc?.propertyName == 'title' || gc?.propertyName == 'content'))
         ? .5
         : 1.0;
     return Container(
-      color: Colors.black,
+      decoration: BoxDecoration(
+        color: Colors.black,
+        border: Border.all(
+          color: Colors.yellowAccent,
+          width: 8,
+        ),
+        borderRadius: BorderRadiusGeometry.circular(16),
+      ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           if (node is! NamedSC && node is! NamedMC && node is! NamedPS)
             Row(
@@ -528,7 +558,7 @@ class SNodeWidget extends StatelessWidget {
                             gc?.propertyName == 'content')) {
                       return;
                     }
-                    fsdui.capiBloc.add(CAPIEvent.cutNode(node: node));
+                    fsdui.capiBloc.add(CutNode(node: node));
                     fsdui.afterNextBuildDo(() {
                       fsdui.dismiss('node-actions');
                       if (fsdui.appInfo.clipboard != null) {
@@ -542,7 +572,7 @@ class SNodeWidget extends StatelessWidget {
                     color: Colors.orange.withValues(
                       alpha:
                           !fsdui.aNodeIsSelected ||
-                              node .isASnippetRoot ||
+                              node.isASnippetRoot ||
                               gc is NamedSC? &&
                                   gc?.getParent() is StepNode &&
                                   (gc?.propertyName == 'title' ||
@@ -558,7 +588,7 @@ class SNodeWidget extends StatelessWidget {
                   hoverColor: Colors.white30,
                   onPressed: () {
                     fsdui.afterNextBuildDo(() {
-                      fsdui.capiBloc.add(CAPIEvent.copyNode(node: node));
+                      fsdui.capiBloc.add(CopyNode(node: node));
                       fsdui.afterNextBuildDo(() {
                         fsdui.dismiss('node-actions');
                         if (fsdui.appInfo.clipboard != null) {
@@ -587,10 +617,10 @@ class SNodeWidget extends StatelessWidget {
 
                     // bool wasShowingAsRoot = selectedNode == snippetBloc.treeC.roots.first;
                     // STreeNode? parentNode = selectedNode.getParent() as STreeNode?;
-                    fsdui.capiBloc.add(const CAPIEvent.deleteNodeTapped());
+                    fsdui.capiBloc.add(DeleteNodeTapped());
                     fsdui.afterNextBuildDo(() async {
                       await Future.delayed(const Duration(milliseconds: 1000));
-                      fsdui.capiBloc.add(const CAPIEvent.completeDeletion());
+                      fsdui.capiBloc.add(CompleteDeletion());
                       fsdui.afterNextBuildDo(() {
                         fsdui.dismiss('node-actions');
                         // if was tab or tabview, reset the tab Q and controller
@@ -598,7 +628,7 @@ class SNodeWidget extends StatelessWidget {
                         // spState?.resetTabQandC;
                         // redraw tree if deleted node was root
                         // if (wasShowingAsRoot && parentNode != null) {
-                        //   snippetBloc.add(CAPIEvent.selectNode(
+                        //   snippetBloc.add(SelectNode(
                         //     node: parentNode,
                         //     selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
                         //   ));
@@ -629,10 +659,7 @@ class SNodeWidget extends StatelessWidget {
                         //targetGKF: () => targetGK,
                         saveModelF: (s) {
                           fsdui.capiBloc.add(
-                            CAPIEvent.saveNodeAsSnippet(
-                              node: node,
-                              newSnippetName: s,
-                            ),
+                            SaveNodeAsSnippet(node: node, newSnippetName: s),
                           );
                           fsdui.afterNextBuildDo(() {
                             fsdui.dismiss("input-snippet-name");
@@ -651,10 +678,10 @@ class SNodeWidget extends StatelessWidget {
                 //     // some properties cannot be deleted
                 //     if (!selectedNode.canBeDeleted()) return;
                 //     fco.dismiss(SELECTED_NODE_BORDER_CALLOUT);
-                //     snippetBloc.add(const CAPIEvent.deleteNodeTapped());
+                //     snippetBloc.add(DeleteNodeTapped());
                 //     fco.afterNextBuildDo(() async {
                 //       await Future.delayed(const Duration(milliseconds: 1000));
-                //       snippetBloc.add(const CAPIEvent.completeDeletion());
+                //       snippetBloc.add(CompleteDeletion());
                 //       fco.afterNextBuildDo(() {
                 //         // if was tab or tabview, reset the tab Q and controller
                 //         SnippetPanelState? spState = SnippetPanel.of(context);
@@ -692,7 +719,8 @@ class SNodeWidget extends StatelessWidget {
             ),
           _editTreeStructureIconButtons(context, node),
           const Gap(10),
-          if (node.isASnippetRoot && node != fsdui.snippetBeingEdited?.getRootNode())
+          if (node.isASnippetRoot &&
+              node != fsdui.snippetBeingEdited?.getRootNode())
             TextButton.icon(
               onPressed: () async {
                 fsdui.dismissAll();
@@ -716,8 +744,10 @@ class SNodeWidget extends StatelessWidget {
               },
               label: Text('Edit Snippet'),
               icon: const Icon(Icons.edit, color: Colors.blue),
-            ) ],
+            ),
+        ],
       ),
+
     );
   }
 
@@ -737,110 +767,7 @@ class SNodeWidget extends StatelessWidget {
     SNode selectedNode,
   ) {
     return Center(
-      child: Stack(
-        children: [
-          if (selectedNode.parentCanHaveMultipleHorizontalChildren())
-            Align(
-              alignment: Alignment.center,
-              child: Container(
-                width: 380,
-                height: 120,
-                padding: const EdgeInsets.all(16),
-                alignment: Alignment.center,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: Colors.grey, width: 2),
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(30),
-                        ),
-                      ),
-                      child: selectedNode.insertItemMenuAnchor(
-                        context,
-                        action: NodeAction.addSiblingBefore,
-                        tooltip: 'Insert sibling before...',
-                        bgColor: Colors.blue,
-                      ),
-                    ),
-                    _selectedNodeWidget(context, selectedNode),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: Colors.grey, width: 2),
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(30),
-                        ),
-                      ),
-                      child: selectedNode.insertItemMenuAnchor(
-                        context,
-                        action: NodeAction.addSiblingAfter,
-                        tooltip: 'Insert sibling after...',
-                        bgColor: Colors.blue,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          if (selectedNode.parentCanHaveMultipleVerticalChildren())
-            Align(
-              alignment: Alignment.center,
-              child: Container(
-                height: 220,
-                padding: const EdgeInsets.all(16),
-                alignment: Alignment.center,
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: Colors.grey, width: 2),
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(30),
-                        ),
-                      ),
-                      child: selectedNode.insertItemMenuAnchor(
-                        context,
-                        action: NodeAction.addSiblingBefore,
-                        tooltip: 'Insert sibling before...',
-                        bgColor: Colors.blue,
-                      ),
-                    ),
-                    _selectedNodeWidget(context, selectedNode),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: Colors.grey, width: 2),
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(30),
-                        ),
-                      ),
-                      child: selectedNode.insertItemMenuAnchor(
-                        context,
-                        action: NodeAction.addSiblingAfter,
-                        tooltip: 'Insert sibling after...',
-                        bgColor: Colors.blue,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          if (!selectedNode.parentCanHaveMultipleHorizontalChildren() &&
-              !selectedNode.parentCanHaveMultipleVerticalChildren())
-            _selectedNodeWidget(context, selectedNode),
-        ],
-      ),
+      child: Stack(children: [_selectedNodeWidget(context, selectedNode)]),
     );
   }
 

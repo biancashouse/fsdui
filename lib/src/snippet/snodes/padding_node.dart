@@ -16,6 +16,13 @@ class PaddingNode extends SC with PaddingNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
+    EdgeInsetsPNode(
+      snode: this,
+      name: 'padding',
+      eiValue: padding ?? EdgeInsetsValue(),
+      onEIChangedF: (newValue) =>
+          refreshWithUpdate(context, () => padding = newValue),
+    ),
     FlutterDocPNode(
       buttonLabel: 'EdgeInsets',
       webLink: 'https://api.flutter.dev/flutter/painting/EdgeInsets-class.html',
@@ -28,13 +35,6 @@ class PaddingNode extends SC with PaddingNodeMappable {
           "Fills the parent's size and then passes tighter constraints to its child, effectively making the child smaller than the parent.\n\nThe Padding widget itself always tries to be as big as the parent allows.",
       snode: this,
       name: 'fyi',
-    ),
-    EdgeInsetsPNode(
-      snode: this,
-      name: 'padding',
-      eiValue: padding ?? EdgeInsetsValue(),
-      onEIChangedF: (newValue) =>
-          refreshWithUpdate(context, () => padding = newValue),
     ),
   ];
 
@@ -104,7 +104,7 @@ class PaddingNode extends SC with PaddingNodeMappable {
   //       //       newPaddingValue,
   //       //     ) {
   //       //       padding = newPaddingValue;
-  //       //       bloc.add(const CAPIEvent.forceRefresh());
+  //       //       bloc.add(ForceRefresh());
   //       //     },
   //       //   ),
   //       // ),
@@ -114,7 +114,7 @@ class PaddingNode extends SC with PaddingNodeMappable {
   //       // //   calloutSize: const Size(140, 80),
   //       // //   onChangeF: (newPadding) {
   //       // //     padding = double.tryParse(newPadding);
-  //       // //     bloc.add(const CAPIEvent.forceRefresh());
+  //       // //     bloc.add(ForceRefresh());
   //       // //   },
   //       // // ),
   //     ];

@@ -7,7 +7,6 @@ import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/model/quill_target_model.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:google_fonts/google_fonts.dart' show GoogleFonts;
 
 class QuillTextToolbar extends StatefulWidget {
   final QuillTextNode parentSNode;
@@ -22,7 +21,7 @@ class QuillTextToolbar extends StatefulWidget {
     super.key,
   });
 
-  static show({
+  static void show({
     required QuillTextNode parentSNode,
     required FocusNode focusNode,
     required QuillController controller,

@@ -1,7 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
-import 'package:fsdui/src/snippet/snodes/abstract_scrollview_node.dart';
 
 import '../pnodes/fyi_pnodes.dart';
 
@@ -20,6 +19,7 @@ class CustomScrollViewNode extends ScrollViewNode with CustomScrollViewNodeMappa
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
+    ...super.propertyNodes(context, parentSNode),
     FlutterDocPNode(
       buttonLabel: 'CustomScrollView',
       webLink:
@@ -27,7 +27,6 @@ class CustomScrollViewNode extends ScrollViewNode with CustomScrollViewNodeMappa
       snode: this,
       name: 'fyi',
     ),
-    ...super.propertyNodes(context, parentSNode),
   ];
 
   @override

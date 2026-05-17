@@ -167,7 +167,7 @@ class PasswordlessStepperState extends State<PasswordlessStepper> {
         return fsdui.coloredText('${index + 1}',
             color: color); ////const Offstage();
       },
-      controlsBuilder: (_, __) => const Offstage(),
+      controlsBuilder: (_, _) => const Offstage(),
       steps: <Step>[
         Step(
           title: fsdui.coloredText(

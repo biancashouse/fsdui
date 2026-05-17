@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/pnodes/button_style_pnodes.dart';
 import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:fsdui/src/snippet/pnodes/groups/button_style_properties.dart';
 import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
 import 'package:fsdui/src/snippet/snodes/button_style_hook.dart';
 
@@ -214,7 +213,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
     //   //     destinationSnippetName != null) {
     //   //   destinationSnippetName ??=
     //   //       '$destinationPanelOrPlaceholderName:default-snippet';
-    //   //   capiBloc.add(CAPIEvent.setPanelOrPlaceholderSnippet(
+    //   //   capiBloc.add(SetPanelSnippet(
     //   //     snippetName: destinationSnippetName!,
     //   //     panelName: destinationPanelOrPlaceholderName!,
     //   //   ));
@@ -263,7 +262,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   //       calloutConfig!.targetAlignment = newTA;
   //       calloutConfig!.calloutAlignment = newCA;
   //       calloutConfig!.arrowType = newAT;
-  //       bloc.add(const CAPIEvent.forceRefresh());
+  //       bloc.add(ForceRefresh());
   //     },
   //   );
   //   // refresh calloutConfigEditor on scroll end
@@ -295,7 +294,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   //                 calloutSize: const Size(600, 200),
   //                 onChangeF: (s) {
   //                   setTapHandlerName(s);
-  //                   bloc.add(const CAPIEvent.forceRefresh());
+  //                   bloc.add(ForceRefresh());
   //                 }),
   //             const SizedBox(height: 16),
   //             SizedBox(
@@ -319,7 +318,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   //                           onChangeF: (newColor) {
   //                             buttonStyle ??= NodeButtonStyle();
   //                             buttonStyle!.fgColorValue = newColor?.value;
-  //                             bloc.add(const CAPIEvent.forceRefresh());
+  //                             bloc.add(ForceRefresh());
   //                           },
   //                         ),
   //                         NodePropertyButtonColor(
@@ -328,7 +327,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   //                           onChangeF: (newColor) {
   //                             buttonStyle ??= NodeButtonStyle();
   //                             buttonStyle!.bgColorValue = newColor?.value;
-  //                             bloc.add(const CAPIEvent.forceRefresh());
+  //                             bloc.add(ForceRefresh());
   //                           },
   //                         ),
   //                       ],
@@ -347,7 +346,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   //                             onChangedF: (newValue) {
   //                               buttonStyle ??= NodeButtonStyle();
   //                               buttonStyle!.padding = double.tryParse(newValue);
-  //                               bloc.add(const CAPIEvent.forceRefresh());
+  //                               bloc.add(ForceRefresh());
   //                             },
   //                           ),
   //                         ),
@@ -360,7 +359,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   //                             onChangedF: (newValue) {
   //                               buttonStyle ??= NodeButtonStyle();
   //                               buttonStyle!.elevation = double.tryParse(newValue);
-  //                               bloc.add(const CAPIEvent.forceRefresh());
+  //                               bloc.add(ForceRefresh());
   //                             },
   //                           ),
   //                         ),
@@ -383,7 +382,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   //                               onChangeF: (newValue) {
   //                                 buttonStyle ??= NodeButtonStyle();
   //                                 buttonStyle!.shape = newValue;
-  //                                 bloc.add(const CAPIEvent.forceRefresh());
+  //                                 bloc.add(ForceRefresh());
   //                               },
   //                             ),
   //                             const SizedBox(height: 16),
@@ -398,7 +397,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   //                                     buttonStyle ??= NodeButtonStyle();
   //                                     buttonStyle!.side ??= NodeBorderSide();
   //                                     buttonStyle!.side!.colorValue = newColor?.value;
-  //                                     bloc.add(const CAPIEvent.forceRefresh());
+  //                                     bloc.add(ForceRefresh());
   //                                   },
   //                                 ),
   //                                 SizedBox(
@@ -411,7 +410,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   //                                       buttonStyle ??= NodeButtonStyle();
   //                                       buttonStyle!.side ??= NodeBorderSide();
   //                                       buttonStyle!.side!.width = double.tryParse(newValue);
-  //                                       bloc.add(const CAPIEvent.forceRefresh());
+  //                                       bloc.add(ForceRefresh());
   //                                     },
   //                                   ),
   //                                 ),
@@ -424,7 +423,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   //                                     onChangedF: (newValue) {
   //                                       buttonStyle ??= NodeButtonStyle();
   //                                       buttonStyle!.radius = double.tryParse(newValue);
-  //                                       bloc.add(const CAPIEvent.forceRefresh());
+  //                                       bloc.add(ForceRefresh());
   //                                     },
   //                                   ),
   //                                 ),
@@ -460,11 +459,11 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   //                           onChangeF: (s) {
   //                             calloutConfig ??= NodeCalloutConfig();
   //                             calloutConfig!.contentSnippetName = s;
-  //                             bloc.add(CAPIEvent.forceRefresh());
+  //                             bloc.add(ForceRefresh());
   //                             fco.afterNextBuildDo(() {
   //                               FCO.om.refreshAll();
   //                             });
-  //                             // bloc.add(const CAPIEvent.forceRefresh());
+  //                             // bloc.add(ForceRefresh());
   //                           }),
   //                       if (calloutConfig?.contentSnippetName?.isNotEmpty ?? false) // SIZE CONSTRAINTS...
   //                         const SizedBox(height: 16),
@@ -498,7 +497,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   //                         onChangedF: (newValue) {
   //                           buttonStyle ??= NodeButtonStyle();
   //                           buttonStyle!.minW = double.tryParse(newValue);
-  //                           bloc.add(const CAPIEvent.forceRefresh());
+  //                           bloc.add(ForceRefresh());
   //                         },
   //                       ),
   //                     ),
@@ -511,7 +510,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   //                         onChangedF: (newValue) {
   //                           buttonStyle ??= NodeButtonStyle();
   //                           buttonStyle!.minH = double.tryParse(newValue);
-  //                           bloc.add(const CAPIEvent.forceRefresh());
+  //                           bloc.add(ForceRefresh());
   //                         },
   //                       ),
   //                     ),
@@ -543,7 +542,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   //                         onChangedF: (newValue) {
   //                           buttonStyle ??= NodeButtonStyle();
   //                           buttonStyle!.maxW = double.tryParse(newValue);
-  //                           bloc.add(const CAPIEvent.forceRefresh());
+  //                           bloc.add(ForceRefresh());
   //                         },
   //                       ),
   //                     ),
@@ -556,7 +555,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   //                         onChangedF: (newValue) {
   //                           buttonStyle ??= NodeButtonStyle();
   //                           buttonStyle!.maxH = double.tryParse(newValue);
-  //                           bloc.add(const CAPIEvent.forceRefresh());
+  //                           bloc.add(ForceRefresh());
   //                         },
   //                       ),
   //                     ),
@@ -588,7 +587,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   //                         onChangedF: (newValue) {
   //                           buttonStyle ??= NodeButtonStyle();
   //                           buttonStyle!.fixedW = double.tryParse(newValue);
-  //                           bloc.add(const CAPIEvent.forceRefresh());
+  //                           bloc.add(ForceRefresh());
   //                         },
   //                       ),
   //                     ),
@@ -601,7 +600,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   //                         onChangedF: (newValue) {
   //                           buttonStyle ??= NodeButtonStyle();
   //                           buttonStyle!.fixedH = double.tryParse(newValue);
-  //                           bloc.add(const CAPIEvent.forceRefresh());
+  //                           bloc.add(ForceRefresh());
   //                         },
   //                       ),
   //                     ),

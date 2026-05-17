@@ -20,12 +20,6 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    FlutterDocPNode(
-        buttonLabel: 'PollOption',
-        webLink:
-        'https://pub.dev/documentation/flutter_polls/latest/flutter_polls/PollOption-class.html',
-        snode: this,
-        name: 'fyi'),
     StringPNode(
           snode: this,
           name: 'text',
@@ -35,6 +29,12 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
         ),
+    FlutterDocPNode(
+        buttonLabel: 'PollOption',
+        webLink:
+        'https://pub.dev/documentation/flutter_polls/latest/flutter_polls/PollOption-class.html',
+        snode: this,
+        name: 'fyi'),
       ];
 
   @override

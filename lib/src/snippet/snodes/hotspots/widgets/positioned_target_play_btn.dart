@@ -93,8 +93,9 @@ class TargetPlayBtn extends StatelessWidget {
                 );
               },
               onLongPressDown: () {
-                if (fsdui.canEditAnyContent())
+                if (fsdui.canEditAnyContent()) {
                   playIconPicker(context, tc, wrapperState);
+                }
               },
               child: IntegerCircleAvatar(
                 num: index + 1,

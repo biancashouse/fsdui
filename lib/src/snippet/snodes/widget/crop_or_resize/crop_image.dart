@@ -90,8 +90,8 @@ mixin ImageCaptureMixin {
       image.height.toDouble(),
     );
     Rect dst = src;
-    double _scale = maxWidth / image.width;
-    canvas.scale(_scale, _scale);
+    double scale = maxWidth / image.width;
+    canvas.scale(scale, scale);
     canvas.drawImage(image, Offset.zero, Paint());
     canvas.drawImageRect(image, src, dst, Paint());
     var pic = pictureRecorder.endRecording();
@@ -131,8 +131,8 @@ class ImageCropperResizer extends StatefulWidget {
     required this.image,
     required this.paperW,
     required this.changedF,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   ImageCropperResizerState createState() => ImageCropperResizerState();
@@ -151,7 +151,7 @@ class ImageCropperResizerState extends State<ImageCropperResizer>
 
   ui.Image? image;
 
-  refresh(f) => setState(f);
+  void refresh(f) => setState(f);
 
   double _visibleCropW() {
     // var imgW = image!.width.toDouble();

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/flutter_uml/lib/flutter_uml.dart';
-import 'package:fsdui/src/svg/web_svg_view.dart' show WebSvgView;
 import 'package:multi_split_view/multi_split_view.dart';
 
 class UmlMSV extends StatefulWidget {

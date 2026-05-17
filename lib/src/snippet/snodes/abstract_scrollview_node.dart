@@ -3,12 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/pnodes/bool_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/enum_pnode.dart';
-import 'package:fsdui/src/snippet/snodes/custom_scrollview_node.dart';
-import 'package:fsdui/src/snippet/snodes/pageview_node.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../pnodes/fyi_pnodes.dart';
-import 'abstract_boxscrollview_node.dart';
 
 part 'abstract_scrollview_node.mapper.dart';
 
@@ -28,12 +24,6 @@ abstract class ScrollViewNode extends CL with ScrollViewNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    FlutterDocPNode(
-      buttonLabel: 'ScrollView',
-      webLink: 'https://api.flutter.dev/flutter/widgets/ScrollView-class.html',
-      snode: this,
-      name: 'fyi',
-    ),
     EnumPNode<AxisEnum?>(
       snode: this,
       name: 'scrollDirection',
@@ -49,6 +39,12 @@ abstract class ScrollViewNode extends CL with ScrollViewNodeMappable {
       boolValue: shrinkWrap,
       onBoolChange: (newValue) =>
           refreshWithUpdate(context, () => shrinkWrap = newValue),
+    ),
+    FlutterDocPNode(
+      buttonLabel: 'ScrollView',
+      webLink: 'https://api.flutter.dev/flutter/widgets/ScrollView-class.html',
+      snode: this,
+      name: 'fyi',
     ),
   ];
 

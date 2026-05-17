@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "crossword.schema.json",
+  "title": "Guardian Crossword",
+  "type": "object",
+  "required": ["id", "number", "name", "date", "webPublicationDate", "entries", "solutionAvailable", "dimensions", "crosswordType"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Crossword identifier, e.g. crosswords/cryptic/30000"
+    },
+    "number": {
+      "type": "integer"
+    },
+    "name": {
+      "type": "string"
+    },
+    "creator": {
+      "type": "object",
+      "required": ["name", "webUrl"],
+      "properties": {
+        "name": { "type": "string" },
+        "webUrl": { "type": "string", "format": "uri" }
+      },
+      "additionalProperties": false
+    },
+    "date": {
+      "type": "integer",
+      "description": "Publication date as Unix timestamp in milliseconds"
+    },
+    "webPublicationDate": {
+      "type": "integer",
+      "description": "Web publication date as Unix timestamp in milliseconds"
+    },
+    "dateSolutionAvailable": {
+      "type": "integer",
+      "description": "Date solution becomes available as Unix timestamp in milliseconds"
+    },
+    "entries": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/entry" }
+    },
+    "solutionAvailable": {
+      "type": "boolean"
+    },
+    "dimensions": {
+      "type": "object",
+      "required": ["cols", "rows"],
+      "properties": {
+        "cols": { "type": "integer" },
+        "rows": { "type": "integer" }
+      },
+      "additionalProperties": false
+    },
+    "crosswordType": {
+      "type": "string",
+      "enum": ["quick", "cryptic", "quick-cryptic", "weekend"]
+    },
+    "pdf": {
+      "type": "string",
+      "format": "uri"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "entry": {
+      "type": "object",
+      "required": ["id", "number", "humanNumber", "clue", "direction", "length", "group", "position", "separatorLocations"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Entry identifier, e.g. 7-across or 3-down"
+        },
+        "number": { "type": "integer" },
+        "humanNumber": {
+          "type": "string",
+          "description": "Display number, may differ from number for multi-part clues"
+        },
+        "clue": { "type": "string" },
+        "direction": {
+          "type": "string",
+          "enum": ["across", "down"]
+        },
+        "length": { "type": "integer" },
+        "group": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Entry IDs that form this clue group (multi-part clues)"
+        },
+        "position": {
+          "type": "object",
+          "required": ["x", "y"],
+          "properties": {
+            "x": { "type": "integer" },
+            "y": { "type": "integer" }
+          },
+          "additionalProperties": false
+        },
+        "separatorLocations": {
+          "type": "object",
+          "description": "Separator characters mapped to positions within the answer, e.g. {\",\": [5]}",
+          "additionalProperties": {
+            "type": "array",
+            "items": { "type": "integer" }
+          }
+        },
+        "solution": {
+          "type": "string",
+          "description": "Answer in uppercase, omitted when solution is not yet available"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

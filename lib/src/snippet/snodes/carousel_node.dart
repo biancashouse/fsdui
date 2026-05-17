@@ -8,7 +8,6 @@ import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/enum_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:fsdui/src/snippet/pnodes/int_pnode.dart';
-import 'package:fsdui/src/snippet/snodes/storage_image_node.dart';
 // import 'package:fsdui/src/carousel_slider_4.2.1x/carousel_options.dart';
 // import 'package:fsdui/src/carousel_slider_4.2.1x/carousel_slider.dart';
 
@@ -47,11 +46,6 @@ class CarouselNode extends MC with CarouselNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    FlutterDocPNode(
-        buttonLabel: 'Carousel',
-        webLink: 'https://pub.dev/packages/carousel_slider',
-        snode: this,
-        name: 'fyi'),
     DecimalPNode(
           snode: this,
           name: 'aspectRatio',
@@ -89,6 +83,11 @@ class CarouselNode extends MC with CarouselNodeMappable {
           onIndexChange: (newValue) => refreshWithUpdate(context,
               () => axis = AxisEnum.of(newValue) ?? AxisEnum.horizontal),
         ),
+    FlutterDocPNode(
+        buttonLabel: 'Carousel',
+        webLink: 'https://pub.dev/packages/carousel_slider',
+        snode: this,
+        name: 'fyi'),
       ];
 
   @override

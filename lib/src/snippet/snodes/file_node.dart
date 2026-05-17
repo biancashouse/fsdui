@@ -77,7 +77,7 @@ class FileNode extends CL with FileNodeMappable {
   //           calloutSize: const Size(600, 200),
   //           onChangeF: (s) {
   //             name = s;
-  //             bloc.add(const CAPIEvent.forceRefresh());
+  //             bloc.add(ForceRefresh());
   //           }),
   //       const SizedBox(height: 10),
   //       NodePropertyButtonText(
@@ -86,7 +86,7 @@ class FileNode extends CL with FileNodeMappable {
   //           calloutSize: const Size(600, 200),
   //           onChangeF: (s) {
   //             src = s;
-  //             bloc.add(const CAPIEvent.forceRefresh());
+  //             bloc.add(ForceRefresh());
   //           }),
   //     ];
 

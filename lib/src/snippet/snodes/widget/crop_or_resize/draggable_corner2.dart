@@ -8,7 +8,7 @@ class DraggableCorner2 extends StatelessWidget {
   final double thickness;
   final ImageCropperResizerState parent;
 
-  const DraggableCorner2({required this.alignment, required this.thickness, required this.parent, Key? key}) : super(key: key);
+  const DraggableCorner2({required this.alignment, required this.thickness, required this.parent, super.key});
 
   @override
   Widget build(BuildContext context) {

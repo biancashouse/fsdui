@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fsdui/fsdui.dart';
-import 'package:go_router/go_router.dart';
 
 class Pages extends StatelessWidget {
   const Pages({super.key});
@@ -35,7 +33,7 @@ class Pages extends StatelessWidget {
                     await fsdui.modelRepo.saveAppInfo();
                     await fsdui.modelRepo.deleteSnippet(label);
                     fsdui.appInfo.removeFromCache(label);
-                    fsdui.capiBloc.add(CAPIEvent.forceRefresh());
+                    fsdui.capiBloc.add(ForceRefresh());
                   },
                   icon: Icon(Icons.delete, color: Colors.red),
                 ),
@@ -63,8 +61,11 @@ class Pages extends StatelessWidget {
                 child: IconButton(
                   onPressed: () {
                     // ask user to sign in as editor
-                    EditablePage.of(context)?.editorPasswordDialog();
-                    fsdui.capiBloc.add(CAPIEvent.forceRefresh());
+                    fsdui.capiBloc.add(ForceRefresh());
+                    final ePage = EditablePage.of(context);
+                    fsdui.afterMsDelayDo(500, (){
+                      ePage?.editorPasswordDialog();
+                    });
                   },
                   icon: Icon(Icons.edit, color: Colors.white),
                 ),

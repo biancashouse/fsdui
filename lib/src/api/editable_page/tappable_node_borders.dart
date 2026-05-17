@@ -56,7 +56,7 @@ class TappableNodeBorders extends StatelessWidget {
             final tapPosition = details.globalPosition;
             for (var data in renderData.reversed) {
               // Reverse to check top-most first
-               if (data.rect.contains(tapPosition)) {
+              if (data.rect.contains(tapPosition)) {
                 onNodeTapped(data.node);
                 return; // Stop after finding the first one
               }
@@ -79,10 +79,10 @@ class _BordersPainter extends CustomPainter {
 
   _BordersPainter({
     required this.renderData,
-    this.color = Colors.black,
-    this.strokeWidth = 2.0,
-    this.dashLength = 5.0,
-    this.dashSpace = 5.0,
+    required this.color,
+    required this.strokeWidth,
+    required this.dashLength,
+    required this.dashSpace,
   });
 
   @override

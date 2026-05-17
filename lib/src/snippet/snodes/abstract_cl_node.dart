@@ -2,7 +2,8 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 
-import 'abstract_scrollview_node.dart';
+import 'crossword_node.dart' show CrosswordNodeMapper;
+
 
 part 'abstract_cl_node.mapper.dart';
 

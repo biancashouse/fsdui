@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 // import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:fsdui/fsdui.dart';
@@ -70,7 +69,18 @@ class Page_BHState extends State<Page_BH> with TickerProviderStateMixin {
         backgroundColor: Colors.black,
         body: Stack(
           children: [
-            _animatedBiancaBg(),
+            Center(
+              child: StorageImage(
+                fit: BoxFit.fitWidth,
+                // width: width,
+                // height: height,
+                // scale: scale ?? 1.0,
+                // alignment: alignment?.alignment ?? Alignment.center,
+                ref: FirebaseStorage.instance.ref(
+                      'gs://${fsdui.firebaseOptions!.storageBucket}/biancashouse/bianca-1024x1024.png',
+                ),
+              ),
+            ), // _animatedBiancaBg(),
             SingleChildScrollView(
               controller: ScrollController(),
               child: Column(
@@ -152,8 +162,8 @@ class Page_BHState extends State<Page_BH> with TickerProviderStateMixin {
         alignment: FractionalOffset.center,
         child: Opacity(
           opacity: .1,
-          child: fsdui.assetPicWithFadeIn(
-            path: 'assets/images/bianca-1024x1024.png',
+          child: fsdui.fbStoragePicWithFadeIn(
+            path: 'biancashouse/bianca-1024x1024.png',
             padding: EdgeInsets.zero,
             alignment: Alignment.center,
             fit: BoxFit.fill,

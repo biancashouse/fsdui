@@ -7,7 +7,6 @@ import 'package:fsdui/src/snippet/snodes/quill/widgets/help_icon_embed.dart';
 import 'package:fsdui/src/snippet/snodes/quill/widgets/quill_text_toolbar/quill_text_toolbar.dart';
 
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 /// A Quill editor widget that shows a red border when focused and triggers
 /// an `onChange` callback only when focus is lost and content has changed.
@@ -22,11 +21,17 @@ class FocusAwareQuillEditor extends StatefulWidget {
   /// has been modified. The new content is provided as a JSON string.
   final Function(String, {bool forceRefresh}) onChange;
 
+  /// A callback that fires on every keystroke — for immediate UI notification
+  /// (e.g. updating the changes-pending triangle) without triggering a save.
+  /// The bool is true when current content differs from the original plain text.
+  final Function(String, bool)? onChangeImmediate;
+
   const FocusAwareQuillEditor({
     required this.parentSNode,
     required this.uid,
     required this.originalDeltaJsonString,
     required this.onChange,
+    this.onChangeImmediate,
     super.key,
   });
 
@@ -44,6 +49,7 @@ class _FocusAwareQuillEditorState extends State<FocusAwareQuillEditor> {
   late QuillController _controller;
   late FocusNode _focusNode;
   late ScrollController _scrollController;
+  late String _originalPlainText;
 
   late SNode? _rootNode;
 
@@ -51,6 +57,7 @@ class _FocusAwareQuillEditorState extends State<FocusAwareQuillEditor> {
   void initState() {
     super.initState();
     _controller = _initializeController();
+    _originalPlainText = _controller.document.toPlainText();
     _focusNode = FocusNode();
     _scrollController = ScrollController();
 
@@ -112,6 +119,9 @@ class _FocusAwareQuillEditorState extends State<FocusAwareQuillEditor> {
       widget.onChange(deltaJson, forceRefresh: true);
     }
 
+    final isPending = _controller.document.toPlainText() != _originalPlainText;
+    widget.onChangeImmediate?.call(deltaJson, isPending);
+
     // notifyChange();
     //
     // fco.afterNextBuildDo(() {
@@ -123,11 +133,14 @@ class _FocusAwareQuillEditorState extends State<FocusAwareQuillEditor> {
   void _focusListener() {
     if (!_focusNode.hasFocus) {
       // LOST FOCUS
+      // print('lost focus');
       if (_isDirty) {
         final newJson = jsonEncode(_controller.document.toDelta().toJson());
         widget.onChange(newJson);
         _isDirty = false;
       }
+      fsdui.dismiss(fsdui.quillTextToolbarCIDVN.value!);
+      fsdui.quillTextToolbarCIDVN.value = null;
       // if (fco.focussedCId.value != null) {
       //   fco.dismiss(fco.focussedCId.value!);
       //   // fco.focussedCId.value = null;
@@ -137,6 +150,7 @@ class _FocusAwareQuillEditorState extends State<FocusAwareQuillEditor> {
       // }
     } else {
       // GAINED FOCUS
+      // print('gained focus');
       if (fsdui.quillTextToolbarCIDVN.value != widget.parentSNode.quillTextToolbarCID) {
         if (fsdui.quillTextToolbarCIDVN.value != null) {
           fsdui.dismiss(fsdui.quillTextToolbarCIDVN.value!);

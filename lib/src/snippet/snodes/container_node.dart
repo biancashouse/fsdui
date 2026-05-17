@@ -85,6 +85,20 @@ class ContainerNode extends SC with ContainerNodeMappable {
     //     : 'margin (${margin!.top},${margin!.left},${margin!.bottom},${margin!.right})';
 
     return [
+      ContainerStylePNode /*Group*/ (
+        snode: this,
+        name: 'container style',
+        containerStyleProperties: csPropGroup,
+        onGroupChange: (newValue, refreshPTree) {
+          refreshWithUpdate(context, () {
+            csPropGroup = newValue;
+            if (refreshPTree) {
+              forcePropertyTreeRefresh(context);
+            }
+          },
+          alsoRefreshPropertiesView: refreshPTree);
+        },
+      ),
       FlutterDocPNode(
         buttonLabel: 'Container',
         webLink: 'https://api.flutter.dev/flutter/widgets/Container-class.html',
@@ -102,20 +116,6 @@ class ContainerNode extends SC with ContainerNodeMappable {
           msg: "forces its child to be a specific, fixed width and/or height.",
           snode: this,
           name: 'fyi'),
-      ContainerStylePNode /*Group*/ (
-        snode: this,
-        name: 'container style',
-        containerStyleProperties: csPropGroup,
-        onGroupChange: (newValue, refreshPTree) {
-          refreshWithUpdate(context, () {
-            csPropGroup = newValue;
-            if (refreshPTree) {
-              forcePropertyTreeRefresh(context);
-            }
-          },
-          alsoRefreshPropertiesView: refreshPTree);
-        },
-      ),
 
       // SizePNode(
       //   snode: this,
@@ -384,7 +384,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
   //       //         marginLeft = left;
   //       //         marginBottom = bottom;
   //       //         marginRight = right;
-  //       //         bloc.add(const const CAPIEvent.forceRefresh());
+  //       //         bloc.add(const ForceRefresh());
   //       //       },
   //       //     ),
   //       //     NodePropertyButtonEdgeInsetsEditor(
@@ -407,7 +407,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
   //       //         paddingLeft = left;
   //       //         paddingBottom = bottom;
   //       //         paddingRight = right;
-  //       //         bloc.add(const const CAPIEvent.forceRefresh());
+  //       //         bloc.add(const ForceRefresh());
   //       //       },
   //       //     )
   //       //   ],
@@ -418,7 +418,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
   //       // //   calloutSize: const Size(140, 80),
   //       // //   onChangeF: (newPadding) {
   //       // //     padding = double.tryParse(newPadding) ?? 0.0;
-  //       // //     bloc.add(const const CAPIEvent.forceRefresh());
+  //       // //     bloc.add(const ForceRefresh());
   //       // //   },
   //       // // ),
   //       // const SizedBox(height: 10),
@@ -433,7 +433,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
   //       //         originalS: width?.toString() ?? '',
   //       //         onChangedF: (newWidth) {
   //       //           width = double.tryParse(newWidth);
-  //       //           bloc.add(const const CAPIEvent.forceRefresh());
+  //       //           bloc.add(const ForceRefresh());
   //       //         },
   //       //       ),
   //       //     ),
@@ -445,7 +445,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
   //       //         originalS: height?.toString() ?? '',
   //       //         onChangedF: (newHeight) {
   //       //           height = double.tryParse(newHeight);
-  //       //           bloc.add(const const CAPIEvent.forceRefresh());
+  //       //           bloc.add(const ForceRefresh());
   //       //         },
   //       //       ),
   //       //     ),
@@ -457,7 +457,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
   //       // //   calloutSize: const Size(140, 80),
   //       // //   onChangeF: (newWidth) {
   //       // //     width = double.tryParse(newWidth);
-  //       // //     bloc.add(const const CAPIEvent.forceRefresh());
+  //       // //     bloc.add(const ForceRefresh());
   //       // //   },
   //       // // ),
   //       // // NodePropertyButtonString(
@@ -466,7 +466,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
   //       // //   calloutSize: const Size(140, 80),
   //       // //   onChangeF: (newHeight) {
   //       // //     height = double.tryParse(newHeight);
-  //       // //     bloc.add(const const CAPIEvent.forceRefresh());
+  //       // //     bloc.add(const ForceRefresh());
   //       // //   },
   //       // // ),
   //       // Row(
@@ -478,7 +478,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
   //       //       originalOption: alignment?.index,
   //       //       onChangeF: (newOption) {
   //       //         alignment = AlignmentEnumModel.values[newOption];
-  //       //         bloc.add(const const CAPIEvent.forceRefresh());
+  //       //         bloc.add(const ForceRefresh());
   //       //       },
   //       //       calloutSize: AlignmentEnumModel.calloutSize,
   //       //     ),
@@ -487,7 +487,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
   //       //       originalColor: colorValue != null ? Color(colorValue!) : null,
   //       //       onChangeF: (newColor) {
   //       //         colorValue = newColor?.value;
-  //       //         bloc.add(const const CAPIEvent.forceRefresh());
+  //       //         bloc.add(const ForceRefresh());
   //       //       },
   //       //     ),
   //       //   ],
@@ -514,7 +514,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
   //       //             originalS: borderThickness?.toString() ?? '',
   //       //             onChangedF: (newValue) {
   //       //               borderThickness = double.tryParse(newValue);
-  //       //               bloc.add(const const CAPIEvent.forceRefresh());
+  //       //               bloc.add(const ForceRefresh());
   //       //             },
   //       //           ),
   //       //         ),
@@ -526,7 +526,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
   //       //             originalS: borderRadius?.toString() ?? '',
   //       //             onChangedF: (newValue) {
   //       //               borderRadius = double.tryParse(newValue);
-  //       //               bloc.add(const const CAPIEvent.forceRefresh());
+  //       //               bloc.add(const ForceRefresh());
   //       //             },
   //       //           ),
   //       //         ),
@@ -538,7 +538,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
   //       //             originalColor: borderColorValue != null ? Color(borderColorValue!) : null,
   //       //             onChangeF: (newColor) {
   //       //               borderColorValue = newColor?.value;
-  //       //               bloc.add(const const CAPIEvent.forceRefresh());
+  //       //               bloc.add(const ForceRefresh());
   //       //             },
   //       //           ),
   //       //         ),

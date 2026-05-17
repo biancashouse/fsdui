@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:fsdui/fsdui.dart';
 
 class ToastDemoPage extends StatefulWidget {
@@ -155,7 +154,7 @@ class ToastDemoPageState extends State<ToastDemoPage> {
   @override
   Widget build(BuildContext context) => PopScope(
     canPop: true,
-    onPopInvokedWithResult: (_, __) {
+    onPopInvokedWithResult: (_, _) {
       fsdui.dismissAll();
     },
     child: SafeArea(

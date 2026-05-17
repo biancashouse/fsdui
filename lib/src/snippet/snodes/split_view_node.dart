@@ -24,12 +24,6 @@ class SplitViewNode extends MC with SplitViewNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    FlutterDocPNode(
-        buttonLabel: 'MultiSplitView',
-        webLink:
-        'https://pub.dev/packages/multi_split_view',
-        snode: this,
-        name: 'fyi'),
     EnumPNode<AxisEnum?>(
           snode: this,
           name: 'axis',
@@ -44,6 +38,12 @@ class SplitViewNode extends MC with SplitViewNodeMappable {
           onBoolChange: (newValue) =>
               refreshWithUpdate(context,() => resizeable = newValue ?? true),
         ),
+    FlutterDocPNode(
+        buttonLabel: 'MultiSplitView',
+        webLink:
+        'https://pub.dev/packages/multi_split_view',
+        snode: this,
+        name: 'fyi'),
       ];
 
   // @override
@@ -59,7 +59,7 @@ class SplitViewNode extends MC with SplitViewNodeMappable {
   //               originalValue: axis,
   //               onChangedF: (newValue) {
   //                 axis = newValue ?? AxisEnum.horizontal;
-  //                 bloc.add(const CAPIEvent.forceRefresh());
+  //                 bloc.add(ForceRefresh());
   //               },
   //             ),
   //           ],

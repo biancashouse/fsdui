@@ -3,7 +3,6 @@ import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/pnodes/button_style_pnodes.dart';
 import 'package:fsdui/src/snippet/pnodes/container_style_pnodes.dart';
 import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:fsdui/src/snippet/pnodes/groups/button_style_properties.dart';
 import 'package:fsdui/src/snippet/pnodes/text_style_pnodes.dart';
 
 import 'fancy_tree/tree_controller.dart';

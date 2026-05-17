@@ -20,12 +20,7 @@ class PreferredSizeNode extends SC with PreferredSizeNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    FlutterDocPNode(
-        buttonLabel: 'PreferredSize',
-        webLink:
-        'https://api.flutter.dev/flutter/widgets/PreferredSize-class.html',
-        snode: this,
-        name: 'fyi'), DecimalPNode(
+    DecimalPNode(
           snode: this,
           name: 'width',
           decimalValue: width,
@@ -41,6 +36,12 @@ class PreferredSizeNode extends SC with PreferredSizeNodeMappable {
               refreshWithUpdate(context,() => height = newValue ?? double.infinity),
           calloutButtonSize: const Size(80, 20),
         ),
+    FlutterDocPNode(
+        buttonLabel: 'PreferredSize',
+        webLink:
+        'https://api.flutter.dev/flutter/widgets/PreferredSize-class.html',
+        snode: this,
+        name: 'fyi'),
       ];
 
   @override
@@ -85,7 +86,7 @@ class PreferredSizeNode extends SC with PreferredSizeNodeMappable {
   //               originalS: width?.toString() ?? '',
   //               onChangedF: (newWidth) {
   //                 width = double.tryParse(newWidth);
-  //                 bloc.add(const CAPIEvent.forceRefresh());
+  //                 bloc.add(ForceRefresh());
   //               },
   //             ),
   //           ),
@@ -98,7 +99,7 @@ class PreferredSizeNode extends SC with PreferredSizeNodeMappable {
   //               originalS: height?.toString() ?? '',
   //               onChangedF: (newHeight) {
   //                 height = double.tryParse(newHeight);
-  //                 bloc.add(const CAPIEvent.forceRefresh());
+  //                 bloc.add(ForceRefresh());
   //               },
   //             ),
   //           ),

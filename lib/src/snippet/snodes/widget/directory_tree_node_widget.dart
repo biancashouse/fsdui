@@ -47,7 +47,7 @@ class DirectoryTreeNodeWidget extends StatelessWidget {
 
   Widget _name(BuildContext context) {
     SnippetBuilderState spState = context as SnippetBuilderState;
-    String snippetName = spState.snippetName ?? 'missing ???!!!';
+    String snippetName = spState.widget.initialValue.name ?? 'missing ???!!!';
     return GestureDetector(
       onTap: () {
         // expand or collapse
@@ -68,7 +68,7 @@ class DirectoryTreeNodeWidget extends StatelessWidget {
                 TextButton(
                   onPressed: () {
                     if (spState.mounted ?? false) {
-                      fsdui.capiBloc.add(CAPIEvent.selectedDirectoryOrNode(snippetName: snippetName, selectedNode: entry.node));
+                      fsdui.capiBloc.add(SelectedDirectoryOrNode(snippetName: snippetName, selectedNode: entry.node));
                     }
                   },
                   child: _text(),
@@ -77,7 +77,7 @@ class DirectoryTreeNodeWidget extends StatelessWidget {
             )
           : InkWell(
               onTap: () {
-                fsdui.capiBloc.add(CAPIEvent.selectedDirectoryOrNode(snippetName: snippetName, selectedNode: entry.node));
+                fsdui.capiBloc.add(SelectedDirectoryOrNode(snippetName: snippetName, selectedNode: entry.node));
               },
               child: (entry.node as FileNode).build(context, entry.node),
             ),

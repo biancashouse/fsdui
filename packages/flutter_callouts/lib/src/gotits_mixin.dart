@@ -1,0 +1,45 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
+
+mixin GotitsMixin {
+
+  static bool initCalled = false;
+  static List<String> gotits = const [];
+
+  Future<void> initGotits() async {
+    if (initCalled) return;
+    initCalled = true;
+    gotits = (await fca.localStorage).read('gotits') ?? [];
+  }
+
+  Future<void> gotit(String feature,
+      ) async {
+    assert(initCalled, "gotit: Didn't call initGotits() !");
+    if (!gotits.contains(feature)) {
+      gotits.add(feature);
+      (await fca.localStorage).write('gotits', gotits);
+    }
+  }
+
+  /// assumes initGotits called
+  bool alreadyGotit(String feature) {
+    assert(initCalled, "alreadyGotit: Didn't call initGotits() !");
+    return (fca.localStorage.read('gotits') ?? []).contains(feature);
+  }
+
+  Future<void> clearGotits({bool notUsingHydratedStorage = false}) async {
+    (await fca.localStorage).delete('gotits');
+    gotits.clear();
+  }
+
+  Widget gotitButton({required String feature,
+    required double iconSize,
+    bool notUsingHydratedStorage = false}) =>
+      IconButton(
+        onPressed: () {
+          gotit(feature);
+        },
+        icon: const Icon(Icons.thumb_up),
+        iconSize: iconSize,
+      );
+}

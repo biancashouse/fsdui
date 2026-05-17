@@ -26,11 +26,6 @@ class StackNode extends MC with StackNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-        FlutterDocPNode(
-            buttonLabel: 'Stack',
-            webLink: 'https://api.flutter.dev/flutter/widgets/Stack-class.html',
-            snode: this,
-            name: 'fyi'),
         EnumPNode<StackFitEnum?>(
           snode: this,
           name: 'fit',
@@ -54,6 +49,11 @@ class StackNode extends MC with StackNodeMappable {
               () => alignment =
                   AlignmentEnum.of(newValue) ?? AlignmentEnum.topLeft),
         ),
+        FlutterDocPNode(
+            buttonLabel: 'Stack',
+            webLink: 'https://api.flutter.dev/flutter/widgets/Stack-class.html',
+            snode: this,
+            name: 'fyi'),
       ];
 
   @override
@@ -118,7 +118,7 @@ class StackNode extends MC with StackNodeMappable {
   //               originalValue: fit,
   //               onChangedF: (newValue) {
   //                 fit = newValue ?? StackFitEnum.loose;
-  //                 bloc.add(const CAPIEvent.forceRefresh());
+  //                 bloc.add(ForceRefresh());
   //               },
   //             ),
   //           ],
@@ -136,7 +136,7 @@ class StackNode extends MC with StackNodeMappable {
   //               originalValue: clipBehavior,
   //               onChangedF: (newValue) {
   //                 clipBehavior = newValue ?? ClipEnum.hardEdge;
-  //                 bloc.add(const CAPIEvent.forceRefresh());
+  //                 bloc.add(ForceRefresh());
   //               },
   //             ),
   //           ],
@@ -149,7 +149,7 @@ class StackNode extends MC with StackNodeMappable {
   //       //   originalOption: fit.index,
   //       //   onChangeF: (newOption) {
   //       //     fit = NodeStackFit.values[newOption];
-  //       //     bloc.add(const CAPIEvent.forceRefresh());
+  //       //     bloc.add(ForceRefresh());
   //       //   },
   //       //   calloutSize: NodeStackFit.calloutSize,
   //       // ),
@@ -159,7 +159,7 @@ class StackNode extends MC with StackNodeMappable {
   //       //   originalOption: clipBehavior.index,
   //       //   onChangeF: (newOption) {
   //       //     clipBehavior = NodeClip.values[newOption];
-  //       //     bloc.add(const CAPIEvent.forceRefresh());
+  //       //     bloc.add(ForceRefresh());
   //       //   },
   //       //   calloutSize: NodeClip.calloutSize,
   //       // ),
@@ -169,7 +169,7 @@ class StackNode extends MC with StackNodeMappable {
   //       //   originalOption: alignment.index,
   //       //   onChangeF: (newOption) {
   //       //     alignment = NodeAlignment.values[newOption];
-  //       //     bloc.add(const CAPIEvent.forceRefresh());
+  //       //     bloc.add(ForceRefresh());
   //       //   },
   //       //   calloutSize: NodeAlignment.calloutSize,
   //       // ),

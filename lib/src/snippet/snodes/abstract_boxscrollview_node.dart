@@ -2,7 +2,6 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/pnodes/edge_insets_pnode.dart';
-import 'package:fsdui/src/snippet/snodes/abstract_scrollview_node.dart';
 
 import '../pnodes/fyi_pnodes.dart';
 
@@ -21,12 +20,6 @@ abstract class BoxScrollViewNode extends ScrollViewNode with BoxScrollViewNodeMa
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    FlutterDocPNode(
-      buttonLabel: 'BoxScrollView',
-      webLink: 'https://api.flutter.dev/flutter/widgets/BoxScrollView-class.html',
-      snode: this,
-      name: 'fyi',
-    ),
     ...super.propertyNodes(context, parentSNode),
 
     PNode /*Group*/ (
@@ -43,7 +36,12 @@ abstract class BoxScrollViewNode extends ScrollViewNode with BoxScrollViewNodeMa
         ),
       ],
     ),
-
+    FlutterDocPNode(
+      buttonLabel: 'BoxScrollView',
+      webLink: 'https://api.flutter.dev/flutter/widgets/BoxScrollView-class.html',
+      snode: this,
+      name: 'fyi',
+    ),
   ];
 
 }

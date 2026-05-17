@@ -24,13 +24,6 @@ class ConstrainedBoxNode extends SC with ConstrainedBoxNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    FlutterDocPNode(
-      buttonLabel: 'ConstrainedBox',
-      webLink:
-          'https://api.flutter.dev/flutter/widgets/ConstrainedBox-class.html',
-      snode: this,
-      name: 'fyi',
-    ),
       DecimalPNode(
         snode: this,
         name: 'minWidth',
@@ -63,6 +56,13 @@ class ConstrainedBoxNode extends SC with ConstrainedBoxNodeMappable {
             refreshWithUpdate(context, () => maxHeight = newValue),
         calloutButtonSize: const Size(130, 20),
       ),
+    FlutterDocPNode(
+      buttonLabel: 'ConstrainedBox',
+      webLink:
+          'https://api.flutter.dev/flutter/widgets/ConstrainedBox-class.html',
+      snode: this,
+      name: 'fyi',
+    ),
   ];
 
   @override
