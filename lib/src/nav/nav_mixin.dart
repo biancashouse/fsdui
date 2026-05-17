@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
-import 'package:web/web.dart' as web;
+import 'web_util_stub.dart'
+    if (dart.library.html) 'web_util_web.dart';
 
 mixin NavMixin {
   /// Triggers a hard refresh of the current web page using the 'web' package.
@@ -14,7 +15,7 @@ mixin NavMixin {
     // kIsWeb is a compile-time constant that ensures this code
     // is only included in the web build.
     if (kIsWeb) {
-      web.window.location.reload();
+      reloadPage();
     } else {
       fsdui.logger.w(
         'refreshCurrentPage() was called on a non-web platform and will have no effect.',
@@ -233,11 +234,11 @@ mixin NavMixin {
     onTap: () {
       context.go(pagePath);
       // something funny going on when not in prod mode
-      if (false && kDebugMode) {
-        fsdui.afterMsDelayDo(1000, () {
-          fsdui.refreshCurrentPage();
-        });
-      }
+      // if (false && kDebugMode) {
+      //   fsdui.afterMsDelayDo(1000, () {
+      //     fsdui.refreshCurrentPage();
+      //   });
+      // }
     },
     child: SizedBox(
       width: 400,
