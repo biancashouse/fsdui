@@ -2,7 +2,65 @@ import 'package:flutter/foundation.dart' show Uint8List;
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 
-sealed class CAPIEvent {}
+sealed class CAPIEvent {
+  CAPIEvent();
+  factory CAPIEvent.verifiedEa({required String ea}) = VerifiedEa;
+  factory CAPIEvent.signedInAsSuperEditor() = SignedInAsSuperEditor;
+  factory CAPIEvent.signedInAsArticleEditor() = SignedInAsArticleEditor;
+  factory CAPIEvent.signedInAsGuestEditor() = SignedInAsGuestEditor;
+  factory CAPIEvent.signedOut() = SignedOut;
+  factory CAPIEvent.overrideTargetGK({required String wName, required int index, required GlobalKey gk}) = OverrideTargetGK;
+  factory CAPIEvent.forceRefresh({bool onlyTargetsWrappers = false}) => ForceRefresh(onlyTargetsWrappers: onlyTargetsWrappers);
+  factory CAPIEvent.toggleSnippetVisibility({SnippetName? snippetName}) = ToggleSnippetVisibility;
+  factory CAPIEvent.clearClipboard() = ClearClipboard;
+  factory CAPIEvent.publishSnippet({required SnippetName snippetName, required VersionId versionId}) = PublishSnippet;
+  factory CAPIEvent.revertSnippet({required SnippetName snippetName, required VersionId versionId}) = RevertSnippet;
+  factory CAPIEvent.deletePage({required String pathName}) = DeletePage;
+  factory CAPIEvent.toggleAutoPublishingOfSnippet({required SnippetName snippetName}) = ToggleAutoPublishingOfSnippet;
+  factory CAPIEvent.autoPublishDefault({required bool b}) = AutoPublishDefault;
+  factory CAPIEvent.setPanelSnippet({required SnippetName snippetName, required PanelName panelName}) = SetPanelSnippet;
+  factory CAPIEvent.enterSelectWidgetMode({required SnippetName snippetName}) = EnterSelectWidgetMode;
+  factory CAPIEvent.updateTappableRects() = UpdateTappableRects;
+  factory CAPIEvent.exitSelectWidgetMode() = ExitSelectWidgetMode;
+  factory CAPIEvent.pushSnippetEditor({required SNode rootNode, SNode? selectedNode}) = PushSnippetEditor;
+  factory CAPIEvent.changedSnippet() = ChangedSnippet;
+  factory CAPIEvent.popSnippetEditor({bool save = false}) => PopSnippetEditor(save: save);
+  factory CAPIEvent.showDirectoryTree() = ShowDirectoryTree;
+  factory CAPIEvent.removeDirectoryTree({bool save = false}) => RemoveDirectoryTree(save: save);
+  factory CAPIEvent.selectNode({required SNode node}) = SelectNode;
+  factory CAPIEvent.clearNodeSelection() = ClearNodeSelection;
+  factory CAPIEvent.saveNodeAsSnippet({required SNode node, required String newSnippetName}) = SaveNodeAsSnippet;
+  factory CAPIEvent.replaceSelectionWith({Type? nodeType, SNode? testNode}) = ReplaceSelectionWith;
+  factory CAPIEvent.wrapSelectionWith({Type? nodeType, SNode? testNode}) = WrapSelectionWith;
+  factory CAPIEvent.appendChild({Type? nodeType, SNode? testNode}) = AppendChild;
+  factory CAPIEvent.prependArticle({required ArticleListViewNode listNode, Type? nodeType, SNode? testNode}) = PrependArticle;
+  factory CAPIEvent.addSiblingBefore({Type? nodeType, SNode? testNode}) = AddSiblingBefore;
+  factory CAPIEvent.addSiblingAfter({Type? nodeType, SNode? testNode}) = AddSiblingAfter;
+  factory CAPIEvent.pasteReplacement() = PasteReplacement;
+  factory CAPIEvent.pasteChild() = PasteChild;
+  factory CAPIEvent.pasteSiblingBefore() = PasteSiblingBefore;
+  factory CAPIEvent.pasteSiblingAfter() = PasteSiblingAfter;
+  factory CAPIEvent.deleteNodeTapped() = DeleteNodeTapped;
+  factory CAPIEvent.deleteArticle({required SNode articleSnippet}) = DeleteArticle;
+  factory CAPIEvent.completeDeletion() = CompleteDeletion;
+  factory CAPIEvent.copySnippetJsonToClipboard({required SNode rootNode}) = CopySnippetJsonToClipboard;
+  factory CAPIEvent.replaceSnippetFromJson({required String snippetBeingReplaced, required String? snippetJson}) = ReplaceSnippetFromJson;
+  factory CAPIEvent.copyNode({required SNode node}) = CopyNode;
+  factory CAPIEvent.cutNode({required SNode node}) = CutNode;
+  factory CAPIEvent.selectedDirectoryOrNode({required SnippetName snippetName, required SNode? selectedNode}) = SelectedDirectoryOrNode;
+  factory CAPIEvent.imageChanged({Uint8List? newBytes}) = ImageChanged;
+  factory CAPIEvent.undo() = Undo;
+  factory CAPIEvent.redo() = Redo;
+  factory CAPIEvent.forceSnippetRefresh() = ForceSnippetRefresh;
+  factory CAPIEvent.reorderSibling({required SNode node, required int newSiblingIndex}) = ReorderSibling;
+  factory CAPIEvent.toggleNodeProperties() = ToggleNodeProperties;
+}
+
+final class VerifiedEa extends CAPIEvent {
+  final String ea;
+
+  VerifiedEa({required this.ea});
+}
 
 final class SignedInAsSuperEditor extends CAPIEvent {
 SignedInAsSuperEditor();

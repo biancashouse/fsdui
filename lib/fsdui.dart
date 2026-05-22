@@ -124,10 +124,8 @@ import 'src/typedefs.dart';
 // make available to apps using this pkg
 export 'package:cloud_firestore/cloud_firestore.dart';
 export 'package:firebase_core/firebase_core.dart';
-export 'package:firebase_auth/firebase_auth.dart';
 export 'package:firebase_storage/firebase_storage.dart';
 export 'package:firebase_ui_storage/firebase_ui_storage.dart';
-export 'package:google_sign_in/google_sign_in.dart';
 export 'package:go_router/go_router.dart';
 export 'package:flutter_bloc/flutter_bloc.dart';
 export 'package:flutter_callouts/flutter_callouts.dart';
@@ -170,7 +168,7 @@ export 'src/bloc/capi_state.dart';
 // export 'src/feature_discovery/discovery_controller.dart';
 // export 'src/feature_discovery/featured_widget.dart';
 export 'src/gotits/gotits_helper_string.dart';
-export 'src/gsi/sign_in_button.dart';
+// export 'src/gsi/sign_in_button.dart';
 export 'src/measuring/find_global_rect.dart';
 export 'src/measuring/measure_sizebox.dart';
 export 'src/model/app_info_model.dart';
@@ -367,6 +365,79 @@ class FSDUI_Mixins
   Logger get logger => _logger;
 
   Logger get loggerNs => _loggerNs;
+
+  Widget userIcon({required GlobalKey gk}) =>
+      isIOS
+          ? TextButton.icon(
+        // PHONE
+        icon: Icon(
+          Icons.account_circle_outlined,
+          key: gk,
+          size: 26,
+          color: isIOS ? Colors.black : Colors.blue,
+        ),
+        label: RichText(
+          text: TextSpan(
+            text: 'Cloud enable\n\n',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+            children: const [
+              TextSpan(
+                text:
+                '(make your work available across your devices / browsers)',
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+        onPressed: () async {
+          //fsdui.gotitHelper.gotit(CalloutIdEnum.picker_ea_switcher.index);
+          // pressedSignInButton(parentState, popmenu: true);
+          String? gcrServerUrl = fsdui.gcrServerUrl;
+          if (gcrServerUrl != null) {
+            fsdui.showPasswordlessStepper(
+              gcrServerUrl: gcrServerUrl,
+              onSignedInF: (vea) {
+                capiBloc.add(VerifiedEa(ea: vea));
+                fsdui.dismissAll();
+              },
+            );
+          }
+        },
+      )
+          : Tooltip(
+        message: "cloud-enable",
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          child: IconButton(
+            iconSize: 26,
+            icon: Icon(
+              Icons.account_circle_outlined,
+              key: gk,
+              color: isIOS ? Colors.black : Colors.blue,
+            ),
+            onPressed: () async {
+              //fsdui.gotitHelper.gotit(CalloutIdEnum.picker_ea_switcher.index);
+              // pressedSignInButton(parentState);
+              String? gcrServerUrl = fsdui.gcrServerUrl;
+              if (gcrServerUrl != null) {
+                fsdui.showPasswordlessStepper(
+                  gcrServerUrl: gcrServerUrl,
+                  onSignedInF: (vea) {
+                    capiBloc.add(VerifiedEa(ea: vea));
+                    fsdui.dismissAll();
+                  },
+                );
+              }
+            },
+          ),
+        ),
+      );
 
   // called by _initApp() to set the late variables
   Future<CAPIBloC> createCAPIBloC({

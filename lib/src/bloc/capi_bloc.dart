@@ -51,6 +51,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
        ) {
     // _ur = SnippetUndoRedoStack(this);
 
+    on<VerifiedEa>((event, emit) => _verifiedEa(event, emit));
     on<SignedInAsSuperEditor>(
       (event, emit) => _signedInAsSuperEditor(event, emit),
     );
@@ -126,7 +127,20 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     on<Undo>((event, emit) => _undo(event, emit));
     on<Redo>((event, emit) => _redo(event, emit));
     on<ReorderSibling>((event, emit) => _reorderSibling(event, emit));
-    on<ToggleNodeProperties>((event, emit) => _toggleNodeProperties(event, emit));
+    on<ToggleNodeProperties>(
+      (event, emit) => _toggleNodeProperties(event, emit),
+    );
+  }
+
+  Future<void> _verifiedEa(VerifiedEa event, emit) async {
+    emit(
+      state.copyWith(
+        verifiedEa: event.ea,
+      ),
+    );
+    // auto sync newly verified user
+    // var changedUserState = await _sync(emit, true);
+    // await _refreshUserAfterSync(changedUserState, emit);
   }
 
   void _signedInAsSuperEditor(SignedInAsSuperEditor event, emit) async {
@@ -1165,9 +1179,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         children: childNode != null ? [childNode] : [],
       ),
       const (TabDataNode) => TabDataNode(),
-      const (DynamicTabBarNode) => DynamicTabBarNode(children: [
-        TabDataNode()
-      ]),
+      const (DynamicTabBarNode) => DynamicTabBarNode(children: [TabDataNode()]),
       const (TextButtonNode) => TextButtonNode(
         child: TextNode(text: 'some-text', tsPropGroup: TextStyleProperties()),
         bsPropGroup: ButtonStyleProperties(tsPropGroup: TextStyleProperties()),
@@ -1363,7 +1375,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         // PlaceholderNode. SnippetBuilder renders via currentVersionInCache(),
         // which is the same object as the active root for property edits but
         // becomes stale on root replacement without this update.
-        SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(r.name!);
+        SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(
+          r.name!,
+        );
         if (snippetInfo != null) {
           VersionId? currVersionId = snippetInfo.currentVersionId();
           if (currVersionId != null) {
@@ -1701,7 +1715,10 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     final siblings = event.node.maybeSiblings();
     if (siblings == null || !siblings.contains(event.node)) return;
     siblings.remove(event.node);
-    siblings.insert(event.newSiblingIndex.clamp(0, siblings.length), event.node);
+    siblings.insert(
+      event.newSiblingIndex.clamp(0, siblings.length),
+      event.node,
+    );
     snippetBeingEdited.treeC.rebuild();
     final rootNode = snippetBeingEdited.getRootNode();
     if (rootNode.name != null) {

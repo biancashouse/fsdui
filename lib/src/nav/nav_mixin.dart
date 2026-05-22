@@ -7,6 +7,7 @@ import 'web_util_stub.dart'
     if (dart.library.html) 'web_util_web.dart';
 
 mixin NavMixin {
+  final GlobalKey _userIconGK = GlobalKey();
   /// Triggers a hard refresh of the current web page using the 'web' package.
   ///
   /// This is equivalent to the user pressing F5 or the browser's refresh button.
@@ -37,6 +38,12 @@ mixin NavMixin {
           _dropdownItemWithPI(
             value: 'sign-in-as-editor',
             child: Text('sign in as a Content editor'),
+          ),
+        );
+        dropdownItems.add(
+          _dropdownItemWithPI(
+            value: 'user-icon',
+            child: fsdui.userIcon(gk: _userIconGK),
           ),
         );
         if (fsdui.canEditAnyContent()) {

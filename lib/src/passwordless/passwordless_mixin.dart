@@ -59,7 +59,7 @@ class PasswordlessStepper extends StatefulWidget {
     required String gcrServerUrl,
     required String userEa,
   }) async {
-    Map<String, dynamic> map = {'ea': userEa, 'app': 'algc'};
+    Map<String, dynamic> map = {'ea': userEa, 'app': fsdui.appName};
     final messageBody = json.encode(map);
 
     final response = await http.Client().post(
@@ -192,86 +192,87 @@ class PasswordlessStepperState extends State<PasswordlessStepper> {
   }
 }
 
-class Step1 extends StatelessWidget {
+class Step1 extends StatefulWidget {
   final PasswordlessStepperState parentState;
   final String gcrServerUrl;
 
-  const Step1(
-      {required this.gcrServerUrl, required this.parentState, super.key});
+  const Step1({required this.gcrServerUrl, required this.parentState, super.key});
 
   @override
-  Widget build(BuildContext context) =>
-      StatefulBuilder(
-        builder: (context, StateSetter setState) =>
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    width: 340,
-                    height: 70,
-                    color: Colors.white,
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextField(
-                      enabled: true,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Your Email Address',
-                      ),
-                      autofocus: true,
-                      controller: parentState.eaController,
-                      focusNode: parentState.focusNode,
-                      maxLines: 1,
-                      onChanged: (s) {
-                        setState(() {});
-                      },
-                      onEditingComplete: () async {
-                        _emailAddressEntered();
-                      },
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontFamily: 'monospace',
-                          color: parentState.eaController.text.isEmpty ||
-                              fsdui.emailIsValid(parentState.eaController.text)
-                              ? Colors.blue[900]
-                              : Colors.red,
-                          fontWeight: parentState.eaController.text.isEmpty ||
-                              fsdui.emailIsValid(parentState.eaController.text)
-                              ? FontWeight.w400
-                              : FontWeight.w900,
-                          background: fsdui.whiteBgPaint),
-                    ),
+  State<Step1> createState() => _Step1State();
+}
+
+class _Step1State extends State<Step1> {
+  bool _loading = false;
+
+  @override
+  Widget build(BuildContext context) => Row(
+    children: [
+      Expanded(
+        child: Container(
+          width: 340,
+          height: 70,
+          color: Colors.white,
+          padding: const EdgeInsets.all(8.0),
+          child: _loading
+              ? const Center(child: CircularProgressIndicator())
+              : TextField(
+                  enabled: true,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Your Email Address',
+                  ),
+                  autofocus: true,
+                  controller: widget.parentState.eaController,
+                  focusNode: widget.parentState.focusNode,
+                  maxLines: 1,
+                  onChanged: (s) => setState(() {}),
+                  onEditingComplete: _emailAddressEntered,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontFamily: 'monospace',
+                    color: widget.parentState.eaController.text.isEmpty ||
+                            fsdui.emailIsValid(widget.parentState.eaController.text)
+                        ? Colors.blue[900]
+                        : Colors.red,
+                    fontWeight: widget.parentState.eaController.text.isEmpty ||
+                            fsdui.emailIsValid(widget.parentState.eaController.text)
+                        ? FontWeight.w400
+                        : FontWeight.w900,
+                    background: fsdui.whiteBgPaint,
                   ),
                 ),
-                IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _emailAddressEntered();
-                      });
-                    },
-                    icon: Icon(
-                      Icons.arrow_forward,
-                      color: fsdui.emailIsValid(parentState.eaController.text)
-                          ? Colors.blue
-                          : Colors.red,
-                    )),
-              ],
-            ),
-      );
+        ),
+      ),
+      if (!_loading)
+        IconButton(
+          onPressed: _emailAddressEntered,
+          icon: Icon(
+            Icons.arrow_forward,
+            color: fsdui.emailIsValid(widget.parentState.eaController.text)
+                ? Colors.blue
+                : Colors.red,
+          ),
+        ),
+    ],
+  );
 
   Future<void> _emailAddressEntered() async {
-    if (fsdui.emailIsValid(parentState.eaController.text)) {
-      // check whether already signed in
-      if (parentState.userHasConfirmed()) {
+    if (fsdui.emailIsValid(widget.parentState.eaController.text)) {
+      if (widget.parentState.userHasConfirmed()) {
         _showAlreadySignInToast();
         fsdui.dismiss("passwordless-stepper");
+        return;
       }
-      String? token = await PasswordlessStepper
+      setState(() => _loading = true);
+      final String? token = await PasswordlessStepper
           .cloudRunCreateTokenAndEmailVerificationLinkToUser(
-          gcrServerUrl: gcrServerUrl,
-          userEa: parentState.eaController.text);
+              gcrServerUrl: widget.gcrServerUrl,
+              userEa: widget.parentState.eaController.text);
+      if (mounted) setState(() => _loading = false);
       if (token != null) {
-        parentState.setEaAndToken(
-          parentState.eaController.text,
+        widget.parentState.setEaAndToken(
+          widget.parentState.eaController.text,
           token,
         );
       }
@@ -287,12 +288,14 @@ class Step1 extends StatelessWidget {
         decorationFillColors: ColorOrGradient.color(Colors.yellow),
         initialCalloutW: fsdui.scrW * .8,
         initialCalloutH: 40,
-        
       ),
       calloutContent: Padding(
-          padding: const EdgeInsets.all(10),
-          child: fsdui.coloredText('You are already signed in on this device.',
-              color: Colors.blueAccent)),
+        padding: const EdgeInsets.all(10),
+        child: fsdui.coloredText(
+          'You are already signed in on this device.',
+          color: Colors.blueAccent,
+        ),
+      ),
     );
   }
 }
