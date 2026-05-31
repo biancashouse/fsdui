@@ -1,30 +1,37 @@
 import 'dart:async';
+import 'dart:convert';
 
-/// Simulates an authentication backend.
-/// In a real app this would call your API / Firebase / etc.
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:http/http.dart' as http;
+
 class AuthRepository {
-  // Fake credential store
-  static const _validEmail = 'user@example.com';
-  static const _validPassword = 'password123';
+  static const _confirmedTokensCollection = '/confirmed-tokens';
 
-  /// Sign in with email + password.
-  /// Throws [AuthException] on failure.
-  Future<String> signIn({
-    required String email,
-    required String password,
+  Future<String?> requestToken({
+    required String gcrServerUrl,
+    required String ea,
+    required String appName,
   }) async {
-    // Simulate network delay
-    await Future.delayed(const Duration(milliseconds: 800));
-
-    if (email == _validEmail && password == _validPassword) {
-      return email;
-    }
-    throw AuthException('Invalid email or password.');
+    final response = await http.Client().post(
+      Uri.parse('$gcrServerUrl/passwordless/emailUserAConfirmButton'),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: json.encode({'ea': ea, 'app': appName}),
+    );
+    if (response.statusCode != 200) return null;
+    final map = jsonDecode(response.body) as Map<String, dynamic>;
+    return map['token'] as String?;
   }
 
-  /// Sign out the current user.
-  Future<void> signOut() async {
-    await Future.delayed(const Duration(milliseconds: 400));
+  // Emits true once when the confirmed-tokens/{token} doc appears in Firestore.
+  Stream<bool> watchTokenConfirmation(String token) {
+    return FirebaseFirestore.instance
+        .collection(_confirmedTokensCollection)
+        .doc(token)
+        .snapshots()
+        .map((snap) => snap.exists);
   }
 }
 

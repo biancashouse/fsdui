@@ -216,7 +216,7 @@ class FlutterContentAppState extends State<FlutterContentApp>
                 BlocProvider(
                   create: (_) => AuthBloc(
                     authRepository: authRepository,
-                    appRepository: appRepository,
+                    capiBloc: snapshot.data!,
                   ),
                 ),
                 // CAPIBloc is also hydrated

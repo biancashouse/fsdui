@@ -1,111 +1,93 @@
+import 'dart:async';
+
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
-import '../../model/auth_state_model.dart';
-import '../../repositories/app_repository.dart';
+import '../capi/capi_bloc.dart';
+import '../capi/capi_event.dart';
 import '../../repositories/auth_repository.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
 
-/// [AuthBloc] extends [HydratedBloc] so its state is automatically
-/// written to disk and rehydrated on the next app launch.
-///
-/// Only the [AuthState] fields annotated with [JsonKey] (i.e. [user])
-/// are persisted; transient UI fields like [isLoading] and [errorMessage]
-/// are excluded from serialisation via [toJson] / [fromJson].
 class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
   AuthBloc({
     required AuthRepository authRepository,
-    required AppRepository appRepository,
+    required CAPIBloC capiBloc,
   }) : _authRepository = authRepository,
-       _appRepository = appRepository,
+       _capiBloc = capiBloc,
        super(const AuthState()) {
-    on<GenerateTokenAndSendConfirmationEmail>(
-      _generateTokenAndSendConfirmationEmail,
-    );
-    on<SignOutRequested>(_onSignOutRequested);
-    on<AppDescriptionUpdated>(_onAppDescriptionUpdated);
+    on<GenerateTokenAndSendConfirmationEmail>(_onRequestToken);
+    on<TokenConfirmed>(_onTokenConfirmed);
+    on<SignOutRequested>(_onSignOut);
   }
 
   final AuthRepository _authRepository;
-  final AppRepository _appRepository;
+  final CAPIBloC _capiBloc;
+  StreamSubscription<bool>? _tokenSub;
 
-  // ---------------------------------------------------------------------------
-  // Event handlers
-  // ---------------------------------------------------------------------------
-
-  Future<void> _generateTokenAndSendConfirmationEmail(
+  Future<void> _onRequestToken(
     GenerateTokenAndSendConfirmationEmail event,
     Emitter<AuthState> emit,
   ) async {
-
+    emit(state.copyWith(isLoading: true, errorMessage: null));
     try {
-      final email = await _authRepository.signIn(
-        email: event.ea,
-        password: event.password,
+      final token = await _authRepository.requestToken(
+        gcrServerUrl: event.gcrServerUrl,
+        ea: event.ea,
+        appName: event.appName,
       );
-
-      // Update core user data.
-      emit(
-        state.copyWith(
+      if (token == null) {
+        emit(state.copyWith(
           isLoading: false,
-          user: state.user.copyWith(
-            status: AuthStatus.authenticated,
-            email: email,
-          ),
-        ),
-      );
-
-      // Fetch app description now that we're logged in.
-      final description = await _appRepository.fetchAppDescription(email);
-      add(AppDescriptionUpdated(description));
+          errorMessage: 'Failed to send verification email.',
+        ));
+        return;
+      }
+      emit(state.copyWith(isLoading: false, ea: event.ea, token: token));
+      _startListening(token: token, ea: event.ea);
     } catch (e) {
-      emit(
-        state.copyWith(
-          isLoading: false,
-          errorMessage: e.toString(),
-          user: state.user.copyWith(status: AuthStatus.unauthenticated),
-        ),
-      );
+      emit(state.copyWith(isLoading: false, errorMessage: e.toString()));
     }
   }
 
-  Future<void> _onSignOutRequested(
-    SignOutRequested event,
-    Emitter<AuthState> emit,
-  ) async {
-    emit(state.copyWith(isLoading: true));
-    await _authRepository.signOut();
-    emit(
-      const AuthState(user: AuthStateModel(status: AuthStatus.unauthenticated)),
-    );
+  void _startListening({required String token, required String ea}) {
+    _tokenSub?.cancel();
+    _tokenSub = _authRepository
+        .watchTokenConfirmation(token)
+        .where((confirmed) => confirmed)
+        .listen((_) => add(TokenConfirmed(ea: ea)));
   }
 
-  void _onAppDescriptionUpdated(
-    AppDescriptionUpdated event,
-    Emitter<AuthState> emit,
-  ) {
-    emit(
-      state.copyWith(
-        user: state.user.copyWith(appDescription: event.description),
-      ),
-    );
+  void _onTokenConfirmed(TokenConfirmed event, Emitter<AuthState> emit) {
+    _tokenSub?.cancel();
+    _tokenSub = null;
+    emit(state.copyWith(verified: true, ea: event.ea));
+    _capiBloc.add(VerifiedEa(ea: event.ea));
   }
 
-  // ---------------------------------------------------------------------------
-  // HydratedBloc – serialisation
-  //
-  // cannot use @jsonKey to exclude fields...
-  // The @JsonKey annotation in json_annotation 4.8+ is restricted to actual fields/getters — freezed's factory constructor
-  //   parameters don't count as fields from the analyzer's perspective.
-  //
-  //   A cleaner alternative: since AuthStateModel already holds exactly the data you want to persist, just serialize only that in the
-  //    BLoC's toJson/fromJson pair:
-  // ---------------------------------------------------------------------------
+  void _onSignOut(SignOutRequested event, Emitter<AuthState> emit) {
+    _tokenSub?.cancel();
+    _tokenSub = null;
+    emit(const AuthState());
+  }
 
   @override
-  Map<String, dynamic>? toJson(AuthState state) => state.user.toJson();
+  Future<void> close() {
+    _tokenSub?.cancel();
+    return super.close();
+  }
+
+  // Only persist ea/token/verified — isLoading and errorMessage are transient.
+  @override
+  Map<String, dynamic>? toJson(AuthState state) => {
+    'ea': state.ea,
+    'token': state.token,
+    'verified': state.verified,
+  };
 
   @override
-  AuthState? fromJson(Map<String, dynamic> json) =>
-      AuthState(user: AuthStateModel.fromJson(json));
+  AuthState? fromJson(Map<String, dynamic> json) => AuthState(
+    ea: json['ea'] as String?,
+    token: json['token'] as String?,
+    verified: (json['verified'] as bool?) ?? false,
+  );
 }

@@ -22,12 +22,10 @@ AuthState _$AuthStateFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$AuthState {
   String? get ea => throw _privateConstructorUsedError;
-  String? get token => throw _privateConstructorUsedError;
-
-  /// gets set in firestore when user tap the email's confirm button
+  String? get token =>
+      throw _privateConstructorUsedError; // isLoading and errorMessage are transient — excluded from HydratedBloc serialisation.
+  bool get isLoading => throw _privateConstructorUsedError;
   bool get verified => throw _privateConstructorUsedError;
-
-  /// Transient error message – not persisted.
   String? get errorMessage => throw _privateConstructorUsedError;
 
   /// Serializes this AuthState to a JSON map.
@@ -45,7 +43,13 @@ abstract class $AuthStateCopyWith<$Res> {
   factory $AuthStateCopyWith(AuthState value, $Res Function(AuthState) then) =
       _$AuthStateCopyWithImpl<$Res, AuthState>;
   @useResult
-  $Res call({String? ea, String? token, bool verified, String? errorMessage});
+  $Res call({
+    String? ea,
+    String? token,
+    bool isLoading,
+    bool verified,
+    String? errorMessage,
+  });
 }
 
 /// @nodoc
@@ -65,6 +69,7 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
   $Res call({
     Object? ea = freezed,
     Object? token = freezed,
+    Object? isLoading = null,
     Object? verified = null,
     Object? errorMessage = freezed,
   }) {
@@ -78,6 +83,10 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
                 ? _value.token
                 : token // ignore: cast_nullable_to_non_nullable
                       as String?,
+            isLoading: null == isLoading
+                ? _value.isLoading
+                : isLoading // ignore: cast_nullable_to_non_nullable
+                      as bool,
             verified: null == verified
                 ? _value.verified
                 : verified // ignore: cast_nullable_to_non_nullable
@@ -101,7 +110,13 @@ abstract class _$$AuthStateImplCopyWith<$Res>
   ) = __$$AuthStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? ea, String? token, bool verified, String? errorMessage});
+  $Res call({
+    String? ea,
+    String? token,
+    bool isLoading,
+    bool verified,
+    String? errorMessage,
+  });
 }
 
 /// @nodoc
@@ -120,6 +135,7 @@ class __$$AuthStateImplCopyWithImpl<$Res>
   $Res call({
     Object? ea = freezed,
     Object? token = freezed,
+    Object? isLoading = null,
     Object? verified = null,
     Object? errorMessage = freezed,
   }) {
@@ -133,6 +149,10 @@ class __$$AuthStateImplCopyWithImpl<$Res>
             ? _value.token
             : token // ignore: cast_nullable_to_non_nullable
                   as String?,
+        isLoading: null == isLoading
+            ? _value.isLoading
+            : isLoading // ignore: cast_nullable_to_non_nullable
+                  as bool,
         verified: null == verified
             ? _value.verified
             : verified // ignore: cast_nullable_to_non_nullable
@@ -152,6 +172,7 @@ class _$AuthStateImpl implements _AuthState {
   const _$AuthStateImpl({
     this.ea,
     this.token,
+    this.isLoading = false,
     this.verified = false,
     this.errorMessage,
   });
@@ -163,19 +184,19 @@ class _$AuthStateImpl implements _AuthState {
   final String? ea;
   @override
   final String? token;
-
-  /// gets set in firestore when user tap the email's confirm button
+  // isLoading and errorMessage are transient — excluded from HydratedBloc serialisation.
+  @override
+  @JsonKey()
+  final bool isLoading;
   @override
   @JsonKey()
   final bool verified;
-
-  /// Transient error message – not persisted.
   @override
   final String? errorMessage;
 
   @override
   String toString() {
-    return 'AuthState(ea: $ea, token: $token, verified: $verified, errorMessage: $errorMessage)';
+    return 'AuthState(ea: $ea, token: $token, isLoading: $isLoading, verified: $verified, errorMessage: $errorMessage)';
   }
 
   @override
@@ -185,6 +206,8 @@ class _$AuthStateImpl implements _AuthState {
             other is _$AuthStateImpl &&
             (identical(other.ea, ea) || other.ea == ea) &&
             (identical(other.token, token) || other.token == token) &&
+            (identical(other.isLoading, isLoading) ||
+                other.isLoading == isLoading) &&
             (identical(other.verified, verified) ||
                 other.verified == verified) &&
             (identical(other.errorMessage, errorMessage) ||
@@ -194,7 +217,7 @@ class _$AuthStateImpl implements _AuthState {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, ea, token, verified, errorMessage);
+      Object.hash(runtimeType, ea, token, isLoading, verified, errorMessage);
 
   /// Create a copy of AuthState
   /// with the given fields replaced by the non-null parameter values.
@@ -214,6 +237,7 @@ abstract class _AuthState implements AuthState {
   const factory _AuthState({
     final String? ea,
     final String? token,
+    final bool isLoading,
     final bool verified,
     final String? errorMessage,
   }) = _$AuthStateImpl;
@@ -224,13 +248,11 @@ abstract class _AuthState implements AuthState {
   @override
   String? get ea;
   @override
-  String? get token;
-
-  /// gets set in firestore when user tap the email's confirm button
+  String? get token; // isLoading and errorMessage are transient — excluded from HydratedBloc serialisation.
+  @override
+  bool get isLoading;
   @override
   bool get verified;
-
-  /// Transient error message – not persisted.
   @override
   String? get errorMessage;
 
