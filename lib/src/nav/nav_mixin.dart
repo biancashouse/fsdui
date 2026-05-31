@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
-import 'web_util_stub.dart'
-    if (dart.library.html) 'web_util_web.dart';
+import 'web_util_stub.dart' if (dart.library.html) 'web_util_web.dart';
 
 mixin NavMixin {
   final GlobalKey _userIconGK = GlobalKey();
+
   /// Triggers a hard refresh of the current web page using the 'web' package.
   ///
   /// This is equivalent to the user pressing F5 or the browser's refresh button.
@@ -24,200 +24,214 @@ mixin NavMixin {
     }
   }
 
-  Widget NavigationDD({
-    Color pencilIconColor = Colors.white,
-  }) => BlocBuilder<CAPIBloC, CAPIState>(
-    builder: (context, state) {
-      final dropdownItems = <DropdownMenuItem<String>>[];
-      bool showPencil =
-          !fsdui.canEditAnyContent() &&
-          !fsdui.isArticleEditor() &&
-          !fsdui.isGuestEditor();
-      if (showPencil) {
-        dropdownItems.add(
-          _dropdownItemWithPI(
-            value: 'sign-in-as-editor',
-            child: Text('sign in as a Content editor'),
+  Widget NavigationDD({Color pencilIconColor = Colors.white}) =>
+      BlocBuilder<CAPIBloC, CAPIState>(
+        builder: (context, state) {
+          // final dropdownItems = <DropdownMenuItem<String>>[];
+          bool showPencil =
+              !fsdui.canEditAnyContent() &&
+              !fsdui.isArticleEditor() &&
+              !fsdui.isGuestEditor();
+          return showPencil
+              ? _dropdownButtonNotSignedIn(context, state, pencilIconColor)
+              : _dropdownButtonSignedIn(context, state, pencilIconColor);
+        },
+      );
+
+  Widget _dropdownButtonNotSignedIn(
+    BuildContext context,
+    CAPIState state,
+    Color pencilIconColor,
+  ) {
+    List<DropdownMenuItem<String>> dropdownItems = [
+      _dropdownItemWithPI(
+        value: 'sign-in',
+        child: MenuItemButton(
+          key: _userIconGK,
+          onPressed: () {
+            String? gcrServerUrl = fsdui.gcrServerUrl;
+            if (gcrServerUrl != null) {
+              fsdui.showPasswordlessSignIn(
+                gcrServerUrl: gcrServerUrl,
+                onSignedInF: (vea) {
+                  fsdui.capiBloc.add(VerifiedEa(ea: vea));
+                  fsdui.dismissAll();
+                },
+              );
+            }
+            Navigator.pop(context);
+          },
+          leadingIcon: Icon(
+            Icons.account_circle_outlined,
+            key: _userIconGK,
+            size: 26,
+            color: fsdui.isIOS ? Colors.black : Colors.blue,
           ),
-        );
-        dropdownItems.add(
-          _dropdownItemWithPI(
-            value: 'user-icon',
-            child: fsdui.userIcon(gk: _userIconGK),
+          child: Text('sign in'),
+        ),
+      ),
+
+      if (fsdui.canEditAnyContent() && fsdui.router != null)
+        _dropdownItemWithPI(
+          value: 'create-editable-page',
+          child: RichText(
+            text: TextSpan(
+              text: 'create your own ',
+              style: TextStyle(color: Colors.grey),
+              children: [
+                TextSpan(
+                  text: 'editable',
+                  style: TextStyle(color: Colors.purpleAccent),
+                ),
+                TextSpan(text: ' page'),
+              ],
+            ),
           ),
-        );
-        if (fsdui.canEditAnyContent()) {
-          if (fsdui.router != null) {
+        ),
+    ];
+
+    addBrightnessItem(context, state, dropdownItems);
+
+    return PointerInterceptor(
+      child: Theme(
+        data: Theme.of(context).copyWith(hoverColor: Colors.transparent),
+        child: DropdownButton<String>(
+          // key: fco.authIconGK,
+          items: dropdownItems,
+          underline: Offstage(),
+          focusColor: Colors.transparent,
+          icon: PointerInterceptor(
+            child: Icon(Icons.edit, color: pencilIconColor, size: 24),
+          ),
+          dropdownColor: Colors.white,
+          onChanged: (value) {
+            if (fsdui.router != null) {
+              EditablePage.of(context)?.showPageNameDialog();
+            }
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _dropdownButtonSignedIn(
+    BuildContext context,
+    CAPIState state,
+    Color pencilIconColor,
+  ) {
+    List<DropdownMenuItem<String>> dropdownItems = [
+      // signed in as super, article or guest editor
+      _dropdownItemWithPI(value: 'sign-out', child: _signOutBtn(context)),
+      if (fsdui.canEditAnyContent() && fsdui.router != null)
+        _dropdownItemWithPI(
+          value: 'create-editable-page',
+          child: RichText(
+            text: TextSpan(
+              text: 'create an ',
+              style: TextStyle(color: Colors.grey),
+              children: [
+                TextSpan(
+                  text: 'editable',
+                  style: TextStyle(color: Colors.purpleAccent),
+                ),
+                TextSpan(text: ' page'),
+              ],
+            ),
+          ),
+        ),
+    ];
+
+    if (!fsdui.isGuestEditor()) {
+      for (String pagePath in fsdui.pageList) {
+        // skip currentPath
+        try {
+          final String currentPath = GoRouterState.of(context).uri.toString();
+          if (pagePath != currentPath) {
+            String sandboxIndicator =
+                (fsdui.appInfo.anonymousUserEditablePages.contains(pagePath))
+                ? ' *'
+                : "";
             dropdownItems.add(
               _dropdownItemWithPI(
-                value: 'create-editable-page',
-                child: RichText(
-                  text: TextSpan(
-                    text: 'create your own ',
-                    style: TextStyle(color: Colors.grey),
-                    children: [
-                      TextSpan(
-                        text: 'editable',
-                        style: TextStyle(color: Colors.purpleAccent),
-                      ),
-                      TextSpan(text: ' page'),
-                    ],
-                  ),
-                ),
+                value: pagePath,
+                child: _pageNavBtn(context, pagePath, sandboxIndicator),
               ),
             );
           }
+        } catch (e) {
+          print(e);
         }
-        addBrightnessItem(dropdownItems);
+      }
+    }
 
-        return PointerInterceptor(
-          child: Theme(
-            data: Theme.of(context).copyWith(hoverColor: Colors.transparent),
-            child: DropdownButton<String>(
-            // key: fco.authIconGK,
-            items: dropdownItems,
-            underline: Offstage(),
-            focusColor: Colors.transparent,
-            icon: PointerInterceptor(
-              child: Icon(Icons.edit, color: pencilIconColor, size: 24),
+    addBrightnessItem(context, state, dropdownItems);
+
+    return PointerInterceptor(
+      child: Theme(
+        data: Theme.of(context).copyWith(hoverColor: Colors.transparent),
+        child: DropdownButton<String>(
+          items: dropdownItems,
+          underline: Offstage(),
+          focusColor: Colors.transparent,
+          icon: PointerInterceptor(
+            child: Icon(
+              Icons.more_vert,
+              color: fsdui.canEditAnyContent()
+                  ? Colors.red
+                  : Colors.purpleAccent,
+              size: 24,
             ),
-            dropdownColor: Colors.white,
-            onChanged: (value) {
+          ),
+          onChanged: (value) {
+            if (fsdui.router != null) {
               switch (value) {
-                case 'sign-in-as-editor':
-                  fsdui.capiBloc.add(ForceRefresh());
-                  final ePage = EditablePage.of(context);
-                  fsdui.afterMsDelayDo(500, (){
-                    ePage?.editorPasswordDialog();
-                  });
+                case 'create-editable-page':
+                  EditablePage.of(context)?.showPageNameDialog();
                   break;
                 default:
-                  if (fsdui.router != null) {
-                    EditablePage.of(context)?.showPageNameDialog();
-                  }
                   break;
               }
-            },
-          ),
-          ),
-        );
-      } else {
-        // signed in as super, article or guest editor
-        dropdownItems.add(
-          _dropdownItemWithPI(value: 'sign-out', child: _signOutBtn(context)),
-        );
-        if (fsdui.canEditAnyContent() && fsdui.router != null) {
-          dropdownItems.add(
-            _dropdownItemWithPI(
-              value: 'create-editable-page',
-              child: RichText(
-                text: TextSpan(
-                  text: 'create an ',
-                  style: TextStyle(color: Colors.grey),
-                  children: [
-                    TextSpan(
-                      text: 'editable',
-                      style: TextStyle(color: Colors.purpleAccent),
-                    ),
-                    TextSpan(text: ' page'),
-                  ],
-                ),
-              ),
-            ),
-          );
-        }
-        if (!fsdui.isGuestEditor()) {
-          for (String pagePath in fsdui.pageList) {
-            // skip currentPath
-            try {
-              final String currentPath = GoRouterState.of(
-                context,
-              ).uri.toString();
-              if (pagePath != currentPath) {
-                String sandboxIndicator =
-                    (fsdui.appInfo.anonymousUserEditablePages.contains(pagePath))
-                    ? ' *'
-                    : "";
-                dropdownItems.add(
-                  _dropdownItemWithPI(
-                    value: pagePath,
-                    child: _pageNavBtn(context, pagePath, sandboxIndicator),
-                  ),
-                );
-              }
-            } catch (e) {
-              print(e);
             }
-          }
-        }
-        addBrightnessItem(dropdownItems);
+          },
+        ),
+      ),
+    );
+  }
 
-        // wrap dd and its menu items with pointer interceptor
-        return PointerInterceptor(
-          child: Theme(
-            data: Theme.of(context).copyWith(hoverColor: Colors.transparent),
-            child: DropdownButton<String>(
-              items: dropdownItems,
-              underline: Offstage(),
-              focusColor: Colors.transparent,
-              icon: PointerInterceptor(
-                child: Icon(Icons.more_vert, color: fsdui.canEditAnyContent() ? Colors.red : Colors.purpleAccent, size: 24),
-              ),
-              onChanged: (value) {
-                if (fsdui.router != null) {
-                  switch (value) {
-                    case 'create-editable-page':
-                      EditablePage.of(context)?.showPageNameDialog();
-                      break;
-                    default:
-                      break;
-                  }
-                }
-              },
-            ),
-          ),
-        );
-      }
-    },
-  );
+  void addBrightnessItem(BuildContext context, CAPIState state, dropdownItems) {
+    String buttonText;
+    ThemeMode nextMode;
+    IconData buttonIcon;
 
-  void addBrightnessItem(dropdownItems) {
+    switch (ThemeMode.values[state.themeModeIndex ?? 0]) {
+      case ThemeMode.light:
+        buttonText = 'Switch to Dark Mode';
+        nextMode = ThemeMode.dark;
+        buttonIcon = Icons.brightness_3; // Moon icon
+        break;
+      case ThemeMode.dark:
+        buttonText = 'Switch to System Theme';
+        nextMode = ThemeMode.system;
+        buttonIcon = Icons.brightness_auto; // Auto icon
+        break;
+      // case ThemeMode.system:
+      default: // Treat system as default, cycle to light
+        buttonText = 'Switch to Light Mode';
+        nextMode = ThemeMode.light;
+        buttonIcon = Icons.brightness_7; // Sun icon
+        break;
+    }
+
     dropdownItems.add(
       _dropdownItemWithPI(
         value: 'brightness',
-        child: ValueListenableBuilder<ThemeMode>(
-          valueListenable: fsdui.themeModeNotifier,
-          builder: (context, currentMode, child) {
-            String buttonText;
-            ThemeMode nextMode;
-            IconData buttonIcon;
-
-            switch (currentMode) {
-              case ThemeMode.light:
-                buttonText = 'Switch to Dark Mode';
-                nextMode = ThemeMode.dark;
-                buttonIcon = Icons.brightness_3; // Moon icon
-                break;
-              case ThemeMode.dark:
-                buttonText = 'Switch to System Theme';
-                nextMode = ThemeMode.system;
-                buttonIcon = Icons.brightness_auto; // Auto icon
-                break;
-              // case ThemeMode.system:
-              default: // Treat system as default, cycle to light
-                buttonText = 'Switch to Light Mode';
-                nextMode = ThemeMode.light;
-                buttonIcon = Icons.brightness_7; // Sun icon
-                break;
-            }
-            return MenuItemButton(
-              onPressed: () {
-                fsdui.themeModeNotifier.value = nextMode;
-              },
-              leadingIcon: Icon(buttonIcon),
-              child: Text(buttonText),
-            );
+        child: MenuItemButton(
+          onPressed: () {
+            fsdui.capiBloc.add(SetThemeMode(themeMode: nextMode));
+            Navigator.pop(context);
           },
+          leadingIcon: Icon(buttonIcon),
+          child: Text(buttonText),
         ),
       ),
     );
@@ -226,7 +240,7 @@ mixin NavMixin {
   Widget _signOutBtn(context) => TextButton(
     onPressed: () {
       if (!fsdui.anyPresent([HotspotTargetConfigToolbar.CID])) {
-        fsdui.capiBloc.add(SignedOut());
+        fsdui.capiBloc.add(SignOut());
         Navigator.pop(context);
       }
     },

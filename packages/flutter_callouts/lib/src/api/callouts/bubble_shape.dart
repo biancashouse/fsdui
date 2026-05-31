@@ -14,7 +14,7 @@ class BubbleShape_OP extends CustomPainter {
     if (pointerPath != null) {
       Paint fillPaint = fca.bgPaint(
         calloutConfig.bubbleOrTargetPointerColor ??
-        calloutConfig.decorationFillColors?.color ?? Colors.grey,
+        calloutConfig.decorationFillColors?.singleColor ?? Colors.grey,
       );
       canvas.drawPath(pointerPath, fillPaint);
       // in order to completely fill in the rounded rectangle

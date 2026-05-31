@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_material3_text_size.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_font_style.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_font_weight.dart';
-import 'package:fsdui/src/model/color_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:fsdui/src/typedefs.dart';
@@ -20,7 +19,7 @@ class TextStyleProperties with TextStylePropertiesMappable {
   FontWeightEnum? fontWeight;
   double? lineHeight;
   double? letterSpacing;
-  ColorModel? color;
+  Color? color;
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   TextStyleName? lastHoveredSuggestion;
@@ -62,7 +61,7 @@ class TextStyleProperties with TextStylePropertiesMappable {
         fontWeight: fontWeight?.flutterValue,
         letterSpacing: letterSpacing,
         height: lineHeight,
-        color: color?.flutterValue,
+        color: color,
       ),
     );
 

@@ -35,6 +35,7 @@ abstract class IModelRepository {
 
   // Future<bool> saveNewVersionOfSnippetBeingEdited();
   Future<void> saveNewVersionOfSnippet(SNode rootNode);
+  Future<void> saveNewVersionOfSnippetMap(String snippetName, Map<String, dynamic> rootMap);
 
   Future<bool> saveBrandNewSnippet({
     required SnippetName snippetName,

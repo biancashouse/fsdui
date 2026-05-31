@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/pnodes/bool_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
-import 'package:fsdui/src/snippet/pnodes/edge_insets_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/edgeinsets_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/editors/property_button_search_container_styles.dart';
 import 'package:fsdui/src/snippet/pnodes/enum_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
@@ -72,7 +72,7 @@ class ContainerStylePNode /*Group*/ extends PNode /*Group*/ {
           EdgeInsetsPNode(
             snode: super.snode,
             name: 'margin',
-            eiValue: containerStyleProperties.margin,
+            ei: containerStyleProperties.margin,
             onEIChangedF: (newValue) {
               containerStyleProperties.margin = newValue;
               onGroupChange.call(containerStyleProperties, true);
@@ -87,7 +87,7 @@ class ContainerStylePNode /*Group*/ extends PNode /*Group*/ {
           EdgeInsetsPNode(
             snode: super.snode,
             name: 'padding',
-            eiValue: containerStyleProperties.padding,
+            ei: containerStyleProperties.padding,
             onEIChangedF: (newValue) {
               containerStyleProperties.padding = newValue;
               onGroupChange.call(containerStyleProperties, true);
@@ -159,7 +159,6 @@ class ContainerStylePNode /*Group*/ extends PNode /*Group*/ {
               containerStyleProperties.borderThickness = newValue;
               onGroupChange.call(containerStyleProperties, true);
             },
-            calloutButtonSize: const Size(90, 20),
           ),
           DecimalPNode(
             snode: super.snode,
@@ -169,7 +168,6 @@ class ContainerStylePNode /*Group*/ extends PNode /*Group*/ {
               containerStyleProperties.borderRadius = newValue;
               onGroupChange.call(containerStyleProperties, true);
             },
-            calloutButtonSize: const Size(90, 20),
           ),
         ],
       ),

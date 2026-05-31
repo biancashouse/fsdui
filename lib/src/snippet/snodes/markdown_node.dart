@@ -9,7 +9,7 @@ import '../pnodes/string_pnode.dart';
 part 'markdown_node.mapper.dart';
 
 @MappableClass()
-class MarkdownNode extends CL with MarkdownNodeMappable {
+class MarkdownNode extends SNode with MarkdownNodeMappable {
   String? data;
 
   MarkdownNode({super.name, this.data});
@@ -185,7 +185,7 @@ line 2
 
 line 3
 """;
-  String _markdownData = """
+  final String _markdownData = """
 # Markdown Editor Demo
 
 This is a **live** markdown editor.

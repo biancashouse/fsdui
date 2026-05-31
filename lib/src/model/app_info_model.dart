@@ -10,15 +10,15 @@ class AppInfoModel with AppInfoModelMappable {
   bool autoPublishDefault;
   SNode? clipboard;
   List<SnippetName> snippetNames; // a snippet may be a Page snippet; i.e. also has a Route Path property
-  Map<TextStyleName, TextStyleProperties> userTextStyles;
-  Map<ButtonStyleName, ButtonStyleProperties> userButtonStyles;
-  Map<ContainerStyleName, ContainerStyleProperties> userContainerStyles;
+  Map<TextStyleName, TextStyleProperties> textStyles;
+  Map<ButtonStyleName, ButtonStyleProperties> buttonStyles;
+  Map<ContainerStyleName, ContainerStyleProperties> containerStyles;
   @MappableField(key: 'anonymous-user-pages')
   List<String> anonymousUserEditablePages;
-  @MappableField(key: 'super-editor-passwords')
-  List<String> superEditorPasswords;
-  @MappableField(key: 'article-editor-passwords')
-  List<String> articleEditorPasswords;
+  @MappableField(key: 'super-editors')
+  List<String> superEditorEas;
+  @MappableField(key: 'article-editors')
+  List<String> articleEditorEas;
 
   static bool needToSave = false;
 
@@ -26,13 +26,13 @@ class AppInfoModel with AppInfoModelMappable {
     this.clipboard,
     this.autoPublishDefault = true,
     this.snippetNames = const [],
-    this.userTextStyles = const {},
-    this.userButtonStyles = const {},
-    this.userContainerStyles = const {},
+    this.textStyles = const {},
+    this.buttonStyles = const {},
+    this.containerStyles = const {},
     this.anonymousUserEditablePages = const [],
     // managed manually in firestore console
-    this.superEditorPasswords = const [],
-    this.articleEditorPasswords = const [],
+    this.superEditorEas = const [],
+    this.articleEditorEas = const [],
   });
 
   bool get clipboardIsEmpty => clipboard == null;

@@ -9,7 +9,7 @@ import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 part 'placeholder_node.mapper.dart';
 
 @MappableClass()
-class PlaceholderNode extends CL with PlaceholderNodeMappable {
+class PlaceholderNode extends SNode with PlaceholderNodeMappable {
   double? width;
   double? height;
 
@@ -29,7 +29,6 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
           decimalValue: width,
           onDoubleChange: (newValue) =>
               refreshWithUpdate(context, () => width = newValue),
-          calloutButtonSize: const Size(80, 20),
         ),
         DecimalPNode(
           snode: this,
@@ -37,7 +36,6 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
           decimalValue: height,
           onDoubleChange: (newValue) =>
               refreshWithUpdate(context, () => height = newValue),
-          calloutButtonSize: const Size(80, 20),
         ),
         FlutterDocPNode(
             buttonLabel: 'Placeholder',

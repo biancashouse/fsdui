@@ -7,7 +7,7 @@ import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 part 'widgetspan_node.mapper.dart';
 
 @MappableClass()
-class WidgetSpanNode extends InlineSpanNode with WidgetSpanNodeMappable {
+class WidgetSpanNode extends SNode with InlineSpanNode, WidgetSpanNodeMappable {
   SNode? child;
 
   WidgetSpanNode({

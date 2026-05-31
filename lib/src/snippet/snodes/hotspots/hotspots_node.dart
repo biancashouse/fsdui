@@ -6,7 +6,12 @@ import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
 part 'hotspots_node.mapper.dart';
 
 @MappableClass()
-class TargetsWrapperNode extends SC with TargetsWrapperNodeMappable {
+class TargetsWrapperNode extends SNode with SC, TargetsWrapperNodeMappable {
+  @override
+  SNode? child;
+
+  @override
+  bool canAppendAChild() => child == null;
   double? aspectRatio;
 
   // every drag end of a cover or play btn updates the aspect ratio
@@ -18,7 +23,7 @@ class TargetsWrapperNode extends SC with TargetsWrapperNodeMappable {
     this.aspectRatio,
     this.borderRadius = 0,
     this.targets = const [],
-    super.child,
+    this.child,
   });
 
   List<HotspotTargetModel> _playList = [];
@@ -37,7 +42,6 @@ class TargetsWrapperNode extends SC with TargetsWrapperNodeMappable {
           decimalValue: aspectRatio,
           onDoubleChange: (newValue) =>
               refreshWithUpdate(context, () => aspectRatio = newValue ?? 0.0),
-          calloutButtonSize: const Size(130, 20),
         ),
         DecimalPNode(
           snode: this,
@@ -45,7 +49,6 @@ class TargetsWrapperNode extends SC with TargetsWrapperNodeMappable {
           decimalValue: borderRadius,
           onDoubleChange: (newValue) =>
               refreshWithUpdate(context, () => borderRadius = newValue ?? 0.0),
-          calloutButtonSize: const Size(130, 20),
         ),
       ];
 

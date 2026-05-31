@@ -13,50 +13,50 @@
 
 import 'dart:convert';
 import 'dart:math' as math;
-import 'package:json_schema/json_schema.dart';
+import 'package:json_schema_builder/json_schema_builder.dart';
 
 // ─── Constants (GEOMETRY.md) ──────────────────────────────────────────────────
 
-const double kT            = 14.0;
-const double kCharW        = 0.6  * kT;
-const double kPadX         = kT;
-const double kPadY         = 0.6  * kT;
-const double kLineGap      = 4.0;
-const double kRowGap       = 1.5  * kT;
-const double kTab          = 2.0  * kT;
-const double kDHx          = kT;
-const double kDHy          = kT;
-const double kDCxOff       = 2.0  * kT;
-const double kDCyOff       = 2.5  * kT;
-const double kBranchScopeX = 4.0  * kT;
-const double kBranchRectX  = 6.0  * kT;
-const double kFalseTopGap  = 2.0  * kT;
-const double kULOff        = 2.0  * kT;
-const double kUROff        = 4.0  * kT;
-const double kURadius      = kT;
-const double kUPad         = kT;
-const double kFlankInner   = kT / 2.0;
-const double kFlankExtraW  = kT;
-const double kFuncScopeOff = 2.0  * kT;
-const double kBadgeR       = 0.55 * kT;
-const double kPillLeft     = 2.0  * kT;
-const double kRootScopeX   = kPillLeft + 2.0 * kT; // 4t
-const double kPillH        = 1.5  * kT;
+const double kT = 14.0;
+const double kCharW = 0.6 * kT;
+const double kPadX = kT;
+const double kPadY = 0.6 * kT;
+const double kLineGap = 4.0;
+const double kRowGap = 1.5 * kT;
+const double kTab = 2.0 * kT;
+const double kDHx = kT;
+const double kDHy = kT;
+const double kDCxOff = 2.0 * kT;
+const double kDCyOff = 2.5 * kT;
+const double kBranchScopeX = 4.0 * kT;
+const double kBranchRectX = 6.0 * kT;
+const double kFalseTopGap = 2.0 * kT;
+const double kULOff = 2.0 * kT;
+const double kUROff = 4.0 * kT;
+const double kURadius = kT;
+const double kUPad = kT;
+const double kFlankInner = kT / 2.0;
+const double kFlankExtraW = kT;
+const double kFuncScopeOff = 2.0 * kT;
+const double kBadgeR = 0.55 * kT;
+const double kPillLeft = 2.0 * kT;
+const double kRootScopeX = kPillLeft + 2.0 * kT; // 4t
+const double kPillH = 1.5 * kT;
 
 // ─── Colors ───────────────────────────────────────────────────────────────────
 
-const String cBg           = '#FAFBFC';
-const String cDot          = '#DDE3EA';
-const String cLine         = '#A8B3BE';
-const String cRectStroke   = '#A8B3BE';
-const String cIndigo       = '#6366F1';
-const String cText         = '#1F2937';
-const String cPillBg       = '#F5F7FA';
-const String cReturnFill   = '#FEF3C7';
+const String cBg = '#FAFBFC';
+const String cDot = '#DDE3EA';
+const String cLine = '#A8B3BE';
+const String cRectStroke = '#A8B3BE';
+const String cIndigo = '#6366F1';
+const String cText = '#1F2937';
+const String cPillBg = '#F5F7FA';
+const String cReturnFill = '#FEF3C7';
 const String cReturnStroke = '#D97706';
-const String cReturnText   = '#D97706';
-const String cAwaitBadge   = '#EEF2FF';
-const String cWhite        = '#FFFFFF';
+const String cReturnText = '#D97706';
+const String cAwaitBadge = '#EEF2FF';
+const String cWhite = '#FFFFFF';
 
 // ─── Primitives ───────────────────────────────────────────────────────────────
 
@@ -80,11 +80,16 @@ class _Rect extends _Primitive {
   final bool indigo;
   final List<String> lines;
   final double textX, textY;
-  _Rect(this.x, this.y, this.w, this.h,
-      {required this.indigo,
-        required this.lines,
-        required this.textX,
-        required this.textY});
+  _Rect(
+    this.x,
+    this.y,
+    this.w,
+    this.h, {
+    required this.indigo,
+    required this.lines,
+    required this.textX,
+    required this.textY,
+  });
 }
 
 class _ReturnPill extends _Primitive {
@@ -141,10 +146,10 @@ class _Measure {
 _Measure _measureText(String text, {bool flanked = false}) {
   final lines = text.split('\n');
   final maxChars = lines.map((l) => l.length).reduce(math.max);
-  final w = (maxChars * kCharW + 2 * kPadX).ceilToDouble() +
+  final w =
+      (maxChars * kCharW + 2 * kPadX).ceilToDouble() +
       (flanked ? kFlankExtraW : 0);
-  final rawH =
-      lines.length * kT + (lines.length - 1) * kLineGap + 2 * kPadY;
+  final rawH = lines.length * kT + (lines.length - 1) * kLineGap + 2 * kPadY;
   final h = (rawH / kT).ceil() * kT;
   return _Measure(w, h, lines);
 }
@@ -193,11 +198,12 @@ class _LayoutResult {
   final double rectY;
   final double rectH;
   final double bottomY;
-  _LayoutResult(
-      {required this.primitives,
-        required this.rectY,
-        required this.rectH,
-        required this.bottomY});
+  _LayoutResult({
+    required this.primitives,
+    required this.rectY,
+    required this.rectH,
+    required this.bottomY,
+  });
 }
 
 class _ScopeResult {
@@ -208,8 +214,7 @@ class _ScopeResult {
 
 // ─── Layout engine ────────────────────────────────────────────────────────────
 
-_ScopeResult _layoutScope(
-    List steps, double attachX, double startY) {
+_ScopeResult _layoutScope(List steps, double attachX, double startY) {
   final primitives = <_Primitive>[];
   var y = startY;
   final tabYs = <double>[];
@@ -231,10 +236,9 @@ _ScopeResult _layoutScope(
   return _ScopeResult(primitives, y - kRowGap);
 }
 
-_ScopeResult _layoutTrueScope(
-    List steps, double decRectX, double dCY) {
+_ScopeResult _layoutTrueScope(List steps, double decRectX, double dCY) {
   final scopeX = decRectX + kBranchScopeX;
-  final rectX  = decRectX + kBranchRectX;
+  final rectX = decRectX + kBranchRectX;
   final primitives = <_Primitive>[];
   final tabYs = <double>[];
   var y = 0.0;
@@ -264,18 +268,24 @@ _ScopeResult _layoutTrueScope(
 }
 
 _ScopeResult _layoutFalseScope(
-    List steps, double dCX, double dCY, double successBottomY) {
+  List steps,
+  double dCX,
+  double dCY,
+  double successBottomY,
+) {
   if (steps.isEmpty) return _ScopeResult([], successBottomY);
 
   final scopeX = dCX + kBranchScopeX;
-  final rectX  = dCX + kBranchRectX;
+  final rectX = dCX + kBranchRectX;
   final primitives = <_Primitive>[];
 
   final firstStep = steps[0] as Map<String, dynamic>;
-  final firstM = _measureText(_stepText(firstStep),
-      flanked: _isFlanked(firstStep));
+  final firstM = _measureText(
+    _stepText(firstStep),
+    flanked: _isFlanked(firstStep),
+  );
   final firstRectTop = successBottomY + kFalseTopGap;
-  final firstMidY    = firstRectTop + firstM.h / 2;
+  final firstMidY = firstRectTop + firstM.h / 2;
 
   // vertical connector icon-bottom → first rect mid
   primitives.add(_VLine(dCX, dCY + kDHy, firstMidY));
@@ -302,9 +312,8 @@ _ScopeResult _layoutFalseScope(
   return _ScopeResult(primitives, y - kRowGap);
 }
 
-_ScopeResult _layoutFuncScope(
-    List steps, double rectX, double rectBottom) {
-  final scopeX     = rectX + kFuncScopeOff;
+_ScopeResult _layoutFuncScope(List steps, double rectX, double rectBottom) {
+  final scopeX = rectX + kFuncScopeOff;
   final childRectX = rectX + kFuncScopeOff + kTab;
   final primitives = <_Primitive>[];
   final tabYs = <double>[];
@@ -330,17 +339,21 @@ _ScopeResult _layoutFuncScope(
 }
 
 _LayoutResult _layoutStep(
-    Map<String, dynamic> step, double rectX, double rectY,
-    {bool suppressFlanking = false}) {
+  Map<String, dynamic> step,
+  double rectX,
+  double rectY, {
+  bool suppressFlanking = false,
+}) {
   final primitives = <_Primitive>[];
-  final txt     = _stepText(step);
+  final txt = _stepText(step);
   final flanked = _isFlanked(step) && !suppressFlanking;
-  final m       = _measureText(txt, flanked: flanked);
+  final m = _measureText(txt, flanked: flanked);
   final w = m.w, h = m.h;
   var bottomY = rectY + h;
 
-  final type     = step['type'] as String;
-  final isIndigo = type == 'Function' ||
+  final type = step['type'] as String;
+  final isIndigo =
+      type == 'Function' ||
       type == 'AwaitFunctionCall' ||
       type == 'AsyncFunctionCall';
   final isReturn = type == 'Return';
@@ -348,22 +361,29 @@ _LayoutResult _layoutStep(
   if (isReturn) {
     primitives.add(_ReturnPill(rectX, rectY, w, h, txt));
   } else {
-    primitives.add(_Rect(
-      rectX, rectY, w, h,
-      indigo: isIndigo,
-      lines: m.lines,
-      textX: rectX + kPadX + (flanked ? kFlankInner : 0),
-      textY: rectY + kPadY,
-    ));
+    primitives.add(
+      _Rect(
+        rectX,
+        rectY,
+        w,
+        h,
+        indigo: isIndigo,
+        lines: m.lines,
+        textX: rectX + kPadX + (flanked ? kFlankInner : 0),
+        textY: rectY + kPadY,
+      ),
+    );
   }
 
   if (flanked) {
-    primitives.add(_FlankLines(
-      rectX + kFlankInner,
-      rectX + w - kFlankInner,
-      rectY + 2,
-      rectY + h - 2,
-    ));
+    primitives.add(
+      _FlankLines(
+        rectX + kFlankInner,
+        rectX + w - kFlankInner,
+        rectY + 2,
+        rectY + h - 2,
+      ),
+    );
   }
 
   if (type == 'AwaitFunctionCall') {
@@ -378,13 +398,18 @@ _LayoutResult _layoutStep(
     primitives.add(_Diamond(dCX, dCY));
     primitives.add(_HLine(dCX + kDHx, rectX + kBranchScopeX, dCY));
 
-    final trueSteps  = (step['trueSteps']  as List?) ?? [];
+    final trueSteps = (step['trueSteps'] as List?) ?? [];
     final falseSteps = (step['falseSteps'] as List?) ?? [];
 
-    final trueResult  = _layoutTrueScope(trueSteps, rectX, dCY);
+    final trueResult = _layoutTrueScope(trueSteps, rectX, dCY);
     primitives.addAll(trueResult.primitives);
 
-    final falseResult = _layoutFalseScope(falseSteps, dCX, dCY, trueResult.bottomY);
+    final falseResult = _layoutFalseScope(
+      falseSteps,
+      dCX,
+      dCY,
+      trueResult.bottomY,
+    );
     primitives.addAll(falseResult.primitives);
 
     bottomY = math.max(trueResult.bottomY, falseResult.bottomY);
@@ -399,12 +424,17 @@ _LayoutResult _layoutStep(
     primitives.add(_HLine(dCX + kDHx, rectX + kBranchScopeX, dCY));
 
     final successSteps = (step['successSteps'] as List?) ?? [];
-    final failedSteps  = (step['failedSteps']  as List?) ?? [];
+    final failedSteps = (step['failedSteps'] as List?) ?? [];
 
     final successResult = _layoutTrueScope(successSteps, rectX, dCY);
     primitives.addAll(successResult.primitives);
 
-    final failResult = _layoutFalseScope(failedSteps, dCX, dCY, successResult.bottomY);
+    final failResult = _layoutFalseScope(
+      failedSteps,
+      dCX,
+      dCY,
+      successResult.bottomY,
+    );
     primitives.addAll(failResult.primitives);
 
     bottomY = math.max(successResult.bottomY, failResult.bottomY);
@@ -412,9 +442,9 @@ _LayoutResult _layoutStep(
 
   // ── Loop ──
   if (type == 'Loop') {
-    final leftX  = rectX + kULOff;
+    final leftX = rectX + kULOff;
     final rightX = rectX + kUROff;
-    final topY   = rectY + h;
+    final topY = rectY + h;
     final loopSteps = (step['steps'] as List?) ?? [];
     final loopResult = _layoutScope(loopSteps, rightX, topY + kRowGap);
     primitives.addAll(loopResult.primitives);
@@ -450,7 +480,7 @@ class _DiagramLayout {
 _DiagramLayout _layoutAlgorithm(Map<String, dynamic> algorithm) {
   final primitives = <_Primitive>[];
   final steps = (algorithm['steps'] as List?) ?? [];
-  final name  = (algorithm['name'] as String?) ?? 'Begin';
+  final name = (algorithm['name'] as String?) ?? 'Begin';
 
   // Begin pill
   final pillM = _measureText(name);
@@ -485,11 +515,11 @@ _DiagramLayout _layoutAlgorithm(Map<String, dynamic> algorithm) {
   // Compute canvas size
   var maxX = 200.0;
   for (final p in primitives) {
-    if (p is _Rect)      maxX = math.max(maxX, p.x + p.w + kT * 2);
-    if (p is _ReturnPill)maxX = math.max(maxX, p.x + p.w + kT * 2);
-    if (p is _HLine)     maxX = math.max(maxX, p.x2 + kT * 2);
-    if (p is _Diamond)   maxX = math.max(maxX, p.cx + kDHx + kT * 2);
-    if (p is _Clock)     maxX = math.max(maxX, p.cx + kDHy + kT * 2);
+    if (p is _Rect) maxX = math.max(maxX, p.x + p.w + kT * 2);
+    if (p is _ReturnPill) maxX = math.max(maxX, p.x + p.w + kT * 2);
+    if (p is _HLine) maxX = math.max(maxX, p.x2 + kT * 2);
+    if (p is _Diamond) maxX = math.max(maxX, p.cx + kDHx + kT * 2);
+    if (p is _Clock) maxX = math.max(maxX, p.cx + kDHy + kT * 2);
   }
   final totalW = maxX;
   final totalH = endPillY + kPillH + kT * 4;
@@ -518,10 +548,16 @@ String _renderPrimitive(_Primitive p) {
   if (p is _HLine || p is _VLine) {
     double x1, y1, x2, y2;
     if (p is _HLine) {
-      x1 = p.x1; y1 = p.y; x2 = p.x2; y2 = p.y;
+      x1 = p.x1;
+      y1 = p.y;
+      x2 = p.x2;
+      y2 = p.y;
     } else {
       final v = p as _VLine;
-      x1 = v.x; y1 = v.y1; x2 = v.x; y2 = v.y2;
+      x1 = v.x;
+      y1 = v.y1;
+      x2 = v.x;
+      y2 = v.y2;
     }
     return '<line x1="${_f(x1)}" y1="${_f(y1)}" x2="${_f(x2)}" y2="${_f(y2)}" '
         'stroke="$cLine" stroke-width="1.5"/>';
@@ -541,17 +577,21 @@ String _renderPrimitive(_Primitive p) {
 
   if (p is _Rect) {
     final stroke = p.indigo ? cIndigo : cRectStroke;
-    final sw     = p.indigo ? '1.5' : '1';
+    final sw = p.indigo ? '1.5' : '1';
     final buf = StringBuffer();
-    buf.write('<rect x="${_f(p.x)}" y="${_f(p.y)}" '
-        'width="${_f(p.w)}" height="${_f(p.h)}" '
-        'fill="$cWhite" stroke="$stroke" stroke-width="$sw" rx="2"/>');
+    buf.write(
+      '<rect x="${_f(p.x)}" y="${_f(p.y)}" '
+      'width="${_f(p.w)}" height="${_f(p.h)}" '
+      'fill="$cWhite" stroke="$stroke" stroke-width="$sw" rx="2"/>',
+    );
     for (var i = 0; i < p.lines.length; i++) {
       final ty = p.textY + i * (kT + kLineGap) + kT * 0.78;
-      buf.write('<text x="${_f(p.textX)}" y="${_f(ty)}" '
-          'fill="$cText" font-size="${_f(kT)}" '
-          'font-family="\'IBM Plex Mono\',monospace">'
-          '${_xmlEscape(p.lines[i])}</text>');
+      buf.write(
+        '<text x="${_f(p.textX)}" y="${_f(ty)}" '
+        'fill="$cText" font-size="${_f(kT)}" '
+        'font-family="\'IBM Plex Mono\',monospace">'
+        '${_xmlEscape(p.lines[i])}</text>',
+      );
     }
     return buf.toString();
   }
@@ -612,10 +652,16 @@ String _renderPrimitive(_Primitive p) {
     final double x, y, w;
     final String label;
     if (p is _BeginPill) {
-      x = p.x; y = p.y; w = p.w; label = p.label;
+      x = p.x;
+      y = p.y;
+      w = p.w;
+      label = p.label;
     } else {
       final ep = p as _EndPill;
-      x = ep.x; y = ep.y; w = ep.w; label = ep.label;
+      x = ep.x;
+      y = ep.y;
+      w = ep.w;
+      label = ep.label;
     }
     final rx = kPillH / 2;
     final tx = x + w / 2;
@@ -647,18 +693,19 @@ String algorithmToSvg(Map<String, dynamic> algorithm) {
   final h = layout.height;
 
   // Z-order: lines & arcs first, then shapes
-  bool isLine(_Primitive p) =>
-      p is _HLine || p is _VLine || p is _UArc;
+  bool isLine(_Primitive p) => p is _HLine || p is _VLine || p is _UArc;
 
-  final lines  = layout.primitives.where(isLine).toList();
+  final lines = layout.primitives.where(isLine).toList();
   final shapes = layout.primitives.where((p) => !isLine(p)).toList();
 
   final buf = StringBuffer();
 
   buf.write('<?xml version="1.0" encoding="UTF-8"?>');
-  buf.write('<svg xmlns="http://www.w3.org/2000/svg" '
-      'width="${_f(w)}" height="${_f(h)}" '
-      'viewBox="0 0 ${_f(w)} ${_f(h)}">');
+  buf.write(
+    '<svg xmlns="http://www.w3.org/2000/svg" '
+    'width="${_f(w)}" height="${_f(h)}" '
+    'viewBox="0 0 ${_f(w)} ${_f(h)}">',
+  );
 
   // Background
   buf.write('<rect width="${_f(w)}" height="${_f(h)}" fill="$cBg"/>');
@@ -704,10 +751,16 @@ final _kAlgorithmSchema = {
   'required': ['name', 'description', 'steps'],
   'additionalProperties': false,
   'properties': {
-    'name':        {'type': 'string'},
+    'name': {'type': 'string'},
     'description': {'type': 'string'},
-    'parameters':  {'type': 'array', 'items': {r'$ref': r'#/$defs/Parameter'}},
-    'steps':       {'type': 'array', 'items': {r'$ref': r'#/$defs/Step'}},
+    'parameters': {
+      'type': 'array',
+      'items': {r'$ref': r'#/$defs/Parameter'},
+    },
+    'steps': {
+      'type': 'array',
+      'items': {r'$ref': r'#/$defs/Step'},
+    },
   },
   r'$defs': {
     'Parameter': {
@@ -715,10 +768,10 @@ final _kAlgorithmSchema = {
       'required': ['name', 'type'],
       'additionalProperties': false,
       'properties': {
-        'name':        {'type': 'string'},
-        'type':        {'type': 'string'},
+        'name': {'type': 'string'},
+        'type': {'type': 'string'},
         'description': {'type': 'string'},
-        'default':     {},
+        'default': {},
       },
     },
     'Step': {
@@ -740,7 +793,7 @@ final _kAlgorithmSchema = {
       'additionalProperties': false,
       'properties': {
         'type': {'const': 'Action'},
-        'txt':  {'type': 'string'},
+        'txt': {'type': 'string'},
       },
     },
     'Loop': {
@@ -748,9 +801,12 @@ final _kAlgorithmSchema = {
       'required': ['type', 'txt', 'steps'],
       'additionalProperties': false,
       'properties': {
-        'type':  {'const': 'Loop'},
-        'txt':   {'type': 'string'},
-        'steps': {'type': 'array', 'items': {r'$ref': r'#/$defs/Step'}},
+        'type': {'const': 'Loop'},
+        'txt': {'type': 'string'},
+        'steps': {
+          'type': 'array',
+          'items': {r'$ref': r'#/$defs/Step'},
+        },
       },
     },
     'Decision': {
@@ -758,10 +814,16 @@ final _kAlgorithmSchema = {
       'required': ['type', 'condition', 'trueSteps', 'falseSteps'],
       'additionalProperties': false,
       'properties': {
-        'type':       {'const': 'Decision'},
-        'condition':  {'type': 'string'},
-        'trueSteps':  {'type': 'array', 'items': {r'$ref': r'#/$defs/Step'}},
-        'falseSteps': {'type': 'array', 'items': {r'$ref': r'#/$defs/Step'}},
+        'type': {'const': 'Decision'},
+        'condition': {'type': 'string'},
+        'trueSteps': {
+          'type': 'array',
+          'items': {r'$ref': r'#/$defs/Step'},
+        },
+        'falseSteps': {
+          'type': 'array',
+          'items': {r'$ref': r'#/$defs/Step'},
+        },
       },
     },
     'Function': {
@@ -769,12 +831,18 @@ final _kAlgorithmSchema = {
       'required': ['type', 'id', 'name', 'steps'],
       'additionalProperties': false,
       'properties': {
-        'type':        {'const': 'Function'},
-        'id':          {'type': 'string'},
-        'name':        {'type': 'string'},
+        'type': {'const': 'Function'},
+        'id': {'type': 'string'},
+        'name': {'type': 'string'},
         'description': {'type': 'string'},
-        'parameters':  {'type': 'array', 'items': {r'$ref': r'#/$defs/Parameter'}},
-        'steps':       {'type': 'array', 'items': {r'$ref': r'#/$defs/Step'}},
+        'parameters': {
+          'type': 'array',
+          'items': {r'$ref': r'#/$defs/Parameter'},
+        },
+        'steps': {
+          'type': 'array',
+          'items': {r'$ref': r'#/$defs/Step'},
+        },
       },
     },
     'AwaitFunctionCall': {
@@ -782,10 +850,10 @@ final _kAlgorithmSchema = {
       'required': ['type', 'functionId'],
       'additionalProperties': false,
       'properties': {
-        'type':       {'const': 'AwaitFunctionCall'},
-        'label':      {'type': 'string'},
+        'type': {'const': 'AwaitFunctionCall'},
+        'label': {'type': 'string'},
         'functionId': {'type': 'string'},
-        'arguments':  {'type': 'object'},
+        'arguments': {'type': 'object'},
       },
     },
     'AsyncFunctionCall': {
@@ -793,12 +861,18 @@ final _kAlgorithmSchema = {
       'required': ['type', 'functionId', 'successSteps', 'failedSteps'],
       'additionalProperties': false,
       'properties': {
-        'type':         {'const': 'AsyncFunctionCall'},
-        'label':        {'type': 'string'},
-        'functionId':   {'type': 'string'},
-        'arguments':    {'type': 'object'},
-        'successSteps': {'type': 'array', 'items': {r'$ref': r'#/$defs/Step'}},
-        'failedSteps':  {'type': 'array', 'items': {r'$ref': r'#/$defs/Step'}},
+        'type': {'const': 'AsyncFunctionCall'},
+        'label': {'type': 'string'},
+        'functionId': {'type': 'string'},
+        'arguments': {'type': 'object'},
+        'successSteps': {
+          'type': 'array',
+          'items': {r'$ref': r'#/$defs/Step'},
+        },
+        'failedSteps': {
+          'type': 'array',
+          'items': {r'$ref': r'#/$defs/Step'},
+        },
       },
     },
     'Return': {
@@ -806,9 +880,9 @@ final _kAlgorithmSchema = {
       'required': ['type'],
       'additionalProperties': false,
       'properties': {
-        'type':            {'const': 'Return'},
-        'label':           {'type': 'string'},
-        'value':           {},
+        'type': {'const': 'Return'},
+        'label': {'type': 'string'},
+        'value': {},
         'valueExpression': {'type': 'string'},
       },
     },
@@ -825,7 +899,10 @@ class AlgorithmValidationResult {
   /// Validation errors, empty if [isValid] is true.
   final List<String> errors;
 
-  const AlgorithmValidationResult._({required this.isValid, required this.errors});
+  const AlgorithmValidationResult._({
+    required this.isValid,
+    required this.errors,
+  });
 
   @override
   String toString() => isValid
@@ -838,18 +915,20 @@ class AlgorithmValidationResult {
 ///
 /// Example:
 /// ```dart
-/// final result = validateAlgorithm(jsonDecode(algorithmJson));
+/// final result = await validateAlgorithm(jsonDecode(algorithmJson));
 /// if (result.isValid) {
-///   final svg = algorithmToSvg(result);
+///   final svg = algorithmToSvg(result); // or use the map directly
 /// } else {
 ///   print(result.errors);
 /// }
 /// ```
-AlgorithmValidationResult validateAlgorithm(Map<String, dynamic> algorithm) {
-  final schema = JsonSchema.create(_kAlgorithmSchema);
-  final result = schema.validate(algorithm);
+Future<AlgorithmValidationResult> validateAlgorithm(
+  Map<String, dynamic> algorithm,
+) async {
+  final schema = Schema.fromMap(jsonDecode(jsonEncode(_kAlgorithmSchema)));
+  final errors = await schema.validate(algorithm);
   return AlgorithmValidationResult._(
-    isValid: result.isValid,
-    errors: result.errors.map((e) => e.toString()).toList(),
+    isValid: errors.isEmpty,
+    errors: errors.map((e) => e.details?.toString() ?? e.toString()).toList(),
   );
 }

@@ -8,10 +8,15 @@ import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 part 'sliver_floating_header_node.mapper.dart';
 
 @MappableClass()
-class SliverFloatingHeaderNode extends SC with SliverFloatingHeaderNodeMappable {
+class SliverFloatingHeaderNode extends SNode with SC, SliverFloatingHeaderNodeMappable {
+  @override
+  SNode? child;
+
+  @override
+  bool canAppendAChild() => child == null;
   SliverFloatingHeaderNode({
     super.name,
-    super.child,
+    this.child,
   });
 
   @override

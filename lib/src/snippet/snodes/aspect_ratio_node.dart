@@ -9,13 +9,18 @@ import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 part 'aspect_ratio_node.mapper.dart';
 
 @MappableClass()
-class AspectRatioNode extends SC with AspectRatioNodeMappable {
+class AspectRatioNode extends SNode with SC, AspectRatioNodeMappable {
+  @override
+  SNode? child;
+
+  @override
+  bool canAppendAChild() => child == null;
   double aspectRatio;
 
   AspectRatioNode({
     super.name,
     this.aspectRatio = 1.0,
-    super.child,
+    this.child,
   });
 
   @override
@@ -25,7 +30,6 @@ class AspectRatioNode extends SC with AspectRatioNodeMappable {
           name: 'aspectRatio',
           decimalValue: aspectRatio,
           onDoubleChange: (newValue) => refreshWithUpdate(context,() => aspectRatio = newValue ?? 1.0),
-          calloutButtonSize: const Size(140, 30),
         ),
     FlutterDocPNode(
         buttonLabel: 'AssetImage',

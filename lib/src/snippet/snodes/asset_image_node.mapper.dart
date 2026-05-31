@@ -1,8 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// dart format off
 // ignore_for_file: type=lint
-// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -15,7 +13,7 @@ class AssetImageNodeMapper extends SubClassMapperBase<AssetImageNode> {
   static AssetImageNodeMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = AssetImageNodeMapper._());
-      CLMapper.ensureInitialized().addSubMapper(_instance!);
+      SNodeMapper.ensureInitialized().addSubMapper(_instance!);
       BoxFitEnumMapper.ensureInitialized();
       AlignmentEnumMapper.ensureInitialized();
     }
@@ -26,70 +24,42 @@ class AssetImageNodeMapper extends SubClassMapperBase<AssetImageNode> {
   final String id = 'AssetImageNode';
 
   static String? _$name(AssetImageNode v) => v.name;
-  static const Field<AssetImageNode, String> _f$name = Field(
-    'name',
-    _$name,
-    opt: true,
-  );
+  static const Field<AssetImageNode, String> _f$name =
+      Field('name', _$name, opt: true);
   static String? _$assetPath(AssetImageNode v) => v.assetPath;
-  static const Field<AssetImageNode, String> _f$assetPath = Field(
-    'assetPath',
-    _$assetPath,
-    opt: true,
-  );
+  static const Field<AssetImageNode, String> _f$assetPath =
+      Field('assetPath', _$assetPath, opt: true);
   static BoxFitEnum? _$fit(AssetImageNode v) => v.fit;
-  static const Field<AssetImageNode, BoxFitEnum> _f$fit = Field(
-    'fit',
-    _$fit,
-    opt: true,
-  );
+  static const Field<AssetImageNode, BoxFitEnum> _f$fit =
+      Field('fit', _$fit, opt: true);
   static AlignmentEnum? _$alignment(AssetImageNode v) => v.alignment;
-  static const Field<AssetImageNode, AlignmentEnum> _f$alignment = Field(
-    'alignment',
-    _$alignment,
-    opt: true,
-  );
+  static const Field<AssetImageNode, AlignmentEnum> _f$alignment =
+      Field('alignment', _$alignment, opt: true);
   static double _$scale(AssetImageNode v) => v.scale;
-  static const Field<AssetImageNode, double> _f$scale = Field(
-    'scale',
-    _$scale,
-    opt: true,
-    def: 1.0,
-  );
+  static const Field<AssetImageNode, double> _f$scale =
+      Field('scale', _$scale, opt: true, def: 1.0);
   static String _$uid(AssetImageNode v) => v.uid;
-  static const Field<AssetImageNode, String> _f$uid = Field(
-    'uid',
-    _$uid,
-    mode: FieldMode.member,
-  );
+  static const Field<AssetImageNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static List<String>? _$tags(AssetImageNode v) => v.tags;
-  static const Field<AssetImageNode, List<String>> _f$tags = Field(
-    'tags',
-    _$tags,
-    mode: FieldMode.member,
-  );
+  static const Field<AssetImageNode, List<String>> _f$tags =
+      Field('tags', _$tags, mode: FieldMode.member);
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(AssetImageNode v) =>
       v.treeNodeGK;
   static const Field<AssetImageNode, GlobalKey<State<StatefulWidget>>>
-  _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
+      _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(AssetImageNode v) => v.isExpanded;
-  static const Field<AssetImageNode, bool> _f$isExpanded = Field(
-    'isExpanded',
-    _$isExpanded,
-    mode: FieldMode.member,
-  );
+  static const Field<AssetImageNode, bool> _f$isExpanded =
+      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(AssetImageNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<AssetImageNode, bool> _f$hidePropertiesWhileDragging =
-      Field(
-        'hidePropertiesWhileDragging',
-        _$hidePropertiesWhileDragging,
-        mode: FieldMode.member,
-      );
+      Field('hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
+          mode: FieldMode.member);
   static GlobalKey<State<StatefulWidget>>? _$nodeGK(AssetImageNode v) =>
       v.nodeGK;
   static const Field<AssetImageNode, GlobalKey<State<StatefulWidget>>>
-  _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
+      _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
 
   @override
   final MappableFields<AssetImageNode> fields = const {
@@ -107,28 +77,24 @@ class AssetImageNodeMapper extends SubClassMapperBase<AssetImageNode> {
   };
 
   @override
-  final String discriminatorKey = 'DK:cl';
+  final String discriminatorKey = 'DK:snode';
   @override
   final dynamic discriminatorValue = 'AssetImageNode';
   @override
-  late final ClassMapperBase superMapper = CLMapper.ensureInitialized();
+  late final ClassMapperBase superMapper = SNodeMapper.ensureInitialized();
 
   @override
   final MappingHook hook = const PropertyRenameHook('name', 'assetPath');
   @override
-  final MappingHook superHook = ChainedHook([
-    PropertyRenameHook('cl', 'DK:cl'),
-    PropertyRenameHook('snode', 'DK:snode'),
-  ]);
+  final MappingHook superHook = const PropertyRenameHook('snode', 'DK:snode');
 
   static AssetImageNode _instantiate(DecodingData data) {
     return AssetImageNode(
-      name: data.dec(_f$name),
-      assetPath: data.dec(_f$assetPath),
-      fit: data.dec(_f$fit),
-      alignment: data.dec(_f$alignment),
-      scale: data.dec(_f$scale),
-    );
+        name: data.dec(_f$name),
+        assetPath: data.dec(_f$assetPath),
+        fit: data.dec(_f$fit),
+        alignment: data.dec(_f$alignment),
+        scale: data.dec(_f$scale));
   }
 
   @override
@@ -145,43 +111,35 @@ class AssetImageNodeMapper extends SubClassMapperBase<AssetImageNode> {
 
 mixin AssetImageNodeMappable {
   String toJson() {
-    return AssetImageNodeMapper.ensureInitialized().encodeJson<AssetImageNode>(
-      this as AssetImageNode,
-    );
+    return AssetImageNodeMapper.ensureInitialized()
+        .encodeJson<AssetImageNode>(this as AssetImageNode);
   }
 
   Map<String, dynamic> toMap() {
-    return AssetImageNodeMapper.ensureInitialized().encodeMap<AssetImageNode>(
-      this as AssetImageNode,
-    );
+    return AssetImageNodeMapper.ensureInitialized()
+        .encodeMap<AssetImageNode>(this as AssetImageNode);
   }
 
   AssetImageNodeCopyWith<AssetImageNode, AssetImageNode, AssetImageNode>
-  get copyWith => _AssetImageNodeCopyWithImpl<AssetImageNode, AssetImageNode>(
-    this as AssetImageNode,
-    $identity,
-    $identity,
-  );
+      get copyWith =>
+          _AssetImageNodeCopyWithImpl<AssetImageNode, AssetImageNode>(
+              this as AssetImageNode, $identity, $identity);
   @override
   String toString() {
-    return AssetImageNodeMapper.ensureInitialized().stringifyValue(
-      this as AssetImageNode,
-    );
+    return AssetImageNodeMapper.ensureInitialized()
+        .stringifyValue(this as AssetImageNode);
   }
 
   @override
   bool operator ==(Object other) {
-    return AssetImageNodeMapper.ensureInitialized().equalsValue(
-      this as AssetImageNode,
-      other,
-    );
+    return AssetImageNodeMapper.ensureInitialized()
+        .equalsValue(this as AssetImageNode, other);
   }
 
   @override
   int get hashCode {
-    return AssetImageNodeMapper.ensureInitialized().hashValue(
-      this as AssetImageNode,
-    );
+    return AssetImageNodeMapper.ensureInitialized()
+        .hashValue(this as AssetImageNode);
   }
 }
 
@@ -192,18 +150,16 @@ extension AssetImageNodeValueCopy<$R, $Out>
 }
 
 abstract class AssetImageNodeCopyWith<$R, $In extends AssetImageNode, $Out>
-    implements CLCopyWith<$R, $In, $Out> {
+    implements SNodeCopyWith<$R, $In, $Out> {
   @override
-  $R call({
-    String? name,
-    String? assetPath,
-    BoxFitEnum? fit,
-    AlignmentEnum? alignment,
-    double? scale,
-  });
+  $R call(
+      {String? name,
+      String? assetPath,
+      BoxFitEnum? fit,
+      AlignmentEnum? alignment,
+      double? scale});
   AssetImageNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-    Then<$Out2, $R2> t,
-  );
+      Then<$Out2, $R2> t);
 }
 
 class _AssetImageNodeCopyWithImpl<$R, $Out>
@@ -215,33 +171,29 @@ class _AssetImageNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<AssetImageNode> $mapper =
       AssetImageNodeMapper.ensureInitialized();
   @override
-  $R call({
-    Object? name = $none,
-    Object? assetPath = $none,
-    Object? fit = $none,
-    Object? alignment = $none,
-    double? scale,
-  }) => $apply(
-    FieldCopyWithData({
-      if (name != $none) #name: name,
-      if (assetPath != $none) #assetPath: assetPath,
-      if (fit != $none) #fit: fit,
-      if (alignment != $none) #alignment: alignment,
-      if (scale != null) #scale: scale,
-    }),
-  );
+  $R call(
+          {Object? name = $none,
+          Object? assetPath = $none,
+          Object? fit = $none,
+          Object? alignment = $none,
+          double? scale}) =>
+      $apply(FieldCopyWithData({
+        if (name != $none) #name: name,
+        if (assetPath != $none) #assetPath: assetPath,
+        if (fit != $none) #fit: fit,
+        if (alignment != $none) #alignment: alignment,
+        if (scale != null) #scale: scale
+      }));
   @override
   AssetImageNode $make(CopyWithData data) => AssetImageNode(
-    name: data.get(#name, or: $value.name),
-    assetPath: data.get(#assetPath, or: $value.assetPath),
-    fit: data.get(#fit, or: $value.fit),
-    alignment: data.get(#alignment, or: $value.alignment),
-    scale: data.get(#scale, or: $value.scale),
-  );
+      name: data.get(#name, or: $value.name),
+      assetPath: data.get(#assetPath, or: $value.assetPath),
+      fit: data.get(#fit, or: $value.fit),
+      alignment: data.get(#alignment, or: $value.alignment),
+      scale: data.get(#scale, or: $value.scale));
 
   @override
   AssetImageNodeCopyWith<$R2, AssetImageNode, $Out2> $chain<$R2, $Out2>(
-    Then<$Out2, $R2> t,
-  ) => _AssetImageNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+          Then<$Out2, $R2> t) =>
+      _AssetImageNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
-

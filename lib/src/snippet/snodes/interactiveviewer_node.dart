@@ -9,14 +9,19 @@ import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 part 'interactiveviewer_node.mapper.dart';
 
 @MappableClass()
-class InteractiveViewerNode extends SC with InteractiveViewerNodeMappable {
+class InteractiveViewerNode extends SNode with SC, InteractiveViewerNodeMappable {
+  @override
+  SNode? child;
+
+  @override
+  bool canAppendAChild() => child == null;
   double? maxScale;
   double? minScale;
   bool? scaleEnabled;
 
   InteractiveViewerNode({
     super.name,
-    super.child,
+    this.child,
     this.maxScale,
     this.minScale,
     this.scaleEnabled,
@@ -30,7 +35,6 @@ class InteractiveViewerNode extends SC with InteractiveViewerNodeMappable {
       decimalValue: minScale,
       onDoubleChange: (newValue) =>
           refreshWithUpdate(context, () => minScale = newValue),
-      calloutButtonSize: const Size(80, 20),
     ),
     DecimalPNode(
       snode: this,
@@ -38,7 +42,6 @@ class InteractiveViewerNode extends SC with InteractiveViewerNodeMappable {
       decimalValue: maxScale,
       onDoubleChange: (newValue) =>
           refreshWithUpdate(context, () => maxScale = newValue),
-      calloutButtonSize: const Size(80, 20),
     ),
     FlutterDocPNode(
       buttonLabel: 'InteractiveViewer',

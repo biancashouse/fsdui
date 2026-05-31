@@ -11,7 +11,7 @@ import 'package:http/http.dart' as http;
 part 'algc_node.mapper.dart';
 
 @MappableClass()
-class AlgCNode extends CL with AlgCNodeMappable {
+class AlgCNode extends SNode with AlgCNodeMappable {
   String? fbUid;
   String? fId;
   String? flowchartJsonString;

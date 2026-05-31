@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
+
 // import 'package:window_manager/window_manager.dart';
 import 'pages/routes_config.dart';
 import 'bh-apps.firebase_options.dart';
@@ -23,7 +24,8 @@ void disableOverflowErrors() {
   };
 }
 
-void main({bool useEmulator = false}) {
+void main({bool useEmulator = false}) async {
+
   runZonedGuarded<Future<void>>(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
@@ -56,7 +58,8 @@ void main({bool useEmulator = false}) {
 
       runApp(
         FlutterContentApp.router(
-          appName: 'fsdui-example-with-go-router',
+          appId: 'demo-using-go-router',
+          appName: 'Demo using Go Router',
           // use web, mobile or desktop routingConfig defined in your routes_config.dart
           routingConfig: webRoutingConfig,
           initialRoutePath: '/',

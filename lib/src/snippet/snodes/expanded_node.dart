@@ -10,8 +10,15 @@ import '../pnodes/enums/enum_flex_fit.dart';
 part 'expanded_node.mapper.dart';
 
 @MappableClass(hook: PropertyDiscriminatorFixHook())
-class ExpandedNode extends FlexibleNode with ExpandedNodeMappable {
-  ExpandedNode({super.name, super.flex, super.child});
+class ExpandedNode extends SNode with SC, ExpandedNodeMappable {
+  int flex;
+  FlexFitEnum fit;
+  @override
+  SNode? child;
+
+  @override
+  bool canAppendAChild() => child == null;
+  ExpandedNode({super.name, this.flex = 1, this.fit = FlexFitEnum.loose, this.child});
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
@@ -43,8 +50,6 @@ class ExpandedNode extends FlexibleNode with ExpandedNodeMappable {
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     try {
       setParent(parentNode);
-      // ScrollControllerName? scName = EditablePage.name(context);
-      // possiblyHighlightSelectedNode(scName);
       return Expanded(
         key: createNodeWidgetGK(),
         flex: flex,
@@ -70,42 +75,6 @@ class ExpandedNode extends FlexibleNode with ExpandedNodeMappable {
         child: ${child?.toSource(context) ?? 'const Icon(Icons.square, color: Colors.red)'}
       )''';
   }
-
-  // @override
-  // List<Widget> nodePropertyEditors(BuildContext context, {bool allowButtonCallouts = false}) => [
-  //       const SizedBox(height: 10),
-  //       Row(children: [
-  //         SizedBox(
-  //           width: 80,
-  //           height: 40,
-  //           child: IntegerEditor(
-  //             label: 'flex',
-  //             originalS: flex.toString(),
-  //             onChangedF: (newFlex) {
-  //               flex = int.tryParse(newFlex) ?? 1;
-  //               bloc.add(ForceRefresh());
-  //             },
-  //           ),
-  //         ),
-  //       ]),
-  //       // NodePropertyButtonString(
-  //       //   label: 'flex',
-  //       //   originalValue: flex.toString(),
-  //       //   textInputType: TextInputType.number,
-  //       //   digitsOnly: true,
-  //       //   calloutSize: const Size(140, 80),
-  //       //   onChangeF: (newFlex) {
-  //       //     flex = int.tryParse(newFlex) ?? 1;
-  //       //     bloc.add(ForceRefresh());
-  //       //   },
-  //       // ),
-  //     ];
-
-  // @override
-  // List<Widget> wrapWithCandidates(final BuildContext context, final STreeNode? parentNode, ValueChanged<Type> onPressed) {
-  //   List<Type> candidateTypes = [RowNode, ColumnNode];
-  //   return toMenuItems(context, nodeTypeCandidates: candidateTypes, onPressedF: onPressed);
-  // }
 
   @override
   List<Type> replaceWithRecommendations() => [ExpandedNode, FlexibleNode];

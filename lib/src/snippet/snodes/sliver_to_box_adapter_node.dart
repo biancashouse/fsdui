@@ -8,10 +8,15 @@ import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 part 'sliver_to_box_adapter_node.mapper.dart';
 
 @MappableClass()
-class SliverToBoxAdapterNode extends SC with SliverToBoxAdapterNodeMappable {
+class SliverToBoxAdapterNode extends SNode with SC, SliverToBoxAdapterNodeMappable {
+  @override
+  SNode? child;
+
+  @override
+  bool canAppendAChild() => child == null;
   SliverToBoxAdapterNode({
     super.name,
-    super.child,
+    this.child,
   });
 
   @override

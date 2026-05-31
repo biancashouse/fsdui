@@ -8,10 +8,15 @@ import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 part 'intrinsic_height_node.mapper.dart';
 
 @MappableClass()
-class IntrinsicHeightNode extends SC with IntrinsicHeightNodeMappable {
+class IntrinsicHeightNode extends SNode with SC, IntrinsicHeightNodeMappable {
+  @override
+  SNode? child;
+
+  @override
+  bool canAppendAChild() => child == null;
   IntrinsicHeightNode({
     super.name,
-    super.child,
+    this.child,
   });
 
   @override

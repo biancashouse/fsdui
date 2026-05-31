@@ -528,7 +528,7 @@ class SNodeWidget extends StatelessWidget {
             ? Colors.white
             : textColor,
         fontSize: 12.0,
-        fontStyle: node is MC && !node.children.isNotEmpty
+        fontStyle: node is MC && !(node.children.isNotEmpty)
             ? FontStyle.italic
             : FontStyle.normal,
         fontWeight: node == selectedNode ? FontWeight.bold : FontWeight.normal,

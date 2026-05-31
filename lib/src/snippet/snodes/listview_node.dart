@@ -8,18 +8,32 @@ import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'listview_node.mapper.dart';
 
-@MappableClass(
-  discriminatorKey: 'DK:listview',
-  includeSubClasses: [ArticleListViewNode],
-)
-class ListViewNode extends BoxScrollViewNode with ListViewNodeMappable {
+@MappableClass()
+class ListViewNode extends SNode with ScrollViewNode, BoxScrollViewNode, ListViewNodeMappable {
+  @override
+  AxisEnum scrollDirection;
+  @override
+  bool? shrinkWrap;
+  @override
+  EdgeInsets? padding;
+
   List<SNode> children;
 
-  ListViewNode({super.name, super.padding, super.shrinkWrap, required this.children});
+  ListViewNode({
+    super.name,
+    this.scrollDirection = AxisEnum.vertical,
+    this.shrinkWrap,
+    this.padding,
+    required this.children,
+  });
+
+  @override
+  List<SNode>? get ownChildren => children;
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    ...super.propertyNodes(context, parentSNode),
+    ...svPropertyNodes(context, parentSNode),
+    ...bsvPropertyNodes(context, parentSNode),
     FlutterDocPNode(
       buttonLabel: 'ListView',
       webLink: 'https://api.flutter.dev/flutter/widgets/ListView-class.html',
@@ -39,7 +53,7 @@ class ListViewNode extends BoxScrollViewNode with ListViewNodeMappable {
       controller: sc,
       scrollDirection: scrollDirection.flutterValue,
       shrinkWrap: shrinkWrap ?? false,
-      padding: padding?.toEdgeInsets(),
+      padding: padding,
       children: listViewChildren,
     );
   }

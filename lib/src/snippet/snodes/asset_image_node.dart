@@ -12,7 +12,7 @@ import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
 part 'asset_image_node.mapper.dart';
 
 @MappableClass(hook: PropertyRenameHook('name', 'assetPath'))
-class AssetImageNode extends CL with AssetImageNodeMappable {
+class AssetImageNode extends SNode with AssetImageNodeMappable {
   String? assetPath;
   double scale;
   BoxFitEnum? fit;
@@ -54,7 +54,6 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
       decimalValue: scale,
       onDoubleChange: (newValue) =>
           refreshWithUpdate(context, () => scale = newValue ?? 1.0),
-      calloutButtonSize: const Size(80, 20),
     ),
     EnumPNode<BoxFitEnum?>(
       snode: this,

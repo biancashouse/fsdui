@@ -293,19 +293,19 @@ class ImageCropperResizerState extends State<ImageCropperResizer>
           thickness: EDGE_THICKNESS,
           parent: this,
         ),
-        DraggableEdge2(side: Side.TOP, thickness: EDGE_THICKNESS, parent: this),
+        DraggableEdge2(side: SideEnum.TOP, thickness: EDGE_THICKNESS, parent: this),
         DraggableEdge2(
-          side: Side.LEFT,
+          side: SideEnum.LEFT,
           thickness: EDGE_THICKNESS,
           parent: this,
         ),
         DraggableEdge2(
-          side: Side.BOTTOM,
+          side: SideEnum.BOTTOM,
           thickness: EDGE_THICKNESS,
           parent: this,
         ),
         DraggableEdge2(
-          side: Side.RIGHT,
+          side: SideEnum.RIGHT,
           thickness: EDGE_THICKNESS,
           parent: this,
         ),

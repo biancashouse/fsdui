@@ -1,8 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// dart format off
 // ignore_for_file: type=lint
-// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -15,7 +13,7 @@ class IntrinsicWidthNodeMapper extends SubClassMapperBase<IntrinsicWidthNode> {
   static IntrinsicWidthNodeMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = IntrinsicWidthNodeMapper._());
-      SCMapper.ensureInitialized().addSubMapper(_instance!);
+      SNodeMapper.ensureInitialized().addSubMapper(_instance!);
       SNodeMapper.ensureInitialized();
     }
     return _instance!;
@@ -25,51 +23,33 @@ class IntrinsicWidthNodeMapper extends SubClassMapperBase<IntrinsicWidthNode> {
   final String id = 'IntrinsicWidthNode';
 
   static String? _$name(IntrinsicWidthNode v) => v.name;
-  static const Field<IntrinsicWidthNode, String> _f$name = Field(
-    'name',
-    _$name,
-    opt: true,
-  );
+  static const Field<IntrinsicWidthNode, String> _f$name =
+      Field('name', _$name, opt: true);
   static SNode? _$child(IntrinsicWidthNode v) => v.child;
-  static const Field<IntrinsicWidthNode, SNode> _f$child = Field(
-    'child',
-    _$child,
-    opt: true,
-  );
+  static const Field<IntrinsicWidthNode, SNode> _f$child =
+      Field('child', _$child, opt: true);
   static String _$uid(IntrinsicWidthNode v) => v.uid;
-  static const Field<IntrinsicWidthNode, String> _f$uid = Field(
-    'uid',
-    _$uid,
-    mode: FieldMode.member,
-  );
+  static const Field<IntrinsicWidthNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static List<String>? _$tags(IntrinsicWidthNode v) => v.tags;
-  static const Field<IntrinsicWidthNode, List<String>> _f$tags = Field(
-    'tags',
-    _$tags,
-    mode: FieldMode.member,
-  );
+  static const Field<IntrinsicWidthNode, List<String>> _f$tags =
+      Field('tags', _$tags, mode: FieldMode.member);
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(IntrinsicWidthNode v) =>
       v.treeNodeGK;
   static const Field<IntrinsicWidthNode, GlobalKey<State<StatefulWidget>>>
-  _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
+      _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(IntrinsicWidthNode v) => v.isExpanded;
-  static const Field<IntrinsicWidthNode, bool> _f$isExpanded = Field(
-    'isExpanded',
-    _$isExpanded,
-    mode: FieldMode.member,
-  );
+  static const Field<IntrinsicWidthNode, bool> _f$isExpanded =
+      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(IntrinsicWidthNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<IntrinsicWidthNode, bool> _f$hidePropertiesWhileDragging =
-      Field(
-        'hidePropertiesWhileDragging',
-        _$hidePropertiesWhileDragging,
-        mode: FieldMode.member,
-      );
+      Field('hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
+          mode: FieldMode.member);
   static GlobalKey<State<StatefulWidget>>? _$nodeGK(IntrinsicWidthNode v) =>
       v.nodeGK;
   static const Field<IntrinsicWidthNode, GlobalKey<State<StatefulWidget>>>
-  _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
+      _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
 
   @override
   final MappableFields<IntrinsicWidthNode> fields = const {
@@ -84,23 +64,18 @@ class IntrinsicWidthNodeMapper extends SubClassMapperBase<IntrinsicWidthNode> {
   };
 
   @override
-  final String discriminatorKey = 'DK:sc';
+  final String discriminatorKey = 'DK:snode';
   @override
   final dynamic discriminatorValue = 'IntrinsicWidthNode';
   @override
-  late final ClassMapperBase superMapper = SCMapper.ensureInitialized();
+  late final ClassMapperBase superMapper = SNodeMapper.ensureInitialized();
 
   @override
-  final MappingHook superHook = ChainedHook([
-    PropertyRenameHook('sc', 'DK:sc'),
-    PropertyRenameHook('snode', 'DK:snode'),
-  ]);
+  final MappingHook superHook = const PropertyRenameHook('snode', 'DK:snode');
 
   static IntrinsicWidthNode _instantiate(DecodingData data) {
     return IntrinsicWidthNode(
-      name: data.dec(_f$name),
-      child: data.dec(_f$child),
-    );
+        name: data.dec(_f$name), child: data.dec(_f$child));
   }
 
   @override
@@ -126,61 +101,43 @@ mixin IntrinsicWidthNodeMappable {
         .encodeMap<IntrinsicWidthNode>(this as IntrinsicWidthNode);
   }
 
-  IntrinsicWidthNodeCopyWith<
-    IntrinsicWidthNode,
-    IntrinsicWidthNode,
-    IntrinsicWidthNode
-  >
-  get copyWith =>
-      _IntrinsicWidthNodeCopyWithImpl<IntrinsicWidthNode, IntrinsicWidthNode>(
-        this as IntrinsicWidthNode,
-        $identity,
-        $identity,
-      );
+  IntrinsicWidthNodeCopyWith<IntrinsicWidthNode, IntrinsicWidthNode,
+          IntrinsicWidthNode>
+      get copyWith => _IntrinsicWidthNodeCopyWithImpl<IntrinsicWidthNode,
+          IntrinsicWidthNode>(this as IntrinsicWidthNode, $identity, $identity);
   @override
   String toString() {
-    return IntrinsicWidthNodeMapper.ensureInitialized().stringifyValue(
-      this as IntrinsicWidthNode,
-    );
+    return IntrinsicWidthNodeMapper.ensureInitialized()
+        .stringifyValue(this as IntrinsicWidthNode);
   }
 
   @override
   bool operator ==(Object other) {
-    return IntrinsicWidthNodeMapper.ensureInitialized().equalsValue(
-      this as IntrinsicWidthNode,
-      other,
-    );
+    return IntrinsicWidthNodeMapper.ensureInitialized()
+        .equalsValue(this as IntrinsicWidthNode, other);
   }
 
   @override
   int get hashCode {
-    return IntrinsicWidthNodeMapper.ensureInitialized().hashValue(
-      this as IntrinsicWidthNode,
-    );
+    return IntrinsicWidthNodeMapper.ensureInitialized()
+        .hashValue(this as IntrinsicWidthNode);
   }
 }
 
 extension IntrinsicWidthNodeValueCopy<$R, $Out>
     on ObjectCopyWith<$R, IntrinsicWidthNode, $Out> {
   IntrinsicWidthNodeCopyWith<$R, IntrinsicWidthNode, $Out>
-  get $asIntrinsicWidthNode => $base.as(
-    (v, t, t2) => _IntrinsicWidthNodeCopyWithImpl<$R, $Out>(v, t, t2),
-  );
+      get $asIntrinsicWidthNode => $base.as(
+          (v, t, t2) => _IntrinsicWidthNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
-abstract class IntrinsicWidthNodeCopyWith<
-  $R,
-  $In extends IntrinsicWidthNode,
-  $Out
->
-    implements SCCopyWith<$R, $In, $Out> {
-  @override
+abstract class IntrinsicWidthNodeCopyWith<$R, $In extends IntrinsicWidthNode,
+    $Out> implements SNodeCopyWith<$R, $In, $Out> {
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
   $R call({String? name, SNode? child});
   IntrinsicWidthNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-    Then<$Out2, $R2> t,
-  );
+      Then<$Out2, $R2> t);
 }
 
 class _IntrinsicWidthNodeCopyWithImpl<$R, $Out>
@@ -195,21 +152,16 @@ class _IntrinsicWidthNodeCopyWithImpl<$R, $Out>
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
-  $R call({Object? name = $none, Object? child = $none}) => $apply(
-    FieldCopyWithData({
-      if (name != $none) #name: name,
-      if (child != $none) #child: child,
-    }),
-  );
+  $R call({Object? name = $none, Object? child = $none}) =>
+      $apply(FieldCopyWithData(
+          {if (name != $none) #name: name, if (child != $none) #child: child}));
   @override
   IntrinsicWidthNode $make(CopyWithData data) => IntrinsicWidthNode(
-    name: data.get(#name, or: $value.name),
-    child: data.get(#child, or: $value.child),
-  );
+      name: data.get(#name, or: $value.name),
+      child: data.get(#child, or: $value.child));
 
   @override
   IntrinsicWidthNodeCopyWith<$R2, IntrinsicWidthNode, $Out2> $chain<$R2, $Out2>(
-    Then<$Out2, $R2> t,
-  ) => _IntrinsicWidthNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+          Then<$Out2, $R2> t) =>
+      _IntrinsicWidthNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
-

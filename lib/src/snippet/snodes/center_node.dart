@@ -8,10 +8,15 @@ import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 part 'center_node.mapper.dart';
 
 @MappableClass()
-class CenterNode extends SC with CenterNodeMappable {
+class CenterNode extends SNode with SC, CenterNodeMappable {
+  @override
+  SNode? child;
+
+  @override
+  bool canAppendAChild() => child == null;
   CenterNode({
     super.name,
-    super.child,
+    this.child,
   });
 
   @override

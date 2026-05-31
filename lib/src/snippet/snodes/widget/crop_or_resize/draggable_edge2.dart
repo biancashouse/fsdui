@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_callouts/flutter_callouts.dart' show Side;
+import 'package:flutter_callouts/flutter_callouts.dart' show SideEnum;
 
 
 import 'crop_image.dart';
 
 
 class DraggableEdge2 extends StatelessWidget {
-  final Side side;
+  final SideEnum side;
   final double thickness;
   final ImageCropperResizerState parent;
 
@@ -14,24 +14,24 @@ class DraggableEdge2 extends StatelessWidget {
 
   Axis axis() {
     switch (side) {
-      case Side.TOP:
-      case Side.BOTTOM:
+      case SideEnum.TOP:
+      case SideEnum.BOTTOM:
         return Axis.vertical;
-      case Side.LEFT:
-      case Side.RIGHT:
+      case SideEnum.LEFT:
+      case SideEnum.RIGHT:
         return Axis.horizontal;
     }
   }
 
   IconData iconData() {
     switch (side) {
-      case Side.TOP:
+      case SideEnum.TOP:
         return Icons.arrow_drop_down;
-      case Side.BOTTOM:
+      case SideEnum.BOTTOM:
         return Icons.arrow_drop_up;
-      case Side.LEFT:
+      case SideEnum.LEFT:
         return Icons.arrow_right;
-      case Side.RIGHT:
+      case SideEnum.RIGHT:
         return Icons.arrow_left;
     }
   }
@@ -65,7 +65,7 @@ class DraggableEdge2 extends StatelessWidget {
         ),
         onDragUpdate: (DragUpdateDetails dud) {
           Rect rect = parent.uncroppedRect;
-          if (side == Side.LEFT) {
+          if (side == SideEnum.LEFT) {
             var deltaX = (rect.left + dud.delta.dx < thickness) ? 0 : dud.delta.dx;
             parent.uncroppedRect = Rect.fromLTWH(
               rect.left + deltaX,
@@ -74,7 +74,7 @@ class DraggableEdge2 extends StatelessWidget {
               rect.height,
             );
           }
-          if (side == Side.TOP) {
+          if (side == SideEnum.TOP) {
             var deltaY = (rect.top + dud.delta.dy < thickness) ? 0 : dud.delta.dy;
             parent.uncroppedRect = Rect.fromLTWH(
               rect.left,
@@ -82,7 +82,7 @@ class DraggableEdge2 extends StatelessWidget {
               rect.width,
               rect.height - deltaY,
             );
-          } else if (side == Side.RIGHT) {
+          } else if (side == SideEnum.RIGHT) {
             var deltaX = (left + dud.delta.dx > parent.widget.calloutSize.width - thickness) ? 0 : dud.delta.dx;
             parent.uncroppedRect = Rect.fromLTWH(
               rect.left,
@@ -91,7 +91,7 @@ class DraggableEdge2 extends StatelessWidget {
               rect.height,
             );
           }
-          if (side == Side.BOTTOM) {
+          if (side == SideEnum.BOTTOM) {
             var deltaY = (top + dud.delta.dy > parent.widget.calloutSize.height - thickness) ? 0 : dud.delta.dy;
             parent.uncroppedRect = Rect.fromLTWH(
               rect.left,
@@ -107,11 +107,11 @@ class DraggableEdge2 extends StatelessWidget {
   }
 
   Offset _topLeft() {
-    if (side == Side.LEFT) {
+    if (side == SideEnum.LEFT) {
       return (parent.uncroppedRect.topLeft.translate(-thickness, 0));
-    } else if (side == Side.RIGHT) {
+    } else if (side == SideEnum.RIGHT) {
       return (parent.uncroppedRect.topRight.translate(0, 0));
-    } else if (side == Side.TOP) {
+    } else if (side == SideEnum.TOP) {
       return (parent.uncroppedRect.topLeft.translate(0, -thickness));
     } else {
       return (parent.uncroppedRect.bottomLeft.translate(0, 0));
@@ -119,7 +119,7 @@ class DraggableEdge2 extends StatelessWidget {
   }
 
   double _width() {
-    if (side == Side.LEFT || side == Side.RIGHT) {
+    if (side == SideEnum.LEFT || side == SideEnum.RIGHT) {
       return thickness;
     } else {
       return parent.uncroppedRect.width;
@@ -127,7 +127,7 @@ class DraggableEdge2 extends StatelessWidget {
   }
 
   double _height() {
-    if (side == Side.TOP || side == Side.BOTTOM) {
+    if (side == SideEnum.TOP || side == SideEnum.BOTTOM) {
       return thickness;
     } else {
       return parent.uncroppedRect.height;

@@ -8,7 +8,7 @@ import 'package:fsdui/src/snippet/stepper/stepper_with_controller.dart';
 part 'step_node.mapper.dart';
 
 @MappableClass()
-class StepNode extends CL with StepNodeMappable {
+class StepNode extends SNode with StepNodeMappable {
   NamedSC title;
   NamedSC? subtitle;
   NamedSC content;

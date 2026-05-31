@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
 
 export "rectangle.dart";
-export "side.dart";
+export "side_enum.dart";
 
 // used to store a map of overlay entries, but also each one has a bool indicating whether its a Toast
 class OE {

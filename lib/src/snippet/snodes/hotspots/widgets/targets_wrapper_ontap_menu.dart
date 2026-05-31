@@ -104,7 +104,7 @@ class TargetsWrapperOnTapMenu extends StatelessWidget {
       //event.wName.hashCode,
       tcAlignment: AlignmentModel(2, 0),
       calloutDurationMs: 2000,
-      calloutFillColors: UpTo6Colors(color1: ColorModel.white()),
+      calloutFillColors: UpTo6Colors(color1: Colors.white),
       targetPointerTypeEnum: TargetPointerTypeEnum.THIN,
     );
 

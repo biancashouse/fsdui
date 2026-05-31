@@ -12,7 +12,7 @@ import 'package:fsdui/src/snippet/snodes/text_style_hook.dart';
 part 'textspan_node.mapper.dart';
 
 @MappableClass()
-class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
+class TextSpanNode extends SNode with InlineSpanNode, TextSpanNodeMappable {
   String? text;
   String? webLink;
   HotspotTargetModel? calloutTargetConfig;

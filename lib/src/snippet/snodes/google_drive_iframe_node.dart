@@ -8,7 +8,7 @@ import 'package:fsdui/src/snippet/snodes/iframe/iframe.dart';
 part 'google_drive_iframe_node.mapper.dart';
 
 @MappableClass()
-class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
+class GoogleDriveIFrameNode extends SNode with GoogleDriveIFrameNodeMappable {
   // Open the Drive file, Menu Option: File | Share | Publish to web, Embed Tab
   // <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQlAAiNow9CthD2TMk0qxiEoXveNDZh0etVOlwlqbzkBgPijvY4YDygnzjZkCbBGQ/pubhtml?widget=true&amp;headers=false"></iframe>
   //
@@ -63,7 +63,6 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
           decimalValue: iframeWidth,
           onDoubleChange: (newValue) =>
               refreshWithUpdate(context,() => iframeWidth = newValue),
-          calloutButtonSize: const Size(120, 20),
         ),
         DecimalPNode(
           snode: this,
@@ -71,7 +70,6 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
           decimalValue: iframeHeight,
           onDoubleChange: (newValue) =>
               refreshWithUpdate(context,() => iframeHeight = newValue),
-          calloutButtonSize: const Size(120, 20),
         ),
       ];
 

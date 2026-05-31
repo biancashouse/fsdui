@@ -8,9 +8,14 @@ import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 part 'tabbarview_node.mapper.dart';
 
 @MappableClass()
-class TabBarViewNode extends MC with TabBarViewNodeMappable {
+class TabBarViewNode extends SNode with MC, TabBarViewNodeMappable {
+  @override
+  List<SNode> children;
 
-  TabBarViewNode({super.name, required super.children});
+  TabBarViewNode({super.name, required this.children});
+
+  @override
+  List<SNode>? get ownChildren => children;
 
   TabBarNode? get tabBarNode =>
       rootNodeOfSnippet()?.findDescendant(TabBarNode) as TabBarNode?;

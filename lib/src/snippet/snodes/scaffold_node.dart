@@ -3,25 +3,24 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
-import 'package:fsdui/src/snippet/pnodes/bool_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/color_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'scaffold_node.mapper.dart';
 
 @MappableClass()
-class ScaffoldNode extends CL with ScaffoldNodeMappable {
-  ColorModel? bgColor;
-  @MappableField(hook: AppBarHook())
-  NamedPS appBar;
-  NamedSC body;
+class ScaffoldNode extends SNode with ScaffoldNodeMappable {
+  Color? bgColor;
+  // @MappableField(hook: AppBarHook())
+  NamedPS? appBar;
+  NamedSC? body;
   bool? canShowEditorLoginBtn;
 
   ScaffoldNode({
     super.name,
     this.bgColor,
-    required this.appBar,
-    required this.body,
+    this.appBar,
+    this.body,
     this.canShowEditorLoginBtn,
   });
 
@@ -34,7 +33,6 @@ class ScaffoldNode extends CL with ScaffoldNodeMappable {
         color: bgColor,
         onColorChange: (newValue) =>
             refreshWithUpdate(context, () => bgColor = newValue),
-        calloutButtonSize: const Size(200, 20),
       ),
       // BoolPNode(
       //   snode: this,
@@ -58,14 +56,14 @@ class ScaffoldNode extends CL with ScaffoldNodeMappable {
     // if (useTabBar ?? false) {
     //   return ScaffoldWithTabBarWidget(node: this);
     // }
-    var appBarProp = appBar.child != null
-        ? appBar.buildPreferredSizeFlutterWidget(context, this)
+    var appBarProp = appBar?.child != null
+        ? appBar?.buildPreferredSizeFlutterWidget(context, this)
         : null;
     return Scaffold(
       key: createNodeWidgetGK(),
-      backgroundColor: bgColor?.flutterValue,
+      backgroundColor: bgColor,
       appBar: appBarProp,
-      body: body.child != null ? body.build(context, this) : null,
+      body: body?.child != null ? body?.build(context, this) : null,
     );
   }
 
@@ -92,17 +90,18 @@ class ScaffoldNode extends CL with ScaffoldNodeMappable {
       return this;
     }
 
-    if (parent is SC && parent.child == this) {
-      parent.child = body.child;
-      body.child?.setParent(parent);
+    if ((parent as SC).child == this) {
+      parent.child = body?.child;
+      body?.child?.setParent(parent);
       setParent(null);
       return parent;
-    } else if (parent is MC && parent.children.contains(this)) {
-      int index = parent.children.indexOf(this);
-      parent.children.remove(this);
-      if (parent.children.isNotEmpty && body.child != null) {
-        parent.children.insert(index, body.child!);
-        body.child?.setParent(parent);
+    } else if ((parent as MC).children.contains(this) == true) {
+      final siblings = (parent as MC).children;
+      int index = siblings.indexOf(this);
+      siblings.remove(this);
+      if (siblings.isNotEmpty && body?.child != null) {
+        siblings.insert(index, body!.child!);
+        body?.child?.setParent(parent);
       }
       setParent(null);
       return parent;
@@ -162,15 +161,15 @@ class ScaffoldWithTabBarWidgetState extends State<ScaffoldWithTabBarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final appBarProp = widget.node.appBar.child != null
-        ? widget.node.appBar.buildPreferredSizeFlutterWidget(context, widget.node)
+    final appBarProp = widget.node.appBar?.child != null
+        ? widget.node.appBar?.buildPreferredSizeFlutterWidget(context, widget.node)
         : null;
     return Scaffold(
       key: widget.node.createNodeWidgetGK(),
-      backgroundColor: widget.node.bgColor?.flutterValue,
+      backgroundColor: widget.node.bgColor,
       appBar: appBarProp,
-      body: widget.node.body.child != null
-          ? widget.node.body.build(context, widget.node)
+      body: widget.node.body?.child != null
+          ? widget.node.body?.build(context, widget.node)
           : null,
     );
   }

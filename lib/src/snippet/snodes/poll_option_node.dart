@@ -10,7 +10,7 @@ import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
 part 'poll_option_node.mapper.dart';
 
 @MappableClass()
-class PollOptionNode extends CL with PollOptionNodeMappable {
+class PollOptionNode extends SNode with PollOptionNodeMappable {
   String text;
 
   PollOptionNode({

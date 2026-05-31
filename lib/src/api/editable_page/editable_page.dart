@@ -143,7 +143,7 @@ class EditablePageState extends State<EditablePage> {
             !fsdui.canEditAnyContent()) {
           return true;
         }
-        if (current.onlyTargetsWrappers) return false;
+        if (current.onlyTargetsWrappers??false) return false;
         return false;
       },
       builder: (BuildContext context, CAPIState state) {
@@ -263,7 +263,7 @@ class EditablePageState extends State<EditablePage> {
             initialValue: TextNode(
                 name: snippetName,
                 text: 'Missing Snippet: $snippetName !',
-                tsPropGroup: TextStyleProperties(color: ColorModel.red())
+                tsPropGroup: TextStyleProperties(color: Colors.red)
             ),
             onLayoutDone: () {
               if (_needsToPopulateRects && mounted) {
@@ -350,10 +350,10 @@ class EditablePageState extends State<EditablePage> {
                 originalS: '',
                 onTextChangedF: (String s) async {
                   // print(s);
-                  if (fsdui.appInfo.superEditorPasswords.contains(s)) {
+                  if (fsdui.appInfo.superEditorEas.contains(s)) {
                     fsdui.dismissAll();
                     fsdui.capiBloc.add(SignedInAsSuperEditor());
-                  } else if (fsdui.appInfo.articleEditorPasswords.contains(s)) {
+                  } else if (fsdui.appInfo.articleEditorEas.contains(s)) {
                     fsdui.dismissAll();
                     fsdui.capiBloc.add(SignedInAsArticleEditor());
                   } else if (s == 'GUEST') {

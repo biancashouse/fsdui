@@ -190,9 +190,7 @@ class HotspotTargetConfigToolbarState
               showTargetColorTool(
                 onColorPickedF: (Color? pickedColor) {
                   if (pickedColor != null) {
-                    widget.tc.setCalloutFillColor(
-                      ColorModel.fromColor(pickedColor),
-                    );
+                    widget.tc.setCalloutFillColor(pickedColor);
                     widget.tc.calloutConfig!.decorationFillColors =
                         ColorOrGradient.color(pickedColor);
                     widget.tc.calloutConfig!.bubbleOrTargetPointerColor =
@@ -267,17 +265,16 @@ class HotspotTargetConfigToolbarState
                   widget.tc.targetPointerTypeEnum = TargetPointerTypeEnum.NONE;
                 }
                 widget.tc.calloutBorderColors = UpTo6Colors(
-                  color1: ColorModel.grey(),
+                  color1: Colors.grey,
                 );
                 widget.tc.calloutBorderThickness = 2;
-                SNode? rootNode = widget
-                    .wrapperState
-                    .widget
-                    .parentNode
+                SNode? rootNode = widget.wrapperState.widget.parentNode
                     .rootNodeOfSnippet();
                 if (rootNode == null) return;
                 // fco.modelRepo.saveNewVersionOfSnippet(rootNode);
-                fsdui.appInfo.cachedSnippetInfo(rootNode.name!)?.notifyChange(rootNode);
+                fsdui.appInfo
+                    .cachedSnippetInfo(rootNode.name!)
+                    ?.notifyChange(rootNode);
                 widget.tc.closeThenReopenContentCallout(widget.wrapperState);
                 // fco.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
                 // fco.afterNextBuildDo(() {
@@ -317,7 +314,9 @@ class HotspotTargetConfigToolbarState
               if (rootNode == null) return;
               widget.wrapperState.widget.parentNode.targets.remove(widget.tc);
               // fco.modelRepo.saveNewVersionOfSnippet(rootNode);
-              fsdui.appInfo.cachedSnippetInfo(rootNode.name!)?.notifyChange(rootNode);
+              fsdui.appInfo
+                  .cachedSnippetInfo(rootNode.name!)
+                  ?.notifyChange(rootNode);
 
               // fco.cacheAndSaveANewSnippetVersion(
               //   snippetName: rootNode.name, // widget.tc.snippetName,
@@ -413,7 +412,7 @@ class HotspotTargetConfigToolbarState
       ),
       calloutContent: ColourPickerTool(
         originalColor:
-            widget.tc.calloutFillColors?.color1?.flutterValue ?? Colors.white,
+            widget.tc.calloutFillColors?.color1 ?? Colors.white,
         onColorPickedF: onColorPickedF,
       ),
     );

@@ -1,6 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:fsdui/fsdui.dart' hide Field;
+import 'package:fsdui/fsdui.dart';
 
 import 'package:fsdui/src/snippet/pnodes/enums/enum_outlined_border.dart';
 import 'package:fsdui/src/snippet/pnodes/groups/border_side_properties.dart';
@@ -13,8 +13,8 @@ part 'button_style_properties.mapper.dart';
 class ButtonStyleProperties with ButtonStylePropertiesMappable {
   @MappableField(hook: TextStyleHook1())
   TextStyleProperties tsPropGroup;
-  ColorModel? fgColor;
-  ColorModel? bgColor;
+  Color? fgColor;
+  Color? bgColor;
   double? elevation;
   double? padding;
 
@@ -68,8 +68,8 @@ class ButtonStyleProperties with ButtonStylePropertiesMappable {
         //   ?.merge(
         ButtonStyle(
       textStyle: WidgetStatePropertyAll<TextStyle?>(ts),
-      backgroundColor: WidgetStatePropertyAll<Color?>(bgColor?.flutterValue),
-      foregroundColor: WidgetStatePropertyAll<Color?>(fgColor?.flutterValue),
+      backgroundColor: WidgetStatePropertyAll<Color?>(bgColor),
+      foregroundColor: WidgetStatePropertyAll<Color?>(fgColor),
       padding:
           WidgetStatePropertyAll<EdgeInsets?>(EdgeInsets.all(padding ?? 0.0)),
       elevation: WidgetStatePropertyAll<double?>(elevation),

@@ -29,7 +29,7 @@ abstract class TargetConfigModel {
   double transformScale;
 
   TargetPointerTypeEnum? targetPointerTypeEnum;
-  ColorModel? bubbleOrTargetPointerColor;
+  Color? bubbleOrTargetPointerColor;
   bool? animatePointer;
 
   bool autoPlay;
@@ -89,13 +89,13 @@ abstract class TargetConfigModel {
   String get contentCId => '$uid';
 
   // for now, assumes a single fill color
-  Color bgColor() => calloutFillColors?.color1?.flutterValue ?? Colors.white;
+  Color bgColor() => calloutFillColors?.color1 ?? Colors.white;
 
   Color borderColor() =>
-      calloutBorderColors?.color1?.flutterValue ?? Colors.grey;
+      calloutBorderColors?.color1 ?? Colors.grey;
 
-  void setCalloutFillColor(ColorModel? newColor) =>
-      calloutFillColors = UpTo6Colors(color1: newColor ?? ColorModel.white());
+  void setCalloutFillColor(Color? newColor) =>
+      calloutFillColors = UpTo6Colors(color1: newColor ?? Colors.white);
 
   void setCalloutStarPoints(int? newValue) => starPoints = newValue;
 

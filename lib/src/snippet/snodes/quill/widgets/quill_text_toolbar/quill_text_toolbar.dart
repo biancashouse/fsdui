@@ -231,7 +231,7 @@ class QuillTextToolbarState extends State<QuillTextToolbar> {
     return QuillTargetModel(
       uid: newTargetId,
       calloutDurationMs: 2000,
-      calloutFillColors: UpTo6Colors(color1: ColorModel.white()),
+      calloutFillColors: UpTo6Colors(color1: Colors.white),
       targetPointerTypeEnum: TargetPointerTypeEnum.WAVY,
     );
   }

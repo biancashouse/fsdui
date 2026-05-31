@@ -7,19 +7,27 @@ import '../pnodes/fyi_pnodes.dart';
 part 'custom_scrollview_node.mapper.dart';
 
 @MappableClass()
-class CustomScrollViewNode extends ScrollViewNode with CustomScrollViewNodeMappable {
+class CustomScrollViewNode extends SNode with ScrollViewNode, CustomScrollViewNodeMappable {
+  @override
+  AxisEnum scrollDirection;
+  @override
+  bool? shrinkWrap;
+
   List<SNode> slivers;
 
   CustomScrollViewNode({
     super.name,
     required this.slivers,
-    super.scrollDirection,
-    super.shrinkWrap,
+    this.scrollDirection = AxisEnum.vertical,
+    this.shrinkWrap,
   });
 
   @override
+  List<SNode>? get ownChildren => slivers;
+
+  @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    ...super.propertyNodes(context, parentSNode),
+    ...svPropertyNodes(context, parentSNode),
     FlutterDocPNode(
       buttonLabel: 'CustomScrollView',
       webLink:
@@ -48,7 +56,7 @@ class CustomScrollViewNode extends ScrollViewNode with CustomScrollViewNodeMappa
       BuildContext context,
       NodeAction action,
       bool? skipHeading,
-      
+
       ) {
     return [
       if (!(skipHeading ?? false))

@@ -7,14 +7,32 @@ import 'package:fsdui/fsdui.dart';
 part 'article_listview_node.mapper.dart';
 
 @MappableClass()
-class ArticleListViewNode extends ListViewNode
-    with ArticleListViewNodeMappable {
+class ArticleListViewNode extends SNode with ScrollViewNode, BoxScrollViewNode, ArticleListViewNodeMappable {
+  @override
+  AxisEnum scrollDirection;
+  @override
+  bool? shrinkWrap;
+  @override
+  EdgeInsets? padding;
+
+  List<SNode> children;
+
   ArticleListViewNode({
     super.name,
-    super.padding,
-    super.shrinkWrap,
-    required super.children,
+    this.scrollDirection = AxisEnum.vertical,
+    this.shrinkWrap,
+    this.padding,
+    required this.children,
   });
+
+  @override
+  List<SNode>? get ownChildren => children;
+
+  @override
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
+    ...svPropertyNodes(context, parentSNode),
+    ...bsvPropertyNodes(context, parentSNode),
+  ];
 
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
@@ -36,7 +54,6 @@ class ArticleListViewNode extends ListViewNode
                   borderRadius: BorderRadius.circular(12.0),
                 ),
                 child: BannerListTile(
-                  // onTap: () {},
                   backgroundColor: Colors.white,
                   borderRadius: BorderRadius.circular(12.0),
                   bannerText: childNode is MarkdownNode
@@ -60,19 +77,6 @@ class ArticleListViewNode extends ListViewNode
                       : childNode is YTNode
                       ? Colors.white
                       : Colors.white,
-                  // imageContainer: const Image(
-                  //   image: NetworkImage(
-                  //     "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb1.2.1&auto=format&fit=crop&w=387&q=80",
-                  //   ),
-                  //   fit: BoxFit.cover,
-                  // ),
-
-                  // title: const Text(
-                  //   "Monalisa",
-                  //   style: TextStyle(fontSize: 24, color: Colors.white),
-                  //   overflow: TextOverflow.ellipsis,
-                  //   maxLines: 1,
-                  // ),
                   subtitle: childNode.build(context, this),
                   trailing: IconButton(
                     onPressed: () {
@@ -109,7 +113,7 @@ class ArticleListViewNode extends ListViewNode
       controller: sc,
       scrollDirection: scrollDirection.flutterValue,
       shrinkWrap: shrinkWrap ?? false,
-      padding: padding?.toEdgeInsets(),
+      padding: padding,
       children: listViewChildren,
     );
   }

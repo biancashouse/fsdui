@@ -4,8 +4,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
-import 'package:fsdui/src/bloc/poll_bloc.dart';
-import 'package:fsdui/src/bloc/poll_state.dart';
+import 'package:fsdui/src/bloc/poll/poll_bloc.dart';
+import 'package:fsdui/src/bloc/poll/poll_state.dart';
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 // import 'package:hydrated_bloc/hydrated_bloc.dart';

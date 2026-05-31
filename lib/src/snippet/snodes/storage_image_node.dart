@@ -29,7 +29,7 @@ class StorageImageRenameHook extends MappingHook {
   discriminatorValue: 'StorageImageNode',
   hook: StorageImageRenameHook(),
 )
-class StorageImageNode extends CL with StorageImageNodeMappable {
+class StorageImageNode extends SNode with StorageImageNodeMappable {
   String? fsFullPath;
   double? width;
   double? height;
@@ -73,7 +73,6 @@ class StorageImageNode extends CL with StorageImageNodeMappable {
       decimalValue: width,
       onDoubleChange: (newValue) =>
           refreshWithUpdate(context, () => width = newValue),
-      calloutButtonSize: const Size(80, 20),
     ),
     DecimalPNode(
       snode: this,
@@ -81,7 +80,6 @@ class StorageImageNode extends CL with StorageImageNodeMappable {
       decimalValue: height,
       onDoubleChange: (newValue) =>
           refreshWithUpdate(context, () => height = newValue),
-      calloutButtonSize: const Size(80, 20),
     ),
     DecimalPNode(
       snode: this,
@@ -89,7 +87,6 @@ class StorageImageNode extends CL with StorageImageNodeMappable {
       decimalValue: scale,
       onDoubleChange: (newValue) =>
           refreshWithUpdate(context, () => scale = newValue),
-      calloutButtonSize: const Size(80, 20),
     ),
     EnumPNode<BoxFitEnum?>(
       snode: this,

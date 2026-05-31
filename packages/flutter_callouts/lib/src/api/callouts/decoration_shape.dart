@@ -83,7 +83,7 @@ class DecorationShape {
     BoxBorder? border;
     if (borderColorOrGradient?.isASingleColor() ?? false) {
       border = Border.all(
-        color: borderColorOrGradient!.color!,
+        color: borderColorOrGradient!.singleColor!,
         width: borderThickness ?? 0.0,
       );
     } else if (borderColorOrGradient?.isAGradient() ?? false) {
@@ -97,7 +97,7 @@ class DecorationShape {
         shape: BoxShape.rectangle,
         border: border,
         gradient: fillColorOrGradient?.gradient,
-        color: fillColorOrGradient?.color,
+        color: fillColorOrGradient?.singleColor,
       );
     if (name == "rounded_rectangle")
       return BoxDecoration(
@@ -105,24 +105,24 @@ class DecorationShape {
         border: border,
         borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 8)),
         gradient: fillColorOrGradient?.gradient,
-        color: fillColorOrGradient?.color,
+        color: fillColorOrGradient?.singleColor,
       );
     if (name == "rectangle_dotted")
       return DottedDecoration(
         shape: Shape.box,
         dash: const <int>[3, 3],
-        borderColor: borderColorOrGradient?.color ?? Colors.grey,
+        borderColor: borderColorOrGradient?.singleColor ?? Colors.grey,
         strokeWidth: 3,
         fillGradient: fillColorOrGradient?.gradient,
-        fillColor: fillColorOrGradient?.color ?? Colors.white,
+        fillColor: fillColorOrGradient?.singleColor ?? Colors.white,
       );
     if (name == "rounded_rectangle_dotted")
       return DottedDecoration(
         shape: Shape.box,
         dash: const <int>[3, 3],
-        borderColor: borderColorOrGradient?.color ?? Colors.grey,
+        borderColor: borderColorOrGradient?.singleColor ?? Colors.grey,
         strokeWidth: 3,
-        fillColor: fillColorOrGradient?.color ?? Colors.white,
+        fillColor: fillColorOrGradient?.singleColor ?? Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 8)),
         fillGradient: fillColorOrGradient?.gradient,
       );
@@ -130,7 +130,7 @@ class DecorationShape {
       return BoxDecoration(
         shape: BoxShape.circle,
         border: border,
-        color: fillColorOrGradient?.color,
+        color: fillColorOrGradient?.singleColor,
         gradient: fillColorOrGradient?.gradient,
       );
     if (name == "bevelled")
@@ -142,7 +142,7 @@ class DecorationShape {
           ),
           borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 8)),
         ),
-        color: fillColorOrGradient?.color,
+        color: fillColorOrGradient?.singleColor,
         gradient: fillColorOrGradient?.gradient,
       );
     if (name == "stadium")
@@ -153,7 +153,7 @@ class DecorationShape {
             width: borderThickness ?? 0.0,
           ),
         ),
-        color: fillColorOrGradient?.color,
+        color: fillColorOrGradient?.singleColor,
         gradient: fillColorOrGradient?.gradient,
       );
     // else its a star
@@ -169,7 +169,7 @@ class DecorationShape {
         // valleyRounding: _model.valleyRounding,
         // rotation: 0,
       ),
-      color: fillColorOrGradient?.color,
+      color: fillColorOrGradient?.singleColor,
       gradient: fillColorOrGradient?.gradient,
     );
   }

@@ -275,9 +275,9 @@ class FireStoreModelRepository implements IModelRepository {
   Future<void> saveAppInfo() async {
     if (fsdui.isGuestEditor()) return;
     fsdui.logger.d('***********   saveAppInfo   ****************');
-    fsdui.appInfo.userTextStyles = fsdui.namedTextStyles;
-    fsdui.appInfo.userButtonStyles = fsdui.namedButtonStyles;
-    fsdui.appInfo.userContainerStyles = fsdui.namedContainerStyles;
+    fsdui.appInfo.textStyles = fsdui.namedTextStyles;
+    fsdui.appInfo.buttonStyles = fsdui.namedButtonStyles;
+    fsdui.appInfo.containerStyles = fsdui.namedContainerStyles;
     // admin - remove refs to snippets with names starting with T-
     // and then remove those snippets
     for (var name in fsdui.appInfo.snippetNames) {
@@ -318,6 +318,57 @@ class FireStoreModelRepository implements IModelRepository {
       newVersionId: newVersionId,
       newVersion: rootNode,
     );
+  }
+
+  @override
+  Future<void> saveNewVersionOfSnippetMap(String snippetName, Map<String, dynamic> rootMap) async {
+    final newVersionId = SnippetInfoModel.createNewVersionForMap(snippetName, rootMap);
+
+    _saveSnippetMapVersion(
+      snippetName: snippetName,
+      newVersionId: newVersionId,
+      newVersion: rootMap,
+    );
+  }
+
+  Future<bool> _saveSnippetMapVersion({
+    required SnippetName snippetName,
+    required VersionId newVersionId,
+    required Map<String, dynamic> newVersion,
+  }) async {
+    if (fsdui.isGuestEditor()) return true;
+
+    SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(snippetName);
+    if (snippetInfo == null) return false;
+
+    try {
+      DocumentReference snippetInfoDocRef = appDocRef.collection('snippets').doc(snippetName);
+      await snippetInfoDocRef
+          .collection('versions')
+          .doc(newVersionId)
+          .set(newVersion..addAll({'name': snippetName}));
+
+      fsdui.logger.i('--- SAVED (MAP) --------------------------------------------');
+      fsdui.logger.i('wrote snippet ($snippetName) version to FB:');
+      fsdui.logger.i('versionId: $newVersionId');
+      fsdui.logger.i('------------------------------------------------------------');
+
+      await updateSnippetInfo(
+        snippetName: snippetName,
+        newEditingVersionId: newVersionId,
+        newPublishingVersionId:
+            snippetInfo.autoPublish ?? fsdui.appInfo.autoPublishDefault
+            ? newVersionId
+            : snippetInfo.publishedVersionId,
+        newAutoPublish: snippetInfo.autoPublish,
+        newVersionIds: snippetInfo.versionIds,
+      );
+
+      return true;
+    } catch (e) {
+      fsdui.logger.e('_saveSnippetMapVersion', error: e);
+      return false;
+    }
   }
 
   /// createOrUpdateAppModelAndCAPIModel

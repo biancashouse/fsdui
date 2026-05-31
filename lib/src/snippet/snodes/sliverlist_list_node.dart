@@ -8,8 +8,14 @@ import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 part 'sliverlist_list_node.mapper.dart';
 
 @MappableClass()
-class SliverListListNode extends MC with SliverListListNodeMappable {
-  SliverListListNode({super.name, required super.children});
+class SliverListListNode extends SNode with MC, SliverListListNodeMappable {
+  @override
+  List<SNode> children;
+
+  SliverListListNode({super.name, required this.children});
+
+  @override
+  List<SNode>? get ownChildren => children;
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [

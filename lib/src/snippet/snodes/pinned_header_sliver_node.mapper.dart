@@ -1,8 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// dart format off
 // ignore_for_file: type=lint
-// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -16,7 +14,7 @@ class PinnedHeaderSliverNodeMapper
   static PinnedHeaderSliverNodeMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = PinnedHeaderSliverNodeMapper._());
-      SCMapper.ensureInitialized().addSubMapper(_instance!);
+      SNodeMapper.ensureInitialized().addSubMapper(_instance!);
       SNodeMapper.ensureInitialized();
     }
     return _instance!;
@@ -26,52 +24,35 @@ class PinnedHeaderSliverNodeMapper
   final String id = 'PinnedHeaderSliverNode';
 
   static String? _$name(PinnedHeaderSliverNode v) => v.name;
-  static const Field<PinnedHeaderSliverNode, String> _f$name = Field(
-    'name',
-    _$name,
-    opt: true,
-  );
+  static const Field<PinnedHeaderSliverNode, String> _f$name =
+      Field('name', _$name, opt: true);
   static SNode? _$child(PinnedHeaderSliverNode v) => v.child;
-  static const Field<PinnedHeaderSliverNode, SNode> _f$child = Field(
-    'child',
-    _$child,
-    opt: true,
-  );
+  static const Field<PinnedHeaderSliverNode, SNode> _f$child =
+      Field('child', _$child, opt: true);
   static String _$uid(PinnedHeaderSliverNode v) => v.uid;
-  static const Field<PinnedHeaderSliverNode, String> _f$uid = Field(
-    'uid',
-    _$uid,
-    mode: FieldMode.member,
-  );
+  static const Field<PinnedHeaderSliverNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static List<String>? _$tags(PinnedHeaderSliverNode v) => v.tags;
-  static const Field<PinnedHeaderSliverNode, List<String>> _f$tags = Field(
-    'tags',
-    _$tags,
-    mode: FieldMode.member,
-  );
+  static const Field<PinnedHeaderSliverNode, List<String>> _f$tags =
+      Field('tags', _$tags, mode: FieldMode.member);
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(
-    PinnedHeaderSliverNode v,
-  ) => v.treeNodeGK;
+          PinnedHeaderSliverNode v) =>
+      v.treeNodeGK;
   static const Field<PinnedHeaderSliverNode, GlobalKey<State<StatefulWidget>>>
-  _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
+      _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(PinnedHeaderSliverNode v) => v.isExpanded;
-  static const Field<PinnedHeaderSliverNode, bool> _f$isExpanded = Field(
-    'isExpanded',
-    _$isExpanded,
-    mode: FieldMode.member,
-  );
+  static const Field<PinnedHeaderSliverNode, bool> _f$isExpanded =
+      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(PinnedHeaderSliverNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<PinnedHeaderSliverNode, bool>
-  _f$hidePropertiesWhileDragging = Field(
-    'hidePropertiesWhileDragging',
-    _$hidePropertiesWhileDragging,
-    mode: FieldMode.member,
-  );
+      _f$hidePropertiesWhileDragging = Field(
+          'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
+          mode: FieldMode.member);
   static GlobalKey<State<StatefulWidget>>? _$nodeGK(PinnedHeaderSliverNode v) =>
       v.nodeGK;
   static const Field<PinnedHeaderSliverNode, GlobalKey<State<StatefulWidget>>>
-  _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
+      _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
 
   @override
   final MappableFields<PinnedHeaderSliverNode> fields = const {
@@ -86,23 +67,18 @@ class PinnedHeaderSliverNodeMapper
   };
 
   @override
-  final String discriminatorKey = 'DK:sc';
+  final String discriminatorKey = 'DK:snode';
   @override
   final dynamic discriminatorValue = 'PinnedHeaderSliverNode';
   @override
-  late final ClassMapperBase superMapper = SCMapper.ensureInitialized();
+  late final ClassMapperBase superMapper = SNodeMapper.ensureInitialized();
 
   @override
-  final MappingHook superHook = ChainedHook([
-    PropertyRenameHook('sc', 'DK:sc'),
-    PropertyRenameHook('snode', 'DK:snode'),
-  ]);
+  final MappingHook superHook = const PropertyRenameHook('snode', 'DK:snode');
 
   static PinnedHeaderSliverNode _instantiate(DecodingData data) {
     return PinnedHeaderSliverNode(
-      name: data.dec(_f$name),
-      child: data.dec(_f$child),
-    );
+        name: data.dec(_f$name), child: data.dec(_f$child));
   }
 
   @override
@@ -128,60 +104,46 @@ mixin PinnedHeaderSliverNodeMappable {
         .encodeMap<PinnedHeaderSliverNode>(this as PinnedHeaderSliverNode);
   }
 
-  PinnedHeaderSliverNodeCopyWith<
-    PinnedHeaderSliverNode,
-    PinnedHeaderSliverNode,
-    PinnedHeaderSliverNode
-  >
-  get copyWith =>
-      _PinnedHeaderSliverNodeCopyWithImpl<
-        PinnedHeaderSliverNode,
-        PinnedHeaderSliverNode
-      >(this as PinnedHeaderSliverNode, $identity, $identity);
+  PinnedHeaderSliverNodeCopyWith<PinnedHeaderSliverNode, PinnedHeaderSliverNode,
+          PinnedHeaderSliverNode>
+      get copyWith => _PinnedHeaderSliverNodeCopyWithImpl<
+              PinnedHeaderSliverNode, PinnedHeaderSliverNode>(
+          this as PinnedHeaderSliverNode, $identity, $identity);
   @override
   String toString() {
-    return PinnedHeaderSliverNodeMapper.ensureInitialized().stringifyValue(
-      this as PinnedHeaderSliverNode,
-    );
+    return PinnedHeaderSliverNodeMapper.ensureInitialized()
+        .stringifyValue(this as PinnedHeaderSliverNode);
   }
 
   @override
   bool operator ==(Object other) {
-    return PinnedHeaderSliverNodeMapper.ensureInitialized().equalsValue(
-      this as PinnedHeaderSliverNode,
-      other,
-    );
+    return PinnedHeaderSliverNodeMapper.ensureInitialized()
+        .equalsValue(this as PinnedHeaderSliverNode, other);
   }
 
   @override
   int get hashCode {
-    return PinnedHeaderSliverNodeMapper.ensureInitialized().hashValue(
-      this as PinnedHeaderSliverNode,
-    );
+    return PinnedHeaderSliverNodeMapper.ensureInitialized()
+        .hashValue(this as PinnedHeaderSliverNode);
   }
 }
 
 extension PinnedHeaderSliverNodeValueCopy<$R, $Out>
     on ObjectCopyWith<$R, PinnedHeaderSliverNode, $Out> {
   PinnedHeaderSliverNodeCopyWith<$R, PinnedHeaderSliverNode, $Out>
-  get $asPinnedHeaderSliverNode => $base.as(
-    (v, t, t2) => _PinnedHeaderSliverNodeCopyWithImpl<$R, $Out>(v, t, t2),
-  );
+      get $asPinnedHeaderSliverNode => $base.as((v, t, t2) =>
+          _PinnedHeaderSliverNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class PinnedHeaderSliverNodeCopyWith<
-  $R,
-  $In extends PinnedHeaderSliverNode,
-  $Out
->
-    implements SCCopyWith<$R, $In, $Out> {
-  @override
+    $R,
+    $In extends PinnedHeaderSliverNode,
+    $Out> implements SNodeCopyWith<$R, $In, $Out> {
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
   $R call({String? name, SNode? child});
   PinnedHeaderSliverNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-    Then<$Out2, $R2> t,
-  );
+      Then<$Out2, $R2> t);
 }
 
 class _PinnedHeaderSliverNodeCopyWithImpl<$R, $Out>
@@ -197,21 +159,16 @@ class _PinnedHeaderSliverNodeCopyWithImpl<$R, $Out>
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
-  $R call({Object? name = $none, Object? child = $none}) => $apply(
-    FieldCopyWithData({
-      if (name != $none) #name: name,
-      if (child != $none) #child: child,
-    }),
-  );
+  $R call({Object? name = $none, Object? child = $none}) =>
+      $apply(FieldCopyWithData(
+          {if (name != $none) #name: name, if (child != $none) #child: child}));
   @override
   PinnedHeaderSliverNode $make(CopyWithData data) => PinnedHeaderSliverNode(
-    name: data.get(#name, or: $value.name),
-    child: data.get(#child, or: $value.child),
-  );
+      name: data.get(#name, or: $value.name),
+      child: data.get(#child, or: $value.child));
 
   @override
   PinnedHeaderSliverNodeCopyWith<$R2, PinnedHeaderSliverNode, $Out2>
-  $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-      _PinnedHeaderSliverNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+      $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+          _PinnedHeaderSliverNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
-

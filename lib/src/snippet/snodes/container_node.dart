@@ -10,13 +10,18 @@ import 'package:fsdui/src/snippet/snodes/container_style_hook.dart';
 part 'container_node.mapper.dart';
 
 @MappableClass()
-class ContainerNode extends SC with ContainerNodeMappable {
+class ContainerNode extends SNode with SC, ContainerNodeMappable {
+  @override
+  SNode? child;
+
+  @override
+  bool canAppendAChild() => child == null;
   @MappableField(hook: ContainerStyleHook())
   ContainerStyleProperties csPropGroup;
 
   // UpTo6Colors? fillColorValues;
-  // EdgeInsetsValue? margin;
-  // EdgeInsetsValue? padding;
+  // EdgeInsets? margin;
+  // EdgeInsets? padding;
   // double? width;
   // double? height;
   // AlignmentEnumModel? alignment;
@@ -65,7 +70,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
     // this.badgeCorner,
     // this.badgeText,
     // this.outlinedBorderGroup,
-    super.child,
+    this.child,
   });
 
   @override
@@ -139,7 +144,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
       //     EdgeInsetsPNode(
       //       snode: this,
       //       name: 'margin',
-      //       eiValue: margin,
+      //       ei: margin,
       //       onEIChangedF: (newValue) =>
       //           refreshWithUpdate(context,() => margin = newValue),
       //     ),
@@ -152,7 +157,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
       //     EdgeInsetsPNode(
       //       snode: this,
       //       name: 'padding',
-      //       eiValue: padding,
+      //       ei: padding,
       //       onEIChangedF: (newValue) =>
       //           refreshWithUpdate(context,() => padding = newValue),
       //     ),
@@ -290,8 +295,8 @@ class ContainerNode extends SC with ContainerNodeMappable {
           borderThickness: csPropGroup.borderThickness,
           borderRadius: csPropGroup.borderRadius,
         ),
-        padding: csPropGroup.padding?.toEdgeInsets(),
-        margin: csPropGroup.margin?.toEdgeInsets(),
+        padding: csPropGroup.padding,
+        margin: csPropGroup.margin,
         width: csPropGroup.width,
         height: csPropGroup.height,
         alignment: csPropGroup.alignment?.alignment,

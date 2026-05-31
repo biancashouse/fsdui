@@ -7,20 +7,22 @@ enum EdgeInsetsInputModeEnum { all, symmetrical, only }
 
 class EdgeInsetsPropertyEditor extends HookWidget {
   final String name;
-  final EdgeInsetsValue originalValue;
-  final ValueChanged<EdgeInsetsValue> onChangedF;
+  final EdgeInsets? originalValue;
+  final ValueChanged<EdgeInsets?> onChangedF;
 
   const EdgeInsetsPropertyEditor({
     required this.name,
-    required this.originalValue,
+    this.originalValue,
     required this.onChangedF,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    final ei = useState<EdgeInsetsValue>(originalValue);
-    final inputMode = useState<EdgeInsetsInputModeEnum>(EdgeInsetsInputModeEnum.all);
+    final ei = useState<EdgeInsets?>(originalValue);
+    final inputMode = useState<EdgeInsetsInputModeEnum>(
+      EdgeInsetsInputModeEnum.all,
+    );
     return SizedBox(
       width: 240,
       height: 180,
@@ -65,12 +67,12 @@ class EdgeInsetsPropertyEditor extends HookWidget {
               // item in the selected set.
               inputMode.value = newInputMode.first;
               // if (inputMode.value == EdgeInsetsInputModeEnum.all) {
-              //   ei.value.left = ei.value.right = ei.value.bottom = ei.value.top;
+              //   ei.value?.left = ei.value?.right = ei.value?.bottom = ei.value?.top;
               // } else if (inputMode.value == EdgeInsetsInputModeEnum.symmetrical) {
-              //   ei.value.right = ei.value.left;
-              //   ei.value.bottom = ei.value.top;
+              //   ei.value?.right = ei.value?.left;
+              //   ei.value?.bottom = ei.value?.top;
               // }
-              // ei.value.bottom = ei.value.top;
+              // ei.value?.bottom = ei.value?.top;
               // onChangedF(value);
             },
           ),
@@ -92,24 +94,44 @@ class EdgeInsetsPropertyEditor extends HookWidget {
                 Align(
                   alignment: Alignment.topCenter,
                   child: PropertyButtonNumber<double>(
-                    originalValue: ei.value.top,
+                    originalValue: ei.value?.top??0.0,
                     labelWidget: RichText(
-                      text: TextSpan(text: 'top: ', style: const TextStyle(color: Colors.white), children: [
-                        TextSpan(
-                          text: '${ei.value.top}',
-                          style: const TextStyle(color: Colors.cyanAccent),
-                        ),
-                      ]),
+                      text: TextSpan(
+                        text: 'top: ',
+                        style: const TextStyle(color: Colors.white),
+                        children: [
+                          TextSpan(
+                            text: '${ei.value?.top}',
+                            style: const TextStyle(color: Colors.cyanAccent),
+                          ),
+                        ],
+                      ),
                     ),
                     onChangedF: (s) {
                       double? newTop = double.tryParse(s);
                       if (newTop != null) {
                         if (inputMode.value == EdgeInsetsInputModeEnum.all) {
-                          ei.value = EdgeInsetsValue(top: newTop, left: newTop, bottom: newTop, right: newTop);
-                        } else if (inputMode.value == EdgeInsetsInputModeEnum.symmetrical) {
-                          ei.value = EdgeInsetsValue(top: newTop, left: ei.value.left, bottom: newTop, right: ei.value.right);
+                          ei.value = EdgeInsets.only(
+                            top: newTop,
+                            left: newTop,
+                            bottom: newTop,
+                            right: newTop,
+                          );
+                        } else if (inputMode.value ==
+                            EdgeInsetsInputModeEnum.symmetrical) {
+                          ei.value = EdgeInsets.only(
+                            top: newTop,
+                            left: ei.value?.left??0.0,
+                            bottom: newTop,
+                            right: ei.value?.right??0.0,
+                          );
                         } else {
-                          ei.value = EdgeInsetsValue(top: newTop, left: ei.value.left, bottom: ei.value.bottom, right: ei.value.right);
+                          ei.value = EdgeInsets.only(
+                            top: newTop,
+                            left: ei.value?.left??0.0,
+                            bottom: ei.value?.bottom??0.0,
+                            right: ei.value?.right??0.0,
+                          );
                         }
                       }
                       onChangedF.call(ei.value);
@@ -122,24 +144,44 @@ class EdgeInsetsPropertyEditor extends HookWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: PropertyButtonNumber<double>(
-                    originalValue: ei.value.left,
+                    originalValue: ei.value?.left??0.0,
                     labelWidget: RichText(
-                      text: TextSpan(text: 'left: ', style: const TextStyle(color: Colors.white), children: [
-                        TextSpan(
-                          text: '${ei.value.left}',
-                          style: const TextStyle(color: Colors.cyanAccent),
-                        ),
-                      ]),
+                      text: TextSpan(
+                        text: 'left: ',
+                        style: const TextStyle(color: Colors.white),
+                        children: [
+                          TextSpan(
+                            text: '${ei.value?.left}',
+                            style: const TextStyle(color: Colors.cyanAccent),
+                          ),
+                        ],
+                      ),
                     ),
                     onChangedF: (s) {
                       double? newLeft = double.tryParse(s);
                       if (newLeft != null) {
                         if (inputMode.value == EdgeInsetsInputModeEnum.all) {
-                          ei.value = EdgeInsetsValue(top: newLeft, left: newLeft, bottom: newLeft, right: newLeft);
-                        } else if (inputMode.value == EdgeInsetsInputModeEnum.symmetrical) {
-                          ei.value = EdgeInsetsValue(top: ei.value.top, left: newLeft, bottom: ei.value.bottom, right: newLeft);
+                          ei.value = EdgeInsets.only(
+                            top: newLeft,
+                            left: newLeft,
+                            bottom: newLeft,
+                            right: newLeft,
+                          );
+                        } else if (inputMode.value ==
+                            EdgeInsetsInputModeEnum.symmetrical) {
+                          ei.value = EdgeInsets.only(
+                            top: ei.value?.top??0.0,
+                            left: newLeft,
+                            bottom: ei.value?.bottom??0.0,
+                            right: newLeft,
+                          );
                         } else {
-                          ei.value = EdgeInsetsValue(top: ei.value.top, left: newLeft, bottom: ei.value.bottom, right: ei.value.right);
+                          ei.value = EdgeInsets.only(
+                            top: ei.value?.top??0.0,
+                            left: newLeft,
+                            bottom: ei.value?.bottom??0.0,
+                            right: ei.value?.right??0.0,
+                          );
                         }
                       }
                       onChangedF.call(ei.value);
@@ -152,24 +194,44 @@ class EdgeInsetsPropertyEditor extends HookWidget {
                 Align(
                   alignment: Alignment.centerRight,
                   child: PropertyButtonNumber<double>(
-                    originalValue: ei.value.right,
+                    originalValue: ei.value?.right??0.0,
                     labelWidget: RichText(
-                      text: TextSpan(text: 'right: ', style: const TextStyle(color: Colors.white), children: [
-                        TextSpan(
-                          text: '${ei.value.right}',
-                          style: const TextStyle(color: Colors.cyanAccent),
-                        ),
-                      ]),
+                      text: TextSpan(
+                        text: 'right: ',
+                        style: const TextStyle(color: Colors.white),
+                        children: [
+                          TextSpan(
+                            text: '${ei.value?.right}',
+                            style: const TextStyle(color: Colors.cyanAccent),
+                          ),
+                        ],
+                      ),
                     ),
                     onChangedF: (s) {
                       double? newRight = double.tryParse(s);
                       if (newRight != null) {
                         if (inputMode.value == EdgeInsetsInputModeEnum.all) {
-                          ei.value = EdgeInsetsValue(top: newRight, left: newRight, bottom: newRight, right: newRight);
-                        } else if (inputMode.value == EdgeInsetsInputModeEnum.symmetrical) {
-                          ei.value = EdgeInsetsValue(top: ei.value.top, left: newRight, bottom: ei.value.bottom, right: newRight);
+                          ei.value = EdgeInsets.only(
+                            top: newRight,
+                            left: newRight,
+                            bottom: newRight,
+                            right: newRight,
+                          );
+                        } else if (inputMode.value ==
+                            EdgeInsetsInputModeEnum.symmetrical) {
+                          ei.value = EdgeInsets.only(
+                            top: ei.value?.top??0.0,
+                            left: newRight,
+                            bottom: ei.value?.bottom??0.0,
+                            right: newRight,
+                          );
                         } else {
-                          ei.value = EdgeInsetsValue(top: ei.value.top, left: ei.value.left, bottom: ei.value.bottom, right: newRight);
+                          ei.value = EdgeInsets.only(
+                            top: ei.value?.top??0.0,
+                            left: ei.value?.left??0.0,
+                            bottom: ei.value?.bottom??0.0,
+                            right: newRight,
+                          );
                         }
                       }
                       onChangedF.call(ei.value);
@@ -182,25 +244,45 @@ class EdgeInsetsPropertyEditor extends HookWidget {
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: PropertyButtonNumber<double>(
-                    originalValue: ei.value.bottom,
+                    originalValue: ei.value?.bottom??0.0,
                     labelWidget: RichText(
-                      text: TextSpan(text: 'bottom: ', style: const TextStyle(color: Colors.white), children: [
-                        TextSpan(
-                          text: '${ei.value.bottom}',
-                          style: const TextStyle(color: Colors.cyanAccent),
-                        ),
-                      ]),
+                      text: TextSpan(
+                        text: 'bottom: ',
+                        style: const TextStyle(color: Colors.white),
+                        children: [
+                          TextSpan(
+                            text: '${ei.value?.bottom}',
+                            style: const TextStyle(color: Colors.cyanAccent),
+                          ),
+                        ],
+                      ),
                     ),
                     onChangedF: (s) {
                       double? newBottom = double.tryParse(s);
                       if (newBottom != null) {
                         // fco.logger.i(inputMode.name);
                         if (inputMode.value == EdgeInsetsInputModeEnum.all) {
-                          ei.value = EdgeInsetsValue(top: newBottom, left: newBottom, bottom: newBottom, right: newBottom);
-                        } else if (inputMode.value == EdgeInsetsInputModeEnum.symmetrical) {
-                          ei.value = EdgeInsetsValue(top: newBottom, left: ei.value.left, bottom: newBottom, right: ei.value.right);
+                          ei.value = EdgeInsets.only(
+                            top: newBottom,
+                            left: newBottom,
+                            bottom: newBottom,
+                            right: newBottom,
+                          );
+                        } else if (inputMode.value ==
+                            EdgeInsetsInputModeEnum.symmetrical) {
+                          ei.value = EdgeInsets.only(
+                            top: newBottom,
+                            left: ei.value?.left??0.0,
+                            bottom: newBottom,
+                            right: ei.value?.right??0.0,
+                          );
                         } else {
-                          ei.value = EdgeInsetsValue(top: ei.value.top, left: ei.value.left, bottom: newBottom, right: ei.value.right);
+                          ei.value = EdgeInsets.only(
+                            top: ei.value?.top??0.0,
+                            left: ei.value?.left??0.0,
+                            bottom: newBottom,
+                            right: ei.value?.right??0.0,
+                          );
                         }
                       }
                       onChangedF.call(ei.value);

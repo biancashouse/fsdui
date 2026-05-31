@@ -100,7 +100,6 @@ class ButtonStylePNode /*Group*/ extends PNode /*Group*/ {
           buttonStyleGroup.elevation = newValue;
           onGroupChange.call(buttonStyleGroup, true);
         },
-        calloutButtonSize: const Size(80, 20),
       ),
       DecimalPNode(
         snode: super.snode,
@@ -110,7 +109,6 @@ class ButtonStylePNode /*Group*/ extends PNode /*Group*/ {
           buttonStyleGroup.padding = newValue;
           onGroupChange.call(buttonStyleGroup, true);
         },
-        calloutButtonSize: const Size(80, 20),
       ),
       DecimalPNode(
         snode: super.snode,
@@ -120,7 +118,6 @@ class ButtonStylePNode /*Group*/ extends PNode /*Group*/ {
           buttonStyleGroup.radius = newValue;
           onGroupChange.call(buttonStyleGroup, true);
         },
-        calloutButtonSize: const Size(80, 20),
       ),
       PNode /*Group*/ (
         snode: super.snode,
@@ -134,7 +131,6 @@ class ButtonStylePNode /*Group*/ extends PNode /*Group*/ {
               buttonStyleGroup.minW = newValue;
               onGroupChange.call(buttonStyleGroup, true);
             },
-            calloutButtonSize: const Size(120, 20),
           ),
           DecimalPNode(
             snode: super.snode,
@@ -144,7 +140,6 @@ class ButtonStylePNode /*Group*/ extends PNode /*Group*/ {
               buttonStyleGroup.minH = newValue;
               onGroupChange.call(buttonStyleGroup, true);
             },
-            calloutButtonSize: const Size(120, 20),
           ),
           DecimalPNode(
             snode: super.snode,
@@ -154,7 +149,6 @@ class ButtonStylePNode /*Group*/ extends PNode /*Group*/ {
               buttonStyleGroup.maxW = newValue;
               onGroupChange.call(buttonStyleGroup, true);
             },
-            calloutButtonSize: const Size(120, 20),
           ),
           DecimalPNode(
             snode: super.snode,
@@ -164,7 +158,6 @@ class ButtonStylePNode /*Group*/ extends PNode /*Group*/ {
               buttonStyleGroup.maxH = newValue;
               onGroupChange.call(buttonStyleGroup, true);
             },
-            calloutButtonSize: const Size(120, 20),
           ),
           DecimalPNode(
             snode: super.snode,
@@ -174,7 +167,6 @@ class ButtonStylePNode /*Group*/ extends PNode /*Group*/ {
               buttonStyleGroup.fixedW = newValue;
               onGroupChange.call(buttonStyleGroup, true);
             },
-            calloutButtonSize: const Size(130, 20),
           ),
           DecimalPNode(
             snode: super.snode,
@@ -184,7 +176,6 @@ class ButtonStylePNode /*Group*/ extends PNode /*Group*/ {
               buttonStyleGroup.fixedH = newValue;
               onGroupChange.call(buttonStyleGroup, true);
             },
-            calloutButtonSize: const Size(130, 20),
           ),
         ],
       ),

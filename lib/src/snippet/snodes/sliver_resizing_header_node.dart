@@ -8,10 +8,15 @@ import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 part 'sliver_resizing_header_node.mapper.dart';
 
 @MappableClass()
-class SliverResizingHeaderNode extends SC with SliverResizingHeaderNodeMappable {
+class SliverResizingHeaderNode extends SNode with SC, SliverResizingHeaderNodeMappable {
+  @override
+  SNode? child;
+
+  @override
+  bool canAppendAChild() => child == null;
   SliverResizingHeaderNode({
     super.name,
-    super.child,
+    this.child,
   });
 
   @override

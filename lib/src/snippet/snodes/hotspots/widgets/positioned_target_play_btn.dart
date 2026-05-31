@@ -51,7 +51,7 @@ class TargetPlayBtn extends StatelessWidget {
               tc.btnIcon?.flutterValue ??
                   TargetButtonIconEnum.question.flutterValue,
               size: HotspotTargetModel.DEFAULT_BTN_RADIUS * 2,
-              color: tc.calloutFillColors?.color1?.flutterValue ?? Colors.black,
+              color: tc.calloutFillColors?.color1 ?? Colors.black,
             ),
             // child: IntegerCircleAvatar(
             //   num: index + 1,

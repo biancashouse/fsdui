@@ -18,7 +18,7 @@ part 'quill_text_node.mapper.dart';
 const k_emptyDeltaJsonString = '[{"insert":"\\n"}]';
 
 @MappableClass()
-class QuillTextNode extends CL with QuillTextNodeMappable {
+class QuillTextNode extends SNode with QuillTextNodeMappable {
   String deltaJsonString;
 
   QuillTextNode({super.name, this.deltaJsonString = k_emptyDeltaJsonString});

@@ -32,22 +32,18 @@ class AppBarHook extends MappingHook {
   }
 }
 
-@MappableClass(
-  discriminatorKey: 'DK:appbar',
-  includeSubClasses: [SliverAppBarNode],
-  hook: PropertyRenameHook('appbar', 'DK:appbar'), // 'first_name' -> JSON key, 'firstName' -> Dart field name
-)
-class AppBarNode extends CL with AppBarNodeMappable {
+@MappableClass()
+class AppBarNode extends SNode with AppBarNodeMappable {
   // String? tabBarName;
-  ColorModel? bgColor;
-  ColorModel? fgColor;
+  Color? bgColor;
+  Color? fgColor;
   double? toolbarHeight;
   NamedSC leading;
   NamedSC title;
   bool? centerTitle;
   NamedPS bottom;
   NamedMC actions;
-  ColorModel? shadowColor;
+  Color? shadowColor;
   double? scrolledUnderElevation;
   @MappableField(hook: TextStyleHook2())
   TextStyleProperties titleTextStyle;
@@ -93,7 +89,6 @@ class AppBarNode extends CL with AppBarNodeMappable {
         decimalValue: toolbarHeight,
         onDoubleChange: (newValue) =>
             refreshWithUpdate(context, () => toolbarHeight = newValue),
-        calloutButtonSize: const Size(130, 20),
       ),
       ColorPNode(
         snode: this,
@@ -102,7 +97,6 @@ class AppBarNode extends CL with AppBarNodeMappable {
         color: bgColor,
         onColorChange: (newValue) =>
             refreshWithUpdate(context, () => bgColor = newValue),
-        calloutButtonSize: const Size(130, 20),
       ),
       ColorPNode(
         snode: this,
@@ -111,7 +105,6 @@ class AppBarNode extends CL with AppBarNodeMappable {
         color: fgColor,
         onColorChange: (newValue) =>
             refreshWithUpdate(context, () => fgColor = newValue),
-        calloutButtonSize: const Size(130, 20),
       ),
       BoolPNode(
         snode: this,
@@ -172,9 +165,9 @@ class AppBarNode extends CL with AppBarNodeMappable {
           centerTitle: centerTitle??false,
           toolbarHeight: toolbarHeight??kToolbarHeight,
           actions: actionWidgets,
-          backgroundColor: bgColor?.flutterValue,
-          foregroundColor: fgColor?.flutterValue,
-          shadowColor: shadowColor?.flutterValue,
+          backgroundColor: bgColor,
+          foregroundColor: fgColor,
+          shadowColor: shadowColor,
           scrolledUnderElevation: scrolledUnderElevation,
           bottom: bottomWidget,
         );

@@ -5,13 +5,19 @@ import 'package:fsdui/fsdui.dart';
 part 'named_multi_child_node.mapper.dart';
 
 @MappableClass()
-class NamedMC extends MC with NamedMCMappable {
+class NamedMC extends SNode with MC, NamedMCMappable {
+  @override
+  List<SNode> children;
+
   String propertyName; // Widget property name, such as actions
   NamedMC({
     super.name,
     required this.propertyName,
-    required super.children,
+    required this.children,
   });
+
+  @override
+  List<SNode>? get ownChildren => children;
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => const [];

@@ -1,8 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// dart format off
 // ignore_for_file: type=lint
-// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -27,110 +25,68 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
   final String id = 'AppInfoModel';
 
   static SNode? _$clipboard(AppInfoModel v) => v.clipboard;
-  static const Field<AppInfoModel, SNode> _f$clipboard = Field(
-    'clipboard',
-    _$clipboard,
-    opt: true,
-  );
+  static const Field<AppInfoModel, SNode> _f$clipboard =
+      Field('clipboard', _$clipboard, opt: true);
   static bool _$autoPublishDefault(AppInfoModel v) => v.autoPublishDefault;
-  static const Field<AppInfoModel, bool> _f$autoPublishDefault = Field(
-    'autoPublishDefault',
-    _$autoPublishDefault,
-    opt: true,
-    def: true,
-  );
+  static const Field<AppInfoModel, bool> _f$autoPublishDefault =
+      Field('autoPublishDefault', _$autoPublishDefault, opt: true, def: true);
   static List<String> _$snippetNames(AppInfoModel v) => v.snippetNames;
-  static const Field<AppInfoModel, List<String>> _f$snippetNames = Field(
-    'snippetNames',
-    _$snippetNames,
-    opt: true,
-    def: const [],
-  );
-  static Map<String, TextStyleProperties> _$userTextStyles(AppInfoModel v) =>
-      v.userTextStyles;
+  static const Field<AppInfoModel, List<String>> _f$snippetNames =
+      Field('snippetNames', _$snippetNames, opt: true, def: const []);
+  static Map<String, TextStyleProperties> _$textStyles(AppInfoModel v) =>
+      v.textStyles;
   static const Field<AppInfoModel, Map<String, TextStyleProperties>>
-  _f$userTextStyles = Field(
-    'userTextStyles',
-    _$userTextStyles,
-    opt: true,
-    def: const {},
-  );
-  static Map<String, ButtonStyleProperties> _$userButtonStyles(
-    AppInfoModel v,
-  ) => v.userButtonStyles;
+      _f$textStyles =
+      Field('textStyles', _$textStyles, opt: true, def: const {});
+  static Map<String, ButtonStyleProperties> _$buttonStyles(AppInfoModel v) =>
+      v.buttonStyles;
   static const Field<AppInfoModel, Map<String, ButtonStyleProperties>>
-  _f$userButtonStyles = Field(
-    'userButtonStyles',
-    _$userButtonStyles,
-    opt: true,
-    def: const {},
-  );
-  static Map<String, ContainerStyleProperties> _$userContainerStyles(
-    AppInfoModel v,
-  ) => v.userContainerStyles;
+      _f$buttonStyles =
+      Field('buttonStyles', _$buttonStyles, opt: true, def: const {});
+  static Map<String, ContainerStyleProperties> _$containerStyles(
+          AppInfoModel v) =>
+      v.containerStyles;
   static const Field<AppInfoModel, Map<String, ContainerStyleProperties>>
-  _f$userContainerStyles = Field(
-    'userContainerStyles',
-    _$userContainerStyles,
-    opt: true,
-    def: const {},
-  );
+      _f$containerStyles =
+      Field('containerStyles', _$containerStyles, opt: true, def: const {});
   static List<String> _$anonymousUserEditablePages(AppInfoModel v) =>
       v.anonymousUserEditablePages;
   static const Field<AppInfoModel, List<String>> _f$anonymousUserEditablePages =
-      Field(
-        'anonymousUserEditablePages',
-        _$anonymousUserEditablePages,
-        key: r'anonymous-user-pages',
-        opt: true,
-        def: const [],
-      );
-  static List<String> _$superEditorPasswords(AppInfoModel v) =>
-      v.superEditorPasswords;
-  static const Field<AppInfoModel, List<String>> _f$superEditorPasswords =
-      Field(
-        'superEditorPasswords',
-        _$superEditorPasswords,
-        key: r'super-editor-passwords',
-        opt: true,
-        def: const [],
-      );
-  static List<String> _$articleEditorPasswords(AppInfoModel v) =>
-      v.articleEditorPasswords;
-  static const Field<AppInfoModel, List<String>> _f$articleEditorPasswords =
-      Field(
-        'articleEditorPasswords',
-        _$articleEditorPasswords,
-        key: r'article-editor-passwords',
-        opt: true,
-        def: const [],
-      );
+      Field('anonymousUserEditablePages', _$anonymousUserEditablePages,
+          key: r'anonymous-user-pages', opt: true, def: const []);
+  static List<String> _$superEditorEas(AppInfoModel v) => v.superEditorEas;
+  static const Field<AppInfoModel, List<String>> _f$superEditorEas = Field(
+      'superEditorEas', _$superEditorEas,
+      key: r'super-editors', opt: true, def: const []);
+  static List<String> _$articleEditorEas(AppInfoModel v) => v.articleEditorEas;
+  static const Field<AppInfoModel, List<String>> _f$articleEditorEas = Field(
+      'articleEditorEas', _$articleEditorEas,
+      key: r'article-editors', opt: true, def: const []);
 
   @override
   final MappableFields<AppInfoModel> fields = const {
     #clipboard: _f$clipboard,
     #autoPublishDefault: _f$autoPublishDefault,
     #snippetNames: _f$snippetNames,
-    #userTextStyles: _f$userTextStyles,
-    #userButtonStyles: _f$userButtonStyles,
-    #userContainerStyles: _f$userContainerStyles,
+    #textStyles: _f$textStyles,
+    #buttonStyles: _f$buttonStyles,
+    #containerStyles: _f$containerStyles,
     #anonymousUserEditablePages: _f$anonymousUserEditablePages,
-    #superEditorPasswords: _f$superEditorPasswords,
-    #articleEditorPasswords: _f$articleEditorPasswords,
+    #superEditorEas: _f$superEditorEas,
+    #articleEditorEas: _f$articleEditorEas,
   };
 
   static AppInfoModel _instantiate(DecodingData data) {
     return AppInfoModel(
-      clipboard: data.dec(_f$clipboard),
-      autoPublishDefault: data.dec(_f$autoPublishDefault),
-      snippetNames: data.dec(_f$snippetNames),
-      userTextStyles: data.dec(_f$userTextStyles),
-      userButtonStyles: data.dec(_f$userButtonStyles),
-      userContainerStyles: data.dec(_f$userContainerStyles),
-      anonymousUserEditablePages: data.dec(_f$anonymousUserEditablePages),
-      superEditorPasswords: data.dec(_f$superEditorPasswords),
-      articleEditorPasswords: data.dec(_f$articleEditorPasswords),
-    );
+        clipboard: data.dec(_f$clipboard),
+        autoPublishDefault: data.dec(_f$autoPublishDefault),
+        snippetNames: data.dec(_f$snippetNames),
+        textStyles: data.dec(_f$textStyles),
+        buttonStyles: data.dec(_f$buttonStyles),
+        containerStyles: data.dec(_f$containerStyles),
+        anonymousUserEditablePages: data.dec(_f$anonymousUserEditablePages),
+        superEditorEas: data.dec(_f$superEditorEas),
+        articleEditorEas: data.dec(_f$articleEditorEas));
   }
 
   @override
@@ -147,43 +103,34 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
 
 mixin AppInfoModelMappable {
   String toJson() {
-    return AppInfoModelMapper.ensureInitialized().encodeJson<AppInfoModel>(
-      this as AppInfoModel,
-    );
+    return AppInfoModelMapper.ensureInitialized()
+        .encodeJson<AppInfoModel>(this as AppInfoModel);
   }
 
   Map<String, dynamic> toMap() {
-    return AppInfoModelMapper.ensureInitialized().encodeMap<AppInfoModel>(
-      this as AppInfoModel,
-    );
+    return AppInfoModelMapper.ensureInitialized()
+        .encodeMap<AppInfoModel>(this as AppInfoModel);
   }
 
   AppInfoModelCopyWith<AppInfoModel, AppInfoModel, AppInfoModel> get copyWith =>
       _AppInfoModelCopyWithImpl<AppInfoModel, AppInfoModel>(
-        this as AppInfoModel,
-        $identity,
-        $identity,
-      );
+          this as AppInfoModel, $identity, $identity);
   @override
   String toString() {
-    return AppInfoModelMapper.ensureInitialized().stringifyValue(
-      this as AppInfoModel,
-    );
+    return AppInfoModelMapper.ensureInitialized()
+        .stringifyValue(this as AppInfoModel);
   }
 
   @override
   bool operator ==(Object other) {
-    return AppInfoModelMapper.ensureInitialized().equalsValue(
-      this as AppInfoModel,
-      other,
-    );
+    return AppInfoModelMapper.ensureInitialized()
+        .equalsValue(this as AppInfoModel, other);
   }
 
   @override
   int get hashCode {
-    return AppInfoModelMapper.ensureInitialized().hashValue(
-      this as AppInfoModel,
-    );
+    return AppInfoModelMapper.ensureInitialized()
+        .hashValue(this as AppInfoModel);
   }
 }
 
@@ -198,51 +145,39 @@ abstract class AppInfoModelCopyWith<$R, $In extends AppInfoModel, $Out>
   SNodeCopyWith<$R, SNode, SNode>? get clipboard;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get snippetNames;
   MapCopyWith<
-    $R,
-    String,
-    TextStyleProperties,
-    TextStylePropertiesCopyWith<$R, TextStyleProperties, TextStyleProperties>
-  >
-  get userTextStyles;
-  MapCopyWith<
-    $R,
-    String,
-    ButtonStyleProperties,
-    ButtonStylePropertiesCopyWith<
       $R,
+      String,
+      TextStyleProperties,
+      TextStylePropertiesCopyWith<$R, TextStyleProperties,
+          TextStyleProperties>> get textStyles;
+  MapCopyWith<
+      $R,
+      String,
       ButtonStyleProperties,
-      ButtonStyleProperties
-    >
-  >
-  get userButtonStyles;
+      ButtonStylePropertiesCopyWith<$R, ButtonStyleProperties,
+          ButtonStyleProperties>> get buttonStyles;
   MapCopyWith<
-    $R,
-    String,
-    ContainerStyleProperties,
-    ContainerStylePropertiesCopyWith<
       $R,
+      String,
       ContainerStyleProperties,
-      ContainerStyleProperties
-    >
-  >
-  get userContainerStyles;
+      ContainerStylePropertiesCopyWith<$R, ContainerStyleProperties,
+          ContainerStyleProperties>> get containerStyles;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
-  get anonymousUserEditablePages;
+      get anonymousUserEditablePages;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
-  get superEditorPasswords;
+      get superEditorEas;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
-  get articleEditorPasswords;
-  $R call({
-    SNode? clipboard,
-    bool? autoPublishDefault,
-    List<String>? snippetNames,
-    Map<String, TextStyleProperties>? userTextStyles,
-    Map<String, ButtonStyleProperties>? userButtonStyles,
-    Map<String, ContainerStyleProperties>? userContainerStyles,
-    List<String>? anonymousUserEditablePages,
-    List<String>? superEditorPasswords,
-    List<String>? articleEditorPasswords,
-  });
+      get articleEditorEas;
+  $R call(
+      {SNode? clipboard,
+      bool? autoPublishDefault,
+      List<String>? snippetNames,
+      Map<String, TextStyleProperties>? textStyles,
+      Map<String, ButtonStyleProperties>? buttonStyles,
+      Map<String, ContainerStyleProperties>? containerStyles,
+      List<String>? anonymousUserEditablePages,
+      List<String>? superEditorEas,
+      List<String>? articleEditorEas});
   AppInfoModelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -259,135 +194,96 @@ class _AppInfoModelCopyWithImpl<$R, $Out>
       $value.clipboard?.copyWith.$chain((v) => call(clipboard: v));
   @override
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
-  get snippetNames => ListCopyWith(
-    $value.snippetNames,
-    (v, t) => ObjectCopyWith(v, $identity, t),
-    (v) => call(snippetNames: v),
-  );
+      get snippetNames => ListCopyWith(
+          $value.snippetNames,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(snippetNames: v));
   @override
   MapCopyWith<
-    $R,
-    String,
-    TextStyleProperties,
-    TextStylePropertiesCopyWith<$R, TextStyleProperties, TextStyleProperties>
-  >
-  get userTextStyles => MapCopyWith(
-    $value.userTextStyles,
-    (v, t) => v.copyWith.$chain(t),
-    (v) => call(userTextStyles: v),
-  );
-  @override
-  MapCopyWith<
-    $R,
-    String,
-    ButtonStyleProperties,
-    ButtonStylePropertiesCopyWith<
       $R,
+      String,
+      TextStyleProperties,
+      TextStylePropertiesCopyWith<$R, TextStyleProperties,
+          TextStyleProperties>> get textStyles => MapCopyWith($value.textStyles,
+      (v, t) => v.copyWith.$chain(t), (v) => call(textStyles: v));
+  @override
+  MapCopyWith<
+      $R,
+      String,
       ButtonStyleProperties,
-      ButtonStyleProperties
-    >
-  >
-  get userButtonStyles => MapCopyWith(
-    $value.userButtonStyles,
-    (v, t) => v.copyWith.$chain(t),
-    (v) => call(userButtonStyles: v),
-  );
+      ButtonStylePropertiesCopyWith<$R, ButtonStyleProperties,
+          ButtonStyleProperties>> get buttonStyles => MapCopyWith(
+      $value.buttonStyles,
+      (v, t) => v.copyWith.$chain(t),
+      (v) => call(buttonStyles: v));
   @override
   MapCopyWith<
-    $R,
-    String,
-    ContainerStyleProperties,
-    ContainerStylePropertiesCopyWith<
       $R,
+      String,
       ContainerStyleProperties,
-      ContainerStyleProperties
-    >
-  >
-  get userContainerStyles => MapCopyWith(
-    $value.userContainerStyles,
-    (v, t) => v.copyWith.$chain(t),
-    (v) => call(userContainerStyles: v),
-  );
+      ContainerStylePropertiesCopyWith<$R, ContainerStyleProperties,
+          ContainerStyleProperties>> get containerStyles => MapCopyWith(
+      $value.containerStyles,
+      (v, t) => v.copyWith.$chain(t),
+      (v) => call(containerStyles: v));
   @override
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
-  get anonymousUserEditablePages => ListCopyWith(
-    $value.anonymousUserEditablePages,
-    (v, t) => ObjectCopyWith(v, $identity, t),
-    (v) => call(anonymousUserEditablePages: v),
-  );
+      get anonymousUserEditablePages => ListCopyWith(
+          $value.anonymousUserEditablePages,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(anonymousUserEditablePages: v));
   @override
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
-  get superEditorPasswords => ListCopyWith(
-    $value.superEditorPasswords,
-    (v, t) => ObjectCopyWith(v, $identity, t),
-    (v) => call(superEditorPasswords: v),
-  );
+      get superEditorEas => ListCopyWith(
+          $value.superEditorEas,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(superEditorEas: v));
   @override
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
-  get articleEditorPasswords => ListCopyWith(
-    $value.articleEditorPasswords,
-    (v, t) => ObjectCopyWith(v, $identity, t),
-    (v) => call(articleEditorPasswords: v),
-  );
+      get articleEditorEas => ListCopyWith(
+          $value.articleEditorEas,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(articleEditorEas: v));
   @override
-  $R call({
-    Object? clipboard = $none,
-    bool? autoPublishDefault,
-    List<String>? snippetNames,
-    Map<String, TextStyleProperties>? userTextStyles,
-    Map<String, ButtonStyleProperties>? userButtonStyles,
-    Map<String, ContainerStyleProperties>? userContainerStyles,
-    List<String>? anonymousUserEditablePages,
-    List<String>? superEditorPasswords,
-    List<String>? articleEditorPasswords,
-  }) => $apply(
-    FieldCopyWithData({
-      if (clipboard != $none) #clipboard: clipboard,
-      if (autoPublishDefault != null) #autoPublishDefault: autoPublishDefault,
-      if (snippetNames != null) #snippetNames: snippetNames,
-      if (userTextStyles != null) #userTextStyles: userTextStyles,
-      if (userButtonStyles != null) #userButtonStyles: userButtonStyles,
-      if (userContainerStyles != null)
-        #userContainerStyles: userContainerStyles,
-      if (anonymousUserEditablePages != null)
-        #anonymousUserEditablePages: anonymousUserEditablePages,
-      if (superEditorPasswords != null)
-        #superEditorPasswords: superEditorPasswords,
-      if (articleEditorPasswords != null)
-        #articleEditorPasswords: articleEditorPasswords,
-    }),
-  );
+  $R call(
+          {Object? clipboard = $none,
+          bool? autoPublishDefault,
+          List<String>? snippetNames,
+          Map<String, TextStyleProperties>? textStyles,
+          Map<String, ButtonStyleProperties>? buttonStyles,
+          Map<String, ContainerStyleProperties>? containerStyles,
+          List<String>? anonymousUserEditablePages,
+          List<String>? superEditorEas,
+          List<String>? articleEditorEas}) =>
+      $apply(FieldCopyWithData({
+        if (clipboard != $none) #clipboard: clipboard,
+        if (autoPublishDefault != null) #autoPublishDefault: autoPublishDefault,
+        if (snippetNames != null) #snippetNames: snippetNames,
+        if (textStyles != null) #textStyles: textStyles,
+        if (buttonStyles != null) #buttonStyles: buttonStyles,
+        if (containerStyles != null) #containerStyles: containerStyles,
+        if (anonymousUserEditablePages != null)
+          #anonymousUserEditablePages: anonymousUserEditablePages,
+        if (superEditorEas != null) #superEditorEas: superEditorEas,
+        if (articleEditorEas != null) #articleEditorEas: articleEditorEas
+      }));
   @override
   AppInfoModel $make(CopyWithData data) => AppInfoModel(
-    clipboard: data.get(#clipboard, or: $value.clipboard),
-    autoPublishDefault: data.get(
-      #autoPublishDefault,
-      or: $value.autoPublishDefault,
-    ),
-    snippetNames: data.get(#snippetNames, or: $value.snippetNames),
-    userTextStyles: data.get(#userTextStyles, or: $value.userTextStyles),
-    userButtonStyles: data.get(#userButtonStyles, or: $value.userButtonStyles),
-    userContainerStyles: data.get(
-      #userContainerStyles,
-      or: $value.userContainerStyles,
-    ),
-    anonymousUserEditablePages: data.get(
-      #anonymousUserEditablePages,
-      or: $value.anonymousUserEditablePages,
-    ),
-    superEditorPasswords: data.get(
-      #superEditorPasswords,
-      or: $value.superEditorPasswords,
-    ),
-    articleEditorPasswords: data.get(
-      #articleEditorPasswords,
-      or: $value.articleEditorPasswords,
-    ),
-  );
+      clipboard: data.get(#clipboard, or: $value.clipboard),
+      autoPublishDefault:
+          data.get(#autoPublishDefault, or: $value.autoPublishDefault),
+      snippetNames: data.get(#snippetNames, or: $value.snippetNames),
+      textStyles: data.get(#textStyles, or: $value.textStyles),
+      buttonStyles: data.get(#buttonStyles, or: $value.buttonStyles),
+      containerStyles: data.get(#containerStyles, or: $value.containerStyles),
+      anonymousUserEditablePages: data.get(#anonymousUserEditablePages,
+          or: $value.anonymousUserEditablePages),
+      superEditorEas: data.get(#superEditorEas, or: $value.superEditorEas),
+      articleEditorEas:
+          data.get(#articleEditorEas, or: $value.articleEditorEas));
 
   @override
   AppInfoModelCopyWith<$R2, AppInfoModel, $Out2> $chain<$R2, $Out2>(
-    Then<$Out2, $R2> t,
-  ) => _AppInfoModelCopyWithImpl<$R2, $Out2>($value, $cast, t);
+          Then<$Out2, $R2> t) =>
+      _AppInfoModelCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
-

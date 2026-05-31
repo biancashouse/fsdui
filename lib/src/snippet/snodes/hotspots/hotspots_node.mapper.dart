@@ -1,8 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// dart format off
 // ignore_for_file: type=lint
-// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -15,7 +13,7 @@ class TargetsWrapperNodeMapper extends SubClassMapperBase<TargetsWrapperNode> {
   static TargetsWrapperNodeMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = TargetsWrapperNodeMapper._());
-      SCMapper.ensureInitialized().addSubMapper(_instance!);
+      SNodeMapper.ensureInitialized().addSubMapper(_instance!);
       HotspotTargetModelMapper.ensureInitialized();
       SNodeMapper.ensureInitialized();
     }
@@ -26,67 +24,42 @@ class TargetsWrapperNodeMapper extends SubClassMapperBase<TargetsWrapperNode> {
   final String id = 'TargetsWrapperNode';
 
   static String? _$name(TargetsWrapperNode v) => v.name;
-  static const Field<TargetsWrapperNode, String> _f$name = Field(
-    'name',
-    _$name,
-    opt: true,
-  );
+  static const Field<TargetsWrapperNode, String> _f$name =
+      Field('name', _$name, opt: true);
   static double? _$aspectRatio(TargetsWrapperNode v) => v.aspectRatio;
-  static const Field<TargetsWrapperNode, double> _f$aspectRatio = Field(
-    'aspectRatio',
-    _$aspectRatio,
-    opt: true,
-  );
+  static const Field<TargetsWrapperNode, double> _f$aspectRatio =
+      Field('aspectRatio', _$aspectRatio, opt: true);
   static double _$borderRadius(TargetsWrapperNode v) => v.borderRadius;
-  static const Field<TargetsWrapperNode, double> _f$borderRadius = Field(
-    'borderRadius',
-    _$borderRadius,
-    opt: true,
-    def: 0,
-  );
+  static const Field<TargetsWrapperNode, double> _f$borderRadius =
+      Field('borderRadius', _$borderRadius, opt: true, def: 0);
   static List<HotspotTargetModel> _$targets(TargetsWrapperNode v) => v.targets;
   static const Field<TargetsWrapperNode, List<HotspotTargetModel>> _f$targets =
       Field('targets', _$targets, opt: true, def: const []);
   static SNode? _$child(TargetsWrapperNode v) => v.child;
-  static const Field<TargetsWrapperNode, SNode> _f$child = Field(
-    'child',
-    _$child,
-    opt: true,
-  );
+  static const Field<TargetsWrapperNode, SNode> _f$child =
+      Field('child', _$child, opt: true);
   static String _$uid(TargetsWrapperNode v) => v.uid;
-  static const Field<TargetsWrapperNode, String> _f$uid = Field(
-    'uid',
-    _$uid,
-    mode: FieldMode.member,
-  );
+  static const Field<TargetsWrapperNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static List<String>? _$tags(TargetsWrapperNode v) => v.tags;
-  static const Field<TargetsWrapperNode, List<String>> _f$tags = Field(
-    'tags',
-    _$tags,
-    mode: FieldMode.member,
-  );
+  static const Field<TargetsWrapperNode, List<String>> _f$tags =
+      Field('tags', _$tags, mode: FieldMode.member);
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(TargetsWrapperNode v) =>
       v.treeNodeGK;
   static const Field<TargetsWrapperNode, GlobalKey<State<StatefulWidget>>>
-  _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
+      _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(TargetsWrapperNode v) => v.isExpanded;
-  static const Field<TargetsWrapperNode, bool> _f$isExpanded = Field(
-    'isExpanded',
-    _$isExpanded,
-    mode: FieldMode.member,
-  );
+  static const Field<TargetsWrapperNode, bool> _f$isExpanded =
+      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(TargetsWrapperNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<TargetsWrapperNode, bool> _f$hidePropertiesWhileDragging =
-      Field(
-        'hidePropertiesWhileDragging',
-        _$hidePropertiesWhileDragging,
-        mode: FieldMode.member,
-      );
+      Field('hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
+          mode: FieldMode.member);
   static GlobalKey<State<StatefulWidget>>? _$nodeGK(TargetsWrapperNode v) =>
       v.nodeGK;
   static const Field<TargetsWrapperNode, GlobalKey<State<StatefulWidget>>>
-  _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
+      _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
 
   @override
   final MappableFields<TargetsWrapperNode> fields = const {
@@ -104,26 +77,22 @@ class TargetsWrapperNodeMapper extends SubClassMapperBase<TargetsWrapperNode> {
   };
 
   @override
-  final String discriminatorKey = 'DK:sc';
+  final String discriminatorKey = 'DK:snode';
   @override
   final dynamic discriminatorValue = 'TargetsWrapperNode';
   @override
-  late final ClassMapperBase superMapper = SCMapper.ensureInitialized();
+  late final ClassMapperBase superMapper = SNodeMapper.ensureInitialized();
 
   @override
-  final MappingHook superHook = ChainedHook([
-    PropertyRenameHook('sc', 'DK:sc'),
-    PropertyRenameHook('snode', 'DK:snode'),
-  ]);
+  final MappingHook superHook = const PropertyRenameHook('snode', 'DK:snode');
 
   static TargetsWrapperNode _instantiate(DecodingData data) {
     return TargetsWrapperNode(
-      name: data.dec(_f$name),
-      aspectRatio: data.dec(_f$aspectRatio),
-      borderRadius: data.dec(_f$borderRadius),
-      targets: data.dec(_f$targets),
-      child: data.dec(_f$child),
-    );
+        name: data.dec(_f$name),
+        aspectRatio: data.dec(_f$aspectRatio),
+        borderRadius: data.dec(_f$borderRadius),
+        targets: data.dec(_f$targets),
+        child: data.dec(_f$child));
   }
 
   @override
@@ -149,73 +118,53 @@ mixin TargetsWrapperNodeMappable {
         .encodeMap<TargetsWrapperNode>(this as TargetsWrapperNode);
   }
 
-  TargetsWrapperNodeCopyWith<
-    TargetsWrapperNode,
-    TargetsWrapperNode,
-    TargetsWrapperNode
-  >
-  get copyWith =>
-      _TargetsWrapperNodeCopyWithImpl<TargetsWrapperNode, TargetsWrapperNode>(
-        this as TargetsWrapperNode,
-        $identity,
-        $identity,
-      );
+  TargetsWrapperNodeCopyWith<TargetsWrapperNode, TargetsWrapperNode,
+          TargetsWrapperNode>
+      get copyWith => _TargetsWrapperNodeCopyWithImpl<TargetsWrapperNode,
+          TargetsWrapperNode>(this as TargetsWrapperNode, $identity, $identity);
   @override
   String toString() {
-    return TargetsWrapperNodeMapper.ensureInitialized().stringifyValue(
-      this as TargetsWrapperNode,
-    );
+    return TargetsWrapperNodeMapper.ensureInitialized()
+        .stringifyValue(this as TargetsWrapperNode);
   }
 
   @override
   bool operator ==(Object other) {
-    return TargetsWrapperNodeMapper.ensureInitialized().equalsValue(
-      this as TargetsWrapperNode,
-      other,
-    );
+    return TargetsWrapperNodeMapper.ensureInitialized()
+        .equalsValue(this as TargetsWrapperNode, other);
   }
 
   @override
   int get hashCode {
-    return TargetsWrapperNodeMapper.ensureInitialized().hashValue(
-      this as TargetsWrapperNode,
-    );
+    return TargetsWrapperNodeMapper.ensureInitialized()
+        .hashValue(this as TargetsWrapperNode);
   }
 }
 
 extension TargetsWrapperNodeValueCopy<$R, $Out>
     on ObjectCopyWith<$R, TargetsWrapperNode, $Out> {
   TargetsWrapperNodeCopyWith<$R, TargetsWrapperNode, $Out>
-  get $asTargetsWrapperNode => $base.as(
-    (v, t, t2) => _TargetsWrapperNodeCopyWithImpl<$R, $Out>(v, t, t2),
-  );
+      get $asTargetsWrapperNode => $base.as(
+          (v, t, t2) => _TargetsWrapperNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
-abstract class TargetsWrapperNodeCopyWith<
-  $R,
-  $In extends TargetsWrapperNode,
-  $Out
->
-    implements SCCopyWith<$R, $In, $Out> {
+abstract class TargetsWrapperNodeCopyWith<$R, $In extends TargetsWrapperNode,
+    $Out> implements SNodeCopyWith<$R, $In, $Out> {
   ListCopyWith<
-    $R,
-    HotspotTargetModel,
-    HotspotTargetModelCopyWith<$R, HotspotTargetModel, HotspotTargetModel>
-  >
-  get targets;
-  @override
+      $R,
+      HotspotTargetModel,
+      HotspotTargetModelCopyWith<$R, HotspotTargetModel,
+          HotspotTargetModel>> get targets;
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({
-    String? name,
-    double? aspectRatio,
-    double? borderRadius,
-    List<HotspotTargetModel>? targets,
-    SNode? child,
-  });
+  $R call(
+      {String? name,
+      double? aspectRatio,
+      double? borderRadius,
+      List<HotspotTargetModel>? targets,
+      SNode? child});
   TargetsWrapperNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-    Then<$Out2, $R2> t,
-  );
+      Then<$Out2, $R2> t);
 }
 
 class _TargetsWrapperNodeCopyWithImpl<$R, $Out>
@@ -228,46 +177,38 @@ class _TargetsWrapperNodeCopyWithImpl<$R, $Out>
       TargetsWrapperNodeMapper.ensureInitialized();
   @override
   ListCopyWith<
-    $R,
-    HotspotTargetModel,
-    HotspotTargetModelCopyWith<$R, HotspotTargetModel, HotspotTargetModel>
-  >
-  get targets => ListCopyWith(
-    $value.targets,
-    (v, t) => v.copyWith.$chain(t),
-    (v) => call(targets: v),
-  );
+      $R,
+      HotspotTargetModel,
+      HotspotTargetModelCopyWith<$R, HotspotTargetModel,
+          HotspotTargetModel>> get targets => ListCopyWith(
+      $value.targets, (v, t) => v.copyWith.$chain(t), (v) => call(targets: v));
   @override
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
-  $R call({
-    Object? name = $none,
-    Object? aspectRatio = $none,
-    double? borderRadius,
-    List<HotspotTargetModel>? targets,
-    Object? child = $none,
-  }) => $apply(
-    FieldCopyWithData({
-      if (name != $none) #name: name,
-      if (aspectRatio != $none) #aspectRatio: aspectRatio,
-      if (borderRadius != null) #borderRadius: borderRadius,
-      if (targets != null) #targets: targets,
-      if (child != $none) #child: child,
-    }),
-  );
+  $R call(
+          {Object? name = $none,
+          Object? aspectRatio = $none,
+          double? borderRadius,
+          List<HotspotTargetModel>? targets,
+          Object? child = $none}) =>
+      $apply(FieldCopyWithData({
+        if (name != $none) #name: name,
+        if (aspectRatio != $none) #aspectRatio: aspectRatio,
+        if (borderRadius != null) #borderRadius: borderRadius,
+        if (targets != null) #targets: targets,
+        if (child != $none) #child: child
+      }));
   @override
   TargetsWrapperNode $make(CopyWithData data) => TargetsWrapperNode(
-    name: data.get(#name, or: $value.name),
-    aspectRatio: data.get(#aspectRatio, or: $value.aspectRatio),
-    borderRadius: data.get(#borderRadius, or: $value.borderRadius),
-    targets: data.get(#targets, or: $value.targets),
-    child: data.get(#child, or: $value.child),
-  );
+      name: data.get(#name, or: $value.name),
+      aspectRatio: data.get(#aspectRatio, or: $value.aspectRatio),
+      borderRadius: data.get(#borderRadius, or: $value.borderRadius),
+      targets: data.get(#targets, or: $value.targets),
+      child: data.get(#child, or: $value.child));
 
   @override
   TargetsWrapperNodeCopyWith<$R2, TargetsWrapperNode, $Out2> $chain<$R2, $Out2>(
-    Then<$Out2, $R2> t,
-  ) => _TargetsWrapperNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+          Then<$Out2, $R2> t) =>
+      _TargetsWrapperNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
-

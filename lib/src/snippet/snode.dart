@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/snode_widget.dart';
 import 'package:fsdui/src/api/editable_page/snippet_editor_side_panel.dart';
-import 'package:fsdui/src/snippet/snodes/crossword_node.dart' show CrosswordNode;
+import 'package:fsdui/src/snippet/snodes/crossword_node.dart';
 import 'package:fsdui/src/snippet/snodes/hotspots/widgets/hotspot_target_config_toolbar/hotspot_target_config_toolbar.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'widget_picker/quick_pick_panel.dart';
 import 'widget_picker/widget_entry.dart';
-import 'widget_picker/widget_picker_dialog.dart';
+// import 'widget_picker/widget_picker_dialog.dart';
 import 'widget_picker/widget_registry.dart';
 
 part 'snode.mapper.dart';
@@ -18,6 +18,7 @@ part 'snode.mapper.dart';
 const List<Type> childlessSubClasses = [
   AlgCNode,
   AppBarNode,
+  SliverAppBarNode,
   AssetImageNode,
   ChipNode,
   CrosswordNode,
@@ -34,7 +35,7 @@ const List<Type> childlessSubClasses = [
   QuillTextNode,
   RichTextNode,
   ScaffoldNode,
-  ScrollViewNode,
+  CustomScrollViewNode,
   StepNode,
   TextNode,
   UMLImageNode,
@@ -44,11 +45,17 @@ const List<Type> childlessSubClasses = [
 const List<Type> singleChildSubClasses = [
   AlignNode,
   AspectRatioNode,
-  ButtonNode,
+  ElevatedButtonNode,
+  OutlinedButtonNode,
+  TextButtonNode,
+  FilledButtonNode,
+  IconButtonNode,
+  MenuItemButtonNode,
   CenterNode,
   ConstrainedBoxNode,
   ContainerNode,
   DefaultTextStyleNode,
+  ExpandedNode,
   FlexibleNode,
   NamedSC,
   NamedPS,
@@ -73,6 +80,8 @@ const List<Type> multiChildSubClasses = [
   DirectoryNode,
   DynamicTabBarNode,
   FlexNode,
+  RowNode,
+  ColumnNode,
   NamedMC,
   MenuBarNode,
   PageViewNode,
@@ -123,11 +132,90 @@ enum NodeAction {
 
 @MappableClass(
   discriminatorKey: 'DK:snode',
-  includeSubClasses: [CL, SC, MC, InlineSpanNode],
-  hook: PropertyRenameHook(
-    'snode',
-    'DK:snode',
-  ), // 'first_name' -> JSON key, 'firstName' -> Dart field name
+  includeSubClasses: [
+    // childless
+    AlgCNode,
+    AppBarNode,
+    SliverAppBarNode,
+    AssetImageNode,
+    ChipNode,
+    CrosswordNode,
+    FileNode,
+    FlexibleSpaceBarNode,
+    StorageImageNode,
+    GapNode,
+    GoogleDriveIFrameNode,
+    IFrameNode,
+    MarkdownNode,
+    PlaceholderNode,
+    PollOptionNode,
+    QuillTextNode,
+    RichTextNode,
+    ScaffoldNode,
+    CustomScrollViewNode,
+    StepNode,
+    TextNode,
+    UMLImageNode,
+    YTNode,
+    // single-child
+    AlignNode,
+    AspectRatioNode,
+    ElevatedButtonNode,
+    OutlinedButtonNode,
+    TextButtonNode,
+    FilledButtonNode,
+    IconButtonNode,
+    MenuItemButtonNode,
+    CenterNode,
+    ConstrainedBoxNode,
+    ContainerNode,
+    DefaultTextStyleNode,
+    ExpandedNode,
+    FlexibleNode,
+    NamedSC,
+    NamedPS,
+    InteractiveViewerNode,
+    IntrinsicWidthNode,
+    IntrinsicHeightNode,
+    PaddingNode,
+    PinnedHeaderSliverNode,
+    PositionedNode,
+    SingleChildScrollViewNode,
+    SizedBoxNode,
+    SliverFloatingHeaderNode,
+    SliverResizingHeaderNode,
+    SliverToBoxAdapterNode,
+    TabDataNode,
+    TabNode,
+    TargetsWrapperNode,
+    // multi-child
+    CarouselNode,
+    DirectoryNode,
+    DynamicTabBarNode,
+    FlexNode,
+    RowNode,
+    ColumnNode,
+    NamedMC,
+    MenuBarNode,
+    PageViewNode,
+    PollNode,
+    SliverListListNode,
+    SplitViewNode,
+    StackNode,
+    StepperNode,
+    SubmenuButtonNode,
+    TabBarNode,
+    TabBarViewNode,
+    WrapNode,
+    // scroll-view children (extend CL via BoxScrollViewNode)
+    ArticleListViewNode,
+    GridViewNode,
+    ListViewNode,
+    // inline spans
+    TextSpanNode,
+    WidgetSpanNode,
+  ],
+  hook: PropertyRenameHook('snode', 'DK:snode'),
 )
 abstract class SNode extends Node with SNodeMappable {
   String uid = UniqueKey().toString();
@@ -481,30 +569,18 @@ abstract class SNode extends Node with SNodeMappable {
 
   // useful in generic tree actions, such as node deletion
   List<SNode>? maybeChildren() {
-    if (this is CL) {
-      return null;
-    }
-    if (this is SC && (this as SC).child != null) {
-      return [(this as SC).child!];
-    }
-    if (this is MC) {
-      return (this as MC).children;
-    }
-    if (this is CustomScrollViewNode) {
-      CustomScrollViewNode scv = this as CustomScrollViewNode;
-      return scv.slivers;
-    }
-    if (this is ListViewNode) {
-      ListViewNode lv = this as ListViewNode;
-      return lv.children;
-    }
-    if (this is GridViewNode) {
-      GridViewNode gv = this as GridViewNode;
-      return gv.children;
-    }
-    if (this is TextSpanNode) {
-      TextSpanNode ts = this as TextSpanNode;
-      return ts.children;
+    if (this is SC) {
+      final c = (this as SC).child;
+      if (c != null) return [c];
+    } else if (this is MC) {
+      if (this is CustomScrollViewNode) {
+        return (this as CustomScrollViewNode).slivers;
+      }
+      if (this is TextSpanNode) {
+        return (this as TextSpanNode).children;
+      } else {
+        return (this as MC).children;
+      }
     }
     return null;
   }
@@ -519,25 +595,11 @@ abstract class SNode extends Node with SNodeMappable {
   bool hasChildren() => !hasNoChildren();
 
   List<SNode>? maybeSiblings() {
-    if (getParent() is MC) {
-      return (getParent() as MC).children;
-    }
-    if (getParent() is CustomScrollViewNode) {
-      CustomScrollViewNode scv = getParent() as CustomScrollViewNode;
-      return scv.slivers;
-    }
-    if (getParent() is ListViewNode) {
-      ListViewNode lv = getParent() as ListViewNode;
-      return lv.children;
-    }
-    if (getParent() is GridViewNode) {
-      GridViewNode gv = getParent() as GridViewNode;
-      return gv.children;
-    }
-    if (getParent() is TextSpanNode) {
-      TextSpanNode ts = getParent() as TextSpanNode;
-      return ts.children;
-    }
+    final parent = getParent() as SNode?;
+    if (parent == null) return null;
+    if (parent is CustomScrollViewNode) return parent.slivers;
+    if (parent is TextSpanNode) return parent.children;
+    if (parent is MC) return parent.children;
     return null;
   }
 
@@ -736,10 +798,7 @@ abstract class SNode extends Node with SNodeMappable {
     }
 
     fsdui.capiBloc.add(
-      PushSnippetEditor(
-        rootNode: rootNode,
-        selectedNode: selectedNode,
-      ),
+      PushSnippetEditor(rootNode: rootNode, selectedNode: selectedNode),
     );
     // fco.afterNextBuildDo(() {
     // });
@@ -902,16 +961,17 @@ abstract class SNode extends Node with SNodeMappable {
   }
 
   bool parentIsValid() {
-    // this must be a child of it's parent
-    final parent = getParent();
-    if (parent == null && isASnippetRoot) {
-      return true; // must be a snippetRootNode; ignore
-    }
+    // this must be a child of its parent
+    final parent = getParent() as SNode?;
+    if (parent == null && isASnippetRoot) return true;
+    if (parent == null) return false;
     if (parent is SC && parent.child == this) return true;
-    if (parent is MC && parent.children.contains(this)) return true;
-    if (parent is TextSpanNode &&
-        (parent.children != null || parent.children!.contains(this))) {
+    if (parent is MC && parent.children.contains(this) == true) return true;
+    if (parent is CustomScrollViewNode && parent.slivers.contains(this)) {
       return true;
+    }
+    if (parent is TextSpanNode) {
+      return parent.children?.contains(this) == true;
     }
     return false;
   }
@@ -919,27 +979,23 @@ abstract class SNode extends Node with SNodeMappable {
   bool childrenAreValid() {
     if (hasChildren()) {
       if (this is SC) {
-        final scn = this as SC;
-        if (scn.child?.getParent() != scn) return false;
-        return scn.child?.childrenAreValid() ?? true;
-      } else if (this is MC) {
-        final mcn = this as MC;
-        // check that its children all point back
-        for (final child in mcn.children) {
-          if (child.getParent() != mcn) return false;
-          return child.childrenAreValid();
+        final c = (this as SC).child;
+        if (c != null) {
+          return (c.getParent() == this);
         }
       }
+    } else if (this is MC) {
+      for (final child in (this as MC).children) {
+        if (child.getParent() != this) return false;
+        return child.childrenAreValid();
+      }
     } else if (this is TextSpanNode) {
-      // otherwise must be a TextSpanNode
       final tsn = this as TextSpanNode;
-      // check that its children all point back
       for (final child in tsn.children ?? []) {
         if (child.getParent() != tsn) return false;
         return child.childrenAreValid();
       }
     }
-
     return true;
   }
 
@@ -2015,19 +2071,13 @@ abstract class SNode extends Node with SNodeMappable {
     );
     switch (action) {
       case NodeAction.replaceWith:
-        fsdui.capiBloc.add(
-          ReplaceSelectionWith(nodeType: snippet.runtimeType),
-        );
+        fsdui.capiBloc.add(ReplaceSelectionWith(nodeType: snippet.runtimeType));
         fsdui.afterNextBuildDo(() => fsdui.dismiss('node-actions'));
       case NodeAction.addSiblingBefore:
-        fsdui.capiBloc.add(
-          AddSiblingBefore(nodeType: snippet.runtimeType),
-        );
+        fsdui.capiBloc.add(AddSiblingBefore(nodeType: snippet.runtimeType));
         fsdui.afterNextBuildDo(() => fsdui.dismiss('node-actions'));
       case NodeAction.addSiblingAfter:
-        fsdui.capiBloc.add(
-          AddSiblingAfter(nodeType: snippet.runtimeType),
-        );
+        fsdui.capiBloc.add(AddSiblingAfter(nodeType: snippet.runtimeType));
         fsdui.afterNextBuildDo(() => fsdui.dismiss('node-actions'));
       case NodeAction.addChild:
         fsdui.capiBloc.add(AppendChild(nodeType: snippet.runtimeType));
@@ -2319,7 +2369,12 @@ abstract class SNode extends Node with SNodeMappable {
             menuChildren: [
               menuItemButton(context, "TabBar", TabBarNode, action),
               menuItemButton(context, "TabBarView", TabBarViewNode, action),
-              menuItemButton(context, "DynamicTabBar", DynamicTabBarNode, action),
+              menuItemButton(
+                context,
+                "DynamicTabBar",
+                DynamicTabBarNode,
+                action,
+              ),
               menuItemButton(context, "TabData", TabDataNode, action),
             ],
             child: fsdui.coloredText("tab bar", fontWeight: FontWeight.normal),
@@ -2605,7 +2660,12 @@ abstract class SNode extends Node with SNodeMappable {
                 menuItemButton(context, "Tab", TabNode, action),
                 menuItemButton(context, "TabBar", TabBarNode, action),
                 menuItemButton(context, "TabBarView", TabBarViewNode, action),
-                menuItemButton(context, "DynamicTabBar", DynamicTabBarNode, action),
+                menuItemButton(
+                  context,
+                  "DynamicTabBar",
+                  DynamicTabBarNode,
+                  action,
+                ),
                 menuItemButton(context, "TabData", TabDataNode, action),
               ],
               child: fsdui.coloredText(
@@ -2880,7 +2940,7 @@ abstract class SNode extends Node with SNodeMappable {
     if (node.isASnippetRoot && node.getParent() != null) {
       children = [];
     } else if (node is ScaffoldNode) {
-      children = [node.appBar, node.body];
+      children = [?node.appBar, ?node.body];
       // } else if (node is SliverAppBarNode) {
       //   children = [
       //     if (node.leading.child != null) node.leading.child!,
@@ -2918,16 +2978,14 @@ abstract class SNode extends Node with SNodeMappable {
       children = node.children;
     } else if (node is GridViewNode) {
       children = node.children;
-    } else if (node is CL) {
-      children = [];
-    } else if (node is SC) {
-      children = [if (node.child != null) node.child!];
-    } else if (node is NamedMC) {
-      children = node.children;
-    } else if (node is MC) {
-      children = node.children;
     } else if (node is CustomScrollViewNode) {
       children = node.slivers;
+    } else if (node is MC) {
+      children = node.children;
+    }
+    if (node is SC) {
+      final c = node.child;
+      children = c != null ? [c] : [];
     }
 
     // unexpected
@@ -2947,7 +3005,7 @@ abstract class SNode extends Node with SNodeMappable {
 //   return copiedNode;
 // }
 
-@override
+// @override
 Widget? widgetLogo() =>
     Image.asset(fsdui.asset('lib/assets/images/pub.dev.png'), width: 16);
 
@@ -3056,7 +3114,7 @@ String _checkWidgetNesting(
     // as calling build outside the framework is complex.
   } else if (sNode is MC) {
     // Common base class for Column, Row, Stack, etc.
-    children.addAll(sNode.children);
+    children.addAll(sNode.children ?? []);
   }
 
   // Recurse through all found children

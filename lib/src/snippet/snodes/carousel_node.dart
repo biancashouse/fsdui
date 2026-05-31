@@ -25,7 +25,10 @@ List<String> kDemoImages = [
 ];
 
 @MappableClass()
-class CarouselNode extends MC with CarouselNodeMappable {
+class CarouselNode extends SNode with MC, CarouselNodeMappable {
+  @override
+  List<SNode> children;
+
   bool autoPlay;
   int autoPlayIntervalSecs;
   bool enlargeCenterPage;
@@ -41,8 +44,11 @@ class CarouselNode extends MC with CarouselNodeMappable {
     this.aspectRatio = 1.0,
     this.height,
     this.axis = AxisEnum.horizontal,
-    required super.children,
+    required this.children,
   });
+
+  @override
+  List<SNode>? get ownChildren => children;
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
@@ -52,7 +58,6 @@ class CarouselNode extends MC with CarouselNodeMappable {
           decimalValue: aspectRatio,
           onDoubleChange: (newValue) =>
               refreshWithUpdate(context,() => aspectRatio = newValue ?? 1.0),
-          calloutButtonSize: const Size(130, 30),
         ),
         IntPNode(
             snode: this,
@@ -92,7 +97,7 @@ class CarouselNode extends MC with CarouselNodeMappable {
 
   @override
   String toSource(BuildContext context) => '''Carousel(
-        children: super.children.map((child) => child.toWidget(context, this)).toList(),
+        children: children.map((child) => child.toWidget(context, this)).toList(),
       );
   ''';
 
@@ -100,7 +105,7 @@ class CarouselNode extends MC with CarouselNodeMappable {
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     try {
       setParent(parentNode);
-      List<Widget> images = super.children.isEmpty
+      List<Widget> images = children.isEmpty
               ? kDemoImages
                   .map((name) => Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -118,8 +123,7 @@ class CarouselNode extends MC with CarouselNodeMappable {
                         ),
                       ))
                   .toList()
-              : super
-                  .children
+              : children
                   .map((SNode node) => node is AssetImageNode
                       ? node.build(context, this)
                       : node is StorageImageNode

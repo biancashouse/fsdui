@@ -11,14 +11,20 @@ import 'package:fsdui/src/snippet/snodes/widget/directory_tree_node_widget.dart'
 part 'directory_node.mapper.dart';
 
 @MappableClass()
-class DirectoryNode extends MC with DirectoryNodeMappable {
+class DirectoryNode extends SNode with MC, DirectoryNodeMappable {
+  @override
+  List<SNode> children;
+
   String? folderName;
 
   DirectoryNode({
     super.name,
     this.folderName,
-    required super.children,
+    required this.children,
   });
+
+  @override
+  List<SNode>? get ownChildren => children;
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
@@ -112,7 +118,7 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
   ListView immediateChildrenOnly(BuildContext context) {
     return ListView(
       shrinkWrap: true,
-      children: super.children.map((childNode) {
+      children: children.map((childNode) {
         return childNode is DirectoryNode
             ? Row(
                 mainAxisSize: MainAxisSize.max,

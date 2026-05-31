@@ -13,7 +13,10 @@ import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 part 'wrap_node.mapper.dart';
 
 @MappableClass()
-class WrapNode extends MC with WrapNodeMappable {
+class WrapNode extends SNode with MC, WrapNodeMappable {
+  @override
+  List<SNode> children;
+
   AxisEnum? direction;
   WrapAlignmentEnumModel? alignment;
   WrapAlignmentEnumModel? runAlignment;
@@ -30,8 +33,11 @@ class WrapNode extends MC with WrapNodeMappable {
     this.alignment,
     this.runAlignment,
     this.crossAxisAlignment,
-    required super.children,
+    required this.children,
   });
+
+  @override
+  List<SNode>? get ownChildren => children;
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
@@ -50,7 +56,6 @@ class WrapNode extends MC with WrapNodeMappable {
       decimalValue: spacing,
       onDoubleChange: (newValue) =>
           refreshWithUpdate(context, () => spacing = newValue),
-      calloutButtonSize: const Size(140, 30),
     ),
     DecimalPNode(
       snode: this,
@@ -58,7 +63,6 @@ class WrapNode extends MC with WrapNodeMappable {
       decimalValue: runSpacing,
       onDoubleChange: (newValue) =>
           refreshWithUpdate(context, () => runSpacing = newValue),
-      calloutButtonSize: const Size(140, 30),
     ),
     EnumPNode<WrapAlignmentEnumModel?>(
       snode: this,

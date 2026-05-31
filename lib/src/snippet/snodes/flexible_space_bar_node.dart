@@ -3,17 +3,17 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/pnodes/bool_pnode.dart';
-import 'package:fsdui/src/snippet/pnodes/edge_insets_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/edgeinsets_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'flexible_space_bar_node.mapper.dart';
 
 @MappableClass()
-class FlexibleSpaceBarNode extends CL with FlexibleSpaceBarNodeMappable {
+class FlexibleSpaceBarNode extends SNode with FlexibleSpaceBarNodeMappable {
   NamedSC title;
   NamedSC background;
   bool? centerTitle;
-  EdgeInsetsValue? titlePadding;
+  EdgeInsets? titlePadding;
 
   FlexibleSpaceBarNode({
     super.name,
@@ -43,7 +43,7 @@ class FlexibleSpaceBarNode extends CL with FlexibleSpaceBarNodeMappable {
           EdgeInsetsPNode(
             snode: this,
             name: 'margin',
-            eiValue: titlePadding,
+            ei: titlePadding,
             onEIChangedF: (newValue) {
               refreshWithUpdate(
                 context,
@@ -79,7 +79,7 @@ class FlexibleSpaceBarNode extends CL with FlexibleSpaceBarNodeMappable {
           key: createNodeWidgetGK(),
           title: titleWidget,
           centerTitle: centerTitle,
-          titlePadding: titlePadding?.toEdgeInsets(),
+          titlePadding: titlePadding,
           background: backgroundWidget,
         );
         return fsBar;

@@ -11,8 +11,14 @@ import 'package:firebase_storage/firebase_storage.dart'
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
+
+// import 'package:fsdui/src/a2ui/fsdui_registry.dart';
+// import 'package:fsdui/src/a2ui/parsers/property_node_builders.dart';
+// import 'package:fsdui/src/a2ui/parsers/style_parsers.dart';
 import 'package:fsdui/src/api/snippet_builder/snippet_builder.dart';
-import 'package:fsdui/src/bloc/snippet_being_edited.dart';
+
+// import 'package:fsdui/src/bloc/capi/capi_state.dart';
+import 'package:fsdui/src/bloc/capi/snippet_being_edited.dart';
 import 'package:fsdui/src/model/firestore_model_repo.dart';
 import 'package:fsdui/src/snippet/fancy_tree/tree_controller.dart';
 import 'package:fsdui/src/snippet/pnodes/groups/button_style_properties.dart';
@@ -23,11 +29,13 @@ import 'package:fsdui/src/snippet/snodes/align_node.dart';
 import 'package:fsdui/src/snippet/snodes/appbar_node.dart';
 import 'package:fsdui/src/snippet/snodes/aspect_ratio_node.dart';
 import 'package:fsdui/src/snippet/snodes/asset_image_node.dart';
-import 'package:fsdui/src/snippet/snodes/button_node.dart';
+
+// import 'package:fsdui/src/snippet/snodes/button_node.dart';
 import 'package:fsdui/src/snippet/snodes/carousel_node.dart';
 
 import 'package:fsdui/src/snippet/snodes/center_node.dart';
-import 'package:fsdui/src/snippet/snodes/abstract_cl_node.dart';
+
+// import 'package:fsdui/src/snippet/snodes/mixin_cl_node.dart';
 import 'package:fsdui/src/snippet/snodes/chip_node.dart';
 import 'package:fsdui/src/snippet/snodes/column_node.dart';
 import 'package:fsdui/src/snippet/snodes/container_node.dart';
@@ -41,7 +49,7 @@ import 'package:fsdui/src/snippet/snodes/filled_button_node.dart';
 import 'package:fsdui/src/snippet/snodes/flex_node.dart';
 import 'package:fsdui/src/snippet/snodes/flexible_node.dart';
 import 'package:fsdui/src/snippet/snodes/flexible_space_bar_node.dart';
-import 'package:fsdui/src/bloc/capi_event.dart';
+import 'package:fsdui/src/bloc/capi/capi_event.dart';
 
 // import 'package:fsdui/src/snippet/snodes/quill/widgets/focus_notifier.dart';
 import 'package:fsdui/src/snippet/snodes/storage_image_node.dart';
@@ -53,7 +61,8 @@ import 'package:fsdui/src/snippet/snodes/google_drive_iframe_node.dart';
 import 'package:fsdui/src/snippet/snodes/hotspots/hotspots_node.dart';
 import 'package:fsdui/src/snippet/snodes/icon_button_node.dart';
 import 'package:fsdui/src/snippet/snodes/iframe_node.dart';
-import 'package:fsdui/src/snippet/snodes/inlinespan_node.dart';
+
+// import 'package:fsdui/src/snippet/snodes/inlinespan_node.dart';
 import 'package:fsdui/src/snippet/snodes/intrinsic_height_node.dart';
 import 'package:fsdui/src/snippet/snodes/intrinsic_width_node.dart';
 import 'package:fsdui/src/snippet/snodes/article_listview_node.dart';
@@ -61,7 +70,8 @@ import 'package:fsdui/src/snippet/snodes/listview_node.dart';
 import 'package:fsdui/src/snippet/snodes/markdown_node.dart';
 import 'package:fsdui/src/snippet/snodes/menu_bar_node.dart';
 import 'package:fsdui/src/snippet/snodes/menu_item_button_node.dart';
-import 'package:fsdui/src/snippet/snodes/abstract_mc_node.dart';
+
+// import 'package:fsdui/src/snippet/snodes/mixin_mc_node.dart';
 import 'package:fsdui/src/snippet/snodes/outlined_button_node.dart';
 import 'package:fsdui/src/snippet/snodes/padding_node.dart';
 import 'package:fsdui/src/snippet/snodes/pinned_header_sliver_node.dart';
@@ -73,10 +83,12 @@ import 'package:fsdui/src/snippet/snodes/quill/quill_text_node.dart';
 import 'package:fsdui/src/snippet/snodes/rich_text_node.dart';
 import 'package:fsdui/src/snippet/snodes/row_node.dart';
 import 'package:fsdui/src/snippet/snodes/scaffold_node.dart';
-import 'package:fsdui/src/snippet/snodes/abstract_sc_node.dart';
+
+// import 'package:fsdui/src/snippet/snodes/mixin_sc_node.dart';
 import 'package:fsdui/src/snippet/snodes/singlechildscrollview_node.dart';
 import 'package:fsdui/src/snippet/snodes/sizedbox_node.dart';
 import 'package:fsdui/src/snippet/snodes/constrainedbox_node.dart';
+import 'package:fsdui/src/snippet/snodes/sliver_appbar_node.dart';
 import 'package:fsdui/src/snippet/snodes/sliver_floating_header_node.dart';
 import 'package:fsdui/src/snippet/snodes/sliver_resizing_header_node.dart';
 import 'package:fsdui/src/snippet/snodes/sliver_to_box_adapter_node.dart';
@@ -112,7 +124,7 @@ import 'package:fsdui/x_fsdui/text_styles_extn.dart';
 // import 'package:fsdui/src/snippet/snodes/widget/fs_folder_node.dart';
 import 'package:go_router/go_router.dart';
 
-import 'src/bloc/capi_bloc.dart';
+import 'src/bloc/capi/capi_bloc.dart';
 import 'src/model/app_info_model.dart';
 import 'src/model/model_repo.dart';
 import 'src/nav/nav_mixin.dart';
@@ -161,13 +173,14 @@ export 'src/api/snippet_builder/snippet_builder.dart';
 export 'src/api/editable_page/editable_page.dart';
 
 // callouts
-export 'src/bloc/capi_bloc.dart';
-export 'src/bloc/capi_event.dart';
-export 'src/bloc/capi_state.dart';
+export 'src/bloc/capi/capi_bloc.dart';
+export 'src/bloc/capi/capi_event.dart';
+export 'src/bloc/capi/capi_state.dart';
 
 // export 'src/feature_discovery/discovery_controller.dart';
 // export 'src/feature_discovery/featured_widget.dart';
 export 'src/gotits/gotits_helper_string.dart';
+
 // export 'src/gsi/sign_in_button.dart';
 export 'src/measuring/find_global_rect.dart';
 export 'src/measuring/measure_sizebox.dart';
@@ -187,7 +200,7 @@ export 'src/snippet/pnodes/enums/enum_axis.dart';
 export 'src/snippet/pnodes/enums/enum_material3_text_size.dart';
 export 'src/snippet/pnodes/enums/enum_decoration_shape.dart';
 export 'src/snippet/pnodes/groups/button_style_properties.dart';
-export 'src/snippet/snodes/abstract_scrollview_node.dart';
+export 'src/snippet/snodes/mixin_scrollview_node.dart';
 export 'src/snippet/snodes/storage_image_node.dart';
 export 'src/snippet/snodes/uml_image_node.dart';
 export 'src/snippet/snode.dart';
@@ -205,13 +218,12 @@ export 'src/snippet/snodes/asset_image_node.dart';
 export 'src/snippet/snodes/button_node.dart';
 export 'src/snippet/snodes/carousel_node.dart';
 export 'src/snippet/snodes/center_node.dart';
-export 'src/snippet/snodes/abstract_cl_node.dart';
+export 'src/snippet/snodes/mixin_cl_node.dart';
 export 'src/snippet/snodes/chip_node.dart';
 export 'src/snippet/snodes/column_node.dart';
 export 'src/snippet/snodes/container_node.dart';
 export 'src/snippet/snodes/default_text_style_node.dart';
 export 'src/snippet/snodes/directory_node.dart';
-export 'src/snippet/snodes/edgeinsets_node_value.dart';
 export 'src/snippet/snodes/elevated_button_node.dart';
 export 'src/snippet/snodes/expanded_node.dart';
 export 'src/snippet/snodes/file_node.dart';
@@ -222,7 +234,7 @@ export 'src/snippet/snodes/flexible_node.dart';
 export 'src/snippet/snodes/algc_node.dart';
 export 'src/snippet/snodes/tab_node.dart';
 export 'src/snippet/snodes/custom_scrollview_node.dart';
-export 'src/snippet/snodes/abstract_boxscrollview_node.dart';
+export 'src/snippet/snodes/mixin_boxscrollview_node.dart';
 export 'src/snippet/snodes/article_listview_node.dart';
 export 'src/snippet/snodes/listview_node.dart';
 export 'src/snippet/snodes/gridview_node.dart';
@@ -246,7 +258,7 @@ export 'src/snippet/snodes/inlinespan_node.dart';
 export 'src/snippet/snodes/markdown_node.dart';
 export 'src/snippet/snodes/menu_bar_node.dart';
 export 'src/snippet/snodes/menu_item_button_node.dart';
-export 'src/snippet/snodes/abstract_mc_node.dart';
+export 'src/snippet/snodes/mixin_mc_node.dart';
 export 'src/snippet/snodes/widget/crop_or_resize/crop_image.dart';
 
 // content
@@ -259,7 +271,7 @@ export 'src/snippet/snodes/positioned_node.dart';
 export 'src/snippet/snodes/rich_text_node.dart';
 export 'src/snippet/snodes/row_node.dart';
 export 'src/snippet/snodes/scaffold_node.dart';
-export 'src/snippet/snodes/abstract_sc_node.dart';
+export 'src/snippet/snodes/mixin_sc_node.dart';
 export 'src/snippet/snodes/singlechildscrollview_node.dart';
 export 'src/snippet/snodes/sizedbox_node.dart';
 export 'src/snippet/snodes/constrainedbox_node.dart';
@@ -287,8 +299,16 @@ export 'src/snippet/snodes/upto6colors.dart';
 
 export 'src/snippet/snodes/property_rename_hook.dart';
 
+// export 'src/a2ui/a2ui_surface.dart';
+// export 'src/a2ui/a2ui_property_editor.dart';
+// export 'src/a2ui/component_catalog.dart';
+// export 'src/a2ui/component_spec.dart';
+// export 'src/a2ui/fsdui_registry.dart';
+// export 'src/a2ui/schemas/fsdui_schemas.dart';
+// export 'src/a2ui/parsers/style_parsers.dart';
+// export 'src/a2ui/parsers/property_node_builders.dart';
+
 export 'src/model/alignment_enum_model.dart';
-export 'src/model/color_model.dart';
 export 'src/model/offset_model.dart';
 export 'src/api/editable_page/snippet_tree_controller.dart';
 export 'src/api/editable_page/properties_tree_controller.dart';
@@ -366,87 +386,75 @@ class FSDUI_Mixins
 
   Logger get loggerNs => _loggerNs;
 
-  Widget userIcon({required GlobalKey gk}) =>
-      isIOS
-          ? TextButton.icon(
-        // PHONE
-        icon: Icon(
-          Icons.account_circle_outlined,
-          key: gk,
-          size: 26,
-          color: isIOS ? Colors.black : Colors.blue,
-        ),
-        label: RichText(
-          text: TextSpan(
-            text: 'Cloud enable\n\n',
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-            ),
-            children: const [
-              TextSpan(
-                text:
-                '(make your work available across your devices / browsers)',
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-        ),
-        onPressed: () async {
-          //fsdui.gotitHelper.gotit(CalloutIdEnum.picker_ea_switcher.index);
-          // pressedSignInButton(parentState, popmenu: true);
-          String? gcrServerUrl = fsdui.gcrServerUrl;
-          if (gcrServerUrl != null) {
-            fsdui.showPasswordlessStepper(
-              gcrServerUrl: gcrServerUrl,
-              onSignedInF: (vea) {
-                capiBloc.add(VerifiedEa(ea: vea));
-                fsdui.dismissAll();
-              },
-            );
-          }
-        },
-      )
-          : Tooltip(
-        message: "cloud-enable",
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          child: IconButton(
-            iconSize: 26,
-            icon: Icon(
-              Icons.account_circle_outlined,
-              key: gk,
-              color: isIOS ? Colors.black : Colors.blue,
-            ),
-            onPressed: () async {
-              //fsdui.gotitHelper.gotit(CalloutIdEnum.picker_ea_switcher.index);
-              // pressedSignInButton(parentState);
-              String? gcrServerUrl = fsdui.gcrServerUrl;
-              if (gcrServerUrl != null) {
-                fsdui.showPasswordlessStepper(
-                  gcrServerUrl: gcrServerUrl,
-                  onSignedInF: (vea) {
-                    capiBloc.add(VerifiedEa(ea: vea));
-                    fsdui.dismissAll();
-                  },
-                );
-              }
-            },
-          ),
-        ),
-      );
+  // Widget userIcon({required GlobalKey gk}) => isIOS
+  //     ? TextButton.icon(
+  //         // PHONE
+  //         icon: Icon(
+  //           Icons.account_circle_outlined,
+  //           key: gk,
+  //           size: 26,
+  //           color: isIOS ? Colors.black : Colors.blue,
+  //         ),
+  //         label: RichText(
+  //           text: TextSpan(
+  //             text: 'Cloud enable\n\n',
+  //             style: TextStyle(
+  //               color: Colors.black,
+  //               fontWeight: FontWeight.bold,
+  //             ),
+  //             children: const [
+  //               TextSpan(
+  //                 text:
+  //                     '(make your work available across your devices / browsers)',
+  //                 style: TextStyle(
+  //                   color: Colors.grey,
+  //                   fontWeight: FontWeight.bold,
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //         onPressed: _selectedPasswordlessLogin,
+  //       )
+  //     : Tooltip(
+  //         message: "cloud-enable",
+  //         child: Padding(
+  //           padding: EdgeInsets.symmetric(horizontal: 16.0),
+  //           child: IconButton(
+  //             iconSize: 26,
+  //             icon: Icon(
+  //               Icons.account_circle_outlined,
+  //               key: gk,
+  //               color: isIOS ? Colors.black : Colors.blue,
+  //             ),
+  //             onPressed: _selectedPasswordlessLogin,
+  //           ),
+  //         ),
+  //       );
+
+  // void _selectedPasswordlessLogin() {
+  //   String? gcrServerUrl = fsdui.gcrServerUrl;
+  //   if (gcrServerUrl != null) {
+  //     fsdui.showPasswordlessStepper(
+  //       gcrServerUrl: gcrServerUrl,
+  //       onSignedInF: (vea) {
+  //         capiBloc.add(VerifiedEa(ea: vea));
+  //         fsdui.dismissAll();
+  //       },
+  //     );
+  //   }
+  // }
 
   // called by _initApp() to set the late variables
   Future<CAPIBloC> createCAPIBloC({
+    required String appId,
     required String appName,
     FirebaseOptions? fbOptions,
     bool useEmulator = false,
-    final IModelRepository? testModelRepo,
+    IModelRepository? testModelRepo,
     // created in tests by a when(mockRepository.getCAPIModel(modelName: modelName...
-    final Widget? testWidget,
+    Widget? testWidget,
+    bool showThemeModeIcon = false,
     // Map<String, void Function(GlobalKey? gk)> namedCallbacks = const {},
     RoutingConfig? routingConfig,
     String? initialRoutePath,
@@ -455,10 +463,13 @@ class FSDUI_Mixins
   }) async {
     await initLocalStorage();
 
+    // initializeFsduiA2UI();
+
     // fco.logger.d('init() ${stopwatch.elapsedMilliseconds}');
 
     loadGoogleFontNames(googleFontNames);
 
+    this.appId = appId;
     this.appName = appName;
 
     // Bloc.observer = MyGlobalObserver();
@@ -494,11 +505,11 @@ class FSDUI_Mixins
       // text, button, and container styles get saved in the AppInfo. Combine with the canned (source-coded) ones
       try {
         namedTextStyles.addAll(cannedTextStyles());
-        namedTextStyles.addAll(appInfo.userTextStyles);
+        namedTextStyles.addAll(appInfo.textStyles);
         namedButtonStyles.addAll(cannedButtonStyles());
-        namedButtonStyles.addAll(appInfo.userButtonStyles);
+        namedButtonStyles.addAll(appInfo.buttonStyles);
         namedContainerStyles.addAll(cannedContainerStyles());
-        namedContainerStyles.addAll(appInfo.userContainerStyles);
+        namedContainerStyles.addAll(appInfo.containerStyles);
       } catch (e) {
         logger.e(e);
       }
@@ -535,12 +546,13 @@ class FSDUI_Mixins
     // FutureBuilder requires this return
     return CAPIBloC(
       modelRepo: modelRepo,
-      isSignedInAsSuperEditor:
-          localStorage.read("signed-in-as-super-editor") ?? false,
-      isSignedInAsArticleEditor:
-          localStorage.read("signed-in-as-article-editor") ?? false,
-      isSignedInAsGuestEditor:
-          localStorage.read("signed-in-as-guest-editor") ?? false,
+      showThemeModeIcon: showThemeModeIcon,
+      // isSignedInAsSuperEditor:
+      //     localStorage.read("signed-in-as-super-editor") ?? false,
+      // isSignedInAsArticleEditor:
+      //     localStorage.read("signed-in-as-article-editor") ?? false,
+      // isSignedInAsGuestEditor:
+      //     localStorage.read("signed-in-as-guest-editor") ?? false,
     );
   }
 
@@ -555,6 +567,7 @@ class FSDUI_Mixins
   ButtonStyleNameSearchAnchor? buttonStyleNameAnchor;
   ContainerStyleNameSearchAnchor? containerStyleNameAnchor;
 
+  late String appId;
   late String appName;
 
   late bool usingFBStorage;
@@ -570,23 +583,26 @@ class FSDUI_Mixins
   // JsonMap get appInfoAsMap => appInfo.toMap();
 
   late ValueNotifier<RoutingConfig> routingConfigVN;
-  var themeModeNotifier = ValueNotifier<ThemeMode>(ThemeMode.light);
 
   bool canEditAnyContent() {
     String? currentPagePath = fsdui.currentEditablePagePath;
     bool isGuestPage = fsdui.appInfo.anonymousUserEditablePages.contains(
       currentPagePath,
     );
-    return capiBloc.state.isSignedInAsSuperEditor || isGuestPage;
+    return capiBloc.state.isSignedInAsSuperEditor ?? false || isGuestPage;
   }
 
-  bool isArticleEditor() => capiBloc.state.isSignedInAsArticleEditor;
-  bool isGuestEditor() => capiBloc.state.isSignedInAsGuestEditor;
+  bool isArticleEditor() => capiBloc.state.isSignedInAsArticleEditor ?? false;
+
+  bool isGuestEditor() => capiBloc.state.isSignedInAsGuestEditor ?? false;
 
   GlobalKey authIconGK = GlobalKey();
 
   final snippetTreeTC = TransformationController();
   final propertiesTreeTC = TransformationController();
+
+  // StyleParsers get styleParsers => StyleParsers();
+  // PropertyNodeBuilders get propertyNodeBuilders => PropertyNodeBuilders();
 
   GoRouter? router;
 
@@ -821,6 +837,14 @@ class FSDUI_Mixins
     ForceRefresh(onlyTargetsWrappers: onlyTargetsWrappers),
   );
 
+  Future<void> updateSnippetMap(
+    String snippetName,
+    Map<String, dynamic> updatedMap,
+  ) async {
+    await modelRepo.saveNewVersionOfSnippetMap(snippetName, updatedMap);
+    forceRefresh();
+  }
+
   Offset calloutConfigToolbarPos() =>
       _calloutConfigToolbarPos ??
       Offset(
@@ -901,7 +925,7 @@ class FSDUI_Mixins
   // void pushPage({required String routeName, required String path}) {}
 
   Reference folderPathRef(String folderPath) =>
-      FirebaseStorage.instance.ref('/${fsdui.appName}$folderPath');
+      FirebaseStorage.instance.ref('/${fsdui.appId}$folderPath');
 
   final GksByFeature _calloutGkMap = {};
 
@@ -928,6 +952,7 @@ class FSDUI_Mixins
   //   return gk;
   // }
 
+  @override
   String asset(String name) {
     // only need to specify the asset pkg when used by a client project; i.e. not within the fsdui project itself
     return fca.skipAssetPkgName ? name : 'packages/fsdui/$name';
@@ -1094,13 +1119,10 @@ class FSDUI_Mixins
     // dart analyzer to process all the imports. Inside each .mapper.dart file,
     // there is code that self-registers the mapper.
     SNodeMapper.ensureInitialized();
-    CLMapper.ensureInitialized();
-    SCMapper.ensureInitialized();
-    MCMapper.ensureInitialized();
-    InlineSpanNodeMapper.ensureInitialized();
     // CL
     AlgCNodeMapper.ensureInitialized();
     AppBarNodeMapper.ensureInitialized();
+    SliverAppBarNodeMapper.ensureInitialized();
     AssetImageNodeMapper.ensureInitialized();
     ChipNodeMapper.ensureInitialized();
     ConstrainedBoxNodeMapper.ensureInitialized();
@@ -1126,7 +1148,6 @@ class FSDUI_Mixins
     AlignNodeMapper.ensureInitialized();
     AspectRatioNodeMapper.ensureInitialized();
     ArticleListViewNodeMapper.ensureInitialized();
-    ButtonNodeMapper.ensureInitialized();
     CenterNodeMapper.ensureInitialized();
     ContainerNodeMapper.ensureInitialized();
     DefaultTextStyleNodeMapper.ensureInitialized();

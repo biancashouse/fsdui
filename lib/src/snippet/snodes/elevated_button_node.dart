@@ -9,17 +9,26 @@ import 'package:fsdui/src/snippet/snodes/button_style_hook.dart';
 part 'elevated_button_node.mapper.dart';
 
 @MappableClass()
-class ElevatedButtonNode extends ButtonNode with ElevatedButtonNodeMappable {
+class ElevatedButtonNode extends SNode with SC, ButtonNode, ElevatedButtonNodeMappable {
+  @override
+  String? destinationRoutePathSnippetName;
+  @override
+  SNode? child;
+
+  @override
+  bool canAppendAChild() => child == null;
+  @MappableField(hook: ButtonStyleHook())
+  @override
+  ButtonStyleProperties bsPropGroup;
+  @override
+  String? onTapHandlerName;
+
   ElevatedButtonNode({
     super.name,
-    super.destinationRoutePathSnippetName,
-    // super.template,
-    // super.destinationPanelOrPlaceholderName,
-    // super.destinationSnippetName,
-    required super.bsPropGroup,
-    super.onTapHandlerName,
-    // super.calloutConfig,
-    super.child,
+    this.destinationRoutePathSnippetName,
+    required this.bsPropGroup,
+    this.onTapHandlerName,
+    this.child,
   });
 
   @override
@@ -27,7 +36,7 @@ class ElevatedButtonNode extends ButtonNode with ElevatedButtonNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    ...super.propertyNodes(context, parentSNode),
+    ...btnPropertyNodes(context, parentSNode),
     FlutterDocPNode(
         buttonLabel: 'ElevatedButton',
         webLink: 'https://api.flutter.dev/flutter/material/ElevatedButton-class.html',
@@ -37,15 +46,13 @@ class ElevatedButtonNode extends ButtonNode with ElevatedButtonNodeMappable {
 
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
-    
+
     try {
       ButtonStyle? btnStyle = bsPropGroup.toButtonStyle(context, defaultButtonStyle: defaultButtonStyle());
       // possible handler
       void Function(BuildContext)? f = onTapHandlerName != null ? fsdui.namedHandler(onTapHandlerName!) : null;
 
       setParent(parentNode);
-      // ScrollControllerName? scName = EditablePage.name(context);
-      // possiblyHighlightSelectedNode(scName);
 
       final gk = createNodeWidgetGK();
 
@@ -53,8 +60,6 @@ class ElevatedButtonNode extends ButtonNode with ElevatedButtonNodeMappable {
             // container only for possble selection gk
             key: gk,
             child: ElevatedButton(
-              // if feature specified, must be a callout
-              // key: cid != null ? fco.setCalloutGk(cid!, GlobalKey()) : null,
               onPressed: ()=>onPressed(context, gk),
               onLongPress: () => f?.call(context),
               style: btnStyle,
@@ -65,13 +70,6 @@ class ElevatedButtonNode extends ButtonNode with ElevatedButtonNodeMappable {
       return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());
     }
   }
-
-  // @override
-  // String toSource(BuildContext context) => '''ElevatedButton(
-  //   onPressed: ${onTapHandlerName != null ? '(){Snippet.namedHandler(super.onTapHandlerName!)?.call(context);}' : 'null'},
-  //   style: ${buttonStyle?.toButtonStyle(context, defaultButtonStyle())},
-  //   child: ${child?.toSource(context)},
-  // )''';
 
   @override
   String toString() => FLUTTER_TYPE;

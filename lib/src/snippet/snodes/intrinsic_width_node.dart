@@ -8,10 +8,15 @@ import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 part 'intrinsic_width_node.mapper.dart';
 
 @MappableClass()
-class IntrinsicWidthNode extends SC with IntrinsicWidthNodeMappable {
+class IntrinsicWidthNode extends SNode with SC, IntrinsicWidthNodeMappable {
+  @override
+  SNode? child;
+
+  @override
+  bool canAppendAChild() => child == null;
   IntrinsicWidthNode({
     super.name,
-    super.child,
+    this.child,
   });
 
   @override

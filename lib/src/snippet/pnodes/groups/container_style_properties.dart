@@ -1,10 +1,10 @@
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:fsdui/src/snippet/snodes/edgeinsets_node_value.dart';
+import 'package:flutter/material.dart' show EdgeInsets;
 import 'package:fsdui/src/snippet/pnodes/enums/enum_corner.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_decoration_shape.dart';
 import 'package:fsdui/src/snippet/pnodes/groups/outlined_border_properties.dart';
 import 'package:fsdui/src/snippet/snodes/upto6colors.dart';
-import 'package:fsdui/src/snippet/pnodes/groups/up_to_6_colors_hook.dart';
+// import 'package:fsdui/src/snippet/pnodes/groups/up_to_6_colors_hook.dart';
 import 'package:fsdui/src/model/alignment_enum_model.dart';
 import 'package:fsdui/src/typedefs.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -17,20 +17,20 @@ class ContainerStyleProperties with ContainerStylePropertiesMappable {
   UpTo6Colors? fillColors;
 
   // depreccated: name change
-  @MappableField(hook: UpTo6ColorsHook())
+  @MappableField()
   UpTo6Colors? fillColorValues;
 
   // if fillColorValues has >1 color, indicates whether to use linear or radial gradient
   bool? radialGradient;
-  EdgeInsetsValue? margin;
-  EdgeInsetsValue? padding;
+  EdgeInsets? margin;
+  EdgeInsets? padding;
   double? width;
   double? height;
   AlignmentEnum? alignment;
   DecorationShapeEnum? decorationShapeEnum;
   double? borderThickness;
   UpTo6Colors? borderColors;
-  @MappableField(hook: UpTo6ColorsHook())
+  // @MappableField(hook: UpTo6ColorsHook())
   UpTo6Colors? borderColorValues;
   double? borderRadius;
 
@@ -100,8 +100,8 @@ class ContainerStyleProperties with ContainerStylePropertiesMappable {
   //      //   shape: outlinedBorderGroup!.outlinedBorderType!.toFlutterWidget(nodeSide: outlinedBorderGroup?.side, nodeRadius: borderRadius),
   //      //   color: fillColor1Value != null ? Color(fillColor1Value!) : null,
   //      // ),
-  //      padding: padding?.toEdgeInsets(),
-  //      margin: margin?.toEdgeInsets(),
+  //      padding: padding,
+  //      margin: margin,
   //      width: width,
   //      height: height,
   //      alignment: alignment?.flutterValue,

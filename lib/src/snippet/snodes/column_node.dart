@@ -3,6 +3,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/snodes/flex_mixin.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_cross_axis_alignment.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_main_axis_alignment.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_main_axis_size.dart';
@@ -11,53 +12,39 @@ import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 part 'column_node.mapper.dart';
 
 @MappableClass()
-class ColumnNode extends FlexNode with ColumnNodeMappable {
+class ColumnNode extends SNode with MC, FlexMixin, ColumnNodeMappable {
+  @override
+  AxisEnum direction;
+  @override
+  MainAxisAlignmentEnumModel? mainAxisAlignment;
+  @override
+  MainAxisSizeEnum? mainAxisSize;
+  @override
+  CrossAxisAlignmentEnumModel? crossAxisAlignment;
+  @override
+  List<SNode> children;
+
   ColumnNode({
     super.name,
-    super.mainAxisAlignment,
-    super.mainAxisSize,
-    super.crossAxisAlignment,
-    super.direction = AxisEnum.vertical,
-    required super.children,
+    this.mainAxisAlignment,
+    this.mainAxisSize,
+    this.crossAxisAlignment,
+    this.direction = AxisEnum.vertical,
+    required this.children,
   });
 
   @override
+  List<SNode>? get ownChildren => children;
+
+  @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-      ...super.propertyNodes(context, parentSNode),
-      FlutterDocPNode(
-          buttonLabel: 'Column',
-          webLink: 'https://api.flutter.dev/flutter/widgets/Column-class.html',
-          snode: this,
-          name: 'fyi'),
-      ];
-
-  // @override
-  // String toSource(BuildContext context) {
-  //   return '''Column(
-  //       mainAxisAlignment: ${mainAxisAlignment?.toSource() ?? 'MainAxisAlignment.start'},
-  //       mainAxisSize: ${mainAxisSize?.toSource() ?? 'MainAxisSize.max'},
-  //       crossAxisAlignment: ${crossAxisAlignment?.toSource() ?? 'CrossAxisAlignment.center'},
-  //       textBaseline: TextBaseline.alphabetic,
-  //       children: ${children.map((node) => node.toSource(context)).toList()},
-  //     )''';
-  // }
-
-  // @override
-  // Widget toWidget(BuildContext context, STreeNode? parentNode) {
-  //   setParent(parentNode);
-  //   possiblyHighlightSelectedNode();
-  //   return possiblyCheckHeightConstraint(
-  //     parentNode,
-  //     Column(
-  //       key: createNodeGK(),
-  //       mainAxisAlignment: mainAxisAlignment?.flutterValue ?? MainAxisAlignment.start,
-  //       mainAxisSize: mainAxisSize?.flutterValue ?? MainAxisSize.max,
-  //       crossAxisAlignment: crossAxisAlignment?.flutterValue ?? CrossAxisAlignment.center,
-  //       textBaseline: TextBaseline.alphabetic,
-  //       children: children.map((node) => node.toWidget(context, this)).toList(),
-  //     ),
-  //   );
-  // }
+    ...flexPropertyNodes(context, parentSNode),
+    FlutterDocPNode(
+        buttonLabel: 'Column',
+        webLink: 'https://api.flutter.dev/flutter/widgets/Column-class.html',
+        snode: this,
+        name: 'fyi'),
+  ];
 
   @override
   String toString() => FLUTTER_TYPE;

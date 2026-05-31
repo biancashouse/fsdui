@@ -7,7 +7,7 @@ import 'package:pointer_interceptor/pointer_interceptor.dart';
 Timer? _debounce;
 
 class DraggableEdge_OP extends StatelessWidget {
-  final Side side;
+  final SideEnum side;
   final double thickness;
   final CalloutConfig parent;
   final Color color;
@@ -18,24 +18,24 @@ class DraggableEdge_OP extends StatelessWidget {
 
   Axis axis() {
     switch (side) {
-      case Side.TOP:
-      case Side.BOTTOM:
+      case SideEnum.TOP:
+      case SideEnum.BOTTOM:
         return Axis.vertical;
-      case Side.LEFT:
-      case Side.RIGHT:
+      case SideEnum.LEFT:
+      case SideEnum.RIGHT:
         return Axis.horizontal;
     }
   }
 
   IconData iconData() {
     switch (side) {
-      case Side.TOP:
+      case SideEnum.TOP:
         return Icons.arrow_drop_down;
-      case Side.BOTTOM:
+      case SideEnum.BOTTOM:
         return Icons.arrow_drop_up;
-      case Side.LEFT:
+      case SideEnum.LEFT:
         return Icons.arrow_right;
-      case Side.RIGHT:
+      case SideEnum.RIGHT:
         return Icons.arrow_left;
     }
   }
@@ -56,26 +56,26 @@ class DraggableEdge_OP extends StatelessWidget {
           // fca.logger.i("new pos: ${newLeft},${newTop}");
           var deltaX = event.delta.dx;
           var deltaY = event.delta.dy;
-          if (side == Side.LEFT) {
+          if (side == SideEnum.LEFT) {
             if (deltaX < 0 ||
                 parent.calloutW! + deltaX >= (parent.minWidth ?? 30)) {
               parent.setLeft(newLeft+soX);
               parent.calloutW = parent.calloutW! - deltaX;
             }
-          } else if (side == Side.TOP) {
+          } else if (side == SideEnum.TOP) {
             if (deltaY < 0 ||
                 parent.calloutH! + deltaY >= (parent.minHeight ?? 30)) {
               parent.setTop(newTop+soY);
               //parent.setLeft(newLeft+soX);
               parent.calloutH = parent.calloutH! - deltaY;
             }
-          } else if (side == Side.RIGHT) {
+          } else if (side == SideEnum.RIGHT) {
             if (parent.calloutW! + deltaX < (parent.minWidth ?? 30)) {
               parent.calloutW = parent.minWidth ?? 30;
             } else {
               parent.calloutW = parent.calloutW! + deltaX;
             }
-          } else if (side == Side.BOTTOM) {
+          } else if (side == SideEnum.BOTTOM) {
             if (parent.calloutH! + deltaY < (parent.minHeight ?? 30)) {
               parent.calloutH = parent.minHeight ?? 30;
             } else {
@@ -109,11 +109,11 @@ class DraggableEdge_OP extends StatelessWidget {
     Rect calloutRect = Rect.fromLTWH(
         parent.left!, parent.top!, parent.calloutW!, parent.calloutH!)
         .translate(soX, soY);
-    if (side == Side.LEFT) {
+    if (side == SideEnum.LEFT) {
       return calloutRect.topLeft.translate(-thickness, 0);
-    } else if (side == Side.RIGHT) {
+    } else if (side == SideEnum.RIGHT) {
       return calloutRect.topRight;
-    } else if (side == Side.TOP) {
+    } else if (side == SideEnum.TOP) {
       return calloutRect.topLeft.translate(0, -thickness);
     } else {
       return calloutRect.bottomLeft;
@@ -121,7 +121,7 @@ class DraggableEdge_OP extends StatelessWidget {
   }
 
   double _width() {
-    if (side == Side.LEFT || side == Side.RIGHT) {
+    if (side == SideEnum.LEFT || side == SideEnum.RIGHT) {
       return thickness;
     } else {
       return parent.calloutW!;
@@ -129,7 +129,7 @@ class DraggableEdge_OP extends StatelessWidget {
   }
 
   double _height() {
-    if (side == Side.TOP || side == Side.BOTTOM) {
+    if (side == SideEnum.TOP || side == SideEnum.BOTTOM) {
       return thickness;
     } else {
       return parent.calloutH!;

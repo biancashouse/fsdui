@@ -5,11 +5,16 @@ import 'package:fsdui/fsdui.dart';
 part 'named_single_child_node.mapper.dart';
 
 @MappableClass()
-class NamedSC extends SC with NamedSCMappable {
+class NamedSC extends SNode with SC, NamedSCMappable {
+  @override
+  SNode? child;
+
+  @override
+  bool canAppendAChild() => child == null;
   String propertyName;
 
   // Widget property name, such as title, body, leading,bottom etc
-  NamedSC({super.name, required this.propertyName, super.child});
+  NamedSC({super.name, required this.propertyName, this.child});
 
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
@@ -35,8 +40,8 @@ class NamedSC extends SC with NamedSCMappable {
   @override
   bool canReplace() => false;
 
-  @override
-  bool canAddASibling() => false;
+  // @override
+  // bool canAddASibling() => false;
 
   @override
   String toString() => propertyName;

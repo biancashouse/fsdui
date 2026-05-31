@@ -9,49 +9,34 @@ import 'package:fsdui/src/snippet/snodes/button_style_hook.dart';
 part 'menu_item_button_node.mapper.dart';
 
 @MappableClass()
-class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
-  // String itemLabel;
+class MenuItemButtonNode extends SNode with SC, ButtonNode, MenuItemButtonNodeMappable {
+  @override
+  String? destinationRoutePathSnippetName;
+  @override
+  SNode? child;
+
+  @override
+  bool canAppendAChild() => child == null;
+  @MappableField(hook: ButtonStyleHook())
+  @override
+  ButtonStyleProperties bsPropGroup;
+  @override
+  String? onTapHandlerName;
 
   MenuItemButtonNode({
     super.name,
-    // this.itemLabel = '',
-    super.destinationRoutePathSnippetName,
-    // super.template,
-    // super.destinationPanelOrPlaceholderName,
-    // super.destinationSnippetName,
-    required super.bsPropGroup,
-    super.onTapHandlerName,
-    // super.calloutConfig,
-    super.child,
-  }) {
-    // assert(destinationRoutePathSnippetName != null,
-    //     'You must specify a snippet template with the page path property');
-  }
-
-  // @override
-  // List<PTreeNode> properties(BuildContext context, SNode? parentSNode) => [];
-  // {
-  //   return [
-  //     if (child != null)
-  //       StringPNode(
-  //         snode: this,
-  //         name: 'item label',
-  //         stringValue: itemLabel,
-  //         onStringChange: (newValue) =>
-  //             refreshWithUpdate(context,() => itemLabel = newValue ?? ''),
-  //         expands: false,
-  //         calloutButtonSize: const Size(280, 20),
-  //         calloutWidth: 280,
-  //       ),
-  //   ];
-  // }
+    this.destinationRoutePathSnippetName,
+    required this.bsPropGroup,
+    this.onTapHandlerName,
+    this.child,
+  });
 
   @override
   ButtonStyle? defaultButtonStyle() => MenuItemButton.styleFrom();
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    ...super.propertyNodes(context, parentSNode),
+    ...btnPropertyNodes(context, parentSNode),
     FlutterDocPNode(
         buttonLabel: 'MenuItemButton',
         webLink: 'https://api.flutter.dev/flutter/material/MenuItemButton-class.html',
@@ -61,24 +46,14 @@ class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
 
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
-    
+
     try {
       setParent(parentNode); // propagating parents down from root
-    //ScrollControllerName? scName = EditablePage.name(context);
-    //possiblyHighlightSelectedNode(scName);
       final gk = createNodeWidgetGK();
       return MenuItemButton(
             key: gk,
             onPressed: () {
-              // if (destinationPanelOrPlaceholderName != null) {
-              //   destinationSnippetName ??= '$destinationPanelOrPlaceholderName:default-snippet';
-              //   capiBloc.add(SetPanelSnippet(
-              //     snippetName: destinationSnippetName!,
-              //     panelName: destinationPanelOrPlaceholderName!,
-              //   ));
-              // } else
                 if (destinationRoutePathSnippetName != null) {
-                //context.goNamed(destinationRoutePathSnippetName!);
                 onPressed(context, gk);
               }
             },

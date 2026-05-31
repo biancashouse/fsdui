@@ -9,10 +9,15 @@ import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
 part 'tabdata_node.mapper.dart';
 
 @MappableClass()
-class TabDataNode extends SC with TabDataNodeMappable {
+class TabDataNode extends SNode with SC, TabDataNodeMappable {
+  @override
+  SNode? child;
+
+  @override
+  bool canAppendAChild() => child == null;
   String title;
 
-  TabDataNode({this.title = 'unnamed tab', super.child});
+  TabDataNode({this.title = 'unnamed tab', this.child});
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) {

@@ -7,7 +7,12 @@ import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 part 'preferredsize_node.mapper.dart';
 
 @MappableClass()
-class PreferredSizeNode extends SC with PreferredSizeNodeMappable {
+class PreferredSizeNode extends SNode with SC, PreferredSizeNodeMappable {
+  @override
+  SNode? child;
+
+  @override
+  bool canAppendAChild() => child == null;
   double width;
   double height;
 
@@ -15,7 +20,7 @@ class PreferredSizeNode extends SC with PreferredSizeNodeMappable {
     super.name,
     required this.width,
     required this.height,
-    super.child,
+    this.child,
   });
 
   @override
@@ -26,7 +31,6 @@ class PreferredSizeNode extends SC with PreferredSizeNodeMappable {
           decimalValue: width,
           onDoubleChange: (newValue) =>
               refreshWithUpdate(context,() => width = newValue ?? double.infinity),
-          calloutButtonSize: const Size(80, 20),
         ),
         DecimalPNode(
           snode: this,
@@ -34,7 +38,6 @@ class PreferredSizeNode extends SC with PreferredSizeNodeMappable {
           decimalValue: height,
           onDoubleChange: (newValue) =>
               refreshWithUpdate(context,() => height = newValue ?? double.infinity),
-          calloutButtonSize: const Size(80, 20),
         ),
     FlutterDocPNode(
         buttonLabel: 'PreferredSize',

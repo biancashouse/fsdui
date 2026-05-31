@@ -1,16 +1,17 @@
+import 'package:flutter/material.dart' show Colors;
 import 'package:fsdui/fsdui.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('UpTo6Colors Tests', () {
     // Define some common Color instances for tests
-    final cRed = ColorModel.red();
-    final cGreen = ColorModel.green();
-    final cBlue = ColorModel.blue();
-    final cYellow = ColorModel.yellow();
-    final cOrange = ColorModel.orange();
-    final cPurple = ColorModel.purple();
-    final cBlack = ColorModel.black();
+    final cRed = Colors.red;
+    final cGreen = Colors.green;
+    final cBlue = Colors.blue;
+    final cYellow = Colors.yellow;
+    final cOrange = Colors.orange;
+    final cPurple = Colors.purple;
+    final cBlack = Colors.black;
 
     // --- Constructor and Properties Tests ---
     group('Constructor and Properties', () {

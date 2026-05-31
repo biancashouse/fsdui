@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
-import 'package:fsdui/src/bloc/poll_bloc.dart';
-import 'package:fsdui/src/bloc/poll_event.dart';
-import 'package:fsdui/src/bloc/poll_state.dart';
+import 'package:fsdui/src/bloc/poll/poll_bloc.dart';
+import 'package:fsdui/src/bloc/poll/poll_event.dart';
+import 'package:fsdui/src/bloc/poll/poll_state.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
@@ -139,7 +139,7 @@ class FlutterPollOption extends HookWidget {
                         if (vea == null) {
                           final gcrServerUrl = fsdui.gcrServerUrl;
                           if (gcrServerUrl != null) {
-                            fsdui.showPasswordlessStepper(
+                            fsdui.showPasswordlessSignIn(
                               targetGK: key as GlobalKey?,
                               gcrServerUrl: gcrServerUrl,
                               onSignedInF: (ea) {

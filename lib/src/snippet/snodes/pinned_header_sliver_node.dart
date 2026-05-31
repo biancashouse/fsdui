@@ -8,10 +8,15 @@ import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 part 'pinned_header_sliver_node.mapper.dart';
 
 @MappableClass()
-class PinnedHeaderSliverNode extends SC with PinnedHeaderSliverNodeMappable {
+class PinnedHeaderSliverNode extends SNode with SC, PinnedHeaderSliverNodeMappable {
+  @override
+  SNode? child;
+
+  @override
+  bool canAppendAChild() => child == null;
   PinnedHeaderSliverNode({
     super.name,
-    super.child,
+    this.child,
   });
 
   @override

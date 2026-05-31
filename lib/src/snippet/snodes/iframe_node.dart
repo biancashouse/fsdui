@@ -13,7 +13,7 @@ const sampleDocSrc =
     'https://docs.google.com/document/d/e/2PACX-1vS3QgXGHNtrKoCpojpXILZfmZM9WLABVnWDnFIsD2FUhHnHo6cG_YKdKqYa3bWw7L5pgdU-4b2u5TIy/pub?embedded=true';
 
 @MappableClass()
-class IFrameNode extends CL with IFrameNodeMappable {
+class IFrameNode extends SNode with IFrameNodeMappable {
   // String name;
   String? src;
   double iframeWidth;
@@ -52,7 +52,6 @@ class IFrameNode extends CL with IFrameNodeMappable {
           decimalValue: iframeWidth,
           onDoubleChange: (newValue) =>
               refreshWithUpdate(context, () => iframeWidth = newValue ?? 800),
-          calloutButtonSize: const Size(160, 20),
         ),
         DecimalPNode(
           snode: this,
@@ -60,7 +59,6 @@ class IFrameNode extends CL with IFrameNodeMappable {
           decimalValue: iframeHeight,
           onDoubleChange: (newValue) =>
               refreshWithUpdate(context, () => iframeHeight = newValue ?? 800),
-          calloutButtonSize: const Size(160, 20),
         ),
         FlutterDocPNode(
             buttonLabel: 'IFrame',

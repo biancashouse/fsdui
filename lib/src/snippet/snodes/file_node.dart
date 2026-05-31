@@ -34,7 +34,7 @@ String get googleFormsIconSrc =>
     fsdui.asset('lib/assets/images/google-icons/forms.png');
 
 @MappableClass()
-class FileNode extends CL with FileNodeMappable {
+class FileNode extends SNode with FileNodeMappable {
   String fileName;
   String src;
 

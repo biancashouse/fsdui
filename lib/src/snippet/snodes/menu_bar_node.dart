@@ -6,7 +6,10 @@ import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 part 'menu_bar_node.mapper.dart';
 
 @MappableClass()
-class MenuBarNode extends MC with MenuBarNodeMappable {
+class MenuBarNode extends SNode with MC, MenuBarNodeMappable {
+  @override
+  List<SNode> children;
+
   double? width;
   double? height;
 
@@ -14,8 +17,11 @@ class MenuBarNode extends MC with MenuBarNodeMappable {
     super.name,
     this.width,
     this.height,
-    required super.children,
+    required this.children,
   });
+
+  @override
+  List<SNode>? get ownChildren => children;
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) =>  [
@@ -29,7 +35,7 @@ class MenuBarNode extends MC with MenuBarNodeMappable {
 
   @override
   String toSource(BuildContext context) => '''MenuBar(
-        children: super.children.map((child) => child.toWidget(context, this)).toList(),
+        children: children.map((child) => child.toWidget(context, this)).toList(),
       );
   ''';
 
@@ -45,7 +51,7 @@ class MenuBarNode extends MC with MenuBarNodeMappable {
             return PreferredSizeMenuBar(
               MenuBar(
                 key: createNodeWidgetGK(),
-                children: super.children.map((child) =>
+                children: children.map((child) =>
                     child.build(context, this)).toList(),
               ),
               width ?? fsdui.scrW,

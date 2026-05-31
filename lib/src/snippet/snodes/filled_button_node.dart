@@ -9,17 +9,26 @@ import 'package:fsdui/src/snippet/snodes/button_style_hook.dart';
 part 'filled_button_node.mapper.dart';
 
 @MappableClass()
-class FilledButtonNode extends ButtonNode with FilledButtonNodeMappable {
+class FilledButtonNode extends SNode with SC, ButtonNode, FilledButtonNodeMappable {
+  @override
+  String? destinationRoutePathSnippetName;
+  @override
+  SNode? child;
+
+  @override
+  bool canAppendAChild() => child == null;
+  @MappableField(hook: ButtonStyleHook())
+  @override
+  ButtonStyleProperties bsPropGroup;
+  @override
+  String? onTapHandlerName;
+
   FilledButtonNode({
     super.name,
-    super.destinationRoutePathSnippetName,
-    // super.template,
-    // super.destinationPanelOrPlaceholderName,
-    // super.destinationSnippetName,
-    required super.bsPropGroup,
-    super.onTapHandlerName,
-    // super.calloutConfig,
-    super.child,
+    this.destinationRoutePathSnippetName,
+    required this.bsPropGroup,
+    this.onTapHandlerName,
+    this.child,
   });
 
   @override
@@ -27,7 +36,7 @@ class FilledButtonNode extends ButtonNode with FilledButtonNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    ...super.propertyNodes(context, parentSNode),
+    ...btnPropertyNodes(context, parentSNode),
     FlutterDocPNode(
         buttonLabel: 'FilledButton',
         webLink: 'https://api.flutter.dev/flutter/material/FilledButton-class.html',
@@ -37,17 +46,14 @@ class FilledButtonNode extends ButtonNode with FilledButtonNodeMappable {
 
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
-    
+
     try {
       ButtonStyle? btnStyle = bsPropGroup.toButtonStyle(context, defaultButtonStyle: defaultButtonStyle());
 
-      //buttonStyle?.toButtonStyle(context);
       // possible handler
       void Function(BuildContext)? f = onTapHandlerName != null ? fsdui.namedHandler(onTapHandlerName!) : null;
 
       setParent(parentNode);
-    //ScrollControllerName? scName = EditablePage.name(context);
-    //possiblyHighlightSelectedNode(scName);
 
       final gk = createNodeWidgetGK();
 
@@ -55,8 +61,6 @@ class FilledButtonNode extends ButtonNode with FilledButtonNodeMappable {
             // container only for possble selection gk
             key: gk,
             child: FilledButton(
-              // if feature specified, must be a callout
-              // key: cid != null ? fco.setCalloutGk(cid!, GlobalKey()) : null,
               onPressed: ()=>onPressed(context, gk),
               onLongPress: () => f?.call(context),
               style: btnStyle,
@@ -67,18 +71,6 @@ class FilledButtonNode extends ButtonNode with FilledButtonNodeMappable {
       return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());
     }
   }
-
-  // @override
-  // String toSource(BuildContext context) {
-  //   return '''FilledButton(
-  //   onPressed: null,
-  //   style: ${buttonStyle?.toButtonStyleSource(context)},
-  //   child: ${child?.toSource(context) ?? const Text(
-  //             "missing FilledButton child!",
-  //             style: TextStyle(color: Colors.red),
-  //           )},
-  // )''';
-  // }
 
   @override
   String toString() => FLUTTER_TYPE;

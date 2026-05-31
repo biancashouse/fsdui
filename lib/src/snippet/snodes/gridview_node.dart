@@ -11,7 +11,14 @@ import 'package:fsdui/src/snippet/pnodes/int_pnode.dart';
 part 'gridview_node.mapper.dart';
 
 @MappableClass()
-class GridViewNode extends BoxScrollViewNode with GridViewNodeMappable {
+class GridViewNode extends SNode with ScrollViewNode, BoxScrollViewNode, GridViewNodeMappable {
+  @override
+  AxisEnum scrollDirection;
+  @override
+  bool? shrinkWrap;
+  @override
+  EdgeInsets? padding;
+
   List<SNode> children;
   int? crossAxisCount;
   double? mainAxisSpacing;
@@ -19,18 +26,22 @@ class GridViewNode extends BoxScrollViewNode with GridViewNodeMappable {
 
   GridViewNode({
     super.name,
+    this.scrollDirection = AxisEnum.vertical,
+    this.shrinkWrap,
+    this.padding,
     this.mainAxisSpacing,
     this.crossAxisSpacing,
     this.crossAxisCount,
     required this.children,
-    super.padding,
-    super.scrollDirection,
-    super.shrinkWrap,
   });
 
   @override
+  List<SNode>? get ownChildren => children;
+
+  @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    ...super.propertyNodes(context, parentSNode),
+    ...svPropertyNodes(context, parentSNode),
+    ...bsvPropertyNodes(context, parentSNode),
 
     IntPNode(
       snode: this,
@@ -46,7 +57,6 @@ class GridViewNode extends BoxScrollViewNode with GridViewNodeMappable {
       decimalValue: mainAxisSpacing,
       onDoubleChange: (newValue) =>
           refreshWithUpdate(context, () => mainAxisSpacing = newValue),
-      calloutButtonSize: const Size(130, 20),
     ),
     DecimalPNode(
       snode: this,
@@ -54,7 +64,6 @@ class GridViewNode extends BoxScrollViewNode with GridViewNodeMappable {
       decimalValue: crossAxisSpacing,
       onDoubleChange: (newValue) =>
           refreshWithUpdate(context, () => crossAxisSpacing = newValue),
-      calloutButtonSize: const Size(130, 20),
     ),
     FlutterDocPNode(
         buttonLabel: 'GridView',
@@ -67,7 +76,6 @@ class GridViewNode extends BoxScrollViewNode with GridViewNodeMappable {
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     try {
       setParent(parentNode);
-      //possiblyHighlightSelectedNode(scName);
       return LayoutBuilder(
         builder: (context, constraints) {
           bool constraintError = constraints.maxHeight == double.infinity;
@@ -84,7 +92,7 @@ class GridViewNode extends BoxScrollViewNode with GridViewNodeMappable {
             controller: sc,
             scrollDirection: scrollDirection.flutterValue,
             shrinkWrap: shrinkWrap ?? false,
-            padding: padding?.toEdgeInsets(),
+            padding: padding,
             crossAxisCount: crossAxisCount ?? 2,
             mainAxisSpacing: mainAxisSpacing??0.0,
             crossAxisSpacing: crossAxisSpacing??0.0,

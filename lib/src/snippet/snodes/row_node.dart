@@ -3,6 +3,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/snodes/flex_mixin.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_cross_axis_alignment.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_main_axis_alignment.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_main_axis_size.dart';
@@ -11,63 +12,39 @@ import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 part 'row_node.mapper.dart';
 
 @MappableClass()
-class RowNode extends FlexNode with RowNodeMappable {
+class RowNode extends SNode with MC, FlexMixin, RowNodeMappable {
+  @override
+  AxisEnum direction;
+  @override
+  MainAxisAlignmentEnumModel? mainAxisAlignment;
+  @override
+  MainAxisSizeEnum? mainAxisSize;
+  @override
+  CrossAxisAlignmentEnumModel? crossAxisAlignment;
+  @override
+  List<SNode> children;
+
   RowNode({
     super.name,
-    super.mainAxisAlignment,
-    super.mainAxisSize,
-    super.crossAxisAlignment,
-    super.direction = AxisEnum.horizontal,
-    required super.children,
+    this.mainAxisAlignment,
+    this.mainAxisSize,
+    this.crossAxisAlignment,
+    this.direction = AxisEnum.horizontal,
+    required this.children,
   });
 
   @override
+  List<SNode>? get ownChildren => children;
+
+  @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    ...super.propertyNodes(context, parentSNode),
+    ...flexPropertyNodes(context, parentSNode),
     FlutterDocPNode(
         buttonLabel: 'Row',
         webLink: 'https://api.flutter.dev/flutter/widgets/Row-class.html',
         snode: this,
         name: 'fyi'),
   ];
-
-  // @override
-  // Widget toWidget(BuildContext context, STreeNode? parentNode) {
-  //   setParent(parentNode);
-  //   possiblyHighlightSelectedNode();
-  //   return LayoutBuilder(builder: (context, constraints) {
-  //     return constraints.maxWidth == double.infinity
-  //         ? Row(
-  //             children: [
-  //               const Icon(
-  //                 Icons.error,
-  //                 color: Colors.red,
-  //               ),
-  //               Gap(10),
-  //               const Text('Row has infinite maxWidth constraint!'),
-  //             ],
-  //           )
-  //         : Row(
-  //             key: createNodeGK(),
-  //             mainAxisAlignment: mainAxisAlignment?.flutterValue ?? MainAxisAlignment.start,
-  //             mainAxisSize: mainAxisSize?.flutterValue ?? MainAxisSize.max,
-  //             crossAxisAlignment: crossAxisAlignment?.flutterValue ?? CrossAxisAlignment.center,
-  //             textBaseline: TextBaseline.alphabetic,
-  //             children: children.map((node) => node.toWidget(context, this)).toList(),
-  //           );
-  //   });
-  // }
-
-  // @override
-  // String toSource(BuildContext context) {
-  //   return '''Row(
-  //   mainAxisAlignment: ${mainAxisAlignment?.flutterValue ?? 'MainAxisAlignment.start'},
-  //   mainAxisSize: ${mainAxisSize?.flutterValue ?? 'MainAxisSize.max'},
-  //   crossAxisAlignment: ${crossAxisAlignment?.flutterValue ?? 'CrossAxisAlignment.center'},
-  //   textBaseline: TextBaseline.alphabetic,
-  //   children: ${children.map((node) => node.toSource(context)).toList()},
-  // )''';
-  // }
 
   @override
   String toString() => FLUTTER_TYPE;

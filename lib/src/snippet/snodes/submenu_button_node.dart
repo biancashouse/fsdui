@@ -9,18 +9,24 @@ import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
 part 'submenu_button_node.mapper.dart';
 
 @MappableClass()
-class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
+class SubmenuButtonNode extends SNode with MC, SubmenuButtonNodeMappable {
+  @override
+  List<SNode> children;
+
   String itemLabel;
 
   // Node? child; always just use a Text(itemLabel)
-  List<SNode> menuChildren;
+  List<SNode> get menuChildren => children;
 
   SubmenuButtonNode({
     super.name,
     this.itemLabel = 'label?',
     // this.child,
-    required this.menuChildren,
-  }) : super(children: menuChildren);
+    required List<SNode> menuChildren,
+  }) : children = menuChildren;
+
+  @override
+  List<SNode>? get ownChildren => children;
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
@@ -54,7 +60,7 @@ class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
 
   @override
   String toSource(BuildContext context) => '''SubmenuButton(
-        children: super.children.map((child) => child.toWidget(context, this)).toList(),
+        children: children.map((child) => child.toWidget(context, this)).toList(),
       );
   ''';
 
@@ -78,7 +84,7 @@ class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
         ),
       ),
       menuChildren:
-          super.children.map((child) => child.build(context, this)).toList(),
+          children.map((child) => child.build(context, this)).toList(),
       // child: child == null ? Text(itemLabel??'label?') : child?.toWidget(context, this),
       child: Text(itemLabel),
     );

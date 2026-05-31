@@ -68,42 +68,42 @@ class _Page_HomeState extends State<Page_Home> {
     final uniqueTabBarName = DateTime.now().millisecondsSinceEpoch.toString();
     SnippetBuilder sp = SnippetBuilder(
       initialValue:  ScaffoldNode(
-          name: 'home-scaffold-with-tabs-3',
-          appBar: NamedPS(
-            propertyName: 'appBar',
-            child: AppBarNode(
-              // tabBarName: uniqueTabBarName,
-              bgColor: ColorModel.grey(),
-              title: NamedSC(
-                propertyName: 'title',
-                child: TextNode(
-                  text: 'my title',
-                  tsPropGroup: TextStyleProperties(),
-                ),
-              ),
-              titleTextStyle: TextStyleProperties(),
-              actions: NamedMC(propertyName: 'actions', children: []),
-              leading: NamedSC(propertyName: 'leading'),
-              bottom: NamedPS(
-                propertyName: 'bottom',
-                // child: TabBarNode(
-                //   tabBarName: uniqueTabBarName,
-                //   labelTSPropGroup: TextStyleProperties(),
-                //   children: [
-                //     TextNode(text: 'tab 1', tsPropGroup: TextStyleProperties()),
-                //     TextNode(text: 'Tab 2', tsPropGroup: TextStyleProperties()),
-                //   ],
-                // ),
-              ),
-            ),
-          ),
-          body: NamedSC(
-            propertyName: 'body',
-            // child: TabBarViewNode(
-            //   tabBarName: uniqueTabBarName,
-            //   children: [PlaceholderNode(), PlaceholderNode()],
-            // ),
-          ),
+          name: 'home-scaffold-with-tabs',
+          // appBar: NamedPS(
+          //   propertyName: 'appBar',
+          //   child: AppBarNode(
+          //     // tabBarName: uniqueTabBarName,
+          //     bgColor: Colors.grey,
+          //     title: NamedSC(
+          //       propertyName: 'title',
+          //       child: TextNode(
+          //         text: 'my title',
+          //         tsPropGroup: TextStyleProperties(),
+          //       ),
+          //     ),
+          //     titleTextStyle: TextStyleProperties(),
+          //     actions: NamedMC(propertyName: 'actions', children: []),
+          //     leading: NamedSC(propertyName: 'leading'),
+          //     bottom: NamedPS(
+          //       propertyName: 'bottom',
+          //       // child: TabBarNode(
+          //       //   tabBarName: uniqueTabBarName,
+          //       //   labelTSPropGroup: TextStyleProperties(),
+          //       //   children: [
+          //       //     TextNode(text: 'tab 1', tsPropGroup: TextStyleProperties()),
+          //       //     TextNode(text: 'Tab 2', tsPropGroup: TextStyleProperties()),
+          //       //   ],
+          //       // ),
+          //     ),
+          //   ),
+          // ),
+          // body: NamedSC(
+          //   propertyName: 'body',
+          //   // child: TabBarViewNode(
+          //   //   tabBarName: uniqueTabBarName,
+          //   //   children: [PlaceholderNode(), PlaceholderNode()],
+          //   // ),
+          // ),
       ),
 
       // snippetRootNode: SnippetRootNode(

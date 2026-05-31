@@ -69,7 +69,7 @@ class QuillTargetConfigToolbar extends StatelessWidget {
                 onColorPickedF: (Color? pickedColor) {
                   if (pickedColor != null) {
                     qtF().setCalloutFillColor(
-                      ColorModel.fromColor(pickedColor),
+                      pickedColor,
                     );
                     CalloutConfig? contentCC = fsdui.findCalloutConfig(
                       'quill-target-${qtF().contentCId}',
@@ -128,7 +128,7 @@ class QuillTargetConfigToolbar extends StatelessWidget {
                   qtF().targetPointerTypeEnum = TargetPointerTypeEnum.WAVY;
                 }
                 qtF().calloutBorderColors = UpTo6Colors(
-                  color1: ColorModel.grey(),
+                  color1: Colors.grey,
                 );
                 CalloutConfig? contentCC = fsdui.findCalloutConfig(
                   'quill-target-${qtF().contentCId}',
@@ -337,7 +337,7 @@ class QuillTargetConfigToolbar extends StatelessWidget {
       ),
       calloutContent: ColourPickerTool(
         originalColor:
-            qtF().calloutFillColors?.color1?.flutterValue ?? Colors.white,
+            qtF().calloutFillColors?.color1 ?? Colors.white,
         onColorPickedF: onColorPickedF,
       ),
     );

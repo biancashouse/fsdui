@@ -5,17 +5,22 @@ import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:dynamic_tabbar/dynamic_tabbar.dart';
-import 'package:fsdui/src/snippet/snodes/tabdata_node.dart';
 
 part 'dynamic_tabbar_node.mapper.dart';
 
 @MappableClass()
-class DynamicTabBarNode extends MC with DynamicTabBarNodeMappable {
+class DynamicTabBarNode extends SNode with MC, DynamicTabBarNodeMappable {
+  @override
+  List<SNode> children;
+
   DynamicTabBarNode({
     super.name,
     // children are TabDataNodes
-    required super.children,
+    required this.children,
   });
+
+  @override
+  List<SNode>? get ownChildren => children;
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [

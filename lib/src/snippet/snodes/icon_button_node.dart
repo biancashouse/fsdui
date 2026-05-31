@@ -10,7 +10,20 @@ import 'package:fsdui/src/snippet/snodes/button_style_hook.dart';
 part 'icon_button_node.mapper.dart';
 
 @MappableClass()
-class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
+class IconButtonNode extends SNode with SC, ButtonNode, IconButtonNodeMappable {
+  @override
+  String? destinationRoutePathSnippetName;
+  @override
+  SNode? child;
+
+  @override
+  bool canAppendAChild() => child == null;
+  @MappableField(hook: ButtonStyleHook())
+  @override
+  ButtonStyleProperties bsPropGroup;
+  @override
+  String? onTapHandlerName;
+
   int? iconCodePoint;
   String? iconFontFamily;
   String? iconFontPackage;
@@ -24,61 +37,18 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
     this.iconFontPackage,
     this.iconColor,
     this.iconSize,
-    super.destinationRoutePathSnippetName,
-    // super.template,
-    // super.destinationPanelOrPlaceholderName,
-    // super.destinationSnippetName,
-    required super.bsPropGroup,
-    super.onTapHandlerName,
-    // super.calloutConfig,
-    super.child,
+    this.destinationRoutePathSnippetName,
+    required this.bsPropGroup,
+    this.onTapHandlerName,
+    this.child,
   });
-
-  // List<Widget> _iconPropertyButton(BuildContext context) => [
-  //       InputDecorator(
-  //         decoration: InputDecoration(
-  //           labelText: 'button icon',
-  //           labelStyle: FCO.enclosureLabelTextStyle,
-  //           border: const OutlineInputBorder(),
-  //         ), // isDense: false,
-  //         child: Icon(Icons.more_horiz,
-  //             // IconData(
-  //             //   iconCodePoint ?? Icons.question_mark.codePoint,
-  //             //   fontFamily: iconFontFamily,
-  //             //   fontPackage: iconFontPackage,
-  //             // ),
-  //             size: iconSize,
-  //             color: Color(iconColor ?? Colors.red.value)),
-  //       ),
-  //     ];
-
-  // @override
-  // List<Widget> nodePropertyEditors(BuildContext context, {bool allowButtonCallouts = false}) => [
-  //       Container(
-  //         width: 320,
-  //         color: Colors.white,
-  //         padding: const EdgeInsets.all(16),
-  //         child: Column(
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           children: [
-  //             Column(
-  //               children: [
-  //                 ..._iconPropertyButton(context),
-  //                 const SizedBox(height: 16),
-  //                 ...super.nodePropertyEditors(context),
-  //               ],
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //     ];
 
   @override
   ButtonStyle? defaultButtonStyle() => IconButton.styleFrom();
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    ...super.propertyNodes(context, parentSNode),
+    ...btnPropertyNodes(context, parentSNode),
     FlutterDocPNode(
         buttonLabel: 'IconButton',
         webLink: 'https://api.flutter.dev/flutter/material/IconButton-class.html',
@@ -88,8 +58,7 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
 
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
-    
-    // ButtonStyle? btnStyle = buttonStyle?.toButtonStyle(context);
+
     // possible handler
     void Function(BuildContext)? f = onTapHandlerName != null ? fsdui.namedHandler(onTapHandlerName!) : null;
     setParent(parentNode);
@@ -99,14 +68,10 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
     ButtonStyle? btnStyle = bsPropGroup.toButtonStyle(context, defaultButtonStyle: defaultButtonStyle());
 
     IconButton button = IconButton(
-      // if feature specified, must be a callout
-      // key: cid != null ? fco.setCalloutGk(cid!, GlobalKey()) : null,
       onPressed: ()=>onPressed(context, gk),
       style: btnStyle,
       icon: child?.build(context, this) ?? const Icon(Icons.warning, color: Colors.red),
     );
-
-    // possiblyHighlightSelectedNode(scName);
 
     return Container(
       // container only for possble selection gk
@@ -120,18 +85,6 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
           : button,
     );
   }
-
-  // @override
-  // String toSource(BuildContext context) {
-  //   return '''IconButton(
-  //   onPressed: null,
-  //   style: ${buttonStyle?.toButtonStyleSource(context)},
-  //   child: ${child?.toSource(context) ?? const Text(
-  //             "missing IconButton child!",
-  //             style: TextStyle(color: Colors.red),
-  //           )},
-  // )''';
-  // }
 
   @override
   String toString() => FLUTTER_TYPE;

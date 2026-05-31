@@ -16,7 +16,7 @@ class Page_Home extends StatelessWidget {
             child: AppBarNode(
               toolbarHeight: kToolbarHeight,
               // tabBarName: uniqueTabBarName,
-              bgColor: ColorModel.grey(),
+              bgColor: Colors.grey,
               title: NamedSC(
                 propertyName: 'title',
                 child: TextNode(
@@ -47,14 +47,14 @@ class Page_Home extends StatelessWidget {
                   csPropGroup: ContainerStyleProperties(
                     width: 100,
                     height: 100,
-                    fillColors: UpTo6Colors(color1: ColorModel.red()),
+                    fillColors: UpTo6Colors(color1: Colors.red),
                   ),
                 ),
                 ContainerNode(
                   csPropGroup: ContainerStyleProperties(
                     width: 100,
                     height: 100,
-                    fillColors: UpTo6Colors(color1: ColorModel.blue()),
+                    fillColors: UpTo6Colors(color1: Colors.blue),
                   ),
                 ),
               ],

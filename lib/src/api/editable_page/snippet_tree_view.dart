@@ -5,7 +5,7 @@ import 'package:fsdui/src/snippet/fancy_tree/tree_controller.dart';
 import 'package:fsdui/src/snippet/fancy_tree/tree_indentation.dart';
 import 'package:fsdui/src/snippet/fancy_tree/tree_view.dart';
 import 'package:fsdui/src/snippet/snode_widget.dart';
-import '../../bloc/snippet_being_edited.dart' show SnippetBeingEdited;
+import '../../bloc/capi/snippet_being_edited.dart' show SnippetBeingEdited;
 
 class SnippetTreeView extends StatefulWidget {
   /// When true, all rows are built eagerly (no lazy rendering) and the caller

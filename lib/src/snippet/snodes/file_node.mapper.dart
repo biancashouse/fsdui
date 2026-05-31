@@ -1,8 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// dart format off
 // ignore_for_file: type=lint
-// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -15,7 +13,7 @@ class FileNodeMapper extends SubClassMapperBase<FileNode> {
   static FileNodeMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = FileNodeMapper._());
-      CLMapper.ensureInitialized().addSubMapper(_instance!);
+      SNodeMapper.ensureInitialized().addSubMapper(_instance!);
     }
     return _instance!;
   }
@@ -24,47 +22,31 @@ class FileNodeMapper extends SubClassMapperBase<FileNode> {
   final String id = 'FileNode';
 
   static String? _$name(FileNode v) => v.name;
-  static const Field<FileNode, String> _f$name = Field(
-    'name',
-    _$name,
-    opt: true,
-  );
+  static const Field<FileNode, String> _f$name =
+      Field('name', _$name, opt: true);
   static String _$fileName(FileNode v) => v.fileName;
-  static const Field<FileNode, String> _f$fileName = Field(
-    'fileName',
-    _$fileName,
-  );
+  static const Field<FileNode, String> _f$fileName =
+      Field('fileName', _$fileName);
   static String _$src(FileNode v) => v.src;
   static const Field<FileNode, String> _f$src = Field('src', _$src);
   static String _$uid(FileNode v) => v.uid;
-  static const Field<FileNode, String> _f$uid = Field(
-    'uid',
-    _$uid,
-    mode: FieldMode.member,
-  );
+  static const Field<FileNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static List<String>? _$tags(FileNode v) => v.tags;
-  static const Field<FileNode, List<String>> _f$tags = Field(
-    'tags',
-    _$tags,
-    mode: FieldMode.member,
-  );
+  static const Field<FileNode, List<String>> _f$tags =
+      Field('tags', _$tags, mode: FieldMode.member);
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(FileNode v) =>
       v.treeNodeGK;
   static const Field<FileNode, GlobalKey<State<StatefulWidget>>> _f$treeNodeGK =
       Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(FileNode v) => v.isExpanded;
-  static const Field<FileNode, bool> _f$isExpanded = Field(
-    'isExpanded',
-    _$isExpanded,
-    mode: FieldMode.member,
-  );
+  static const Field<FileNode, bool> _f$isExpanded =
+      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(FileNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<FileNode, bool> _f$hidePropertiesWhileDragging = Field(
-    'hidePropertiesWhileDragging',
-    _$hidePropertiesWhileDragging,
-    mode: FieldMode.member,
-  );
+      'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
+      mode: FieldMode.member);
   static GlobalKey<State<StatefulWidget>>? _$nodeGK(FileNode v) => v.nodeGK;
   static const Field<FileNode, GlobalKey<State<StatefulWidget>>> _f$nodeGK =
       Field('nodeGK', _$nodeGK, mode: FieldMode.member);
@@ -83,24 +65,20 @@ class FileNodeMapper extends SubClassMapperBase<FileNode> {
   };
 
   @override
-  final String discriminatorKey = 'DK:cl';
+  final String discriminatorKey = 'DK:snode';
   @override
   final dynamic discriminatorValue = 'FileNode';
   @override
-  late final ClassMapperBase superMapper = CLMapper.ensureInitialized();
+  late final ClassMapperBase superMapper = SNodeMapper.ensureInitialized();
 
   @override
-  final MappingHook superHook = ChainedHook([
-    PropertyRenameHook('cl', 'DK:cl'),
-    PropertyRenameHook('snode', 'DK:snode'),
-  ]);
+  final MappingHook superHook = const PropertyRenameHook('snode', 'DK:snode');
 
   static FileNode _instantiate(DecodingData data) {
     return FileNode(
-      name: data.dec(_f$name),
-      fileName: data.dec(_f$fileName),
-      src: data.dec(_f$src),
-    );
+        name: data.dec(_f$name),
+        fileName: data.dec(_f$fileName),
+        src: data.dec(_f$src));
   }
 
   @override
@@ -117,23 +95,18 @@ class FileNodeMapper extends SubClassMapperBase<FileNode> {
 
 mixin FileNodeMappable {
   String toJson() {
-    return FileNodeMapper.ensureInitialized().encodeJson<FileNode>(
-      this as FileNode,
-    );
+    return FileNodeMapper.ensureInitialized()
+        .encodeJson<FileNode>(this as FileNode);
   }
 
   Map<String, dynamic> toMap() {
-    return FileNodeMapper.ensureInitialized().encodeMap<FileNode>(
-      this as FileNode,
-    );
+    return FileNodeMapper.ensureInitialized()
+        .encodeMap<FileNode>(this as FileNode);
   }
 
   FileNodeCopyWith<FileNode, FileNode, FileNode> get copyWith =>
       _FileNodeCopyWithImpl<FileNode, FileNode>(
-        this as FileNode,
-        $identity,
-        $identity,
-      );
+          this as FileNode, $identity, $identity);
   @override
   String toString() {
     return FileNodeMapper.ensureInitialized().stringifyValue(this as FileNode);
@@ -141,10 +114,8 @@ mixin FileNodeMappable {
 
   @override
   bool operator ==(Object other) {
-    return FileNodeMapper.ensureInitialized().equalsValue(
-      this as FileNode,
-      other,
-    );
+    return FileNodeMapper.ensureInitialized()
+        .equalsValue(this as FileNode, other);
   }
 
   @override
@@ -159,7 +130,7 @@ extension FileNodeValueCopy<$R, $Out> on ObjectCopyWith<$R, FileNode, $Out> {
 }
 
 abstract class FileNodeCopyWith<$R, $In extends FileNode, $Out>
-    implements CLCopyWith<$R, $In, $Out> {
+    implements SNodeCopyWith<$R, $In, $Out> {
   @override
   $R call({String? name, String? fileName, String? src});
   FileNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -174,23 +145,20 @@ class _FileNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<FileNode> $mapper =
       FileNodeMapper.ensureInitialized();
   @override
-  $R call({Object? name = $none, String? fileName, String? src}) => $apply(
-    FieldCopyWithData({
-      if (name != $none) #name: name,
-      if (fileName != null) #fileName: fileName,
-      if (src != null) #src: src,
-    }),
-  );
+  $R call({Object? name = $none, String? fileName, String? src}) =>
+      $apply(FieldCopyWithData({
+        if (name != $none) #name: name,
+        if (fileName != null) #fileName: fileName,
+        if (src != null) #src: src
+      }));
   @override
   FileNode $make(CopyWithData data) => FileNode(
-    name: data.get(#name, or: $value.name),
-    fileName: data.get(#fileName, or: $value.fileName),
-    src: data.get(#src, or: $value.src),
-  );
+      name: data.get(#name, or: $value.name),
+      fileName: data.get(#fileName, or: $value.fileName),
+      src: data.get(#src, or: $value.src));
 
   @override
   FileNodeCopyWith<$R2, FileNode, $Out2> $chain<$R2, $Out2>(
-    Then<$Out2, $R2> t,
-  ) => _FileNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+          Then<$Out2, $R2> t) =>
+      _FileNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
-

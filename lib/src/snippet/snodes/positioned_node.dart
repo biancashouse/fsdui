@@ -7,7 +7,12 @@ import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 part 'positioned_node.mapper.dart';
 
 @MappableClass()
-class PositionedNode extends SC with PositionedNodeMappable {
+class PositionedNode extends SNode with SC, PositionedNodeMappable {
+  @override
+  SNode? child;
+
+  @override
+  bool canAppendAChild() => child == null;
   double? top;
   double? left;
   double? bottom;
@@ -19,7 +24,7 @@ class PositionedNode extends SC with PositionedNodeMappable {
     this.left,
     this.bottom,
     this.right,
-    super.child,
+    this.child,
   });
 
   @override
@@ -29,7 +34,6 @@ class PositionedNode extends SC with PositionedNodeMappable {
           name: 'top',
           decimalValue: top,
           onDoubleChange: (newValue) => refreshWithUpdate(context,() => top = newValue),
-          calloutButtonSize: const Size(80, 20),
         ),
         DecimalPNode(
           snode: this,
@@ -37,7 +41,6 @@ class PositionedNode extends SC with PositionedNodeMappable {
           decimalValue: left,
           onDoubleChange: (newValue) =>
               refreshWithUpdate(context,() => left = newValue),
-          calloutButtonSize: const Size(80, 20),
         ),
         DecimalPNode(
           snode: this,
@@ -45,7 +48,6 @@ class PositionedNode extends SC with PositionedNodeMappable {
           decimalValue: bottom,
           onDoubleChange: (newValue) =>
               refreshWithUpdate(context,() => bottom = newValue),
-          calloutButtonSize: const Size(80, 20),
         ),
         DecimalPNode(
           snode: this,
@@ -53,7 +55,6 @@ class PositionedNode extends SC with PositionedNodeMappable {
           decimalValue: right,
           onDoubleChange: (newValue) =>
               refreshWithUpdate(context,() => right = newValue),
-          calloutButtonSize: const Size(80, 20),
         ),
     FlutterDocPNode(
         buttonLabel: 'Positioned',

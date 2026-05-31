@@ -4,9 +4,9 @@ import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/pnodes/editors/property_button_color.dart';
 
 class ColorPNode extends PNode {
-  ColorModel? color;
-  final ValueChanged<ColorModel?> onColorChange;
-  final Size calloutButtonSize;
+  Color? color;
+  final ValueChanged<Color?> onColorChange;
+  final Size calloutButtonSize = const Size(120, 24);
 
   ColorPNode({
     required this.color,
@@ -14,7 +14,6 @@ class ColorPNode extends PNode {
     required super.snode,
     required super.name,
     super.tooltip,
-    this.calloutButtonSize = const Size(120, 24),
   });
 
   @override
@@ -29,10 +28,10 @@ class ColorPNode extends PNode {
       cId: name,
       label: name,
       tooltip: tooltip,
-      originalColor: color?.flutterValue,
+      originalColor: color,
       onChangeF: (Color? newColor) {
         if (newColor != null) {
-          onColorChange.call(color = ColorModel.fromColor(newColor));
+          onColorChange.call(color = newColor);
         }
       },
       calloutButtonSize: calloutButtonSize,

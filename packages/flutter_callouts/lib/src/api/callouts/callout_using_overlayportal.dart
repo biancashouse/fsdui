@@ -6,7 +6,7 @@ import 'package:flutter_callouts/flutter_callouts.dart';
 import 'overlay_entry_list.dart';
 
 export "rectangle.dart";
-export "side.dart";
+export "side_enum.dart";
 
 // ignore: non_constant_identifier_names
 int SECS(int s) => s * 1000;

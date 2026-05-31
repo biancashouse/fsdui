@@ -12,7 +12,12 @@ import 'package:fsdui/src/snippet/pnodes/text_style_pnodes.dart';
 part 'default_text_style_node.mapper.dart';
 
 @MappableClass()
-class DefaultTextStyleNode extends SC with DefaultTextStyleNodeMappable {
+class DefaultTextStyleNode extends SNode with SC, DefaultTextStyleNodeMappable {
+  @override
+  SNode? child;
+
+  @override
+  bool canAppendAChild() => child == null;
   TextStyleProperties tsPropGroup;
   TextAlignEnum? textAlign;
 
@@ -23,7 +28,7 @@ class DefaultTextStyleNode extends SC with DefaultTextStyleNodeMappable {
     required this.tsPropGroup,
     this.textAlign,
     // this.softWrap = true,
-    super.child,
+    this.child,
   });
 
   @override

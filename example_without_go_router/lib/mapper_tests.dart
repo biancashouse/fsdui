@@ -1,9 +1,9 @@
-
+import 'package:flutter/material.dart' show Colors;
+import 'package:flutter/widgets.dart' show EdgeInsets;
 import 'package:fsdui/fsdui.dart';
 
 bool testSNodeSerialization() {
-  if (test_ColorModel() &&
-      test_UpTo6Colors() &&
+  if (test_UpTo6Colors() &&
       test_TextStyleProperties() &&
       test_AppBarNode() &&
       test_GenericSingleChildNode() &&
@@ -18,31 +18,9 @@ bool testSNodeSerialization() {
   return false;
 }
 
-bool test_ColorModel() {
-  // 1. Arrange: Create a complex node structure.
-  final originalColor = ColorModel.blue();
-
-  // 2. Act: Serialize the node to a JSON map and then deserialize it back.
-  final originalJson = originalColor.toJson();
-  final originalMap = originalColor.toMap();
-  final decodedColor = ColorModelMapper.fromJson(originalJson);
-  final decodedJson = decodedColor.toJson();
-
-  // 3. Assert: Check if the decoded node is identical to the original.
-  if (originalJson != decodedJson) {
-    print('failure');
-    return false;
-  }
-
-  return true;
-}
-
 bool test_UpTo6Colors() {
   // 1. Arrange: Create a complex node structure.
-  final originalColors = UpTo6Colors(
-    color1: ColorModel.blue(),
-    color2: ColorModel.red(),
-  );
+  final originalColors = UpTo6Colors(color1: Colors.blue, color2: Colors.red);
 
   // 2. Act: Serialize the node to a JSON map and then deserialize it back.
   final originalJson = originalColors.toJson();
@@ -65,12 +43,12 @@ bool test_ContainerNode() {
     csPropGroup: ContainerStyleProperties(
       width: 150.0,
       height: 80.0,
-      margin: EdgeInsetsValue(left: 8.0, right: 8.0, top: 8.0, bottom: 8.0),
-      padding: EdgeInsetsValue(left: 16.0, right: 16.0, top: 4.0, bottom: 4.0),
+      margin: EdgeInsets.all(8.0),
+      padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 4.0, bottom: 4.0),
       alignment: AlignmentEnum.center,
-      fillColors: UpTo6Colors(color1: ColorModel.blue()),
+      fillColors: UpTo6Colors(color1: Colors.blue),
       // Blue
-      borderColors: UpTo6Colors(color1: ColorModel.black()),
+      borderColors: UpTo6Colors(color1: Colors.black),
       // Black
       borderThickness: 2.0,
       borderRadius: 12.0,
@@ -99,12 +77,12 @@ bool test_ContainerStyleProperties() {
   final originalCSP = ContainerStyleProperties(
     width: 150.0,
     height: 80.0,
-    margin: EdgeInsetsValue(left: 8.0, right: 8.0, top: 8.0, bottom: 8.0),
-    padding: EdgeInsetsValue(left: 16.0, right: 16.0, top: 4.0, bottom: 4.0),
+    margin: EdgeInsets.all(8.0),
+    padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 4.0, bottom: 4.0),
     alignment: AlignmentEnum.center,
-    fillColors: UpTo6Colors(color1: ColorModel.blue()),
+    fillColors: UpTo6Colors(color1: Colors.blue),
     // Blue
-    borderColors: UpTo6Colors(color1: ColorModel.black()),
+    borderColors: UpTo6Colors(color1: Colors.black),
     // Black
     borderThickness: 2.0,
     borderRadius: 12.0,
@@ -157,9 +135,7 @@ bool test_GenericSingleChildNode() {
   // 2. Act: Serialize the node to a JSON map and then deserialize it back.
   final originalJson = originalCSP.toJson();
   final originalMap = originalCSP.toMap();
-  final decodedContainerNode = NamedSCMapper.fromJson(
-    originalJson,
-  );
+  final decodedContainerNode = NamedSCMapper.fromJson(originalJson);
   final decodedJson = decodedContainerNode.toJson();
 
   // 3. Assert: Check if the decoded node is identical to the original.
@@ -173,17 +149,12 @@ bool test_GenericSingleChildNode() {
 
 bool test_GenericMultiChildNode() {
   // 1. Arrange: Create a complex node structure.
-  final originalCSP = NamedMC(
-    propertyName: 'actions',
-    children: [],
-  );
+  final originalCSP = NamedMC(propertyName: 'actions', children: []);
 
   // 2. Act: Serialize the node to a JSON map and then deserialize it back.
   final originalJson = originalCSP.toJson();
   final originalMap = originalCSP.toMap();
-  final decodedContainerNode = NamedMCMapper.fromJson(
-    originalJson,
-  );
+  final decodedContainerNode = NamedMCMapper.fromJson(originalJson);
   final decodedJson = decodedContainerNode.toJson();
 
   // 3. Assert: Check if the decoded node is identical to the original.
@@ -197,16 +168,12 @@ bool test_GenericMultiChildNode() {
 
 bool test_NamedPreferredSizeSC() {
   // 1. Arrange: Create a complex node structure.
-  final original = NamedPS(
-    propertyName: 'actions',
-    child: PlaceholderNode(),
-  );
+  final original = NamedPS(propertyName: 'actions', child: PlaceholderNode());
 
   // 2. Act: Serialize the node to a JSON map and then deserialize it back.
   final originalJson = original.toJson();
   final originalMap = original.toMap();
-  final decodedContainerNode =
-      NamedPSMapper.fromJson(originalJson);
+  final decodedContainerNode = NamedPSMapper.fromJson(originalJson);
   final decodedJson = decodedContainerNode.toJson();
 
   // 3. Assert: Check if the decoded node is identical to the original.
@@ -222,7 +189,7 @@ bool test_AppBarNode() {
   // 1. Arrange: Create a complex node structure.
   final original = AppBarNode(
     // tabBarName: uniqueTabBarName,
-    bgColor: ColorModel.grey(),
+    bgColor: Colors.grey,
     title: NamedSC(
       propertyName: 'title',
       child: TextNode(text: 'my title', tsPropGroup: TextStyleProperties()),
@@ -260,12 +227,12 @@ bool test_AppBarNode() {
 bool test_ScaffoldNode() {
   // 1. Arrange: Create a complex node structure.
   final originalScaffold = ScaffoldNode(
-    bgColor: ColorModel.grey(),
+    bgColor: Colors.grey,
     appBar: NamedPS(
       propertyName: 'appBar',
       child: AppBarNode(
         // tabBarName: uniqueTabBarName,
-        bgColor: ColorModel.grey(),
+        bgColor: Colors.grey,
         title: NamedSC(
           propertyName: 'title',
           child: TextNode(text: 'my title', tsPropGroup: TextStyleProperties()),

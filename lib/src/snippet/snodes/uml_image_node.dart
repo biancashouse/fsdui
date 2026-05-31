@@ -58,7 +58,7 @@ flowchart LR
   ''';
 
 @MappableClass()
-class UMLImageNode extends CL with UMLImageNodeMappable {
+class UMLImageNode extends SNode with UMLImageNodeMappable {
   String? diagramText;
   double? width;
   double? height;
@@ -104,7 +104,6 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
       decimalValue: scale,
       onDoubleChange: (newValue) =>
           refreshWithUpdate(context, () => scale = newValue ?? 1.0),
-      calloutButtonSize: const Size(80, 20),
     ),
     EnumPNode<BoxFitEnum?>(
       snode: this,

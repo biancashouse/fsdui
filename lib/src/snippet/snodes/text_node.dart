@@ -23,7 +23,7 @@ part 'text_node.mapper.dart';
 // }
 
 @MappableClass()
-class TextNode extends CL with TextNodeMappable {
+class TextNode extends SNode with TextNodeMappable {
   String text;
   String? webLink;
   @MappableField(hook: TextStyleHook1())

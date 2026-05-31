@@ -13,12 +13,15 @@ import 'package:fsdui/src/snippet/pnodes/text_style_pnodes.dart';
 part 'tabbar_node.mapper.dart';
 
 @MappableClass()
-class TabBarNode extends MC with TabBarNodeMappable {
-  ColorModel? bgColor;
+class TabBarNode extends SNode with MC, TabBarNodeMappable {
+  @override
+  List<SNode> children;
+
+  Color? bgColor;
   TextStyleProperties labelTSPropGroup;
-  ColorModel? selectedLabelColor;
-  ColorModel? unselectedLabelColor;
-  ColorModel? indicatorColor;
+  Color? selectedLabelColor;
+  Color? unselectedLabelColor;
+  Color? indicatorColor;
   double? indicatorWeight;
   int? selection;
 
@@ -31,8 +34,11 @@ class TabBarNode extends MC with TabBarNodeMappable {
     this.indicatorColor,
     this.indicatorWeight = 2.0,
     this.selection,
-    required super.children,
+    required this.children,
   });
+
+  @override
+  List<SNode>? get ownChildren => children;
 
   ///  - TabBarNode.tabC is now a getter/setter backed by tabCNotifier (ValueNotifier<TabController?>). All existing call sites
   //   (tabC?.index, tabC?.dispose, etc.) work identically — they see the same TabController? value.
@@ -81,7 +87,6 @@ class TabBarNode extends MC with TabBarNodeMappable {
             color: bgColor,
             onColorChange: (newValue) =>
                 refreshWithUpdate(context, () => bgColor = newValue),
-            calloutButtonSize: const Size(160, 20),
           ),
           ColorPNode(
             snode: this,
@@ -89,7 +94,6 @@ class TabBarNode extends MC with TabBarNodeMappable {
             color: selectedLabelColor,
             onColorChange: (newValue) =>
                 refreshWithUpdate(context, () => selectedLabelColor = newValue),
-            calloutButtonSize: const Size(160, 20),
           ),
           ColorPNode(
             snode: this,
@@ -99,7 +103,6 @@ class TabBarNode extends MC with TabBarNodeMappable {
               context,
               () => unselectedLabelColor = newValue,
             ),
-            calloutButtonSize: const Size(180, 20),
           ),
         ],
       ),
@@ -142,7 +145,6 @@ class TabBarNode extends MC with TabBarNodeMappable {
         onDoubleChange: (newValue) => refreshWithUpdate(context, () {
           if (newValue != indicatorWeight) indicatorWeight = newValue;
         }),
-        calloutButtonSize: const Size(130, 20),
       ),
       FlutterDocPNode(
         buttonLabel: 'TabBar',
@@ -179,7 +181,7 @@ class TabBarNode extends MC with TabBarNodeMappable {
     return PreferredSize(
       preferredSize: const Size.fromHeight(100), //tabBar.preferredSize,
       child: Container(
-        color: bgColor?.flutterValue ?? Colors.grey,
+        color: bgColor ?? Colors.grey,
         child: TabBarWidget(
           node: this,
           parentNode: parentNode,
@@ -253,7 +255,7 @@ class TabBarWidget extends StatefulWidget {
   final TabBarNode node;
   final SNode? parentNode;
 
-  const TabBarWidget({
+  const TabBarWidget({super.key, 
     required this.node,
     this.parentNode,
   });
@@ -344,11 +346,11 @@ class TabBarWidgetState extends State<TabBarWidget>
       key: widget.node.createNodeWidgetGK(),
       controller: _tabC,
       tabs: tabs,
-      labelColor: widget.node.selectedLabelColor?.flutterValue,
-      unselectedLabelColor: widget.node.unselectedLabelColor?.flutterValue,
+      labelColor: widget.node.selectedLabelColor,
+      unselectedLabelColor: widget.node.unselectedLabelColor,
       labelPadding: EdgeInsets.all(10),
       labelStyle: widget.node.labelTSPropGroup.toTextStyle(context),
-      indicatorColor: widget.node.indicatorColor?.flutterValue,
+      indicatorColor: widget.node.indicatorColor,
       indicatorWeight: widget.node.indicatorWeight ?? 2.0,
       indicator: BoxDecoration(
         border: Border.all(color: Colors.white, width: 2),

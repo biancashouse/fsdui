@@ -16,12 +16,7 @@ class Page_RowOf2Containers extends StatelessWidget {
               // panelName: 'panel1',
               initialValue: PaddingNode(
                 name: 'container-5',
-                padding: EdgeInsetsValue(
-                  top: 30,
-                  left: 30,
-                  bottom: 30,
-                  right: 30,
-                ),
+                padding: EdgeInsets.all(30),
                 child: ContainerNode(csPropGroup: ContainerStyleProperties()),
               ),
             ),

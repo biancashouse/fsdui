@@ -1,13 +1,12 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:fsdui/fsdui.dart';
 
 part 'border_side_properties.mapper.dart';
 
 @MappableClass()
 class BorderSideProperties with BorderSidePropertiesMappable {
   double? width;
-  ColorModel? color;
+  Color? color;
 
   BorderSideProperties({
     this.width,
@@ -17,7 +16,7 @@ class BorderSideProperties with BorderSidePropertiesMappable {
   BorderSide toBorderSide() {
     return BorderSide(
       width: width ?? 1.0,
-      color: color?.flutterValue ?? Colors.black,
+      color: color ?? Colors.black,
     );
   }
 

@@ -1,25 +1,29 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
-import 'package:fsdui/src/snippet/pnodes/edge_insets_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/edgeinsets_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/enum_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'singlechildscrollview_node.mapper.dart';
 
 @MappableClass()
-class SingleChildScrollViewNode extends SC
-    with SingleChildScrollViewNodeMappable {
+class SingleChildScrollViewNode extends SNode with SC, SingleChildScrollViewNodeMappable {
+  @override
+  SNode? child;
+
+  @override
+  bool canAppendAChild() => child == null;
   AxisEnum? scrollDirection;
 
-  EdgeInsetsValue? padding;
+  EdgeInsets? padding;
 
   SingleChildScrollViewNode({
     super.name,
     this.scrollDirection,
     this.padding,
       // if not supplied, creates its own named scroll controller
-    super.child,
+    this.child,
   });
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -44,7 +48,7 @@ class SingleChildScrollViewNode extends SC
         EdgeInsetsPNode(
           snode: this,
           name: 'padding',
-          eiValue: padding,
+          ei: padding,
           onEIChangedF: (newValue) =>
               refreshWithUpdate(context, () => padding = newValue),
         ),
@@ -77,7 +81,7 @@ class SingleChildScrollViewNode extends SC
         // ScrollController? scrollController = scrollableState?.position.scrollController;
         // controller: sc,
         // key: targetGK,
-        padding: padding?.toEdgeInsets(),
+        padding: padding,
         child: child?.build(context, this),
       );
     } catch (e) {
@@ -94,7 +98,7 @@ class SingleChildScrollViewNode extends SC
   // @override
   // String toSource(BuildContext context) {
   //   // return '''SingleChildScrollView(
-  //   //       padding: padding?.toEdgeInsets(),
+  //   //       padding: padding,
   //   //     child: ${child?.toSource(context)},
   //   //   )''';
   // }

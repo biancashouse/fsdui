@@ -6,7 +6,7 @@ class DecimalPNode extends PNode {
   double? decimalValue;
   final ValueChanged<double?> onDoubleChange;
   final bool viaButton;
-  final Size calloutButtonSize;
+  final calloutButtonSize = const Size(140, 30);
 
   // final Size calloutSize;
 
@@ -16,7 +16,6 @@ class DecimalPNode extends PNode {
     required this.decimalValue,
     required this.onDoubleChange,
     this.viaButton = false,
-    required this.calloutButtonSize,
     // required this.calloutSize,
     required super.name,
     required super.snode,

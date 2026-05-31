@@ -6,14 +6,18 @@ import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 part 'named_preferredsize_single_child_node.mapper.dart';
 
 @MappableClass()
-class NamedPS extends SC
-    with NamedPSMappable {
+class NamedPS extends SNode with SC, NamedPSMappable {
+  @override
+  SNode? child;
+
+  @override
+  bool canAppendAChild() => child == null;
   String propertyName;
 
   NamedPS({
     super.name,
     required this.propertyName,
-    super.child,
+    this.child,
   });
 
   @override

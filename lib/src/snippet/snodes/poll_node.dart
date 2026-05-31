@@ -13,7 +13,10 @@ part 'poll_node.mapper.dart';
 
 // poll must always have first child richtext as the title
 @MappableClass()
-class PollNode extends MC with PollNodeMappable {
+class PollNode extends SNode with MC, PollNodeMappable {
+  @override
+  List<SNode> children;
+
   String pollName;
   String title;
   int? startDate;
@@ -31,8 +34,11 @@ class PollNode extends MC with PollNodeMappable {
     this.createdBy,
     this.voterPool = const [],
     this.locked = false,
-    required super.children,
+    required this.children,
   });
+
+  @override
+  List<SNode>? get ownChildren => children;
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [

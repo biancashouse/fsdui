@@ -1,8 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// dart format off
 // ignore_for_file: type=lint
-// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -15,7 +13,7 @@ class WrapNodeMapper extends SubClassMapperBase<WrapNode> {
   static WrapNodeMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = WrapNodeMapper._());
-      MCMapper.ensureInitialized().addSubMapper(_instance!);
+      SNodeMapper.ensureInitialized().addSubMapper(_instance!);
       AxisEnumMapper.ensureInitialized();
       WrapAlignmentEnumModelMapper.ensureInitialized();
       WrapCrossAlignmentEnumModelMapper.ensureInitialized();
@@ -28,84 +26,49 @@ class WrapNodeMapper extends SubClassMapperBase<WrapNode> {
   final String id = 'WrapNode';
 
   static String? _$name(WrapNode v) => v.name;
-  static const Field<WrapNode, String> _f$name = Field(
-    'name',
-    _$name,
-    opt: true,
-  );
+  static const Field<WrapNode, String> _f$name =
+      Field('name', _$name, opt: true);
   static AxisEnum? _$direction(WrapNode v) => v.direction;
-  static const Field<WrapNode, AxisEnum> _f$direction = Field(
-    'direction',
-    _$direction,
-    opt: true,
-    def: AxisEnum.horizontal,
-  );
+  static const Field<WrapNode, AxisEnum> _f$direction =
+      Field('direction', _$direction, opt: true, def: AxisEnum.horizontal);
   static double? _$spacing(WrapNode v) => v.spacing;
-  static const Field<WrapNode, double> _f$spacing = Field(
-    'spacing',
-    _$spacing,
-    opt: true,
-  );
+  static const Field<WrapNode, double> _f$spacing =
+      Field('spacing', _$spacing, opt: true);
   static double? _$runSpacing(WrapNode v) => v.runSpacing;
-  static const Field<WrapNode, double> _f$runSpacing = Field(
-    'runSpacing',
-    _$runSpacing,
-    opt: true,
-  );
+  static const Field<WrapNode, double> _f$runSpacing =
+      Field('runSpacing', _$runSpacing, opt: true);
   static WrapAlignmentEnumModel? _$alignment(WrapNode v) => v.alignment;
-  static const Field<WrapNode, WrapAlignmentEnumModel> _f$alignment = Field(
-    'alignment',
-    _$alignment,
-    opt: true,
-  );
+  static const Field<WrapNode, WrapAlignmentEnumModel> _f$alignment =
+      Field('alignment', _$alignment, opt: true);
   static WrapAlignmentEnumModel? _$runAlignment(WrapNode v) => v.runAlignment;
-  static const Field<WrapNode, WrapAlignmentEnumModel> _f$runAlignment = Field(
-    'runAlignment',
-    _$runAlignment,
-    opt: true,
-  );
+  static const Field<WrapNode, WrapAlignmentEnumModel> _f$runAlignment =
+      Field('runAlignment', _$runAlignment, opt: true);
   static WrapCrossAlignmentEnumModel? _$crossAxisAlignment(WrapNode v) =>
       v.crossAxisAlignment;
   static const Field<WrapNode, WrapCrossAlignmentEnumModel>
-  _f$crossAxisAlignment = Field(
-    'crossAxisAlignment',
-    _$crossAxisAlignment,
-    opt: true,
-  );
+      _f$crossAxisAlignment =
+      Field('crossAxisAlignment', _$crossAxisAlignment, opt: true);
   static List<SNode> _$children(WrapNode v) => v.children;
-  static const Field<WrapNode, List<SNode>> _f$children = Field(
-    'children',
-    _$children,
-  );
+  static const Field<WrapNode, List<SNode>> _f$children =
+      Field('children', _$children);
   static String _$uid(WrapNode v) => v.uid;
-  static const Field<WrapNode, String> _f$uid = Field(
-    'uid',
-    _$uid,
-    mode: FieldMode.member,
-  );
+  static const Field<WrapNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static List<String>? _$tags(WrapNode v) => v.tags;
-  static const Field<WrapNode, List<String>> _f$tags = Field(
-    'tags',
-    _$tags,
-    mode: FieldMode.member,
-  );
+  static const Field<WrapNode, List<String>> _f$tags =
+      Field('tags', _$tags, mode: FieldMode.member);
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(WrapNode v) =>
       v.treeNodeGK;
   static const Field<WrapNode, GlobalKey<State<StatefulWidget>>> _f$treeNodeGK =
       Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(WrapNode v) => v.isExpanded;
-  static const Field<WrapNode, bool> _f$isExpanded = Field(
-    'isExpanded',
-    _$isExpanded,
-    mode: FieldMode.member,
-  );
+  static const Field<WrapNode, bool> _f$isExpanded =
+      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(WrapNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<WrapNode, bool> _f$hidePropertiesWhileDragging = Field(
-    'hidePropertiesWhileDragging',
-    _$hidePropertiesWhileDragging,
-    mode: FieldMode.member,
-  );
+      'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
+      mode: FieldMode.member);
   static GlobalKey<State<StatefulWidget>>? _$nodeGK(WrapNode v) => v.nodeGK;
   static const Field<WrapNode, GlobalKey<State<StatefulWidget>>> _f$nodeGK =
       Field('nodeGK', _$nodeGK, mode: FieldMode.member);
@@ -129,29 +92,25 @@ class WrapNodeMapper extends SubClassMapperBase<WrapNode> {
   };
 
   @override
-  final String discriminatorKey = 'DK:mc';
+  final String discriminatorKey = 'DK:snode';
   @override
   final dynamic discriminatorValue = 'WrapNode';
   @override
-  late final ClassMapperBase superMapper = MCMapper.ensureInitialized();
+  late final ClassMapperBase superMapper = SNodeMapper.ensureInitialized();
 
   @override
-  final MappingHook superHook = ChainedHook([
-    PropertyRenameHook('mc', 'DK:mc'),
-    PropertyRenameHook('snode', 'DK:snode'),
-  ]);
+  final MappingHook superHook = const PropertyRenameHook('snode', 'DK:snode');
 
   static WrapNode _instantiate(DecodingData data) {
     return WrapNode(
-      name: data.dec(_f$name),
-      direction: data.dec(_f$direction),
-      spacing: data.dec(_f$spacing),
-      runSpacing: data.dec(_f$runSpacing),
-      alignment: data.dec(_f$alignment),
-      runAlignment: data.dec(_f$runAlignment),
-      crossAxisAlignment: data.dec(_f$crossAxisAlignment),
-      children: data.dec(_f$children),
-    );
+        name: data.dec(_f$name),
+        direction: data.dec(_f$direction),
+        spacing: data.dec(_f$spacing),
+        runSpacing: data.dec(_f$runSpacing),
+        alignment: data.dec(_f$alignment),
+        runAlignment: data.dec(_f$runAlignment),
+        crossAxisAlignment: data.dec(_f$crossAxisAlignment),
+        children: data.dec(_f$children));
   }
 
   @override
@@ -168,23 +127,18 @@ class WrapNodeMapper extends SubClassMapperBase<WrapNode> {
 
 mixin WrapNodeMappable {
   String toJson() {
-    return WrapNodeMapper.ensureInitialized().encodeJson<WrapNode>(
-      this as WrapNode,
-    );
+    return WrapNodeMapper.ensureInitialized()
+        .encodeJson<WrapNode>(this as WrapNode);
   }
 
   Map<String, dynamic> toMap() {
-    return WrapNodeMapper.ensureInitialized().encodeMap<WrapNode>(
-      this as WrapNode,
-    );
+    return WrapNodeMapper.ensureInitialized()
+        .encodeMap<WrapNode>(this as WrapNode);
   }
 
   WrapNodeCopyWith<WrapNode, WrapNode, WrapNode> get copyWith =>
       _WrapNodeCopyWithImpl<WrapNode, WrapNode>(
-        this as WrapNode,
-        $identity,
-        $identity,
-      );
+          this as WrapNode, $identity, $identity);
   @override
   String toString() {
     return WrapNodeMapper.ensureInitialized().stringifyValue(this as WrapNode);
@@ -192,10 +146,8 @@ mixin WrapNodeMappable {
 
   @override
   bool operator ==(Object other) {
-    return WrapNodeMapper.ensureInitialized().equalsValue(
-      this as WrapNode,
-      other,
-    );
+    return WrapNodeMapper.ensureInitialized()
+        .equalsValue(this as WrapNode, other);
   }
 
   @override
@@ -210,20 +162,18 @@ extension WrapNodeValueCopy<$R, $Out> on ObjectCopyWith<$R, WrapNode, $Out> {
 }
 
 abstract class WrapNodeCopyWith<$R, $In extends WrapNode, $Out>
-    implements MCCopyWith<$R, $In, $Out> {
-  @override
+    implements SNodeCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
-  $R call({
-    String? name,
-    AxisEnum? direction,
-    double? spacing,
-    double? runSpacing,
-    WrapAlignmentEnumModel? alignment,
-    WrapAlignmentEnumModel? runAlignment,
-    WrapCrossAlignmentEnumModel? crossAxisAlignment,
-    List<SNode>? children,
-  });
+  $R call(
+      {String? name,
+      AxisEnum? direction,
+      double? spacing,
+      double? runSpacing,
+      WrapAlignmentEnumModel? alignment,
+      WrapAlignmentEnumModel? runAlignment,
+      WrapCrossAlignmentEnumModel? crossAxisAlignment,
+      List<SNode>? children});
   WrapNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -237,51 +187,43 @@ class _WrapNodeCopyWithImpl<$R, $Out>
       WrapNodeMapper.ensureInitialized();
   @override
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children =>
-      ListCopyWith(
-        $value.children,
-        (v, t) => v.copyWith.$chain(t),
-        (v) => call(children: v),
-      );
+      ListCopyWith($value.children, (v, t) => v.copyWith.$chain(t),
+          (v) => call(children: v));
   @override
-  $R call({
-    Object? name = $none,
-    Object? direction = $none,
-    Object? spacing = $none,
-    Object? runSpacing = $none,
-    Object? alignment = $none,
-    Object? runAlignment = $none,
-    Object? crossAxisAlignment = $none,
-    List<SNode>? children,
-  }) => $apply(
-    FieldCopyWithData({
-      if (name != $none) #name: name,
-      if (direction != $none) #direction: direction,
-      if (spacing != $none) #spacing: spacing,
-      if (runSpacing != $none) #runSpacing: runSpacing,
-      if (alignment != $none) #alignment: alignment,
-      if (runAlignment != $none) #runAlignment: runAlignment,
-      if (crossAxisAlignment != $none) #crossAxisAlignment: crossAxisAlignment,
-      if (children != null) #children: children,
-    }),
-  );
+  $R call(
+          {Object? name = $none,
+          Object? direction = $none,
+          Object? spacing = $none,
+          Object? runSpacing = $none,
+          Object? alignment = $none,
+          Object? runAlignment = $none,
+          Object? crossAxisAlignment = $none,
+          List<SNode>? children}) =>
+      $apply(FieldCopyWithData({
+        if (name != $none) #name: name,
+        if (direction != $none) #direction: direction,
+        if (spacing != $none) #spacing: spacing,
+        if (runSpacing != $none) #runSpacing: runSpacing,
+        if (alignment != $none) #alignment: alignment,
+        if (runAlignment != $none) #runAlignment: runAlignment,
+        if (crossAxisAlignment != $none)
+          #crossAxisAlignment: crossAxisAlignment,
+        if (children != null) #children: children
+      }));
   @override
   WrapNode $make(CopyWithData data) => WrapNode(
-    name: data.get(#name, or: $value.name),
-    direction: data.get(#direction, or: $value.direction),
-    spacing: data.get(#spacing, or: $value.spacing),
-    runSpacing: data.get(#runSpacing, or: $value.runSpacing),
-    alignment: data.get(#alignment, or: $value.alignment),
-    runAlignment: data.get(#runAlignment, or: $value.runAlignment),
-    crossAxisAlignment: data.get(
-      #crossAxisAlignment,
-      or: $value.crossAxisAlignment,
-    ),
-    children: data.get(#children, or: $value.children),
-  );
+      name: data.get(#name, or: $value.name),
+      direction: data.get(#direction, or: $value.direction),
+      spacing: data.get(#spacing, or: $value.spacing),
+      runSpacing: data.get(#runSpacing, or: $value.runSpacing),
+      alignment: data.get(#alignment, or: $value.alignment),
+      runAlignment: data.get(#runAlignment, or: $value.runAlignment),
+      crossAxisAlignment:
+          data.get(#crossAxisAlignment, or: $value.crossAxisAlignment),
+      children: data.get(#children, or: $value.children));
 
   @override
   WrapNodeCopyWith<$R2, WrapNode, $Out2> $chain<$R2, $Out2>(
-    Then<$Out2, $R2> t,
-  ) => _WrapNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+          Then<$Out2, $R2> t) =>
+      _WrapNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
-

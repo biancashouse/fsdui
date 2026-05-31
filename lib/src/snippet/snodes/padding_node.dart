@@ -3,25 +3,31 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
-import 'package:fsdui/src/snippet/pnodes/edge_insets_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/edgeinsets_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'padding_node.mapper.dart';
 
 @MappableClass()
-class PaddingNode extends SC with PaddingNodeMappable {
-  EdgeInsetsValue? padding;
+class PaddingNode extends SNode with SC, PaddingNodeMappable {
+  EdgeInsets? padding;
 
-  PaddingNode({super.name, this.padding, super.child});
+  @override
+  SNode? child;
+
+  @override
+  bool canAppendAChild() => child == null;
+
+  PaddingNode({super.name, this.padding, this.child});
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
     EdgeInsetsPNode(
       snode: this,
       name: 'padding',
-      eiValue: padding ?? EdgeInsetsValue(),
-      onEIChangedF: (newValue) =>
-          refreshWithUpdate(context, () => padding = newValue),
+      ei: padding,
+      onEIChangedF: (newEI) =>
+          refreshWithUpdate(context, () => padding = newEI),
     ),
     FlutterDocPNode(
       buttonLabel: 'EdgeInsets',
@@ -45,7 +51,7 @@ class PaddingNode extends SC with PaddingNodeMappable {
     //possiblyHighlightSelectedNode(scName);
     return Padding(
       key: createNodeWidgetGK(),
-      padding: padding?.toEdgeInsets() ?? const EdgeInsets.all(8),
+      padding: padding ?? const EdgeInsets.all(8),
       child: child?.build(context, this),
     );
   }

@@ -12,15 +12,21 @@ import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
 part 'stepper_node.mapper.dart';
 
 @MappableClass()
-class StepperNode extends MC with StepperNodeMappable {
+class StepperNode extends SNode with MC, StepperNodeMappable {
+  @override
+  List<SNode> children;
+
   StepperTypeEnum type;
   // String? name; // required iot allocate snippet names to step widgets (title, subtitle and content)
 
   StepperNode({
     this.type = StepperTypeEnum.vertical,
     super.name,
-    required super.children, // can only be StepNodes
+    required this.children, // can only be StepNodes
   });
+
+  @override
+  List<SNode>? get ownChildren => children;
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [

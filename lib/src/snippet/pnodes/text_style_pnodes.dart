@@ -62,7 +62,6 @@ class TextStyleWithoutColorPNode /*Group*/ extends PNode /*Group*/ {
           textStyleProperties.fontSize = newValue;
           onGroupChange.call(textStyleProperties, true);
         },
-        calloutButtonSize: const Size(96, 30),
       ),
       EnumPNode<Material3TextSizeEnum?>(
         snode: super.snode,
@@ -99,7 +98,6 @@ class TextStyleWithoutColorPNode /*Group*/ extends PNode /*Group*/ {
           textStyleProperties.lineHeight = newValue;
           onGroupChange.call(textStyleProperties, true);
         },
-        calloutButtonSize: const Size(120, 30),
       ),
       DecimalPNode(
         snode: super.snode,
@@ -109,7 +107,6 @@ class TextStyleWithoutColorPNode /*Group*/ extends PNode /*Group*/ {
           textStyleProperties.letterSpacing = newValue;
           onGroupChange.call(textStyleProperties, true);
         },
-        calloutButtonSize: const Size(140, 30),
       ),
       TextStyleSavePNode(
         snode: super.snode,

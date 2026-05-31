@@ -60,25 +60,20 @@ class CalloutConfig implements TickerProvider {
   @JsonKey(includeFromJson: false, includeToJson: false)
   ScrollConfig? scrollConfig;
 
-  double scrollOffsetX() =>
-      scrollConfig?.direction == Axis.horizontal
-          ? scrollConfig!.controller?.offset ?? 0.0
-          : 0.0;
+  double scrollOffsetX() => scrollConfig?.direction == Axis.horizontal
+      ? scrollConfig!.controller?.offset??0.0
+      : 0.0;
 
-  double scrollOffsetY() =>
-      scrollConfig?.direction == Axis.vertical
-          ? scrollConfig!.controller?.offset ?? 0.0
-          : 0.0;
+  double scrollOffsetY() => scrollConfig?.direction == Axis.vertical
+      ? scrollConfig!.controller?.offset??0.0
+      : 0.0;
 
-  Offset translateOffsetForScroll(Offset offset) =>
-      offset.translate(
-        scrollConfig?.direction == Axis.horizontal
-            ? scrollConfig!.scrollOffset
-            : 0.0,
-        scrollConfig?.direction == Axis.vertical
-            ? scrollConfig!.scrollOffset
-            : 0.0,
-      );
+  Offset translateOffsetForScroll(Offset offset) => offset.translate(
+    scrollConfig?.direction == Axis.horizontal
+        ? scrollConfig!.scrollOffset
+        : 0.0,
+    scrollConfig?.direction == Axis.vertical ? scrollConfig!.scrollOffset : 0.0,
+  );
 
   Rect translateRectForScroll(Rect r) {
     return r.translate(
@@ -230,9 +225,7 @@ class CalloutConfig implements TickerProvider {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   double? _top;
-
   double? get top => _top;
-
   void set top(double? newTop) {
     // if ((newTop??0.0) < 0) {
     //   print('negative top!?');
@@ -320,7 +313,6 @@ class CalloutConfig implements TickerProvider {
   bool _finishedAnimatingSeparation = false;
   bool _animatingTopLeft = false;
   double _separation = 0;
-
   // double _alignmentScale = 1.0;
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -330,13 +322,12 @@ class CalloutConfig implements TickerProvider {
   @JsonKey(includeFromJson: false, includeToJson: false)
   bool preventDrag = false;
 
-  Rectangle cR() =>
-      Rectangle.fromRect(
-        _calloutRect().translate(
-          followScroll ? -scrollOffsetX() : 0.0 + (contentTranslateX ?? 0.0),
-          followScroll ? -scrollOffsetY() : 0.0 + (contentTranslateY ?? 0.0),
-        ),
-      );
+  Rectangle cR() => Rectangle.fromRect(
+    _calloutRect().translate(
+      followScroll ? -scrollOffsetX() : 0.0 + (contentTranslateX ?? 0.0),
+      followScroll ? -scrollOffsetY() : 0.0 + (contentTranslateY ?? 0.0),
+    ),
+  );
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   Timer? removalTimer;
@@ -419,12 +410,10 @@ class CalloutConfig implements TickerProvider {
         (decorationBorderRadius ?? 0.0) > 0.0) {
       decorationShape = DecorationShape.rounded_rectangle();
     }
-    // fillColor = Color.fromColor(
-    //     Colors.white); //FCallouts().FUCHSIA_X.withValues(alpha:.9);
     if (decorationFillColors != null &&
         !(decorationFillColors!.isAGradient()) &&
-        decorationFillColors!.color1 == null) {
-      bubbleOrTargetPointerColor ??= decorationFillColors!.color1;
+        decorationFillColors!.empty()) {
+      bubbleOrTargetPointerColor ??= decorationFillColors!.singleColor;
     }
 
     // assert((dragHandle != null) && (dragHandleHeight != null), 'if using a drag handle, it must have height > 0.0 !');
@@ -938,12 +927,14 @@ class CalloutConfig implements TickerProvider {
   double prevTop = -1;
   double prevLeft = -1;
 
-  Widget _renderCallout(Rect targetRect,
+  Widget _renderCallout(
+      Rect targetRect,
       WidgetBuilder calloutContent,
       VoidCallback rebuildF,
       // Target? configurableTarget,
       bool wrapInPointerInterceptor,
-      bool skipOnScreenCheck,) {
+      bool skipOnScreenCheck,
+      ) {
     // if (_finishedAnimatingSeparation) {
     //   print('prevsep: $prevSeparation');
     // }
@@ -1179,7 +1170,7 @@ class CalloutConfig implements TickerProvider {
           ),
         if (resizeableH && resizeableV)
           leftEdge = DraggableEdge_OP(
-            side: Side.LEFT,
+            side: SideEnum.LEFT,
             thickness: draggableEdgeThickness,
             color: draggableColor!,
             parent: this,
@@ -1187,7 +1178,7 @@ class CalloutConfig implements TickerProvider {
           ),
         if (resizeableH && resizeableV)
           topEdge = DraggableEdge_OP(
-            side: Side.TOP,
+            side: SideEnum.TOP,
             thickness: draggableEdgeThickness,
             color: draggableColor!,
             parent: this,
@@ -1195,7 +1186,7 @@ class CalloutConfig implements TickerProvider {
           ),
         if (resizeableH && resizeableV)
           rightEdge = DraggableEdge_OP(
-            side: Side.RIGHT,
+            side: SideEnum.RIGHT,
             thickness: draggableEdgeThickness,
             color: draggableColor!,
             parent: this,
@@ -1203,7 +1194,7 @@ class CalloutConfig implements TickerProvider {
           ),
         if (resizeableH && resizeableV)
           bottomEdge = DraggableEdge_OP(
-            side: Side.BOTTOM,
+            side: SideEnum.BOTTOM,
             thickness: draggableEdgeThickness,
             color: draggableColor!,
             parent: this,
@@ -1211,7 +1202,7 @@ class CalloutConfig implements TickerProvider {
           ),
         if (resizeableH && !resizeableV)
           leftEdge = DraggableEdge_OP(
-            side: Side.LEFT,
+            side: SideEnum.LEFT,
             thickness: draggableEdgeThickness,
             color: draggableColor!,
             parent: this,
@@ -1219,7 +1210,7 @@ class CalloutConfig implements TickerProvider {
           ),
         if (resizeableH && !resizeableV)
           rightEdge = DraggableEdge_OP(
-            side: Side.RIGHT,
+            side: SideEnum.RIGHT,
             thickness: draggableEdgeThickness,
             color: draggableColor!,
             parent: this,
@@ -1227,7 +1218,7 @@ class CalloutConfig implements TickerProvider {
           ),
         if (resizeableV && !resizeableH)
           topEdge = DraggableEdge_OP(
-            side: Side.TOP,
+            side: SideEnum.TOP,
             thickness: draggableEdgeThickness,
             color: draggableColor!,
             parent: this,
@@ -1235,7 +1226,7 @@ class CalloutConfig implements TickerProvider {
           ),
         if (resizeableV && !resizeableH)
           bottomEdge = DraggableEdge_OP(
-            side: Side.BOTTOM,
+            side: SideEnum.BOTTOM,
             thickness: draggableEdgeThickness,
             color: draggableColor!,
             parent: this,
@@ -1358,11 +1349,13 @@ class CalloutConfig implements TickerProvider {
     return result;
   }
 
-  (double, double) _adjustTopLeftForSeparation(double theSeparation,
+  (double, double) _adjustTopLeftForSeparation(
+      double theSeparation,
       double initialTop,
       double initialLeft,
       Coord initialCE,
-      Offset targetCentre,) {
+      Offset targetCentre,
+      ) {
     // move cE
     Coord cEafter = Coord.changeDistanceBetweenPoints(
       Coord.fromOffset(targetCentre),
@@ -1520,8 +1513,8 @@ class CalloutConfig implements TickerProvider {
           -calloutAlignmentIntersectionLocalPos.dx,
           -calloutAlignmentIntersectionLocalPos.dy,
         );
-        actualTop = calloutTopLeft.dy;
-        actualLeft = calloutTopLeft.dx;
+        actualTop = calloutTopLeft.dy + (followScroll ? scrollOffsetY() : 0.0);
+        actualLeft = calloutTopLeft.dx + (followScroll ? scrollOffsetX() : 0.0);
 
         // if (!skipOnScreenCheck);
       }
@@ -1656,7 +1649,7 @@ class CalloutConfig implements TickerProvider {
 
   void _onDragMove(DragUpdateDetails event) {
     if (preventDrag ||
-        !isDraggable /* || event.localPosition.dy >= (dragHandleHeight ?? 9999) */) {
+        !isDraggable /* || event.localPosition.dy >= (dragHandleHeight ?? 9999) */ ) {
       return;
     }
     rebuild(() {
@@ -1873,45 +1866,44 @@ class CalloutConfig implements TickerProvider {
     }
   }
 
-  Widget _closeButton() =>
-      Positioned(
-        top: closeButtonPos.dy,
-        right: closeButtonPos.dx,
-        child: IconButton(
-          iconSize: 24,
-          icon: Icon(Icons.close, color: closeButtonColor),
-          onPressed: () {
-            onCloseButtonPressF?.call();
-            fca.dismiss(cId);
-            fca.findCallout<OverlayPortalController>(cId)?.hide();
-          },
-        ),
-      );
+  Widget _closeButton() => Positioned(
+    top: closeButtonPos.dy,
+    right: closeButtonPos.dx,
+    child: IconButton(
+      iconSize: 24,
+      icon: Icon(Icons.close, color: closeButtonColor),
+      onPressed: () {
+        onCloseButtonPressF?.call();
+        fca.dismiss(cId);
+        fca.findCallout<OverlayPortalController>(cId)?.hide();
+      },
+    ),
+  );
 
-  Widget _gotitButton() =>
-      Blink(
-        animateColor: false,
-        child: IconButton(
-          tooltip: "got it - don't show again.",
-          iconSize: 36,
-          icon: const Icon(Icons.thumb_up, color: Colors.orangeAccent),
-          onPressed: () {
-            fca.gotit(cId);
-            fca.findCallout<OverlayEntry>(cId)?.remove();
-            fca.findCallout<OverlayPortalController>(cId)?.hide();
-            onGotitPressedF?.call();
-          },
-        ),
-      );
+  Widget _gotitButton() => Blink(
+    animateColor: false,
+    child: IconButton(
+      tooltip: "got it - don't show again.",
+      iconSize: 36,
+      icon: const Icon(Icons.thumb_up, color: Colors.orangeAccent),
+      onPressed: () {
+        fca.gotit(cId);
+        fca.findCallout<OverlayEntry>(cId)?.remove();
+        fca.findCallout<OverlayPortalController>(cId)?.hide();
+        onGotitPressedF?.call();
+      },
+    ),
+  );
 
-  Widget _cpi() =>
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: CircularProgressIndicator(backgroundColor: Colors.white),
-      );
+  Widget _cpi() => Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: CircularProgressIndicator(backgroundColor: Colors.white),
+  );
 
-  Widget _possiblyScrollableContents(Widget contents,
-      wrapWithPointerInterceptor,) {
+  Widget _possiblyScrollableContents(
+      Widget contents,
+      wrapWithPointerInterceptor,
+      ) {
     bool renderingABarrier =
         notToast && barrier != null && barrier!.opacity > 0.0;
 
@@ -2209,13 +2201,12 @@ class CalloutConfig implements TickerProvider {
   //         ),
   //       ));
 
-  Rect _calloutRect() =>
-      Rect.fromLTWH(
-        left ?? 0.0,
-        top ?? 0.0,
-        _calloutW ?? double.infinity,
-        _calloutH ?? double.infinity,
-      );
+  Rect _calloutRect() => Rect.fromLTWH(
+    left ?? 0.0,
+    top ?? 0.0,
+    _calloutW ?? double.infinity,
+    _calloutH ?? double.infinity,
+  );
 
   // Offset _calloutCentre() => _calloutRect().center;
 
@@ -2302,7 +2293,8 @@ class PositionedBoxContent extends StatelessWidget {
   final Widget child;
   final bool wrapWithPointerInterceptor;
 
-  const PositionedBoxContent(this.cc,
+  const PositionedBoxContent(
+      this.cc,
       this.child,
       this.wrapWithPointerInterceptor, {
         super.key,

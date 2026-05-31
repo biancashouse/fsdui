@@ -693,7 +693,7 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
   CommentM? beginComment;
   CommentM? endComment;
 
-  int colorValue = Colors.grey[300]!.value;
+  int colorValue = Colors.grey[300]!.toARGB32();
 
   Color get color => Color(colorValue);
 
@@ -1917,8 +1917,8 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
 //      ..endTxtW = theFlowchartBV.endTxtW
 //      ..endTxtH = theFlowchartBV.endTxtH
       ..colorValue = theFlowchartBV.pageSize == "undefined"
-          ? Colors.white.value
-          : theFlowchartBV.colorValue ?? Colors.grey[300]!.value
+          ? Colors.white.toARGB32()
+          : theFlowchartBV.colorValue ?? Colors.grey[300]!.toARGB32()
       ..showColouredTrueAndFalse =
           theFlowchartBV.showColouredTrueAndFalse ?? false
       ..stepsMap = {}

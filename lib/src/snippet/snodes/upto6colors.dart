@@ -1,27 +1,30 @@
-import 'dart:ui';
+// import 'dart:ui';
+
+import 'dart:ui' show Color;
 
 import 'package:dart_mappable/dart_mappable.dart';
+import 'package:flutter/material.dart' show Colors;
 import 'package:fsdui/fsdui.dart';
 
 part 'upto6colors.mapper.dart';
 
 @MappableClass()
 class UpTo6Colors with UpTo6ColorsMappable {
-  ColorModel? color1;
-  ColorModel? color2;
-  ColorModel? color3;
-  ColorModel? color4;
-  ColorModel? color5;
-  ColorModel? color6;
+  Color? color1;
+  Color? color2;
+  Color? color3;
+  Color? color4;
+  Color? color5;
+  Color? color6;
   bool? isLinear;
 
-  // deprecated
-  double? color1Value;
-  double? color2Value;
-  double? color3Value;
-  double? color4Value;
-  double? color5Value;
-  double? color6Value;
+  // // deprecated
+  // double? color1Value;
+  // double? color2Value;
+  // double? color3Value;
+  // double? color4Value;
+  // double? color5Value;
+  // double? color6Value;
 
   UpTo6Colors({
     this.color1,
@@ -31,32 +34,32 @@ class UpTo6Colors with UpTo6ColorsMappable {
     this.color5,
     this.color6,
 
-    // deprecated: changed from ints to ColorModels
-    this.color1Value,
-    this.color2Value,
-    this.color3Value,
-    this.color4Value,
-    this.color5Value,
-    this.color6Value,
+    // // deprecated: changed from ints to ColorModels
+    // this.color1Value,
+    // this.color2Value,
+    // this.color3Value,
+    // this.color4Value,
+    // this.color5Value,
+    // this.color6Value,
   }) {
-    if (color1Value != null) {
-      color1 = ColorModel.fromColor(Color(color1Value!.toInt()));
-    }
-    if (color2Value != null) {
-      color2 = ColorModel.fromColor(Color(color2Value!.toInt()));
-    }
-    if (color3Value != null) {
-      color3 = ColorModel.fromColor(Color(color3Value!.toInt()));
-    }
-    if (color4Value != null) {
-      color4 = ColorModel.fromColor(Color(color4Value!.toInt()));
-    }
-    if (color5Value != null) {
-      color5 = ColorModel.fromColor(Color(color5Value!.toInt()));
-    }
-    if (color6Value != null) {
-      color6 = ColorModel.fromColor(Color(color6Value!.toInt()));
-    }
+    // if (color1Value != null) {
+    //   color1 = ColorModel.fromColor(Color(color1Value!.toInt()));
+    // }
+    // if (color2Value != null) {
+    //   color2 = ColorModel.fromColor(Color(color2Value!.toInt()));
+    // }
+    // if (color3Value != null) {
+    //   color3 = ColorModel.fromColor(Color(color3Value!.toInt()));
+    // }
+    // if (color4Value != null) {
+    //   color4 = ColorModel.fromColor(Color(color4Value!.toInt()));
+    // }
+    // if (color5Value != null) {
+    //   color5 = ColorModel.fromColor(Color(color5Value!.toInt()));
+    // }
+    // if (color6Value != null) {
+    //   color6 = ColorModel.fromColor(Color(color6Value!.toInt()));
+    // }
   }
 
   bool isAGradient() {
@@ -85,15 +88,15 @@ class UpTo6Colors with UpTo6ColorsMappable {
     ColorOrGradient result;
     if (isAGradient()) {
       result = ColorOrGradient.gradient([
-        if (color1 != null) color1!.flutterValue,
-        if (color2 != null) color2!.flutterValue,
-        if (color3 != null) color3!.flutterValue,
-        if (color4 != null) color4!.flutterValue,
-        if (color5 != null) color5!.flutterValue,
-        if (color6 != null) color6!.flutterValue,
+        ?color1,
+        ?color2,
+        ?color3,
+        ?color4,
+        ?color5,
+        ?color6,
       ], isLinear: !isRadial);
     } else {
-      result = ColorOrGradient.color(color1!.flutterValue);
+      result = ColorOrGradient.color(color1 ?? Colors.black);
     }
     return result;
   }

@@ -11,7 +11,10 @@ import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 part 'stack_node.mapper.dart';
 
 @MappableClass()
-class StackNode extends MC with StackNodeMappable {
+class StackNode extends SNode with MC, StackNodeMappable {
+  @override
+  List<SNode> children;
+
   StackFitEnum fit;
   ClipEnum clipBehavior;
   AlignmentEnum alignment;
@@ -21,8 +24,11 @@ class StackNode extends MC with StackNodeMappable {
     this.fit = StackFitEnum.loose,
     this.clipBehavior = ClipEnum.hardEdge,
     this.alignment = AlignmentEnum.topLeft,
-    required super.children,
+    required this.children,
   });
+
+  @override
+  List<SNode>? get ownChildren => children;
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [

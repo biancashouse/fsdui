@@ -1,8 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// dart format off
 // ignore_for_file: type=lint
-// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -15,8 +13,7 @@ class ScaffoldNodeMapper extends SubClassMapperBase<ScaffoldNode> {
   static ScaffoldNodeMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ScaffoldNodeMapper._());
-      CLMapper.ensureInitialized().addSubMapper(_instance!);
-      ColorModelMapper.ensureInitialized();
+      SNodeMapper.ensureInitialized().addSubMapper(_instance!);
       NamedPSMapper.ensureInitialized();
       NamedSCMapper.ensureInitialized();
     }
@@ -27,61 +24,39 @@ class ScaffoldNodeMapper extends SubClassMapperBase<ScaffoldNode> {
   final String id = 'ScaffoldNode';
 
   static String? _$name(ScaffoldNode v) => v.name;
-  static const Field<ScaffoldNode, String> _f$name = Field(
-    'name',
-    _$name,
-    opt: true,
-  );
-  static ColorModel? _$bgColor(ScaffoldNode v) => v.bgColor;
-  static const Field<ScaffoldNode, ColorModel> _f$bgColor = Field(
-    'bgColor',
-    _$bgColor,
-    opt: true,
-  );
-  static NamedPS _$appBar(ScaffoldNode v) => v.appBar;
-  static const Field<ScaffoldNode, NamedPS> _f$appBar = Field(
-    'appBar',
-    _$appBar,
-    hook: AppBarHook(),
-  );
-  static NamedSC _$body(ScaffoldNode v) => v.body;
-  static const Field<ScaffoldNode, NamedSC> _f$body = Field('body', _$body);
+  static const Field<ScaffoldNode, String> _f$name =
+      Field('name', _$name, opt: true);
+  static Color? _$bgColor(ScaffoldNode v) => v.bgColor;
+  static const Field<ScaffoldNode, Color> _f$bgColor =
+      Field('bgColor', _$bgColor, opt: true);
+  static NamedPS? _$appBar(ScaffoldNode v) => v.appBar;
+  static const Field<ScaffoldNode, NamedPS> _f$appBar =
+      Field('appBar', _$appBar, opt: true);
+  static NamedSC? _$body(ScaffoldNode v) => v.body;
+  static const Field<ScaffoldNode, NamedSC> _f$body =
+      Field('body', _$body, opt: true);
   static bool? _$canShowEditorLoginBtn(ScaffoldNode v) =>
       v.canShowEditorLoginBtn;
-  static const Field<ScaffoldNode, bool> _f$canShowEditorLoginBtn = Field(
-    'canShowEditorLoginBtn',
-    _$canShowEditorLoginBtn,
-    opt: true,
-  );
+  static const Field<ScaffoldNode, bool> _f$canShowEditorLoginBtn =
+      Field('canShowEditorLoginBtn', _$canShowEditorLoginBtn, opt: true);
   static String _$uid(ScaffoldNode v) => v.uid;
-  static const Field<ScaffoldNode, String> _f$uid = Field(
-    'uid',
-    _$uid,
-    mode: FieldMode.member,
-  );
+  static const Field<ScaffoldNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static List<String>? _$tags(ScaffoldNode v) => v.tags;
-  static const Field<ScaffoldNode, List<String>> _f$tags = Field(
-    'tags',
-    _$tags,
-    mode: FieldMode.member,
-  );
+  static const Field<ScaffoldNode, List<String>> _f$tags =
+      Field('tags', _$tags, mode: FieldMode.member);
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(ScaffoldNode v) =>
       v.treeNodeGK;
   static const Field<ScaffoldNode, GlobalKey<State<StatefulWidget>>>
-  _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
+      _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(ScaffoldNode v) => v.isExpanded;
-  static const Field<ScaffoldNode, bool> _f$isExpanded = Field(
-    'isExpanded',
-    _$isExpanded,
-    mode: FieldMode.member,
-  );
+  static const Field<ScaffoldNode, bool> _f$isExpanded =
+      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(ScaffoldNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<ScaffoldNode, bool> _f$hidePropertiesWhileDragging = Field(
-    'hidePropertiesWhileDragging',
-    _$hidePropertiesWhileDragging,
-    mode: FieldMode.member,
-  );
+      'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
+      mode: FieldMode.member);
   static GlobalKey<State<StatefulWidget>>? _$nodeGK(ScaffoldNode v) => v.nodeGK;
   static const Field<ScaffoldNode, GlobalKey<State<StatefulWidget>>> _f$nodeGK =
       Field('nodeGK', _$nodeGK, mode: FieldMode.member);
@@ -102,26 +77,22 @@ class ScaffoldNodeMapper extends SubClassMapperBase<ScaffoldNode> {
   };
 
   @override
-  final String discriminatorKey = 'DK:cl';
+  final String discriminatorKey = 'DK:snode';
   @override
   final dynamic discriminatorValue = 'ScaffoldNode';
   @override
-  late final ClassMapperBase superMapper = CLMapper.ensureInitialized();
+  late final ClassMapperBase superMapper = SNodeMapper.ensureInitialized();
 
   @override
-  final MappingHook superHook = ChainedHook([
-    PropertyRenameHook('cl', 'DK:cl'),
-    PropertyRenameHook('snode', 'DK:snode'),
-  ]);
+  final MappingHook superHook = const PropertyRenameHook('snode', 'DK:snode');
 
   static ScaffoldNode _instantiate(DecodingData data) {
     return ScaffoldNode(
-      name: data.dec(_f$name),
-      bgColor: data.dec(_f$bgColor),
-      appBar: data.dec(_f$appBar),
-      body: data.dec(_f$body),
-      canShowEditorLoginBtn: data.dec(_f$canShowEditorLoginBtn),
-    );
+        name: data.dec(_f$name),
+        bgColor: data.dec(_f$bgColor),
+        appBar: data.dec(_f$appBar),
+        body: data.dec(_f$body),
+        canShowEditorLoginBtn: data.dec(_f$canShowEditorLoginBtn));
   }
 
   @override
@@ -138,43 +109,34 @@ class ScaffoldNodeMapper extends SubClassMapperBase<ScaffoldNode> {
 
 mixin ScaffoldNodeMappable {
   String toJson() {
-    return ScaffoldNodeMapper.ensureInitialized().encodeJson<ScaffoldNode>(
-      this as ScaffoldNode,
-    );
+    return ScaffoldNodeMapper.ensureInitialized()
+        .encodeJson<ScaffoldNode>(this as ScaffoldNode);
   }
 
   Map<String, dynamic> toMap() {
-    return ScaffoldNodeMapper.ensureInitialized().encodeMap<ScaffoldNode>(
-      this as ScaffoldNode,
-    );
+    return ScaffoldNodeMapper.ensureInitialized()
+        .encodeMap<ScaffoldNode>(this as ScaffoldNode);
   }
 
   ScaffoldNodeCopyWith<ScaffoldNode, ScaffoldNode, ScaffoldNode> get copyWith =>
       _ScaffoldNodeCopyWithImpl<ScaffoldNode, ScaffoldNode>(
-        this as ScaffoldNode,
-        $identity,
-        $identity,
-      );
+          this as ScaffoldNode, $identity, $identity);
   @override
   String toString() {
-    return ScaffoldNodeMapper.ensureInitialized().stringifyValue(
-      this as ScaffoldNode,
-    );
+    return ScaffoldNodeMapper.ensureInitialized()
+        .stringifyValue(this as ScaffoldNode);
   }
 
   @override
   bool operator ==(Object other) {
-    return ScaffoldNodeMapper.ensureInitialized().equalsValue(
-      this as ScaffoldNode,
-      other,
-    );
+    return ScaffoldNodeMapper.ensureInitialized()
+        .equalsValue(this as ScaffoldNode, other);
   }
 
   @override
   int get hashCode {
-    return ScaffoldNodeMapper.ensureInitialized().hashValue(
-      this as ScaffoldNode,
-    );
+    return ScaffoldNodeMapper.ensureInitialized()
+        .hashValue(this as ScaffoldNode);
   }
 }
 
@@ -185,18 +147,16 @@ extension ScaffoldNodeValueCopy<$R, $Out>
 }
 
 abstract class ScaffoldNodeCopyWith<$R, $In extends ScaffoldNode, $Out>
-    implements CLCopyWith<$R, $In, $Out> {
-  ColorModelCopyWith<$R, ColorModel, ColorModel>? get bgColor;
-  NamedPSCopyWith<$R, NamedPS, NamedPS> get appBar;
-  NamedSCCopyWith<$R, NamedSC, NamedSC> get body;
+    implements SNodeCopyWith<$R, $In, $Out> {
+  NamedPSCopyWith<$R, NamedPS, NamedPS>? get appBar;
+  NamedSCCopyWith<$R, NamedSC, NamedSC>? get body;
   @override
-  $R call({
-    String? name,
-    ColorModel? bgColor,
-    NamedPS? appBar,
-    NamedSC? body,
-    bool? canShowEditorLoginBtn,
-  });
+  $R call(
+      {String? name,
+      Color? bgColor,
+      NamedPS? appBar,
+      NamedSC? body,
+      bool? canShowEditorLoginBtn});
   ScaffoldNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -209,46 +169,37 @@ class _ScaffoldNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ScaffoldNode> $mapper =
       ScaffoldNodeMapper.ensureInitialized();
   @override
-  ColorModelCopyWith<$R, ColorModel, ColorModel>? get bgColor =>
-      $value.bgColor?.copyWith.$chain((v) => call(bgColor: v));
+  NamedPSCopyWith<$R, NamedPS, NamedPS>? get appBar =>
+      $value.appBar?.copyWith.$chain((v) => call(appBar: v));
   @override
-  NamedPSCopyWith<$R, NamedPS, NamedPS> get appBar =>
-      $value.appBar.copyWith.$chain((v) => call(appBar: v));
+  NamedSCCopyWith<$R, NamedSC, NamedSC>? get body =>
+      $value.body?.copyWith.$chain((v) => call(body: v));
   @override
-  NamedSCCopyWith<$R, NamedSC, NamedSC> get body =>
-      $value.body.copyWith.$chain((v) => call(body: v));
-  @override
-  $R call({
-    Object? name = $none,
-    Object? bgColor = $none,
-    NamedPS? appBar,
-    NamedSC? body,
-    Object? canShowEditorLoginBtn = $none,
-  }) => $apply(
-    FieldCopyWithData({
-      if (name != $none) #name: name,
-      if (bgColor != $none) #bgColor: bgColor,
-      if (appBar != null) #appBar: appBar,
-      if (body != null) #body: body,
-      if (canShowEditorLoginBtn != $none)
-        #canShowEditorLoginBtn: canShowEditorLoginBtn,
-    }),
-  );
+  $R call(
+          {Object? name = $none,
+          Object? bgColor = $none,
+          Object? appBar = $none,
+          Object? body = $none,
+          Object? canShowEditorLoginBtn = $none}) =>
+      $apply(FieldCopyWithData({
+        if (name != $none) #name: name,
+        if (bgColor != $none) #bgColor: bgColor,
+        if (appBar != $none) #appBar: appBar,
+        if (body != $none) #body: body,
+        if (canShowEditorLoginBtn != $none)
+          #canShowEditorLoginBtn: canShowEditorLoginBtn
+      }));
   @override
   ScaffoldNode $make(CopyWithData data) => ScaffoldNode(
-    name: data.get(#name, or: $value.name),
-    bgColor: data.get(#bgColor, or: $value.bgColor),
-    appBar: data.get(#appBar, or: $value.appBar),
-    body: data.get(#body, or: $value.body),
-    canShowEditorLoginBtn: data.get(
-      #canShowEditorLoginBtn,
-      or: $value.canShowEditorLoginBtn,
-    ),
-  );
+      name: data.get(#name, or: $value.name),
+      bgColor: data.get(#bgColor, or: $value.bgColor),
+      appBar: data.get(#appBar, or: $value.appBar),
+      body: data.get(#body, or: $value.body),
+      canShowEditorLoginBtn:
+          data.get(#canShowEditorLoginBtn, or: $value.canShowEditorLoginBtn));
 
   @override
   ScaffoldNodeCopyWith<$R2, ScaffoldNode, $Out2> $chain<$R2, $Out2>(
-    Then<$Out2, $R2> t,
-  ) => _ScaffoldNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+          Then<$Out2, $R2> t) =>
+      _ScaffoldNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
-

@@ -15,12 +15,7 @@ class Page_RowOf2Panels extends StatelessWidget {
             child: SnippetBuilder(
               initialValue: PaddingNode(
                 name: 'panels-demo1-panel1',
-                padding: EdgeInsetsValue(
-                  top: 30,
-                  left: 30,
-                  bottom: 30,
-                  right: 30,
-                ),
+                padding: EdgeInsets.all(30),
                 child: AssetImageNode(assetPath: 'assets/images/flowers.jpg'),
               ),
             ),

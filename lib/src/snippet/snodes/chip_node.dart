@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/pnodes/bool_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/color_pnode.dart';
-import 'package:fsdui/src/snippet/pnodes/edge_insets_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/edgeinsets_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/text_style_pnodes.dart';
@@ -11,13 +11,13 @@ import 'package:fsdui/src/snippet/pnodes/text_style_pnodes.dart';
 part 'chip_node.mapper.dart';
 
 @MappableClass()
-class ChipNode extends CL with ChipNodeMappable {
+class ChipNode extends SNode with ChipNodeMappable {
   String label;
   TextStyleProperties labelTSPropGroup;
-  EdgeInsetsValue? labelPadding;
-  ColorModel? bgColor;
-  ColorModel? disabledColor;
-  ColorModel? selectedColor;
+  EdgeInsets? labelPadding;
+  Color? bgColor;
+  Color? disabledColor;
+  Color? selectedColor;
   bool enabled;
 
   // when populating a panel with a snippet
@@ -97,7 +97,7 @@ class ChipNode extends CL with ChipNodeMappable {
           EdgeInsetsPNode(
             snode: this,
             name: 'labelPadding',
-            eiValue: labelPadding ?? EdgeInsetsValue(),
+            ei: labelPadding,
             onEIChangedF: (newValue) =>
                 refreshWithUpdate(context, () => labelPadding = newValue),
           ),
@@ -110,7 +110,6 @@ class ChipNode extends CL with ChipNodeMappable {
         color: bgColor,
         onColorChange: (newValue) =>
             refreshWithUpdate(context, () => bgColor = newValue),
-        calloutButtonSize: const Size(130, 20),
       ),
       ColorPNode(
         snode: this,
@@ -119,7 +118,6 @@ class ChipNode extends CL with ChipNodeMappable {
         color: disabledColor,
         onColorChange: (newValue) =>
             refreshWithUpdate(context, () => disabledColor = newValue),
-        calloutButtonSize: const Size(130, 20),
       ),
       ColorPNode(
         snode: this,
@@ -128,7 +126,6 @@ class ChipNode extends CL with ChipNodeMappable {
         color: selectedColor,
         onColorChange: (newValue) =>
             refreshWithUpdate(context, () => selectedColor = newValue),
-        calloutButtonSize: const Size(130, 20),
       ),
       BoolPNode(
         snode: this,

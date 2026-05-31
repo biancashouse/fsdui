@@ -29,6 +29,7 @@ bool _fsEqual(dynamic a, dynamic b) {
 Future<void> main({bool useEmulator = false}) async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  fsdui.appId = 'clone-content';
   fsdui.appName = 'clone-content';
 
   var fbOptions = BH_APPS_DefaultFirebaseOptions.currentPlatform;

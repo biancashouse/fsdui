@@ -1,8 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// dart format off
 // ignore_for_file: type=lint
-// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -28,7 +26,10 @@ class AlignmentModelMapper extends ClassMapperBase<AlignmentModel> {
   static const Field<AlignmentModel, double> _f$y = Field('y', _$y);
 
   @override
-  final MappableFields<AlignmentModel> fields = const {#x: _f$x, #y: _f$y};
+  final MappableFields<AlignmentModel> fields = const {
+    #x: _f$x,
+    #y: _f$y,
+  };
 
   static AlignmentModel _instantiate(DecodingData data) {
     return AlignmentModel(data.dec(_f$x), data.dec(_f$y));
@@ -48,43 +49,35 @@ class AlignmentModelMapper extends ClassMapperBase<AlignmentModel> {
 
 mixin AlignmentModelMappable {
   String toJson() {
-    return AlignmentModelMapper.ensureInitialized().encodeJson<AlignmentModel>(
-      this as AlignmentModel,
-    );
+    return AlignmentModelMapper.ensureInitialized()
+        .encodeJson<AlignmentModel>(this as AlignmentModel);
   }
 
   Map<String, dynamic> toMap() {
-    return AlignmentModelMapper.ensureInitialized().encodeMap<AlignmentModel>(
-      this as AlignmentModel,
-    );
+    return AlignmentModelMapper.ensureInitialized()
+        .encodeMap<AlignmentModel>(this as AlignmentModel);
   }
 
   AlignmentModelCopyWith<AlignmentModel, AlignmentModel, AlignmentModel>
-  get copyWith => _AlignmentModelCopyWithImpl<AlignmentModel, AlignmentModel>(
-    this as AlignmentModel,
-    $identity,
-    $identity,
-  );
+      get copyWith =>
+          _AlignmentModelCopyWithImpl<AlignmentModel, AlignmentModel>(
+              this as AlignmentModel, $identity, $identity);
   @override
   String toString() {
-    return AlignmentModelMapper.ensureInitialized().stringifyValue(
-      this as AlignmentModel,
-    );
+    return AlignmentModelMapper.ensureInitialized()
+        .stringifyValue(this as AlignmentModel);
   }
 
   @override
   bool operator ==(Object other) {
-    return AlignmentModelMapper.ensureInitialized().equalsValue(
-      this as AlignmentModel,
-      other,
-    );
+    return AlignmentModelMapper.ensureInitialized()
+        .equalsValue(this as AlignmentModel, other);
   }
 
   @override
   int get hashCode {
-    return AlignmentModelMapper.ensureInitialized().hashValue(
-      this as AlignmentModel,
-    );
+    return AlignmentModelMapper.ensureInitialized()
+        .hashValue(this as AlignmentModel);
   }
 }
 
@@ -98,8 +91,7 @@ abstract class AlignmentModelCopyWith<$R, $In extends AlignmentModel, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   $R call({double? x, double? y});
   AlignmentModelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-    Then<$Out2, $R2> t,
-  );
+      Then<$Out2, $R2> t);
 }
 
 class _AlignmentModelCopyWithImpl<$R, $Out>
@@ -119,7 +111,6 @@ class _AlignmentModelCopyWithImpl<$R, $Out>
 
   @override
   AlignmentModelCopyWith<$R2, AlignmentModel, $Out2> $chain<$R2, $Out2>(
-    Then<$Out2, $R2> t,
-  ) => _AlignmentModelCopyWithImpl<$R2, $Out2>($value, $cast, t);
+          Then<$Out2, $R2> t) =>
+      _AlignmentModelCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
-

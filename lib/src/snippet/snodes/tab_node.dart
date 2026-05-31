@@ -18,10 +18,15 @@ part 'tab_node.mapper.dart';
 // }
 
 @MappableClass()
-class TabNode extends SC with TabNodeMappable {
+class TabNode extends SNode with SC, TabNodeMappable {
+  @override
+  SNode? child;
+
+  @override
+  bool canAppendAChild() => child == null;
   String text;
   Widget? icon;
-  EdgeInsetsValue? iconMargin;
+  EdgeInsets? iconMargin;
   double? height;
 
   TabNode({
@@ -30,7 +35,7 @@ class TabNode extends SC with TabNodeMappable {
     this.icon,
     this.iconMargin,
     this.height,
-    super.child,
+    this.child,
   });
 
   @override
@@ -65,7 +70,7 @@ class TabNode extends SC with TabNodeMappable {
       //     EdgeInsetsPNode(
       //         snode: this,
       //         name: 'margin',
-      //         eiValue: iconMargin,
+      //         ei: iconMargin,
       //         onEIChangedF: (newValue) {
       //           refreshWithUpdate(context, () => iconMargin = newValue);
       //         }),
@@ -88,7 +93,7 @@ class TabNode extends SC with TabNodeMappable {
       key: createNodeWidgetGK(),
       text: text,
       icon: icon,
-      iconMargin: iconMargin?.toEdgeInsets(),
+      iconMargin: iconMargin,
       height: height,
       child: child?.build(context, this),
     );

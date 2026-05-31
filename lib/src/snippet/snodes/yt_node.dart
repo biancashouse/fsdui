@@ -13,7 +13,7 @@ import 'package:pointer_interceptor/pointer_interceptor.dart';
 part 'yt_node.mapper.dart';
 
 @MappableClass()
-class YTNode extends CL with YTNodeMappable {
+class YTNode extends SNode with YTNodeMappable {
   String ytEmbedHtml;
   double scale;
 
@@ -45,7 +45,6 @@ class YTNode extends CL with YTNodeMappable {
       decimalValue: scale,
       onDoubleChange: (newValue) =>
           refreshWithUpdate(context, () => scale = newValue ?? 1.0),
-      calloutButtonSize: const Size(120, 20),
     ),
     FlutterDocPNode(
       buttonLabel: 'IFrame',

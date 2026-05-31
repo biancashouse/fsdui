@@ -14,7 +14,7 @@ import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 part 'rich_text_node.mapper.dart';
 
 @MappableClass()
-class RichTextNode extends CL with RichTextNodeMappable {
+class RichTextNode extends SNode with RichTextNodeMappable {
   TextAlignEnum? textAlign;
   TextDirectionEnum? textDirection;
   bool? softWrap;
@@ -61,7 +61,6 @@ class RichTextNode extends CL with RichTextNodeMappable {
           decimalValue: textScaleFactor,
           onDoubleChange: (newValue) =>
               refreshWithUpdate(context,() => textScaleFactor = newValue),
-          calloutButtonSize: const Size(140, 30),
         ),
         EnumPNode<TextDirectionEnum?>(
           snode: this,

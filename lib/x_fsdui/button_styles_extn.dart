@@ -1,26 +1,27 @@
+import 'package:flutter/material.dart' show Colors;
 import 'package:fsdui/fsdui.dart';
 
 extension ButtonStylesExtension on FSDUI_Mixins {
   Map<ButtonStyleName, ButtonStyleProperties> cannedButtonStyles() => {
     "yellowOnBlack": ButtonStyleProperties(
       tsPropGroup: TextStyleProperties(),
-      fgColor: ColorModel.yellow(),
-      bgColor: ColorModel.black(),
+      fgColor: Colors.yellow,
+      bgColor: Colors.black,
       padding: 10,
       elevation: 6,
     ),
     "blackOnWhite": ButtonStyleProperties(
       tsPropGroup: TextStyleProperties(),
-      fgColor: ColorModel.black(),
-      bgColor: ColorModel.white(),
+      fgColor: Colors.black,
+      bgColor: Colors.white,
       padding: 10,
       elevation: 6,
     ),
   };
 
   ButtonStyleName? findButtonStyleName(AppInfoModel appInfop, ButtonStyleProperties props) {
-    for (ButtonStyleName bsName in appInfo.userButtonStyles.keys) {
-      ButtonStyleProperties namedBSProps = appInfo.userButtonStyles[bsName]!;
+    for (ButtonStyleName bsName in appInfo.buttonStyles.keys) {
+      ButtonStyleProperties namedBSProps = appInfo.buttonStyles[bsName]!;
       if (namedBSProps.bgColor == props.bgColor &&
           namedBSProps.fgColor == props.fgColor &&
           namedBSProps.tsPropGroup == props.tsPropGroup &&

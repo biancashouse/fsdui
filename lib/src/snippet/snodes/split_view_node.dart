@@ -11,7 +11,10 @@ import 'package:multi_split_view/multi_split_view.dart';
 part 'split_view_node.mapper.dart';
 
 @MappableClass()
-class SplitViewNode extends MC with SplitViewNodeMappable {
+class SplitViewNode extends SNode with MC, SplitViewNodeMappable {
+  @override
+  List<SNode> children;
+
   AxisEnum axis;
   bool resizeable;
 
@@ -19,8 +22,11 @@ class SplitViewNode extends MC with SplitViewNodeMappable {
     super.name,
     this.axis = AxisEnum.horizontal,
     this.resizeable = true,
-    required super.children,
+    required this.children,
   });
+
+  @override
+  List<SNode>? get ownChildren => children;
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
@@ -69,7 +75,7 @@ class SplitViewNode extends MC with SplitViewNodeMappable {
 
   @override
   String toSource(BuildContext context) => '''MultiSplitView(
-        children: super.children.map((child) => child.toWidget(context, this)).toList(),
+        children: children.map((child) => child.toWidget(context, this)).toList(),
       );
   ''';
 
@@ -90,8 +96,7 @@ class SplitViewNode extends MC with SplitViewNodeMappable {
               size: 16,
               errorMsg: 'MultiSplitView has infinite constraint!');
         } else {
-          List<Area> areas = super
-              .children
+          List<Area> areas = children
               .map(
                 (child) => Area(builder: (ctx, area) {
                   return child.build(context, this);

@@ -56,19 +56,13 @@ class TargetsWrapper extends StatefulWidget {
         tc.transformScale,
         ta,
         afterTransformF: () {
-          tc.showContentCallout(
-            justPlaying: false,
-            wrapperState: wrapperState,
-          );
+          tc.showContentCallout(justPlaying: false, wrapperState: wrapperState);
           showConfigToolbar(tc, wrapperState);
         },
         quickly: quickly,
       );
     } else {
-      tc.showContentCallout(
-        justPlaying: false,
-        wrapperState: wrapperState,
-      );
+      tc.showContentCallout(justPlaying: false, wrapperState: wrapperState);
       showConfigToolbar(tc, wrapperState);
     }
   }
@@ -87,7 +81,9 @@ class TargetsWrapper extends StatefulWidget {
       decorationBorderRadius: 16,
       animatePointer: false,
       targetPointerType: TargetPointerType.none(),
-      initialCalloutPos: OffsetModel.fromOffset(fsdui.calloutConfigToolbarPos()),
+      initialCalloutPos: OffsetModel.fromOffset(
+        fsdui.calloutConfigToolbarPos(),
+      ),
       onDragEndedF: (newPos) {
         fsdui.setCalloutConfigToolbarPos(newPos);
       },
@@ -215,10 +211,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     if (fsdui.canEditAnyContent()) return;
     for (HotspotTargetModel tc in widget.parentNode.targets) {
       if (!tc.hasABtn() && !fsdui.anyPresent([tc.contentCId])) {
-        tc.showContentCallout(
-          justPlaying: true,
-          wrapperState: this,
-        );
+        tc.showContentCallout(justPlaying: true, wrapperState: this);
       }
     }
   }
@@ -274,7 +267,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     }
   }
 
-   @override
+  @override
   Widget build(BuildContext context) {
     // possibly autoplay callouts
     if (canAutoPlay()) {
@@ -308,9 +301,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
               HotspotTargetModel.DEFAULT_BTN_RADIUS,
             ),
           );
-          foundTc.saveParentSnippet(
-            widget.parentNode.rootNodeOfSnippet(),
-          );
+          foundTc.saveParentSnippet(widget.parentNode.rootNodeOfSnippet());
         } else if (foundTc != null) {
           foundTc.setTargetLocalPosPc(
             this,
@@ -319,9 +310,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
               foundTc.targetRadius(this),
             ),
           );
-          foundTc.saveParentSnippet(
-            widget.parentNode.rootNodeOfSnippet(),
-          );
+          foundTc.saveParentSnippet(widget.parentNode.rootNodeOfSnippet());
         }
       });
     }
@@ -393,7 +382,8 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     return BlocConsumer<CAPIBloC, CAPIState>(
       // autoPlay callouts when just signed out
       listenWhen: (prev, curr) {
-        return prev.isSignedInAsSuperEditor != curr.isSignedInAsSuperEditor && !curr.isSignedInAsSuperEditor;
+        return prev.isSignedInAsSuperEditor != curr.isSignedInAsSuperEditor &&
+            !(curr.isSignedInAsSuperEditor ?? false);
       },
       listener: (context, state) {
         autoPlayTargets();
@@ -560,7 +550,8 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                   child: _childBuild(),
                 );
               },
-              onAcceptWithDetails: fsdui.anyPresent([HotspotTargetConfigToolbar.CID])
+              onAcceptWithDetails:
+                  fsdui.anyPresent([HotspotTargetConfigToolbar.CID])
                   ? null
                   : droppedBtnOrCover,
             ),
@@ -587,9 +578,11 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                 pulsingPointGK != null)
               Positioned(
                     top:
-                        pulsingPointPos!.dy - HotspotTargetModel.DEFAULT_TARGET_RADIUS,
+                        pulsingPointPos!.dy -
+                        HotspotTargetModel.DEFAULT_TARGET_RADIUS,
                     left:
-                        pulsingPointPos!.dx - HotspotTargetModel.DEFAULT_TARGET_RADIUS,
+                        pulsingPointPos!.dx -
+                        HotspotTargetModel.DEFAULT_TARGET_RADIUS,
                     child: TargetCover(
                       // key: pulsingPointGK,
                       HotspotTargetModel(uid: -1),
@@ -609,8 +602,12 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                 pulsingPointPos != null &&
                 pulsingPointGK != null)
               Positioned(
-                top: pulsingPointPos!.dy - HotspotTargetModel.DEFAULT_TARGET_RADIUS,
-                left: pulsingPointPos!.dx - HotspotTargetModel.DEFAULT_TARGET_RADIUS,
+                top:
+                    pulsingPointPos!.dy -
+                    HotspotTargetModel.DEFAULT_TARGET_RADIUS,
+                left:
+                    pulsingPointPos!.dx -
+                    HotspotTargetModel.DEFAULT_TARGET_RADIUS,
                 child: TargetCover(
                   key: pulsingPointGK,
                   HotspotTargetModel(uid: -1),
@@ -648,7 +645,8 @@ class TargetsWrapperState extends State<TargetsWrapper> {
   //   );
   // }
 
-  int _targetIndex(HotspotTargetModel tc) => widget.parentNode.targets.indexOf(tc);
+  int _targetIndex(HotspotTargetModel tc) =>
+      widget.parentNode.targets.indexOf(tc);
 
   Widget _childBuild() {
     final childNode = widget.childNode;

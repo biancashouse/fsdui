@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:dart_mappable/dart_mappable.dart' show MapperContainer;
 import 'package:flutter/foundation.dart';
 
 import 'package:flutter/material.dart';
@@ -9,17 +10,23 @@ import 'package:flutter/services.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import 'url_strategy_stub.dart'
-    if (dart.library.html) 'url_strategy_web.dart';
+import '../../bloc/auth/auth_bloc.dart';
+import '../../mappers/color_mapper.dart';
+import '../../mappers/size_mapper.dart';
+import '../../mappers/edge_insets_mapper.dart';
+import '../../repositories/app_repository.dart';
+import '../../repositories/auth_repository.dart';
+import 'url_strategy_stub.dart' if (dart.library.html) 'url_strategy_web.dart';
 
 // conditional import for webview ------------------
 import 'register_ios_or_android_webview.dart'
-if (dart.library.html) 'register_web_webview.dart';
+    if (dart.library.html) 'register_web_webview.dart';
 
 /// this widget must enclose your MaterialApp, or CupertinoApp or WidgetsApp
 /// so that the CAPIBloc becomes available to overlays, which are placed into
 /// the app's overlay and not in your widget tree as you might have expected.
 class FlutterContentApp extends StatefulWidget {
+  final String appId;
   final String appName;
   final String title;
 
@@ -57,6 +64,7 @@ class FlutterContentApp extends StatefulWidget {
 
   const FlutterContentApp.router({
     super.key,
+    required this.appId,
     required this.appName,
     this.title = '',
     required this.routingConfig,
@@ -75,6 +83,7 @@ class FlutterContentApp extends StatefulWidget {
 
   const FlutterContentApp({
     super.key,
+    required this.appId,
     required this.appName,
     this.title = '',
     this.routingConfig,
@@ -106,6 +115,10 @@ class FlutterContentAppState extends State<FlutterContentApp>
   late Future<CAPIBloC?> fInitApp;
   int tapCount = 0;
   DateTime? lastTapTime;
+
+  // Instantiate repositories once at the top of the tree.
+  final authRepository = AuthRepository();
+  final appRepository = AppRepository();
 
   // YoutubePlayerController? ytController;
 
@@ -146,6 +159,11 @@ class FlutterContentAppState extends State<FlutterContentApp>
     // see conditional imports for web or mobile
     registerWebViewImplementation();
 
+    // dart_mappable globals: color etc gets saved as hex in json
+    MapperContainer.globals.use(ColorMapper());
+    MapperContainer.globals.use(SizeMapper());
+    MapperContainer.globals.use(EdgeInsetsMapper());
+
     fInitApp = _initApp();
   }
 
@@ -160,11 +178,13 @@ class FlutterContentAppState extends State<FlutterContentApp>
   // init FlutterContent, which keeps a single CAPIBloC and multiple SnippetBloCs
   Future<CAPIBloC?> _initApp() async {
     fsdui.capiBloc = await fsdui.createCAPIBloC(
+      appId: widget.appId,
       appName: widget.appName,
       fbOptions: widget.fbOptions,
       useEmulator: widget.useEmulator,
       routingConfig: widget.routingConfig,
       initialRoutePath: widget.initialRoutePath,
+
     );
     widget.onReadyF?.call();
     SNode.hideAllTargetCovers();
@@ -185,73 +205,117 @@ class FlutterContentAppState extends State<FlutterContentApp>
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.hasData) {
-          return BlocProvider<CAPIBloC>(
-            create: (BuildContext context) => snapshot.data!,
-            child: ValueListenableBuilder<ThemeMode>(
-              valueListenable: fsdui.themeModeNotifier,
-              builder: (context, currentMode, child) =>
-              widget.routingConfig != null
-                  ? MaterialApp.router(
-                // following line not valid for router;
-                // instead pass navigatorKey: fco.globalNavigatorKey
-                // to GoRouter.routingConfig()
-                routerConfig: fsdui.router,
-                localizationsDelegates: const [
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  FlutterQuillLocalizations.delegate,
-                ],
-                // theme: ThemeData.light(useMaterial3: true),
-                // darkTheme: ThemeData.dark(useMaterial3: true),
-                // themeMode: ThemeMode.system,
-                themeMode: currentMode,
-                theme: widget.materialAppThemeF(),
-                darkTheme: ThemeData(
-                  brightness: Brightness.light,
-                  primarySwatch: Colors.purple,
-                  // ... other dark theme properties
-                  scaffoldBackgroundColor: Colors.black54,
-                  // Example
-                  textTheme: TextTheme(
-                    bodyMedium: TextStyle(color: Colors.black87),
-                  ),
-                  appBarTheme: AppBarTheme(
-                    backgroundColor: Colors.grey[850],
+          return MultiRepositoryProvider(
+            providers: [
+              RepositoryProvider.value(value: authRepository),
+              RepositoryProvider.value(value: appRepository),
+            ],
+            child: MultiBlocProvider(
+              providers: [
+                // AuthBloc is hydrated – state is restored automatically.
+                BlocProvider(
+                  create: (_) => AuthBloc(
+                    authRepository: authRepository,
+                    appRepository: appRepository,
                   ),
                 ),
-                debugShowCheckedModeBanner: false,
-                title: widget.title,
-                scrollBehavior: const ConstantScrollBehavior(),
-              )
-                  : MaterialApp(
-                navigatorKey: fsdui.globalNavigatorKey,
-                home: widget.home,
-                localizationsDelegates: const [
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  FlutterQuillLocalizations.delegate,
-                ],
-                themeMode: currentMode,
-                theme: widget.materialAppThemeF(),
-                darkTheme: ThemeData(
-                  brightness: Brightness.light,
-                  primarySwatch: Colors.purple,
-                  // ... other dark theme properties
-                  scaffoldBackgroundColor: Colors.black54,
-                  // Example
-                  textTheme: TextTheme(
-                    bodyMedium: TextStyle(color: Colors.black87),
-                  ),
-                  appBarTheme: AppBarTheme(
-                    backgroundColor: Colors.grey[850],
-                  ),
+                // CAPIBloc is also hydrated
+                BlocProvider<CAPIBloC>(
+                  create: (BuildContext context) => snapshot.data!,
                 ),
-                debugShowCheckedModeBanner: false,
-                title: widget.title,
-                scrollBehavior: const ConstantScrollBehavior(),
+              ],
+              child: BlocBuilder<CAPIBloC, CAPIState>(
+                buildWhen: (prev, curr) =>
+                    prev.themeModeIndex != curr.themeModeIndex,
+                builder: (context, state) {
+                  ThemeMode themeMode = ThemeMode.values[state.themeModeIndex ?? 0];
+                  return widget.routingConfig != null
+                      ? MaterialApp.router(
+                          // following line not valid for router;
+                          // instead pass navigatorKey: fco.globalNavigatorKey
+                          // to GoRouter.routingConfig()
+                          routerConfig: fsdui.router,
+                          localizationsDelegates: const [
+                            GlobalMaterialLocalizations.delegate,
+                            GlobalCupertinoLocalizations.delegate,
+                            GlobalWidgetsLocalizations.delegate,
+                            FlutterQuillLocalizations.delegate,
+                          ],
+                          themeMode: themeMode,
+                          theme: widget.materialAppThemeF(),
+                          darkTheme: ThemeData(
+                            brightness: Brightness.light,
+                            primarySwatch: Colors.purple,
+                            // ... other dark theme properties
+                            scaffoldBackgroundColor: Colors.black54,
+                            // Example
+                            textTheme: TextTheme(
+                              bodyMedium: TextStyle(color: Colors.black87),
+                            ),
+                            appBarTheme: AppBarTheme(
+                              backgroundColor: Colors.grey[850],
+                            ),
+                          ),
+                          debugShowCheckedModeBanner: false,
+                          title: widget.title,
+                          scrollBehavior: const ConstantScrollBehavior(),
+                        )
+                      : MaterialApp(
+                          navigatorKey: fsdui.globalNavigatorKey,
+                          home: widget.home,
+                          localizationsDelegates: const [
+                            GlobalMaterialLocalizations.delegate,
+                            GlobalCupertinoLocalizations.delegate,
+                            GlobalWidgetsLocalizations.delegate,
+                            FlutterQuillLocalizations.delegate,
+                          ],
+                          themeMode: themeMode,
+                          theme: widget.materialAppThemeF(),
+                          darkTheme: ThemeData(
+                            brightness: Brightness.light,
+                            primarySwatch: Colors.purple,
+                            // ... other dark theme properties
+                            scaffoldBackgroundColor: Colors.black54,
+                            // Example
+                            textTheme: TextTheme(
+                              bodyMedium: TextStyle(color: Colors.black87),
+                            ),
+                            appBarTheme: AppBarTheme(
+                              backgroundColor: Colors.grey[850],
+                            ),
+                          ),
+                          debugShowCheckedModeBanner: false,
+                          title: widget.title,
+                          scrollBehavior: const ConstantScrollBehavior(),
+                        );
+                },
               ),
+              // child: ValueListenableBuilder<ThemeMode>(
+              //   valueListenable: fsdui.themeModeNotifier,
+              //   builder: (context, currentMode, child) {
+              //     return BlocBuilder<AuthBloc, AuthState>(
+              //       buildWhen: (prev, curr) =>
+              //       prev.user.status != curr.user.status,
+              //       builder: (context, state) {
+              //         return AnimatedSwitcher(
+              //           duration: const Duration(milliseconds: 300),
+              //           child: switch (state.user.status) {
+              //             AuthStatus.authenticated => _signedInPage(currentMode),
+              //             _ => MaterialApp(
+              //               title: 'Sign In',
+              //               debugShowCheckedModeBanner: false,
+              //               theme: ThemeData(
+              //                 colorSchemeSeed: Colors.indigo,
+              //                 useMaterial3: true,
+              //               ),
+              //               home: LoginScreenPasswordless(appId: widget.appId, appName: widget.appName),
+              //             ),
+              //           },
+              //         );
+              //       },
+              //     );
+              //   },
+              // ),
             ),
           );
         } else {
@@ -261,4 +325,65 @@ class FlutterContentAppState extends State<FlutterContentApp>
       },
     );
   }
+
+  // Widget _signedInPage(ThemeMode currentMode) {
+  //   return widget.routingConfig != null
+  //       ? MaterialApp.router(
+  //           // following line not valid for router;
+  //           // instead pass navigatorKey: fco.globalNavigatorKey
+  //           // to GoRouter.routingConfig()
+  //           routerConfig: fsdui.router,
+  //           localizationsDelegates: const [
+  //             GlobalMaterialLocalizations.delegate,
+  //             GlobalCupertinoLocalizations.delegate,
+  //             GlobalWidgetsLocalizations.delegate,
+  //             FlutterQuillLocalizations.delegate,
+  //           ],
+  //           // theme: ThemeData.light(useMaterial3: true),
+  //           // darkTheme: ThemeData.dark(useMaterial3: true),
+  //           // themeMode: ThemeMode.system,
+  //           themeMode: currentMode,
+  //           theme: widget.materialAppThemeF(),
+  //           darkTheme: ThemeData(
+  //             brightness: Brightness.light,
+  //             primarySwatch: Colors.purple,
+  //             // ... other dark theme properties
+  //             scaffoldBackgroundColor: Colors.black54,
+  //             // Example
+  //             textTheme: TextTheme(
+  //               bodyMedium: TextStyle(color: Colors.black87),
+  //             ),
+  //             appBarTheme: AppBarTheme(backgroundColor: Colors.grey[850]),
+  //           ),
+  //           debugShowCheckedModeBanner: false,
+  //           title: widget.title,
+  //           scrollBehavior: const ConstantScrollBehavior(),
+  //         )
+  //       : MaterialApp(
+  //           navigatorKey: fsdui.globalNavigatorKey,
+  //           home: widget.home,
+  //           localizationsDelegates: const [
+  //             GlobalMaterialLocalizations.delegate,
+  //             GlobalCupertinoLocalizations.delegate,
+  //             GlobalWidgetsLocalizations.delegate,
+  //             FlutterQuillLocalizations.delegate,
+  //           ],
+  //           themeMode: currentMode,
+  //           theme: widget.materialAppThemeF(),
+  //           darkTheme: ThemeData(
+  //             brightness: Brightness.light,
+  //             primarySwatch: Colors.purple,
+  //             // ... other dark theme properties
+  //             scaffoldBackgroundColor: Colors.black54,
+  //             // Example
+  //             textTheme: TextTheme(
+  //               bodyMedium: TextStyle(color: Colors.black87),
+  //             ),
+  //             appBarTheme: AppBarTheme(backgroundColor: Colors.grey[850]),
+  //           ),
+  //           debugShowCheckedModeBanner: false,
+  //           title: widget.title,
+  //           scrollBehavior: const ConstantScrollBehavior(),
+  //         );
+  // }
 }

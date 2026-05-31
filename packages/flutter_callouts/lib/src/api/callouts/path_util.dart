@@ -326,13 +326,13 @@ class PathUtil {
     Rectangle theRect,
     double theRadius,
     bool skipArc, {
-    Side? side,
+    SideEnum? side,
   }) {
-    if (side == Side.BOTTOM || (side == null && theRect.onBottom(thePos))) {
+    if (side == SideEnum.BOTTOM || (side == null && theRect.onBottom(thePos))) {
       return blCorner(path, thePos.x, thePos.y, theRadius, skipArc);
-    } else if (side == Side.LEFT || (side == null && theRect.onLeft(thePos))) {
+    } else if (side == SideEnum.LEFT || (side == null && theRect.onLeft(thePos))) {
       return tlCorner(path, thePos.x, thePos.y, theRadius, skipArc);
-    } else if (side == Side.TOP || (side == null && theRect.onTop(thePos))) {
+    } else if (side == SideEnum.TOP || (side == null && theRect.onTop(thePos))) {
       return trCorner(path, thePos.x, thePos.y, theRadius, skipArc);
     } else {
       return brCorner(path, thePos.x, thePos.y, theRadius, skipArc);
@@ -344,29 +344,29 @@ class PathUtil {
     Coord thePos,
     Rectangle theRect,
     double theRadius, {
-    Side? side,
+    SideEnum? side,
   }) {
     Coord result = Coord.clone(thePos);
     switch (side ?? theRect.whichSide(thePos)) {
-      case Side.BOTTOM:
+      case SideEnum.BOTTOM:
         path.lineTo(
           result.x = theRect.left + theRadius,
           result.y = theRect.bottom,
         );
         break;
-      case Side.LEFT:
+      case SideEnum.LEFT:
         path.lineTo(
           result.x = theRect.left,
           result.y = theRect.top + theRadius,
         );
         break;
-      case Side.RIGHT:
+      case SideEnum.RIGHT:
         path.lineTo(
           result.x = theRect.right,
           result.y = theRect.bottom - theRadius,
         );
         break;
-      case Side.TOP:
+      case SideEnum.TOP:
         path.lineTo(
           result.x = theRect.right - theRadius + 1,
           result.y = theRect.top,
@@ -381,16 +381,16 @@ class PathUtil {
   // static Coord lineToNextCorner(Path path, Coord thePos, Rectangle theRect) {
   //   Coord result = Coord.clone(thePos);
   //   switch (theRect.whichSide(thePos)) {
-  //     case Side.BOTTOM:
+  //     case SideEnum.BOTTOM:
   //       path.lineTo(result.x = theRect.left, result.y = theRect.bottom);
   //       break;
-  //     case Side.LEFT:
+  //     case SideEnum.LEFT:
   //       path.lineTo(result.x = theRect.left, result.y = theRect.top);
   //       break;
-  //     case Side.RIGHT:
+  //     case SideEnum.RIGHT:
   //       path.lineTo(result.x = theRect.right, result.y = theRect.bottom);
   //       break;
-  //     case Side.TOP:
+  //     case SideEnum.TOP:
   //       path.lineTo(result.x = theRect.right, result.y = theRect.top);
   //       break;
   //     default:

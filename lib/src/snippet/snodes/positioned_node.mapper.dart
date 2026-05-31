@@ -1,8 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// dart format off
 // ignore_for_file: type=lint
-// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -15,7 +13,7 @@ class PositionedNodeMapper extends SubClassMapperBase<PositionedNode> {
   static PositionedNodeMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = PositionedNodeMapper._());
-      SCMapper.ensureInitialized().addSubMapper(_instance!);
+      SNodeMapper.ensureInitialized().addSubMapper(_instance!);
       SNodeMapper.ensureInitialized();
     }
     return _instance!;
@@ -25,75 +23,45 @@ class PositionedNodeMapper extends SubClassMapperBase<PositionedNode> {
   final String id = 'PositionedNode';
 
   static String? _$name(PositionedNode v) => v.name;
-  static const Field<PositionedNode, String> _f$name = Field(
-    'name',
-    _$name,
-    opt: true,
-  );
+  static const Field<PositionedNode, String> _f$name =
+      Field('name', _$name, opt: true);
   static double? _$top(PositionedNode v) => v.top;
-  static const Field<PositionedNode, double> _f$top = Field(
-    'top',
-    _$top,
-    opt: true,
-  );
+  static const Field<PositionedNode, double> _f$top =
+      Field('top', _$top, opt: true);
   static double? _$left(PositionedNode v) => v.left;
-  static const Field<PositionedNode, double> _f$left = Field(
-    'left',
-    _$left,
-    opt: true,
-  );
+  static const Field<PositionedNode, double> _f$left =
+      Field('left', _$left, opt: true);
   static double? _$bottom(PositionedNode v) => v.bottom;
-  static const Field<PositionedNode, double> _f$bottom = Field(
-    'bottom',
-    _$bottom,
-    opt: true,
-  );
+  static const Field<PositionedNode, double> _f$bottom =
+      Field('bottom', _$bottom, opt: true);
   static double? _$right(PositionedNode v) => v.right;
-  static const Field<PositionedNode, double> _f$right = Field(
-    'right',
-    _$right,
-    opt: true,
-  );
+  static const Field<PositionedNode, double> _f$right =
+      Field('right', _$right, opt: true);
   static SNode? _$child(PositionedNode v) => v.child;
-  static const Field<PositionedNode, SNode> _f$child = Field(
-    'child',
-    _$child,
-    opt: true,
-  );
+  static const Field<PositionedNode, SNode> _f$child =
+      Field('child', _$child, opt: true);
   static String _$uid(PositionedNode v) => v.uid;
-  static const Field<PositionedNode, String> _f$uid = Field(
-    'uid',
-    _$uid,
-    mode: FieldMode.member,
-  );
+  static const Field<PositionedNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static List<String>? _$tags(PositionedNode v) => v.tags;
-  static const Field<PositionedNode, List<String>> _f$tags = Field(
-    'tags',
-    _$tags,
-    mode: FieldMode.member,
-  );
+  static const Field<PositionedNode, List<String>> _f$tags =
+      Field('tags', _$tags, mode: FieldMode.member);
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(PositionedNode v) =>
       v.treeNodeGK;
   static const Field<PositionedNode, GlobalKey<State<StatefulWidget>>>
-  _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
+      _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(PositionedNode v) => v.isExpanded;
-  static const Field<PositionedNode, bool> _f$isExpanded = Field(
-    'isExpanded',
-    _$isExpanded,
-    mode: FieldMode.member,
-  );
+  static const Field<PositionedNode, bool> _f$isExpanded =
+      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(PositionedNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<PositionedNode, bool> _f$hidePropertiesWhileDragging =
-      Field(
-        'hidePropertiesWhileDragging',
-        _$hidePropertiesWhileDragging,
-        mode: FieldMode.member,
-      );
+      Field('hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
+          mode: FieldMode.member);
   static GlobalKey<State<StatefulWidget>>? _$nodeGK(PositionedNode v) =>
       v.nodeGK;
   static const Field<PositionedNode, GlobalKey<State<StatefulWidget>>>
-  _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
+      _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
 
   @override
   final MappableFields<PositionedNode> fields = const {
@@ -112,27 +80,23 @@ class PositionedNodeMapper extends SubClassMapperBase<PositionedNode> {
   };
 
   @override
-  final String discriminatorKey = 'DK:sc';
+  final String discriminatorKey = 'DK:snode';
   @override
   final dynamic discriminatorValue = 'PositionedNode';
   @override
-  late final ClassMapperBase superMapper = SCMapper.ensureInitialized();
+  late final ClassMapperBase superMapper = SNodeMapper.ensureInitialized();
 
   @override
-  final MappingHook superHook = ChainedHook([
-    PropertyRenameHook('sc', 'DK:sc'),
-    PropertyRenameHook('snode', 'DK:snode'),
-  ]);
+  final MappingHook superHook = const PropertyRenameHook('snode', 'DK:snode');
 
   static PositionedNode _instantiate(DecodingData data) {
     return PositionedNode(
-      name: data.dec(_f$name),
-      top: data.dec(_f$top),
-      left: data.dec(_f$left),
-      bottom: data.dec(_f$bottom),
-      right: data.dec(_f$right),
-      child: data.dec(_f$child),
-    );
+        name: data.dec(_f$name),
+        top: data.dec(_f$top),
+        left: data.dec(_f$left),
+        bottom: data.dec(_f$bottom),
+        right: data.dec(_f$right),
+        child: data.dec(_f$child));
   }
 
   @override
@@ -149,43 +113,35 @@ class PositionedNodeMapper extends SubClassMapperBase<PositionedNode> {
 
 mixin PositionedNodeMappable {
   String toJson() {
-    return PositionedNodeMapper.ensureInitialized().encodeJson<PositionedNode>(
-      this as PositionedNode,
-    );
+    return PositionedNodeMapper.ensureInitialized()
+        .encodeJson<PositionedNode>(this as PositionedNode);
   }
 
   Map<String, dynamic> toMap() {
-    return PositionedNodeMapper.ensureInitialized().encodeMap<PositionedNode>(
-      this as PositionedNode,
-    );
+    return PositionedNodeMapper.ensureInitialized()
+        .encodeMap<PositionedNode>(this as PositionedNode);
   }
 
   PositionedNodeCopyWith<PositionedNode, PositionedNode, PositionedNode>
-  get copyWith => _PositionedNodeCopyWithImpl<PositionedNode, PositionedNode>(
-    this as PositionedNode,
-    $identity,
-    $identity,
-  );
+      get copyWith =>
+          _PositionedNodeCopyWithImpl<PositionedNode, PositionedNode>(
+              this as PositionedNode, $identity, $identity);
   @override
   String toString() {
-    return PositionedNodeMapper.ensureInitialized().stringifyValue(
-      this as PositionedNode,
-    );
+    return PositionedNodeMapper.ensureInitialized()
+        .stringifyValue(this as PositionedNode);
   }
 
   @override
   bool operator ==(Object other) {
-    return PositionedNodeMapper.ensureInitialized().equalsValue(
-      this as PositionedNode,
-      other,
-    );
+    return PositionedNodeMapper.ensureInitialized()
+        .equalsValue(this as PositionedNode, other);
   }
 
   @override
   int get hashCode {
-    return PositionedNodeMapper.ensureInitialized().hashValue(
-      this as PositionedNode,
-    );
+    return PositionedNodeMapper.ensureInitialized()
+        .hashValue(this as PositionedNode);
   }
 }
 
@@ -196,21 +152,18 @@ extension PositionedNodeValueCopy<$R, $Out>
 }
 
 abstract class PositionedNodeCopyWith<$R, $In extends PositionedNode, $Out>
-    implements SCCopyWith<$R, $In, $Out> {
-  @override
+    implements SNodeCopyWith<$R, $In, $Out> {
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({
-    String? name,
-    double? top,
-    double? left,
-    double? bottom,
-    double? right,
-    SNode? child,
-  });
+  $R call(
+      {String? name,
+      double? top,
+      double? left,
+      double? bottom,
+      double? right,
+      SNode? child});
   PositionedNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-    Then<$Out2, $R2> t,
-  );
+      Then<$Out2, $R2> t);
 }
 
 class _PositionedNodeCopyWithImpl<$R, $Out>
@@ -225,36 +178,32 @@ class _PositionedNodeCopyWithImpl<$R, $Out>
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
-  $R call({
-    Object? name = $none,
-    Object? top = $none,
-    Object? left = $none,
-    Object? bottom = $none,
-    Object? right = $none,
-    Object? child = $none,
-  }) => $apply(
-    FieldCopyWithData({
-      if (name != $none) #name: name,
-      if (top != $none) #top: top,
-      if (left != $none) #left: left,
-      if (bottom != $none) #bottom: bottom,
-      if (right != $none) #right: right,
-      if (child != $none) #child: child,
-    }),
-  );
+  $R call(
+          {Object? name = $none,
+          Object? top = $none,
+          Object? left = $none,
+          Object? bottom = $none,
+          Object? right = $none,
+          Object? child = $none}) =>
+      $apply(FieldCopyWithData({
+        if (name != $none) #name: name,
+        if (top != $none) #top: top,
+        if (left != $none) #left: left,
+        if (bottom != $none) #bottom: bottom,
+        if (right != $none) #right: right,
+        if (child != $none) #child: child
+      }));
   @override
   PositionedNode $make(CopyWithData data) => PositionedNode(
-    name: data.get(#name, or: $value.name),
-    top: data.get(#top, or: $value.top),
-    left: data.get(#left, or: $value.left),
-    bottom: data.get(#bottom, or: $value.bottom),
-    right: data.get(#right, or: $value.right),
-    child: data.get(#child, or: $value.child),
-  );
+      name: data.get(#name, or: $value.name),
+      top: data.get(#top, or: $value.top),
+      left: data.get(#left, or: $value.left),
+      bottom: data.get(#bottom, or: $value.bottom),
+      right: data.get(#right, or: $value.right),
+      child: data.get(#child, or: $value.child));
 
   @override
   PositionedNodeCopyWith<$R2, PositionedNode, $Out2> $chain<$R2, $Out2>(
-    Then<$Out2, $R2> t,
-  ) => _PositionedNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+          Then<$Out2, $R2> t) =>
+      _PositionedNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
-

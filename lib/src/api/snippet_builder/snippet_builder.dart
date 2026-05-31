@@ -118,7 +118,7 @@ class SnippetBuilderState extends State<SnippetBuilder> {
     return BlocBuilder<CAPIBloC, CAPIState>(
       buildWhen: (previous, current) {
         bool result =
-        (!current.onlyTargetsWrappers
+        (!(current.onlyTargetsWrappers??false)
             //     &&
             // previous.snippetNameShowingTappableOverlaysFor !=
             //     current.snippetNameShowingTappableOverlaysFor

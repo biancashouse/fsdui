@@ -175,33 +175,36 @@ class SnippetInfoModel with SnippetInfoModelMappable {
   bool isLatestVersion() => editingVersionId == latestVersionId();
 
   static VersionId createNewVersion(SNode snippet) {
-    // may require a new SnippetInfo
-    if (snippet.name == null) {
-      throw('createNewVersion(null snippet name!)');
-    }
+    VersionId newVersionId = _prepareNewVersionId(snippet.name!);
+    SnippetInfoModel snippetInfo = fsdui.appInfo.cachedSnippetInfo(snippet.name!)!;
+    snippetInfo.cacheVersion(newVersionId, snippet);
+    return newVersionId;
+  }
 
-    fsdui.modelRepo.ensureSnippetInfoCached(snippetName: snippet.name!);
-    SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(snippet.name!);
+  static VersionId createNewVersionForMap(String snippetName, Map<String, dynamic> data) {
+    VersionId newVersionId = _prepareNewVersionId(snippetName);
+    // For now, we don't cache maps in SnippetInfoModel as SNode, 
+    // but the caller can handle its own state.
+    return newVersionId;
+  }
+
+  static VersionId _prepareNewVersionId(String snippetName) {
+    fsdui.modelRepo.ensureSnippetInfoCached(snippetName: snippetName);
+    SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(snippetName);
 
     if (snippetInfo != null) {
-      // remove all subsequent versions following the current version
-      // before saving new version
-      List<VersionId> newIdCache = [];
       List<VersionId> tbd = [];
       for (VersionId v in snippetInfo.versionIds ?? []) {
         try {
           if (int.parse(v.isEmpty ? "0" : v) >
               int.parse(snippetInfo.currentVersionId() ?? "-1")) {
             tbd.add(v);
-          } else {
-            newIdCache.add(v);
           }
         } catch (e) {
           fsdui.logger.e('$e');
         }
       }
       if (tbd.isNotEmpty) {
-        // delete from FB and also from cache
         for (VersionId vId in tbd) {
           snippetInfo.versionIds.remove(vId);
           snippetInfo._cachedVersions.remove(vId);
@@ -209,23 +212,16 @@ class SnippetInfoModel with SnippetInfoModelMappable {
       }
     }
 
-    VersionId newVersionId = DateTime
-        .now()
-        .millisecondsSinceEpoch
-        .toString();
+    VersionId newVersionId = DateTime.now().millisecondsSinceEpoch.toString();
 
-    // update FB appInfo
-    // jsArray issue
-    // List<String> newList = appInfo.snippetNames;
-    if (!fsdui.appInfo.snippetNames.contains(snippet.name)) {
-      fsdui.appInfo.snippetNames = [...fsdui.appInfo.snippetNames, snippet.name!];
+    if (!fsdui.appInfo.snippetNames.contains(snippetName)) {
+      fsdui.appInfo.snippetNames = [...fsdui.appInfo.snippetNames, snippetName];
       AppInfoModel.needToSave = true;
     }
+    
     snippetInfo ??= ensureSnippetInfoPresent(
-      snippetName: snippet.name!,
-      firstSnippetVersion: PlaceholderNode(
-        name: snippet.name,
-      ),
+      snippetName: snippetName,
+      firstSnippetVersion: PlaceholderNode(name: snippetName),
     );
 
     snippetInfo.editingVersionId = newVersionId;
@@ -234,7 +230,6 @@ class SnippetInfoModel with SnippetInfoModelMappable {
     }
 
     (snippetInfo.versionIds ??= []).add(newVersionId);
-    snippetInfo.cacheVersion(newVersionId, snippet);
     return newVersionId;
   }
 

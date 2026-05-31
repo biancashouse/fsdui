@@ -25,7 +25,6 @@ class BorderSidePNode /*Group*/ extends PNode /*Group*/ {
           borderSideGroup!.width = newValue;
           onGroupChange.call(borderSideGroup!);
         },
-        calloutButtonSize: const Size(72, 30),
       ),
       ColorPNode(
         snode: super.snode,

@@ -4,26 +4,34 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/screens/login_screen_passwordless.dart';
 import 'package:http/http.dart' as http;
 
 mixin PasswordlessMixin {
-  void showPasswordlessStepper({
+  void showPasswordlessSignIn({
     GlobalKey? targetGK,
+
     required String gcrServerUrl,
+
     required ValueChanged<String> onSignedInF,
-    required 
+
+    required,
   }) {
     fsdui.showOverlay(
       targetGK: targetGK,
-      calloutContent: PasswordlessStepper(
-          gcrServerUrl: gcrServerUrl, onSignedInF: onSignedInF),
+      calloutContent: LoginScreenPasswordless(
+        gcrServerUrl: gcrServerUrl,
+        onSignedInF: onSignedInF,
+      ),
+      // calloutContent: PasswordlessStepper(
+      // gcrServerUrl: gcrServerUrl, onSignedInF: onSignedInF),
       calloutConfig: CalloutConfig(
         cId: "passwordless-stepper",
         initialCalloutW: 600,
-        initialCalloutH: 200,
+        initialCalloutH: 480,
         initialTargetAlignment: Alignment.bottomCenter,
         initialCalloutAlignment: Alignment.topCenter,
-        targetPointerType: TargetPointerType.thin_line()  ,
+        targetPointerType: TargetPointerType.thin_line(),
         bubbleOrTargetPointerColor: Colors.blue[900]!,
         finalSeparation: 60,
         // decorationFillColors: ColorOrGradient.color(Colors.purpleAccent),
@@ -164,8 +172,10 @@ class PasswordlessStepperState extends State<PasswordlessStepper> {
         // if (index == 0 && token != null) color = Colors.black12;
         if (index == 1 && ea == null) color = Colors.black12;
         if (index == 2 && !userHasConfirmed()) color = Colors.black12;
-        return fsdui.coloredText('${index + 1}',
-            color: color); ////const Offstage();
+        return fsdui.coloredText(
+          '${index + 1}',
+          color: color,
+        ); ////const Offstage();
       },
       controlsBuilder: (_, _) => const Offstage(),
       steps: <Step>[
@@ -174,17 +184,16 @@ class PasswordlessStepperState extends State<PasswordlessStepper> {
             token != null ? ea ?? '?' : 'Enter your email address',
             color: token != null ? Colors.black45 : Colors.black,
           ),
-          content: Step1(
-            parentState: this,
-            gcrServerUrl: widget.gcrServerUrl,
-          ),
+          content: Step1(parentState: this, gcrServerUrl: widget.gcrServerUrl),
         ),
         Step(
-          title: fsdui.blink(fsdui.coloredText(
-            'Check your Email',
-            color: ea != null ? Colors.black : Colors.black12,
-            fontWeight: ea != null ? FontWeight.bold : FontWeight.normal,
-          )),
+          title: fsdui.blink(
+            fsdui.coloredText(
+              'Check your Email',
+              color: ea != null ? Colors.black : Colors.black12,
+              fontWeight: ea != null ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
           content: Step2(this),
         ),
       ],
@@ -196,7 +205,11 @@ class Step1 extends StatefulWidget {
   final PasswordlessStepperState parentState;
   final String gcrServerUrl;
 
-  const Step1({required this.gcrServerUrl, required this.parentState, super.key});
+  const Step1({
+    required this.gcrServerUrl,
+    required this.parentState,
+    super.key,
+  });
 
   @override
   State<Step1> createState() => _Step1State();
@@ -231,12 +244,18 @@ class _Step1State extends State<Step1> {
                   style: TextStyle(
                     fontSize: 18,
                     fontFamily: 'monospace',
-                    color: widget.parentState.eaController.text.isEmpty ||
-                            fsdui.emailIsValid(widget.parentState.eaController.text)
+                    color:
+                        widget.parentState.eaController.text.isEmpty ||
+                            fsdui.emailIsValid(
+                              widget.parentState.eaController.text,
+                            )
                         ? Colors.blue[900]
                         : Colors.red,
-                    fontWeight: widget.parentState.eaController.text.isEmpty ||
-                            fsdui.emailIsValid(widget.parentState.eaController.text)
+                    fontWeight:
+                        widget.parentState.eaController.text.isEmpty ||
+                            fsdui.emailIsValid(
+                              widget.parentState.eaController.text,
+                            )
                         ? FontWeight.w400
                         : FontWeight.w900,
                     background: fsdui.whiteBgPaint,
@@ -265,10 +284,11 @@ class _Step1State extends State<Step1> {
         return;
       }
       setState(() => _loading = true);
-      final String? token = await PasswordlessStepper
-          .cloudRunCreateTokenAndEmailVerificationLinkToUser(
-              gcrServerUrl: widget.gcrServerUrl,
-              userEa: widget.parentState.eaController.text);
+      final String? token =
+          await PasswordlessStepper.cloudRunCreateTokenAndEmailVerificationLinkToUser(
+            gcrServerUrl: widget.gcrServerUrl,
+            userEa: widget.parentState.eaController.text,
+          );
       if (mounted) setState(() => _loading = false);
       if (token != null) {
         widget.parentState.setEaAndToken(
@@ -321,34 +341,45 @@ class Step2 extends StatelessWidget {
     return parentState.userHasConfirmed()
         ? const Text('You are already signed in.')
         : Center(
-        child: Column(
-          children: [
-            ElevatedButton(
-              onPressed: () async {
-                // check user is actually signed in now by checking firestore
-                if (parentState.token != null &&
-                    await fsdui.modelRepo.tokenConfirmed(parentState.token!)) {
-                  final String? vea = fsdui.localStorage.read('vea');
-                  if (vea != parentState.ea) {
-                    await fsdui.localStorage.write(
-                        'vea', parentState.ea ?? 'anon');
-                  }
-                  parentState.widget.onSignedInF(parentState.ea!);
-                  fsdui.dismiss("passwordless-stepper");
-                  _showConfirmedOKToast();
-                } else {
-                  parentState.refresh(f: () {
-                    _showWaitingForYouToConfirmToast();
-                  });
-                }
-              },
-              child: fsdui.coloredText('I tapped the button in the email',
-                  color: Colors.blue, fontSize: 24),
+            child: Column(
+              children: [
+                ElevatedButton(
+                  onPressed: () async {
+                    // check user is actually signed in now by checking firestore
+                    if (parentState.token != null &&
+                        await fsdui.modelRepo.tokenConfirmed(
+                          parentState.token!,
+                        )) {
+                      final String? vea = fsdui.localStorage.read('vea');
+                      if (vea != parentState.ea) {
+                        await fsdui.localStorage.write(
+                          'vea',
+                          parentState.ea ?? 'anon',
+                        );
+                      }
+                      parentState.widget.onSignedInF(parentState.ea!);
+                      fsdui.dismiss("passwordless-stepper");
+                      _showConfirmedOKToast();
+                    } else {
+                      parentState.refresh(
+                        f: () {
+                          _showWaitingForYouToConfirmToast();
+                        },
+                      );
+                    }
+                  },
+                  child: fsdui.coloredText(
+                    'I tapped the button in the email',
+                    color: Colors.blue,
+                    fontSize: 24,
+                  ),
+                ),
+                fsdui.coloredText(
+                  "\n(NOTE - if you can't find it, it's probably in your spam email folder)",
+                ),
+              ],
             ),
-            fsdui.coloredText(
-                "\n(NOTE - if you can't find it, it's probably in your spam email folder)"),
-          ],
-        ));
+          );
   }
 
   void _showConfirmedOKToast() {
@@ -360,12 +391,14 @@ class Step2 extends StatelessWidget {
         decorationFillColors: ColorOrGradient.color(Colors.yellow),
         initialCalloutW: fsdui.scrW * .8,
         initialCalloutH: 40,
-        
       ),
       calloutContent: Padding(
-          padding: const EdgeInsets.all(10),
-          child: fsdui.coloredText('You are signed in as ${parentState.ea}',
-              color: Colors.blueAccent)),
+        padding: const EdgeInsets.all(10),
+        child: fsdui.coloredText(
+          'You are signed in as ${parentState.ea}',
+          color: Colors.blueAccent,
+        ),
+      ),
     );
   }
 
@@ -378,13 +411,14 @@ class Step2 extends StatelessWidget {
         decorationFillColors: ColorOrGradient.color(Colors.yellow),
         initialCalloutW: fsdui.scrW * .8,
         initialCalloutH: 40,
-        
       ),
       calloutContent: Padding(
-          padding: const EdgeInsets.all(10),
-          child: fsdui.coloredText(
-              'Waiting for you to tap the button in the email we sent you...',
-              color: Colors.blueAccent)),
+        padding: const EdgeInsets.all(10),
+        child: fsdui.coloredText(
+          'Waiting for you to tap the button in the email we sent you...',
+          color: Colors.blueAccent,
+        ),
+      ),
     );
   }
 }

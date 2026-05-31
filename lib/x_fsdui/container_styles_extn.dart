@@ -19,9 +19,9 @@ extension ContainerStylesExtension on FSDUI_Mixins {
   };
 
   ContainerStyleName? findContainerStyleName(AppInfoModel appInfo, ContainerStyleProperties props) {
-    for (ContainerStyleName csName in appInfo.userContainerStyles.keys) {
+    for (ContainerStyleName csName in appInfo.containerStyles.keys) {
       ContainerStyleProperties namedCSProps =
-      appInfo.userContainerStyles[csName]!;
+      appInfo.containerStyles[csName]!;
       if (namedCSProps == props) {
         return csName;
       }

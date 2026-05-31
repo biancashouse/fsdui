@@ -1,8 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// dart format off
 // ignore_for_file: type=lint
-// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -15,7 +13,7 @@ class PreferredSizeNodeMapper extends SubClassMapperBase<PreferredSizeNode> {
   static PreferredSizeNodeMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = PreferredSizeNodeMapper._());
-      SCMapper.ensureInitialized().addSubMapper(_instance!);
+      SNodeMapper.ensureInitialized().addSubMapper(_instance!);
       SNodeMapper.ensureInitialized();
     }
     return _instance!;
@@ -25,61 +23,39 @@ class PreferredSizeNodeMapper extends SubClassMapperBase<PreferredSizeNode> {
   final String id = 'PreferredSizeNode';
 
   static String? _$name(PreferredSizeNode v) => v.name;
-  static const Field<PreferredSizeNode, String> _f$name = Field(
-    'name',
-    _$name,
-    opt: true,
-  );
+  static const Field<PreferredSizeNode, String> _f$name =
+      Field('name', _$name, opt: true);
   static double _$width(PreferredSizeNode v) => v.width;
-  static const Field<PreferredSizeNode, double> _f$width = Field(
-    'width',
-    _$width,
-  );
+  static const Field<PreferredSizeNode, double> _f$width =
+      Field('width', _$width);
   static double _$height(PreferredSizeNode v) => v.height;
-  static const Field<PreferredSizeNode, double> _f$height = Field(
-    'height',
-    _$height,
-  );
+  static const Field<PreferredSizeNode, double> _f$height =
+      Field('height', _$height);
   static SNode? _$child(PreferredSizeNode v) => v.child;
-  static const Field<PreferredSizeNode, SNode> _f$child = Field(
-    'child',
-    _$child,
-    opt: true,
-  );
+  static const Field<PreferredSizeNode, SNode> _f$child =
+      Field('child', _$child, opt: true);
   static String _$uid(PreferredSizeNode v) => v.uid;
-  static const Field<PreferredSizeNode, String> _f$uid = Field(
-    'uid',
-    _$uid,
-    mode: FieldMode.member,
-  );
+  static const Field<PreferredSizeNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static List<String>? _$tags(PreferredSizeNode v) => v.tags;
-  static const Field<PreferredSizeNode, List<String>> _f$tags = Field(
-    'tags',
-    _$tags,
-    mode: FieldMode.member,
-  );
+  static const Field<PreferredSizeNode, List<String>> _f$tags =
+      Field('tags', _$tags, mode: FieldMode.member);
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(PreferredSizeNode v) =>
       v.treeNodeGK;
   static const Field<PreferredSizeNode, GlobalKey<State<StatefulWidget>>>
-  _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
+      _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(PreferredSizeNode v) => v.isExpanded;
-  static const Field<PreferredSizeNode, bool> _f$isExpanded = Field(
-    'isExpanded',
-    _$isExpanded,
-    mode: FieldMode.member,
-  );
+  static const Field<PreferredSizeNode, bool> _f$isExpanded =
+      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(PreferredSizeNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<PreferredSizeNode, bool> _f$hidePropertiesWhileDragging =
-      Field(
-        'hidePropertiesWhileDragging',
-        _$hidePropertiesWhileDragging,
-        mode: FieldMode.member,
-      );
+      Field('hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
+          mode: FieldMode.member);
   static GlobalKey<State<StatefulWidget>>? _$nodeGK(PreferredSizeNode v) =>
       v.nodeGK;
   static const Field<PreferredSizeNode, GlobalKey<State<StatefulWidget>>>
-  _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
+      _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
 
   @override
   final MappableFields<PreferredSizeNode> fields = const {
@@ -96,25 +72,21 @@ class PreferredSizeNodeMapper extends SubClassMapperBase<PreferredSizeNode> {
   };
 
   @override
-  final String discriminatorKey = 'DK:sc';
+  final String discriminatorKey = 'DK:snode';
   @override
   final dynamic discriminatorValue = 'PreferredSizeNode';
   @override
-  late final ClassMapperBase superMapper = SCMapper.ensureInitialized();
+  late final ClassMapperBase superMapper = SNodeMapper.ensureInitialized();
 
   @override
-  final MappingHook superHook = ChainedHook([
-    PropertyRenameHook('sc', 'DK:sc'),
-    PropertyRenameHook('snode', 'DK:snode'),
-  ]);
+  final MappingHook superHook = const PropertyRenameHook('snode', 'DK:snode');
 
   static PreferredSizeNode _instantiate(DecodingData data) {
     return PreferredSizeNode(
-      name: data.dec(_f$name),
-      width: data.dec(_f$width),
-      height: data.dec(_f$height),
-      child: data.dec(_f$child),
-    );
+        name: data.dec(_f$name),
+        width: data.dec(_f$width),
+        height: data.dec(_f$height),
+        child: data.dec(_f$child));
   }
 
   @override
@@ -140,61 +112,44 @@ mixin PreferredSizeNodeMappable {
         .encodeMap<PreferredSizeNode>(this as PreferredSizeNode);
   }
 
-  PreferredSizeNodeCopyWith<
-    PreferredSizeNode,
-    PreferredSizeNode,
-    PreferredSizeNode
-  >
-  get copyWith =>
-      _PreferredSizeNodeCopyWithImpl<PreferredSizeNode, PreferredSizeNode>(
-        this as PreferredSizeNode,
-        $identity,
-        $identity,
-      );
+  PreferredSizeNodeCopyWith<PreferredSizeNode, PreferredSizeNode,
+          PreferredSizeNode>
+      get copyWith =>
+          _PreferredSizeNodeCopyWithImpl<PreferredSizeNode, PreferredSizeNode>(
+              this as PreferredSizeNode, $identity, $identity);
   @override
   String toString() {
-    return PreferredSizeNodeMapper.ensureInitialized().stringifyValue(
-      this as PreferredSizeNode,
-    );
+    return PreferredSizeNodeMapper.ensureInitialized()
+        .stringifyValue(this as PreferredSizeNode);
   }
 
   @override
   bool operator ==(Object other) {
-    return PreferredSizeNodeMapper.ensureInitialized().equalsValue(
-      this as PreferredSizeNode,
-      other,
-    );
+    return PreferredSizeNodeMapper.ensureInitialized()
+        .equalsValue(this as PreferredSizeNode, other);
   }
 
   @override
   int get hashCode {
-    return PreferredSizeNodeMapper.ensureInitialized().hashValue(
-      this as PreferredSizeNode,
-    );
+    return PreferredSizeNodeMapper.ensureInitialized()
+        .hashValue(this as PreferredSizeNode);
   }
 }
 
 extension PreferredSizeNodeValueCopy<$R, $Out>
     on ObjectCopyWith<$R, PreferredSizeNode, $Out> {
   PreferredSizeNodeCopyWith<$R, PreferredSizeNode, $Out>
-  get $asPreferredSizeNode => $base.as(
-    (v, t, t2) => _PreferredSizeNodeCopyWithImpl<$R, $Out>(v, t, t2),
-  );
+      get $asPreferredSizeNode => $base
+          .as((v, t, t2) => _PreferredSizeNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
-abstract class PreferredSizeNodeCopyWith<
-  $R,
-  $In extends PreferredSizeNode,
-  $Out
->
-    implements SCCopyWith<$R, $In, $Out> {
-  @override
+abstract class PreferredSizeNodeCopyWith<$R, $In extends PreferredSizeNode,
+    $Out> implements SNodeCopyWith<$R, $In, $Out> {
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
   $R call({String? name, double? width, double? height, SNode? child});
   PreferredSizeNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-    Then<$Out2, $R2> t,
-  );
+      Then<$Out2, $R2> t);
 }
 
 class _PreferredSizeNodeCopyWithImpl<$R, $Out>
@@ -209,30 +164,26 @@ class _PreferredSizeNodeCopyWithImpl<$R, $Out>
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
-  $R call({
-    Object? name = $none,
-    double? width,
-    double? height,
-    Object? child = $none,
-  }) => $apply(
-    FieldCopyWithData({
-      if (name != $none) #name: name,
-      if (width != null) #width: width,
-      if (height != null) #height: height,
-      if (child != $none) #child: child,
-    }),
-  );
+  $R call(
+          {Object? name = $none,
+          double? width,
+          double? height,
+          Object? child = $none}) =>
+      $apply(FieldCopyWithData({
+        if (name != $none) #name: name,
+        if (width != null) #width: width,
+        if (height != null) #height: height,
+        if (child != $none) #child: child
+      }));
   @override
   PreferredSizeNode $make(CopyWithData data) => PreferredSizeNode(
-    name: data.get(#name, or: $value.name),
-    width: data.get(#width, or: $value.width),
-    height: data.get(#height, or: $value.height),
-    child: data.get(#child, or: $value.child),
-  );
+      name: data.get(#name, or: $value.name),
+      width: data.get(#width, or: $value.width),
+      height: data.get(#height, or: $value.height),
+      child: data.get(#child, or: $value.child));
 
   @override
   PreferredSizeNodeCopyWith<$R2, PreferredSizeNode, $Out2> $chain<$R2, $Out2>(
-    Then<$Out2, $R2> t,
-  ) => _PreferredSizeNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+          Then<$Out2, $R2> t) =>
+      _PreferredSizeNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
-

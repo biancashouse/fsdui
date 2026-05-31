@@ -2,8 +2,11 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/bool_pnode.dart';
+import 'package:fsdui/src/snippet/pnodes/color_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:fsdui/src/snippet/pnodes/text_style_pnodes.dart';
 import 'package:fsdui/src/snippet/snodes/text_style_hook.dart';
 
 part 'sliver_appbar_node.mapper.dart';
@@ -13,7 +16,22 @@ const COLLAPSED_HEIGHT = 64.0;
 // final MEDIUM_EXPANDED_HEIGHT = 112.0;
 
 @MappableClass()
-class SliverAppBarNode extends AppBarNode with SliverAppBarNodeMappable {
+class SliverAppBarNode extends SNode with SliverAppBarNodeMappable {
+  // AppBarNode fields (duplicated since we can't extend AppBarNode with dart_mappable)
+  Color? bgColor;
+  Color? fgColor;
+  double? toolbarHeight;
+  NamedSC leading;
+  NamedSC title;
+  bool? centerTitle;
+  NamedPS bottom;
+  NamedMC actions;
+  Color? shadowColor;
+  double? scrolledUnderElevation;
+  @MappableField(hook: TextStyleHook2())
+  TextStyleProperties titleTextStyle;
+
+  // SliverAppBar-specific fields
   double? collapsedHeight;
   double? expandedHeight;
   bool? large;
@@ -25,25 +43,27 @@ class SliverAppBarNode extends AppBarNode with SliverAppBarNodeMappable {
     this.collapsedHeight,
     this.expandedHeight,
     this.flexibleSpace,
-    super.bgColor,
-    super.fgColor,
-    super.toolbarHeight,
-    required super.titleTextStyle,
-    required super.leading,
-    required super.title,
-    required super.bottom,
-    required super.actions,
+    this.bgColor,
+    this.fgColor,
+    this.toolbarHeight,
+    required this.titleTextStyle,
+    this.centerTitle,
+    required this.leading,
+    required this.title,
+    required this.bottom,
+    required this.actions,
+    this.shadowColor,
+    this.scrolledUnderElevation,
+    this.large,
+    this.medium,
   });
 
-  @override
   bool hasTabBar() => bottom.child is TabBarNode;
 
-  @override
   bool hasMenuBar() => bottom.child is MenuBarNode;
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) {
-    // fco.logger.i("ContainerNode.properties()...");
     return [
       DecimalPNode(
         snode: this,
@@ -51,7 +71,6 @@ class SliverAppBarNode extends AppBarNode with SliverAppBarNodeMappable {
         decimalValue: collapsedHeight,
         onDoubleChange: (newValue) =>
             refreshWithUpdate(context, () => collapsedHeight = newValue),
-        calloutButtonSize: const Size(130, 20),
       ),
       DecimalPNode(
         snode: this,
@@ -59,9 +78,52 @@ class SliverAppBarNode extends AppBarNode with SliverAppBarNodeMappable {
         decimalValue: expandedHeight,
         onDoubleChange: (newValue) =>
             refreshWithUpdate(context, () => expandedHeight = newValue),
-        calloutButtonSize: const Size(130, 20),
       ),
-      ...super.propertyNodes(context, parentSNode),
+      DecimalPNode(
+        snode: this,
+        name: 'toolbarHeight',
+        decimalValue: toolbarHeight,
+        onDoubleChange: (newValue) =>
+            refreshWithUpdate(context, () => toolbarHeight = newValue),
+      ),
+      ColorPNode(
+        snode: this,
+        name: 'bg color',
+        tooltip: "The fill color to use for an app bar's Material.",
+        color: bgColor,
+        onColorChange: (newValue) =>
+            refreshWithUpdate(context, () => bgColor = newValue),
+      ),
+      ColorPNode(
+        snode: this,
+        name: 'fg color',
+        tooltip: 'The default color for Text and Icons within the app bar.',
+        color: fgColor,
+        onColorChange: (newValue) =>
+            refreshWithUpdate(context, () => fgColor = newValue),
+      ),
+      BoolPNode(
+        snode: this,
+        name: 'centerTitle',
+        boolValue: centerTitle,
+        onBoolChange: (newValue) => refreshWithUpdate(
+          context,
+              () => centerTitle = newValue,
+        ),
+      ),
+      TextStylePNode /*Group*/ (
+        snode: this,
+        name: 'titleTextStyle',
+        textStyleProperties: titleTextStyle,
+        onGroupChange: (newValue, refreshPTree) {
+          refreshWithUpdate(context, () {
+            titleTextStyle = newValue;
+            if (refreshPTree) {
+              forcePropertyTreeRefresh(context);
+            }
+          });
+        },
+      ),
       FlutterDocPNode(
         buttonLabel: 'SliverAppBar',
         webLink:
@@ -85,11 +147,6 @@ class SliverAppBarNode extends AppBarNode with SliverAppBarNodeMappable {
       }
       var flexibleSpaceWidget = flexibleSpace?.build(context, this);
 
-      // if (hasTabBar()) {
-      //   toolbarHeight = kToolbarHeight;
-      // } else if (hasMenuBar()) {
-      //   toolbarHeight = kToolbarHeight;
-      // }
       if (large ?? false) {
         toolbarHeight = COLLAPSED_HEIGHT;
       } else if (medium ?? false) {
@@ -113,8 +170,8 @@ class SliverAppBarNode extends AppBarNode with SliverAppBarNodeMappable {
             flexibleSpace: flexibleSpaceWidget,
             toolbarHeight: toolbarHeight ?? kToolbarHeight,
             actions: actionWidgets,
-            backgroundColor: bgColor?.flutterValue,
-            foregroundColor: fgColor?.flutterValue,
+            backgroundColor: bgColor,
+            foregroundColor: fgColor,
             bottom: bottomWidget,
           );
         } else if (medium ?? false) {
@@ -125,8 +182,8 @@ class SliverAppBarNode extends AppBarNode with SliverAppBarNodeMappable {
             expandedHeight: expandedHeight,
             toolbarHeight: toolbarHeight ?? COLLAPSED_HEIGHT,
             actions: actionWidgets,
-            backgroundColor: bgColor?.flutterValue,
-            foregroundColor: fgColor?.flutterValue,
+            backgroundColor: bgColor,
+            foregroundColor: fgColor,
             bottom: bottomWidget,
           );
         } else {
@@ -137,8 +194,8 @@ class SliverAppBarNode extends AppBarNode with SliverAppBarNodeMappable {
             expandedHeight: expandedHeight,
             toolbarHeight: toolbarHeight ?? COLLAPSED_HEIGHT,
             actions: actionWidgets,
-            backgroundColor: bgColor?.flutterValue,
-            foregroundColor: fgColor?.flutterValue,
+            backgroundColor: bgColor,
+            foregroundColor: fgColor,
             bottom: bottomWidget,
           );
         }
@@ -178,7 +235,7 @@ class SliverAppBarNode extends AppBarNode with SliverAppBarNodeMappable {
     BuildContext context,
     NodeAction action,
     bool? skipHeading,
-    
+
   ) {
     return [
       if (!(skipHeading ?? false))
@@ -188,7 +245,7 @@ class SliverAppBarNode extends AppBarNode with SliverAppBarNodeMappable {
         "FlexibleSpaceBar",
         FlexibleSpaceBarNode,
         action,
-        
+
       ),
     ];
   }
@@ -198,7 +255,7 @@ class SliverAppBarNode extends AppBarNode with SliverAppBarNodeMappable {
     BuildContext context,
     NodeAction action,
     bool? skipHeading,
-    
+
   ) {
     return [
       if (getParent() is! ScaffoldNode)

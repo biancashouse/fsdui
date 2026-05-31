@@ -10,19 +10,16 @@ import 'package:fsdui/src/snippet/pnodes/int_pnode.dart';
 
 part 'flexible_node.mapper.dart';
 
-@MappableClass(
-  discriminatorKey: 'DK:flexible',
-  includeSubClasses: [ExpandedNode],
-  hook: PropertyRenameHook(
-    'flexible',
-    'DK:flexible',
-  ), // 'first_name' -> JSON key, 'firstName' -> Dart field name
-)
-class FlexibleNode extends SC with FlexibleNodeMappable {
+@MappableClass()
+class FlexibleNode extends SNode with SC, FlexibleNodeMappable {
   int flex;
   FlexFitEnum fit;
+  @override
+  SNode? child;
 
-  FlexibleNode({super.name, this.flex = 1, this.fit = FlexFitEnum.loose, super.child});
+  @override
+  bool canAppendAChild() => child == null;
+  FlexibleNode({super.name, this.flex = 1, this.fit = FlexFitEnum.loose, this.child});
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [

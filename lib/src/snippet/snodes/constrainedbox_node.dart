@@ -7,7 +7,12 @@ import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 part 'constrainedbox_node.mapper.dart';
 
 @MappableClass()
-class ConstrainedBoxNode extends SC with ConstrainedBoxNodeMappable {
+class ConstrainedBoxNode extends SNode with SC, ConstrainedBoxNodeMappable {
+  @override
+  SNode? child;
+
+  @override
+  bool canAppendAChild() => child == null;
   double? minWidth;
   double? minHeight;
   double? maxWidth;
@@ -19,7 +24,7 @@ class ConstrainedBoxNode extends SC with ConstrainedBoxNodeMappable {
     this.minHeight,
     this.maxWidth,
     this.maxHeight,
-    super.child,
+    this.child,
   });
 
   @override
@@ -30,7 +35,6 @@ class ConstrainedBoxNode extends SC with ConstrainedBoxNodeMappable {
         decimalValue: minWidth,
         onDoubleChange: (newValue) =>
             refreshWithUpdate(context, () => minWidth = newValue),
-        calloutButtonSize: const Size(130, 20),
       ),
       DecimalPNode(
         snode: this,
@@ -38,7 +42,6 @@ class ConstrainedBoxNode extends SC with ConstrainedBoxNodeMappable {
         decimalValue: minHeight,
         onDoubleChange: (newValue) =>
             refreshWithUpdate(context, () => minHeight = newValue),
-        calloutButtonSize: const Size(130, 20),
       ),
       DecimalPNode(
         snode: this,
@@ -46,7 +49,6 @@ class ConstrainedBoxNode extends SC with ConstrainedBoxNodeMappable {
         decimalValue: maxWidth,
         onDoubleChange: (newValue) =>
             refreshWithUpdate(context, () => maxWidth = newValue),
-        calloutButtonSize: const Size(130, 20),
       ),
       DecimalPNode(
         snode: this,
@@ -54,7 +56,6 @@ class ConstrainedBoxNode extends SC with ConstrainedBoxNodeMappable {
         decimalValue: maxHeight,
         onDoubleChange: (newValue) =>
             refreshWithUpdate(context, () => maxHeight = newValue),
-        calloutButtonSize: const Size(130, 20),
       ),
     FlutterDocPNode(
       buttonLabel: 'ConstrainedBox',

@@ -4,7 +4,7 @@ import 'dart:ui';
 
 import 'coord.dart';
 import '../../lines/line.dart';
-import 'side.dart';
+import 'side_enum.dart';
 
 const double RECTANGLE_MOE = 1.1;
 
@@ -19,16 +19,16 @@ class Rectangle extends Rect {
   /*
 	 * allow margin of error
 	 */
-  Side? whichSide(Coord thePoint) {
-    Side? result;
+  SideEnum? whichSide(Coord thePoint) {
+    SideEnum? result;
     if (Coord.sameValue(thePoint.x, left)) {
-      result = Side.LEFT;
+      result = SideEnum.LEFT;
     } else if (Coord.sameValue(thePoint.x, right)) {
-      result = Side.RIGHT;
+      result = SideEnum.RIGHT;
     } else if (Coord.sameValue(thePoint.y, top)) {
-      result = Side.TOP;
+      result = SideEnum.TOP;
     } else if (Coord.sameValue(thePoint.y, bottom)) {
-      result = Side.BOTTOM;
+      result = SideEnum.BOTTOM;
     } else {
       return result = null;
     }
@@ -37,17 +37,17 @@ class Rectangle extends Rect {
 		 * if on a corner, return the clockwise-most side
 		 */
     switch (result) {
-      case Side.BOTTOM:
-        if (Coord.sameValue(thePoint.x, left)) result = Side.LEFT;
+      case SideEnum.BOTTOM:
+        if (Coord.sameValue(thePoint.x, left)) result = SideEnum.LEFT;
         break;
-      case Side.LEFT:
-        if (Coord.sameValue(thePoint.y, top)) result = Side.TOP;
+      case SideEnum.LEFT:
+        if (Coord.sameValue(thePoint.y, top)) result = SideEnum.TOP;
         break;
-      case Side.RIGHT:
-        if (Coord.sameValue(thePoint.y, bottom)) result = Side.BOTTOM;
+      case SideEnum.RIGHT:
+        if (Coord.sameValue(thePoint.y, bottom)) result = SideEnum.BOTTOM;
         break;
-      case Side.TOP:
-        if (Coord.sameValue(thePoint.x, right)) result = Side.RIGHT;
+      case SideEnum.TOP:
+        if (Coord.sameValue(thePoint.x, right)) result = SideEnum.RIGHT;
         break;
       // default:
       //   break;
@@ -56,23 +56,23 @@ class Rectangle extends Rect {
     return result;
   }
 
-  bool hasPointOnSide(Coord thePoint, Side theSide) {
+  bool hasPointOnSide(Coord thePoint, SideEnum theSide) {
     double l = left;
     double r = right;
     double t = top;
     double b = bottom;
 
     switch (theSide) {
-      case Side.BOTTOM:
+      case SideEnum.BOTTOM:
         return Coord.sameValue2(thePoint.y, b) &&
             roughlyWithin(thePoint.x, l, r);
-      case Side.LEFT:
+      case SideEnum.LEFT:
         return Coord.sameValue2(thePoint.x, l) &&
             roughlyWithin(thePoint.y, t, b);
-      case Side.RIGHT:
+      case SideEnum.RIGHT:
         return Coord.sameValue2(thePoint.x, r) &&
             roughlyWithin(thePoint.y, t, b);
-      case Side.TOP:
+      case SideEnum.TOP:
         return Coord.sameValue2(thePoint.y, t) &&
             roughlyWithin(thePoint.x, l, r);
     }
@@ -183,7 +183,7 @@ class Rectangle extends Rect {
         numPoints++;
       }
     }
-    // Left side...
+    // Left SideEnum...
     Coord? leftSideIP = theLine.getIntersectionPoint(theRect.getLeftLine());
     if (leftSideIP != null) {
       if (!theLine.includesPoint(leftSideIP)) {
@@ -304,7 +304,7 @@ class Rectangle extends Rect {
       ),
     );
     if (topLineIP != null &&
-        targetRectangle.hasPointOnSide(topLineIP, Side.TOP))
+        targetRectangle.hasPointOnSide(topLineIP, SideEnum.TOP))
       ips.add(topLineIP);
 
     // Bottom line
@@ -317,7 +317,7 @@ class Rectangle extends Rect {
       ),
     );
     if (bottomLineIP != null &&
-        targetRectangle.hasPointOnSide(bottomLineIP, Side.BOTTOM))
+        targetRectangle.hasPointOnSide(bottomLineIP, SideEnum.BOTTOM))
       ips.add(bottomLineIP);
 
     // Right side
@@ -330,10 +330,10 @@ class Rectangle extends Rect {
       ),
     );
     if (rightLineIP != null &&
-        targetRectangle.hasPointOnSide(rightLineIP, Side.RIGHT))
+        targetRectangle.hasPointOnSide(rightLineIP, SideEnum.RIGHT))
       ips.add(rightLineIP);
 
-    // Left side...
+    // Left SideEnum...
     Coord? leftLineIP = line.getIntersectionPoint(
       Line.fromPoints(
         targetRectangle.left,
@@ -343,7 +343,7 @@ class Rectangle extends Rect {
       ),
     );
     if (leftLineIP != null &&
-        targetRectangle.hasPointOnSide(leftLineIP, Side.LEFT))
+        targetRectangle.hasPointOnSide(leftLineIP, SideEnum.LEFT))
       ips.add(leftLineIP);
 
     if (ips.length == 1) {
@@ -625,13 +625,13 @@ class Rectangle extends Rect {
 
   // Coord nextClockwiseCorner(Coord pos) {
   //   switch (whichSide(pos)) {
-  //     case Side.BOTTOM:
+  //     case SideEnum.BOTTOM:
   //       return Coord.fromOffset(bottomLeft);
-  //     case Side.LEFT:
+  //     case SideEnum.LEFT:
   //       return Coord.fromOffset(topLeft);
-  //     case Side.RIGHT:
+  //     case SideEnum.RIGHT:
   //       return Coord.fromOffset(bottomRight);
-  //     case Side.TOP:
+  //     case SideEnum.TOP:
   //       return Coord.fromOffset(topRight);
   //     default:
   //       throw (Exception("nextClockwiseCorner - Not on a Side !"));
@@ -640,13 +640,13 @@ class Rectangle extends Rect {
 
   // Coord previousClockwiseCorner(Coord pos) {
   //   switch (whichSide(pos)) {
-  //     case Side.BOTTOM:
+  //     case SideEnum.BOTTOM:
   //       return Coord.fromOffset(bottomRight);
-  //     case Side.LEFT:
+  //     case SideEnum.LEFT:
   //       return Coord.fromOffset(bottomLeft);
-  //     case Side.RIGHT:
+  //     case SideEnum.RIGHT:
   //       return Coord.fromOffset(topRight);
-  //     case Side.TOP:
+  //     case SideEnum.TOP:
   //       return Coord.fromOffset(topLeft);
   //     default:
   //       throw (Exception("prevClockwiseCorner - Not on a Side !"));
@@ -655,13 +655,13 @@ class Rectangle extends Rect {
 
   // double distanceToNextCorner(Coord pos) {
   //   switch (whichSide(pos)) {
-  //     case Side.TOP:
+  //     case SideEnum.TOP:
   //       return right - pos.x;
-  //     case Side.LEFT:
+  //     case SideEnum.LEFT:
   //       return pos.y - top;
-  //     case Side.RIGHT:
+  //     case SideEnum.RIGHT:
   //       return bottom - pos.y;
-  //     case Side.BOTTOM:
+  //     case SideEnum.BOTTOM:
   //       return pos.x - left;
   //     default:
   //       throw (Exception("distanceToNextCorner - Not on a Side !"));
@@ -670,13 +670,13 @@ class Rectangle extends Rect {
 
   // double distanceToPreviousCorner(Coord pos) {
   //   switch (whichSide(pos)) {
-  //     case Side.TOP:
+  //     case SideEnum.TOP:
   //       return pos.x - left;
-  //     case Side.LEFT:
+  //     case SideEnum.LEFT:
   //       return bottom - pos.y;
-  //     case Side.RIGHT:
+  //     case SideEnum.RIGHT:
   //       return pos.y - top;
-  //     case Side.BOTTOM:
+  //     case SideEnum.BOTTOM:
   //       return right - pos.x;
   //     default:
   //       throw (Exception("distanceToPreviousCorner - Not on a Side !"));

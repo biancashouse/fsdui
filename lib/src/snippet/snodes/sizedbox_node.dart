@@ -8,12 +8,17 @@ import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 part 'sizedbox_node.mapper.dart';
 
 @MappableClass()
-class SizedBoxNode extends SC with SizedBoxNodeMappable {
+class SizedBoxNode extends SNode with SC, SizedBoxNodeMappable {
+  @override
+  SNode? child;
+
+  @override
+  bool canAppendAChild() => child == null;
   double? width;
   double? height;
   bool? expand;
 
-  SizedBoxNode({super.name, this.width, this.height, this.expand, super.child});
+  SizedBoxNode({super.name, this.width, this.height, this.expand, this.child});
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
@@ -24,7 +29,6 @@ class SizedBoxNode extends SC with SizedBoxNodeMappable {
         decimalValue: width,
         onDoubleChange: (newValue) =>
             refreshWithUpdate(context, () => width = newValue),
-        calloutButtonSize: const Size(80, 20),
       ),
     if (!(expand ?? false))
       DecimalPNode(
@@ -33,7 +37,6 @@ class SizedBoxNode extends SC with SizedBoxNodeMappable {
         decimalValue: height,
         onDoubleChange: (newValue) =>
             refreshWithUpdate(context, () => height = newValue),
-        calloutButtonSize: const Size(80, 20),
       ),
     BoolPNode(
       snode: this,

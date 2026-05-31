@@ -9,13 +9,18 @@ import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 part 'align_node.mapper.dart';
 
 @MappableClass()
-class AlignNode extends SC with AlignNodeMappable {
+class AlignNode extends SNode with SC, AlignNodeMappable {
+  @override
+  SNode? child;
+
+  @override
+  bool canAppendAChild() => child == null;
   AlignmentEnum alignment;
 
   AlignNode({
     super.name,
     required this.alignment,
-    super.child,
+    this.child,
   });
 
   @override

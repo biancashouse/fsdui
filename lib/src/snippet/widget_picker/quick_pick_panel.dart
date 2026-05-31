@@ -81,11 +81,15 @@ class _QuickPickPanelState extends State<QuickPickPanel> {
         final entries = byCategory[cat];
         if (entries == null || entries.isEmpty) continue;
         items.add(_Header(cat.displayName, cat.color));
-        for (final e in entries) items.add(_EntryItem(e));
+        for (final e in entries) {
+          items.add(_EntryItem(e));
+        }
       }
       if (widget.snippetNames.isNotEmpty && widget.onSnippetSelected != null) {
         items.add(_Header('Snippets', WidgetCategory.snippet.color));
-        for (final name in widget.snippetNames) items.add(_SnippetItem(name));
+        for (final name in widget.snippetNames) {
+          items.add(_SnippetItem(name));
+        }
       }
     } else {
       final q = _query.toLowerCase();
@@ -96,7 +100,9 @@ class _QuickPickPanelState extends State<QuickPickPanel> {
           if (aS != bS) return aS - bS;
           return a.label.compareTo(b.label);
         });
-      for (final e in matched) items.add(_EntryItem(e));
+      for (final e in matched) {
+        items.add(_EntryItem(e));
+      }
       if (widget.onSnippetSelected != null) {
         for (final name in widget.snippetNames.where(
           (s) => s.toLowerCase().contains(q),

@@ -1,12 +1,13 @@
+import 'package:dart_mappable/dart_mappable.dart';
+import 'package:flutter/material.dart' show Color, Colors, EdgeInsets;
+import 'package:fsdui/src/mappers/color_mapper.dart';
+import 'package:fsdui/src/mappers/edge_insets_mapper.dart';
+import 'package:fsdui/src/mappers/size_mapper.dart';
 import 'package:fsdui/src/model/alignment_enum_model.dart';
-import 'package:fsdui/src/model/color_model.dart';
 import 'package:fsdui/src/snippet/pnodes/groups/container_style_properties.dart';
 import 'package:fsdui/src/snippet/pnodes/groups/text_style_properties.dart';
 import 'package:fsdui/src/snippet/snode.dart';
-import 'package:fsdui/src/snippet/snodes/abstract_mc_node.dart';
-import 'package:fsdui/src/snippet/snodes/abstract_sc_node.dart';
 import 'package:fsdui/src/snippet/snodes/container_node.dart';
-import 'package:fsdui/src/snippet/snodes/edgeinsets_node_value.dart';
 import 'package:fsdui/src/snippet/snodes/row_node.dart';
 import 'package:fsdui/src/snippet/snodes/text_node.dart';
 import 'package:fsdui/src/snippet/snodes/upto6colors.dart';
@@ -14,17 +15,16 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   setUpAll(() {
+    MapperContainer.globals.use(const ColorMapper());
+    MapperContainer.globals.use(EdgeInsetsMapper());
+    MapperContainer.globals.use(SizeMapper());
     SNodeMapper.ensureInitialized();
-    SCMapper.ensureInitialized();
-    MCMapper.ensureInitialized();
     ContainerNodeMapper.ensureInitialized();
     TextNodeMapper.ensureInitialized();
     RowNodeMapper.ensureInitialized();
     ContainerStylePropertiesMapper.ensureInitialized();
     TextStylePropertiesMapper.ensureInitialized();
-    EdgeInsetsValueMapper.ensureInitialized();
     UpTo6ColorsMapper.ensureInitialized();
-    ColorModelMapper.ensureInitialized();
   });
 
   group('SNode Serialization Tests', () {
@@ -34,11 +34,11 @@ void main() {
         csPropGroup: ContainerStyleProperties(
           width: 150.0,
           height: 80.0,
-          margin: EdgeInsetsValue(left: 8.0, right: 8.0, top: 8.0, bottom: 8.0),
-          padding: EdgeInsetsValue(left: 16.0, right: 16.0, top: 4.0, bottom: 4.0),
+          margin: EdgeInsets.all(8.0),
+          padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 4.0, bottom: 4.0),
           alignment: AlignmentEnum.center,
-          fillColors: UpTo6Colors(color1: ColorModel.blue()), // Blue
-          borderColors: UpTo6Colors(color1: ColorModel.black()), // Black
+          fillColors: UpTo6Colors(color1: const Color(0xFF2196F3)),
+          borderColors: UpTo6Colors(color1: Colors.black),
           borderThickness: 2.0,
           borderRadius: 12.0,
           radialGradient: true,

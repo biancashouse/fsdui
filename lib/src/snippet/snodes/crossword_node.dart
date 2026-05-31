@@ -1,14 +1,12 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
-import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
-import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
 
 part 'crossword_node.mapper.dart';
 
 @MappableClass()
-class CrosswordNode extends CL with CrosswordNodeMappable {
+class CrosswordNode extends SNode with CrosswordNodeMappable {
   String? type; // e.g., 'nyt' or 'the_guardian'
   String? jsonData; // JSON containing layout, clues, and answers
 
@@ -89,7 +87,7 @@ class CrosswordNode extends CL with CrosswordNodeMappable {
 
   @override
   String toSource(BuildContext context) {
-    return '''CrosswordNode(type:'$type', jsonData:'${jsonData}')''';
+    return '''CrosswordNode(type:'$type', jsonData:'$jsonData')''';
   }
 
   @override

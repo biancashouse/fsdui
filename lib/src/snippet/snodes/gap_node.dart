@@ -7,7 +7,7 @@ import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 part 'gap_node.mapper.dart';
 
 @MappableClass()
-class GapNode extends CL with GapNodeMappable {
+class GapNode extends SNode with GapNodeMappable {
   double gap;
 
   GapNode({
@@ -23,7 +23,6 @@ class GapNode extends CL with GapNodeMappable {
           decimalValue: gap,
           onDoubleChange: (newValue) =>
               refreshWithUpdate(context, () => gap = newValue ?? 0),
-          calloutButtonSize: const Size(60, 30),
         ),
         FlutterDocPNode(
             buttonLabel: 'Gap',

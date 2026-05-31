@@ -38,12 +38,12 @@ class ColorOrGradientPNode extends PNode {
                           cId: '$name:1',
                           // key: GlobalKey(),
                           label: '',
-                          originalColor: colors?.color1?.flutterValue,
+                          originalColor: colors?.color1,
                           onChangeF: (Color? newColor) {
                             if (newColor != null) {
                               setState(() => onColorChange.call(
                                 colors = UpTo6Colors(
-                                  color1: ColorModel.fromColor(newColor),
+                                  color1: newColor,
                                   color2: colors?.color2,
                                   color3: colors?.color3,
                                   color4: colors?.color4,
@@ -62,13 +62,13 @@ class ColorOrGradientPNode extends PNode {
                       return PropertyButtonColor(
                         cId: '$name:2',
                         label: '',
-                        originalColor: colors?.color2?.flutterValue,
+                        originalColor: colors?.color2,
                         onChangeF: (Color? newColor) {
                           if (newColor != null) {
                             setState(() => onColorChange.call(
                               colors = UpTo6Colors(
                                 color1: colors?.color1,
-                                color2: ColorModel.fromColor(newColor),
+                                color2: newColor,
                                 color3: colors?.color3,
                                 color4: colors?.color4,
                                 color5: colors?.color5,
@@ -87,14 +87,14 @@ class ColorOrGradientPNode extends PNode {
                       return PropertyButtonColor(
                         cId: '$name:3',
                         label: '',
-                        originalColor: colors?.color3?.flutterValue,
+                        originalColor: colors?.color3,
                         onChangeF: (Color? newColor) {
                           if (newColor != null) {
                             setState(() => onColorChange.call(
                               colors = UpTo6Colors(
                                 color1: colors?.color1,
                                 color2: colors?.color2,
-                                color3: ColorModel.fromColor(newColor),
+                                color3: newColor,
                                 color4: colors?.color4,
                                 color5: colors?.color5,
                                 color6: colors?.color6,
@@ -112,7 +112,7 @@ class ColorOrGradientPNode extends PNode {
                       return PropertyButtonColor(
                         cId: '$name:4',
                         label: '',
-                        originalColor: colors?.color4?.flutterValue,
+                        originalColor: colors?.color4,
                         onChangeF: (Color? newColor) {
                           if (newColor != null) {
                             setState(() => onColorChange.call(
@@ -120,7 +120,7 @@ class ColorOrGradientPNode extends PNode {
                                 color1: colors?.color1,
                                 color2: colors?.color2,
                                 color3: colors?.color3,
-                                color4: ColorModel.fromColor(newColor),
+                                color4: newColor,
                                 color5: colors?.color5,
                                 color6: colors?.color6,
                               ),
@@ -137,7 +137,7 @@ class ColorOrGradientPNode extends PNode {
                       return PropertyButtonColor(
                         cId: '$name:5',
                         label: '',
-                        originalColor: colors?.color5?.flutterValue,
+                        originalColor: colors?.color5,
                         onChangeF: (Color? newColor) {
                           if (newColor != null) {
                             setState(() => onColorChange.call(
@@ -146,7 +146,7 @@ class ColorOrGradientPNode extends PNode {
                                 color2: colors?.color2,
                                 color3: colors?.color3,
                                 color4: colors?.color4,
-                                color5: ColorModel.fromColor(newColor),
+                                color5: newColor,
                                 color6: colors?.color6,
                               ),
                             ));
@@ -162,7 +162,7 @@ class ColorOrGradientPNode extends PNode {
                       return PropertyButtonColor(
                         cId: '$name:6',
                         label: '',
-                        originalColor: colors?.color6?.flutterValue,
+                        originalColor: colors?.color6,
                         onChangeF: (Color? newColor) {
                           if (newColor != null) {
                             setState(() => onColorChange.call(
@@ -172,7 +172,7 @@ class ColorOrGradientPNode extends PNode {
                                 color3: colors?.color3,
                                 color4: colors?.color4,
                                 color5: colors?.color5,
-                                color6: ColorModel.fromColor(newColor),
+                                color6: newColor,
                               ),
                             ));
                           }
