@@ -6,11 +6,9 @@ import '../bloc/auth/auth_event.dart';
 import '../bloc/auth/auth_state.dart';
 
 class LoginScreenPasswordless extends StatefulWidget {
-  final String gcrServerUrl;
   final ValueChanged<String> onSignedInF;
 
   const LoginScreenPasswordless({
-    required this.gcrServerUrl,
     required this.onSignedInF,
     super.key,
   });
@@ -23,10 +21,22 @@ class LoginScreenPasswordless extends StatefulWidget {
 class _LoginScreenPasswordlessState extends State<LoginScreenPasswordless> {
   final _formKey = GlobalKey<FormState>();
   final _eaController = TextEditingController();
+  final _eaFocusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    // autofocus: true is ignored inside overlays — request focus explicitly
+    // after the overlay's focus scope is active.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _eaFocusNode.requestFocus();
+    });
+  }
 
   @override
   void dispose() {
     _eaController.dispose();
+    _eaFocusNode.dispose();
     super.dispose();
   }
 
@@ -83,13 +93,13 @@ class _LoginScreenPasswordlessState extends State<LoginScreenPasswordless> {
           const SizedBox(height: 32),
           TextFormField(
             controller: _eaController,
+            focusNode: _eaFocusNode,
             decoration: const InputDecoration(
               labelText: 'Email',
               prefixIcon: Icon(Icons.email_outlined),
               border: OutlineInputBorder(),
             ),
             keyboardType: TextInputType.emailAddress,
-            autofocus: true,
             validator: (v) => (v?.isEmpty ?? true) ? 'Enter an email' : null,
             onFieldSubmitted: (_) => _submit(context),
           ),
@@ -170,8 +180,6 @@ class _LoginScreenPasswordlessState extends State<LoginScreenPasswordless> {
       context.read<AuthBloc>().add(
         GenerateTokenAndSendConfirmationEmail(
           ea: ea,
-          gcrServerUrl: widget.gcrServerUrl,
-          appName: fsdui.appName,
         ),
       );
     }
