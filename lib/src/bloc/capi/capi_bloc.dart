@@ -2036,8 +2036,12 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
   HotspotTargetModel? getNewestTarget() => state.newestTarget;
 
   @override
-  CAPIState? fromJson(Map<String, dynamic> json) => null;
+  CAPIState? fromJson(Map<String, dynamic> json) => CAPIState(
+    themeModeIndex: json['themeModeIndex'] as int?,
+  );
 
   @override
-  Map<String, dynamic>? toJson(CAPIState state) => null;
+  Map<String, dynamic>? toJson(CAPIState state) => {
+    'themeModeIndex': state.themeModeIndex,
+  };
 }
