@@ -14,7 +14,6 @@ import '../../bloc/auth/auth_bloc.dart';
 import '../../mappers/color_mapper.dart';
 import '../../mappers/size_mapper.dart';
 import '../../mappers/edge_insets_mapper.dart';
-import '../../repositories/app_repository.dart';
 import '../../repositories/auth_repository.dart';
 import 'url_strategy_stub.dart' if (dart.library.html) 'url_strategy_web.dart';
 
@@ -118,7 +117,6 @@ class FlutterContentAppState extends State<FlutterContentApp>
 
   // Instantiate repositories once at the top of the tree.
   final authRepository = AuthRepository();
-  final appRepository = AppRepository();
 
   // YoutubePlayerController? ytController;
 
@@ -184,7 +182,6 @@ class FlutterContentAppState extends State<FlutterContentApp>
       useEmulator: widget.useEmulator,
       routingConfig: widget.routingConfig,
       initialRoutePath: widget.initialRoutePath,
-
     );
     widget.onReadyF?.call();
     SNode.hideAllTargetCovers();
@@ -205,11 +202,8 @@ class FlutterContentAppState extends State<FlutterContentApp>
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.hasData) {
-          return MultiRepositoryProvider(
-            providers: [
-              RepositoryProvider.value(value: authRepository),
-              RepositoryProvider.value(value: appRepository),
-            ],
+          return RepositoryProvider.value(
+            value: authRepository,
             child: MultiBlocProvider(
               providers: [
                 // AuthBloc is hydrated – state is restored automatically.
