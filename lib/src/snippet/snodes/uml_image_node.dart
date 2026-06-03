@@ -5,6 +5,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 // import 'package:firebase_storage/firebase_storage.dart' show FirebaseStorage;
 // import 'package:firebase_ui_storage/firebase_ui_storage.dart' show StorageImage;
 import 'package:flutter/material.dart';
+import 'package:flutter_uml/flutter_uml.dart';
 import 'package:fsdui/fsdui.dart';
 
 // import 'package:fsdui/src/snippet/pnodes/editors/plantuml_msv.dart';
@@ -17,7 +18,6 @@ import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart'
 // import 'package:fsdui/src/snippet/pnodes/uml_string_pnode.dart';
 
 // import '../../svg/web_svg_view.dart' show WebSvgView;
-import 'package:fsdui/src/flutter_uml/lib/flutter_uml.dart';
 import '../pnodes/decimal_pnode.dart' show DecimalPNode;
 import '../pnodes/uml_string_pnode.dart' show DiagramStringPNode;
 

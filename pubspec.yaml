@@ -142,6 +142,9 @@ dependencies:
   flutter_callouts:
     path: packages/flutter_callouts
 
+  flutter_uml:
+    path: packages/flutter_uml
+
   banner_listtile: ^2.3.0
   flutter_markdown_plus: ^1.0.7
   markdown: ^7.3.1

@@ -839,6 +839,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_uml:
+    dependency: "direct main"
+    description:
+      path: "packages/flutter_uml"
+      relative: true
+    source: path
+    version: "0.1.0"
   flutter_web_plugins:
     dependency: "direct main"
     description: flutter
