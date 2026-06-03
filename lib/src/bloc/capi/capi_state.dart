@@ -1,6 +1,5 @@
 // ignore_for_file: constant_identifier_names, non_constant_identifier_names
 
-import 'package:flutter/material.dart' show ThemeMode;
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../model/hotspot_target_model.dart';
@@ -11,7 +10,7 @@ part 'capi_state.freezed.dart';
 
 @freezed
 class CAPIState with _$CAPIState {
-  // const CAPIState._();
+  const CAPIState._();
 
   // one per page, each having its own json data file
   // can have multiple (named) target wrappers, hence the maps
@@ -30,18 +29,21 @@ class CAPIState with _$CAPIState {
     HotspotTargetModel? newestTarget,
     HotspotTargetModel? selectedTarget,
     //
-    // String? selectedPanel,
-    String? unverifiedEa,
-    String? verifiedEa,
-    int? appRating,
-    String? textTBD,
-
-    bool? isSignedInAsNormalUser,
+    // persisted -----------
+    String? ea,
+    String? token,
+    bool? verified,
     bool? isSignedInAsSuperEditor,
     bool? isSignedInAsArticleEditor,
     bool? isSignedInAsGuestEditor,
-
     int? themeModeIndex, // system, light, dark
+    // persisted -----------
+
+    // awaitingConfirmation and authErrorMessage are transient — excluded from HydratedBloc serialisation.
+    bool? awaitingConfirmation,
+    String? authErrorMessage,
+    int? appRating,
+    String? textTBD,
 
     bool? showClipboardContent,
     int? force, // hacky way to force a transition
@@ -64,4 +66,10 @@ class CAPIState with _$CAPIState {
     // VersionId? snippetBeingEditedVersionId,
     // @Default(true) bool ONLY_TESTING,
   }) = _CAPIState;
+
+  bool isSignedInAsNormalUser() {
+    return !(isSignedInAsSuperEditor ?? false) &&
+        !(isSignedInAsArticleEditor ?? false) &&
+        !(isSignedInAsGuestEditor ?? false);
+  }
 }

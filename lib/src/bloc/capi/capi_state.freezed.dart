@@ -30,17 +30,21 @@ mixin _$CAPIState {
   HotspotTargetModel? get newestTarget => throw _privateConstructorUsedError;
   HotspotTargetModel? get selectedTarget =>
       throw _privateConstructorUsedError; //
-  // String? selectedPanel,
-  String? get unverifiedEa => throw _privateConstructorUsedError;
-  String? get verifiedEa => throw _privateConstructorUsedError;
-  int? get appRating => throw _privateConstructorUsedError;
-  String? get textTBD => throw _privateConstructorUsedError;
-  bool? get isSignedInAsNormalUser => throw _privateConstructorUsedError;
+  // persisted -----------
+  String? get ea => throw _privateConstructorUsedError;
+  String? get token => throw _privateConstructorUsedError;
+  bool? get verified => throw _privateConstructorUsedError;
   bool? get isSignedInAsSuperEditor => throw _privateConstructorUsedError;
   bool? get isSignedInAsArticleEditor => throw _privateConstructorUsedError;
   bool? get isSignedInAsGuestEditor => throw _privateConstructorUsedError;
   int? get themeModeIndex =>
       throw _privateConstructorUsedError; // system, light, dark
+  // persisted -----------
+  // awaitingConfirmation and authErrorMessage are transient — excluded from HydratedBloc serialisation.
+  bool? get awaitingConfirmation => throw _privateConstructorUsedError;
+  String? get authErrorMessage => throw _privateConstructorUsedError;
+  int? get appRating => throw _privateConstructorUsedError;
+  String? get textTBD => throw _privateConstructorUsedError;
   bool? get showClipboardContent => throw _privateConstructorUsedError;
   int? get force =>
       throw _privateConstructorUsedError; // hacky way to force a transition
@@ -74,15 +78,17 @@ abstract class $CAPIStateCopyWith<$Res> {
   $Res call({
     HotspotTargetModel? newestTarget,
     HotspotTargetModel? selectedTarget,
-    String? unverifiedEa,
-    String? verifiedEa,
-    int? appRating,
-    String? textTBD,
-    bool? isSignedInAsNormalUser,
+    String? ea,
+    String? token,
+    bool? verified,
     bool? isSignedInAsSuperEditor,
     bool? isSignedInAsArticleEditor,
     bool? isSignedInAsGuestEditor,
     int? themeModeIndex,
+    bool? awaitingConfirmation,
+    String? authErrorMessage,
+    int? appRating,
+    String? textTBD,
     bool? showClipboardContent,
     int? force,
     bool? onlyTargetsWrappers,
@@ -109,15 +115,17 @@ class _$CAPIStateCopyWithImpl<$Res, $Val extends CAPIState>
   $Res call({
     Object? newestTarget = freezed,
     Object? selectedTarget = freezed,
-    Object? unverifiedEa = freezed,
-    Object? verifiedEa = freezed,
-    Object? appRating = freezed,
-    Object? textTBD = freezed,
-    Object? isSignedInAsNormalUser = freezed,
+    Object? ea = freezed,
+    Object? token = freezed,
+    Object? verified = freezed,
     Object? isSignedInAsSuperEditor = freezed,
     Object? isSignedInAsArticleEditor = freezed,
     Object? isSignedInAsGuestEditor = freezed,
     Object? themeModeIndex = freezed,
+    Object? awaitingConfirmation = freezed,
+    Object? authErrorMessage = freezed,
+    Object? appRating = freezed,
+    Object? textTBD = freezed,
     Object? showClipboardContent = freezed,
     Object? force = freezed,
     Object? onlyTargetsWrappers = freezed,
@@ -135,25 +143,17 @@ class _$CAPIStateCopyWithImpl<$Res, $Val extends CAPIState>
                 ? _value.selectedTarget
                 : selectedTarget // ignore: cast_nullable_to_non_nullable
                       as HotspotTargetModel?,
-            unverifiedEa: freezed == unverifiedEa
-                ? _value.unverifiedEa
-                : unverifiedEa // ignore: cast_nullable_to_non_nullable
+            ea: freezed == ea
+                ? _value.ea
+                : ea // ignore: cast_nullable_to_non_nullable
                       as String?,
-            verifiedEa: freezed == verifiedEa
-                ? _value.verifiedEa
-                : verifiedEa // ignore: cast_nullable_to_non_nullable
+            token: freezed == token
+                ? _value.token
+                : token // ignore: cast_nullable_to_non_nullable
                       as String?,
-            appRating: freezed == appRating
-                ? _value.appRating
-                : appRating // ignore: cast_nullable_to_non_nullable
-                      as int?,
-            textTBD: freezed == textTBD
-                ? _value.textTBD
-                : textTBD // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            isSignedInAsNormalUser: freezed == isSignedInAsNormalUser
-                ? _value.isSignedInAsNormalUser
-                : isSignedInAsNormalUser // ignore: cast_nullable_to_non_nullable
+            verified: freezed == verified
+                ? _value.verified
+                : verified // ignore: cast_nullable_to_non_nullable
                       as bool?,
             isSignedInAsSuperEditor: freezed == isSignedInAsSuperEditor
                 ? _value.isSignedInAsSuperEditor
@@ -171,6 +171,22 @@ class _$CAPIStateCopyWithImpl<$Res, $Val extends CAPIState>
                 ? _value.themeModeIndex
                 : themeModeIndex // ignore: cast_nullable_to_non_nullable
                       as int?,
+            awaitingConfirmation: freezed == awaitingConfirmation
+                ? _value.awaitingConfirmation
+                : awaitingConfirmation // ignore: cast_nullable_to_non_nullable
+                      as bool?,
+            authErrorMessage: freezed == authErrorMessage
+                ? _value.authErrorMessage
+                : authErrorMessage // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            appRating: freezed == appRating
+                ? _value.appRating
+                : appRating // ignore: cast_nullable_to_non_nullable
+                      as int?,
+            textTBD: freezed == textTBD
+                ? _value.textTBD
+                : textTBD // ignore: cast_nullable_to_non_nullable
+                      as String?,
             showClipboardContent: freezed == showClipboardContent
                 ? _value.showClipboardContent
                 : showClipboardContent // ignore: cast_nullable_to_non_nullable
@@ -213,15 +229,17 @@ abstract class _$$CAPIStateImplCopyWith<$Res>
   $Res call({
     HotspotTargetModel? newestTarget,
     HotspotTargetModel? selectedTarget,
-    String? unverifiedEa,
-    String? verifiedEa,
-    int? appRating,
-    String? textTBD,
-    bool? isSignedInAsNormalUser,
+    String? ea,
+    String? token,
+    bool? verified,
     bool? isSignedInAsSuperEditor,
     bool? isSignedInAsArticleEditor,
     bool? isSignedInAsGuestEditor,
     int? themeModeIndex,
+    bool? awaitingConfirmation,
+    String? authErrorMessage,
+    int? appRating,
+    String? textTBD,
     bool? showClipboardContent,
     int? force,
     bool? onlyTargetsWrappers,
@@ -247,15 +265,17 @@ class __$$CAPIStateImplCopyWithImpl<$Res>
   $Res call({
     Object? newestTarget = freezed,
     Object? selectedTarget = freezed,
-    Object? unverifiedEa = freezed,
-    Object? verifiedEa = freezed,
-    Object? appRating = freezed,
-    Object? textTBD = freezed,
-    Object? isSignedInAsNormalUser = freezed,
+    Object? ea = freezed,
+    Object? token = freezed,
+    Object? verified = freezed,
     Object? isSignedInAsSuperEditor = freezed,
     Object? isSignedInAsArticleEditor = freezed,
     Object? isSignedInAsGuestEditor = freezed,
     Object? themeModeIndex = freezed,
+    Object? awaitingConfirmation = freezed,
+    Object? authErrorMessage = freezed,
+    Object? appRating = freezed,
+    Object? textTBD = freezed,
     Object? showClipboardContent = freezed,
     Object? force = freezed,
     Object? onlyTargetsWrappers = freezed,
@@ -273,25 +293,17 @@ class __$$CAPIStateImplCopyWithImpl<$Res>
             ? _value.selectedTarget
             : selectedTarget // ignore: cast_nullable_to_non_nullable
                   as HotspotTargetModel?,
-        unverifiedEa: freezed == unverifiedEa
-            ? _value.unverifiedEa
-            : unverifiedEa // ignore: cast_nullable_to_non_nullable
+        ea: freezed == ea
+            ? _value.ea
+            : ea // ignore: cast_nullable_to_non_nullable
                   as String?,
-        verifiedEa: freezed == verifiedEa
-            ? _value.verifiedEa
-            : verifiedEa // ignore: cast_nullable_to_non_nullable
+        token: freezed == token
+            ? _value.token
+            : token // ignore: cast_nullable_to_non_nullable
                   as String?,
-        appRating: freezed == appRating
-            ? _value.appRating
-            : appRating // ignore: cast_nullable_to_non_nullable
-                  as int?,
-        textTBD: freezed == textTBD
-            ? _value.textTBD
-            : textTBD // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        isSignedInAsNormalUser: freezed == isSignedInAsNormalUser
-            ? _value.isSignedInAsNormalUser
-            : isSignedInAsNormalUser // ignore: cast_nullable_to_non_nullable
+        verified: freezed == verified
+            ? _value.verified
+            : verified // ignore: cast_nullable_to_non_nullable
                   as bool?,
         isSignedInAsSuperEditor: freezed == isSignedInAsSuperEditor
             ? _value.isSignedInAsSuperEditor
@@ -309,6 +321,22 @@ class __$$CAPIStateImplCopyWithImpl<$Res>
             ? _value.themeModeIndex
             : themeModeIndex // ignore: cast_nullable_to_non_nullable
                   as int?,
+        awaitingConfirmation: freezed == awaitingConfirmation
+            ? _value.awaitingConfirmation
+            : awaitingConfirmation // ignore: cast_nullable_to_non_nullable
+                  as bool?,
+        authErrorMessage: freezed == authErrorMessage
+            ? _value.authErrorMessage
+            : authErrorMessage // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        appRating: freezed == appRating
+            ? _value.appRating
+            : appRating // ignore: cast_nullable_to_non_nullable
+                  as int?,
+        textTBD: freezed == textTBD
+            ? _value.textTBD
+            : textTBD // ignore: cast_nullable_to_non_nullable
+                  as String?,
         showClipboardContent: freezed == showClipboardContent
             ? _value.showClipboardContent
             : showClipboardContent // ignore: cast_nullable_to_non_nullable
@@ -340,26 +368,28 @@ class __$$CAPIStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CAPIStateImpl implements _CAPIState {
+class _$CAPIStateImpl extends _CAPIState {
   _$CAPIStateImpl({
     this.newestTarget,
     this.selectedTarget,
-    this.unverifiedEa,
-    this.verifiedEa,
-    this.appRating,
-    this.textTBD,
-    this.isSignedInAsNormalUser,
+    this.ea,
+    this.token,
+    this.verified,
     this.isSignedInAsSuperEditor,
     this.isSignedInAsArticleEditor,
     this.isSignedInAsGuestEditor,
     this.themeModeIndex,
+    this.awaitingConfirmation,
+    this.authErrorMessage,
+    this.appRating,
+    this.textTBD,
     this.showClipboardContent,
     this.force,
     this.onlyTargetsWrappers,
     this.routeName,
     this.activeSnippetName,
     this.snippetBeingEdited,
-  });
+  }) : super._();
 
   // required bool useFirebase,
   // @Default(false) bool localTestingFilePaths, // because filepaths and fonts accedd differently in own package
@@ -376,17 +406,13 @@ class _$CAPIStateImpl implements _CAPIState {
   @override
   final HotspotTargetModel? selectedTarget;
   //
-  // String? selectedPanel,
+  // persisted -----------
   @override
-  final String? unverifiedEa;
+  final String? ea;
   @override
-  final String? verifiedEa;
+  final String? token;
   @override
-  final int? appRating;
-  @override
-  final String? textTBD;
-  @override
-  final bool? isSignedInAsNormalUser;
+  final bool? verified;
   @override
   final bool? isSignedInAsSuperEditor;
   @override
@@ -396,6 +422,16 @@ class _$CAPIStateImpl implements _CAPIState {
   @override
   final int? themeModeIndex;
   // system, light, dark
+  // persisted -----------
+  // awaitingConfirmation and authErrorMessage are transient — excluded from HydratedBloc serialisation.
+  @override
+  final bool? awaitingConfirmation;
+  @override
+  final String? authErrorMessage;
+  @override
+  final int? appRating;
+  @override
+  final String? textTBD;
   @override
   final bool? showClipboardContent;
   @override
@@ -421,7 +457,7 @@ class _$CAPIStateImpl implements _CAPIState {
 
   @override
   String toString() {
-    return 'CAPIState(newestTarget: $newestTarget, selectedTarget: $selectedTarget, unverifiedEa: $unverifiedEa, verifiedEa: $verifiedEa, appRating: $appRating, textTBD: $textTBD, isSignedInAsNormalUser: $isSignedInAsNormalUser, isSignedInAsSuperEditor: $isSignedInAsSuperEditor, isSignedInAsArticleEditor: $isSignedInAsArticleEditor, isSignedInAsGuestEditor: $isSignedInAsGuestEditor, themeModeIndex: $themeModeIndex, showClipboardContent: $showClipboardContent, force: $force, onlyTargetsWrappers: $onlyTargetsWrappers, routeName: $routeName, activeSnippetName: $activeSnippetName, snippetBeingEdited: $snippetBeingEdited)';
+    return 'CAPIState(newestTarget: $newestTarget, selectedTarget: $selectedTarget, ea: $ea, token: $token, verified: $verified, isSignedInAsSuperEditor: $isSignedInAsSuperEditor, isSignedInAsArticleEditor: $isSignedInAsArticleEditor, isSignedInAsGuestEditor: $isSignedInAsGuestEditor, themeModeIndex: $themeModeIndex, awaitingConfirmation: $awaitingConfirmation, authErrorMessage: $authErrorMessage, appRating: $appRating, textTBD: $textTBD, showClipboardContent: $showClipboardContent, force: $force, onlyTargetsWrappers: $onlyTargetsWrappers, routeName: $routeName, activeSnippetName: $activeSnippetName, snippetBeingEdited: $snippetBeingEdited)';
   }
 
   @override
@@ -433,15 +469,10 @@ class _$CAPIStateImpl implements _CAPIState {
                 other.newestTarget == newestTarget) &&
             (identical(other.selectedTarget, selectedTarget) ||
                 other.selectedTarget == selectedTarget) &&
-            (identical(other.unverifiedEa, unverifiedEa) ||
-                other.unverifiedEa == unverifiedEa) &&
-            (identical(other.verifiedEa, verifiedEa) ||
-                other.verifiedEa == verifiedEa) &&
-            (identical(other.appRating, appRating) ||
-                other.appRating == appRating) &&
-            (identical(other.textTBD, textTBD) || other.textTBD == textTBD) &&
-            (identical(other.isSignedInAsNormalUser, isSignedInAsNormalUser) ||
-                other.isSignedInAsNormalUser == isSignedInAsNormalUser) &&
+            (identical(other.ea, ea) || other.ea == ea) &&
+            (identical(other.token, token) || other.token == token) &&
+            (identical(other.verified, verified) ||
+                other.verified == verified) &&
             (identical(
                   other.isSignedInAsSuperEditor,
                   isSignedInAsSuperEditor,
@@ -459,6 +490,13 @@ class _$CAPIStateImpl implements _CAPIState {
                 other.isSignedInAsGuestEditor == isSignedInAsGuestEditor) &&
             (identical(other.themeModeIndex, themeModeIndex) ||
                 other.themeModeIndex == themeModeIndex) &&
+            (identical(other.awaitingConfirmation, awaitingConfirmation) ||
+                other.awaitingConfirmation == awaitingConfirmation) &&
+            (identical(other.authErrorMessage, authErrorMessage) ||
+                other.authErrorMessage == authErrorMessage) &&
+            (identical(other.appRating, appRating) ||
+                other.appRating == appRating) &&
+            (identical(other.textTBD, textTBD) || other.textTBD == textTBD) &&
             (identical(other.showClipboardContent, showClipboardContent) ||
                 other.showClipboardContent == showClipboardContent) &&
             (identical(other.force, force) || other.force == force) &&
@@ -473,26 +511,28 @@ class _$CAPIStateImpl implements _CAPIState {
   }
 
   @override
-  int get hashCode => Object.hash(
+  int get hashCode => Object.hashAll([
     runtimeType,
     newestTarget,
     selectedTarget,
-    unverifiedEa,
-    verifiedEa,
-    appRating,
-    textTBD,
-    isSignedInAsNormalUser,
+    ea,
+    token,
+    verified,
     isSignedInAsSuperEditor,
     isSignedInAsArticleEditor,
     isSignedInAsGuestEditor,
     themeModeIndex,
+    awaitingConfirmation,
+    authErrorMessage,
+    appRating,
+    textTBD,
     showClipboardContent,
     force,
     onlyTargetsWrappers,
     routeName,
     activeSnippetName,
     snippetBeingEdited,
-  );
+  ]);
 
   /// Create a copy of CAPIState
   /// with the given fields replaced by the non-null parameter values.
@@ -503,19 +543,21 @@ class _$CAPIStateImpl implements _CAPIState {
       __$$CAPIStateImplCopyWithImpl<_$CAPIStateImpl>(this, _$identity);
 }
 
-abstract class _CAPIState implements CAPIState {
+abstract class _CAPIState extends CAPIState {
   factory _CAPIState({
     final HotspotTargetModel? newestTarget,
     final HotspotTargetModel? selectedTarget,
-    final String? unverifiedEa,
-    final String? verifiedEa,
-    final int? appRating,
-    final String? textTBD,
-    final bool? isSignedInAsNormalUser,
+    final String? ea,
+    final String? token,
+    final bool? verified,
     final bool? isSignedInAsSuperEditor,
     final bool? isSignedInAsArticleEditor,
     final bool? isSignedInAsGuestEditor,
     final int? themeModeIndex,
+    final bool? awaitingConfirmation,
+    final String? authErrorMessage,
+    final int? appRating,
+    final String? textTBD,
     final bool? showClipboardContent,
     final int? force,
     final bool? onlyTargetsWrappers,
@@ -523,6 +565,7 @@ abstract class _CAPIState implements CAPIState {
     final String? activeSnippetName,
     final SnippetBeingEdited? snippetBeingEdited,
   }) = _$CAPIStateImpl;
+  _CAPIState._() : super._();
 
   // required bool useFirebase,
   // @Default(false) bool localTestingFilePaths, // because filepaths and fonts accedd differently in own package
@@ -538,17 +581,13 @@ abstract class _CAPIState implements CAPIState {
   HotspotTargetModel? get newestTarget;
   @override
   HotspotTargetModel? get selectedTarget; //
-  // String? selectedPanel,
+  // persisted -----------
   @override
-  String? get unverifiedEa;
+  String? get ea;
   @override
-  String? get verifiedEa;
+  String? get token;
   @override
-  int? get appRating;
-  @override
-  String? get textTBD;
-  @override
-  bool? get isSignedInAsNormalUser;
+  bool? get verified;
   @override
   bool? get isSignedInAsSuperEditor;
   @override
@@ -557,6 +596,16 @@ abstract class _CAPIState implements CAPIState {
   bool? get isSignedInAsGuestEditor;
   @override
   int? get themeModeIndex; // system, light, dark
+  // persisted -----------
+  // awaitingConfirmation and authErrorMessage are transient — excluded from HydratedBloc serialisation.
+  @override
+  bool? get awaitingConfirmation;
+  @override
+  String? get authErrorMessage;
+  @override
+  int? get appRating;
+  @override
+  String? get textTBD;
   @override
   bool? get showClipboardContent;
   @override
