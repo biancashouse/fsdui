@@ -13,11 +13,11 @@ class PollEvent with _$PollEvent {
     required PollOptionId optionId,
   }) = UserVoted;
 
-  @override
-  List<DiagnosticsNode> debugDescribeChildren() {
-    // TODO: implement debugDescribeChildren
-    throw UnimplementedError();
-  }
+  // @override
+  // List<DiagnosticsNode> debugDescribeChildren() {
+  //   // TODO: implement debugDescribeChildren
+  //   throw UnimplementedError();
+  // }
 
   @override
   // TODO: implement optionId
@@ -28,19 +28,30 @@ class PollEvent with _$PollEvent {
   PollNode get poll => throw UnimplementedError();
 
   @override
-  DiagnosticsNode toDiagnosticsNode({String? name, DiagnosticsTreeStyle? style}) {
+  DiagnosticsNode toDiagnosticsNode({
+    String? name,
+    DiagnosticsTreeStyle? style,
+  }) {
     // TODO: implement toDiagnosticsNode
     throw UnimplementedError();
   }
 
   @override
-  String toStringDeep({String prefixLineOne = '', String? prefixOtherLines, DiagnosticLevel minLevel = DiagnosticLevel.debug, int wrapWidth = 65}) {
+  String toStringDeep({
+    String prefixLineOne = '',
+    String? prefixOtherLines,
+    DiagnosticLevel minLevel = DiagnosticLevel.debug,
+    int wrapWidth = 65,
+  }) {
     // TODO: implement toStringDeep
     throw UnimplementedError();
   }
 
   @override
-  String toStringShallow({String joiner = ', ', DiagnosticLevel minLevel = DiagnosticLevel.debug}) {
+  String toStringShallow({
+    String joiner = ', ',
+    DiagnosticLevel minLevel = DiagnosticLevel.debug,
+  }) {
     // TODO: implement toStringShallow
     throw UnimplementedError();
   }
@@ -58,5 +69,4 @@ class PollEvent with _$PollEvent {
   // const factory PollEvent.voterIdCreated({
   //   required VoterId newVoterId,
   // }) = VoterIdCreated;
-
 }

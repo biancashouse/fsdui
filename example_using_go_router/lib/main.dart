@@ -25,7 +25,6 @@ void disableOverflowErrors() {
 }
 
 void main({bool useEmulator = false}) async {
-
   runZonedGuarded<Future<void>>(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
@@ -58,7 +57,7 @@ void main({bool useEmulator = false}) async {
 
       runApp(
         FlutterContentApp.router(
-          appId: 'demo-using-go-router',
+          appId: 'demo-using-go-router-99',
           appName: 'Demo using Go Router',
           // use web, mobile or desktop routingConfig defined in your routes_config.dart
           routingConfig: webRoutingConfig,

@@ -16,6 +16,8 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
   final IModelRepository modelRepo;
   final bool showThemeModeIcon;
 
+  StreamSubscription<bool>? _tokenSub;
+
   // final bool isSignedInAsSuperEditor;
   // final bool isSignedInAsArticleEditor;
   // final bool isSignedInAsGuestEditor;
@@ -41,28 +43,32 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     required this.showThemeModeIcon,
     SnippetBeingEdited? mockSnippetBeingEdited, // for testing
   }) : super(
-    CAPIState(
-      snippetBeingEdited: mockSnippetBeingEdited, /* testing usage only */
-      // showThemeModeIcon: showThemeModeIcon,
-    )
-  ) {
+         CAPIState(
+           snippetBeingEdited:
+               mockSnippetBeingEdited /* testing usage only */, // showThemeModeIcon: showThemeModeIcon,
+         ),
+       ) {
+    // auth --------------------
+    on<GenerateTokenAndSendConfirmationEmail>(_onRequestToken);
+    on<TokenConfirmed>(_onTokenConfirmed);
+    on<SignOutRequested>(_onSignOut);
+    // end auth ------------
     // _ur = SnippetUndoRedoStack(this);
 
     on<SetThemeMode>((event, emit) => _setThemeMode(event, emit));
-    on<VerifiedEa>((event, emit) => _verifiedEa(event, emit));
+    // on<VerifiedEa>((event, emit) => _verifiedEa(event, emit));
     on<UpdateAppRating>((event, emit) => _updateAppRating(event, emit));
     on<Sync>((event, emit) => _sync(event, emit));
 
-    on<SignedInAsSuperEditor>(
-          (event, emit) => _signedInAsSuperEditor(event, emit),
-    );
-    on<SignedInAsArticleEditor>(
-          (event, emit) => _signedInAsArticleEditor(event, emit),
-    );
+    // on<SignedInAsSuperEditor>(
+    // (event, emit) => _signedInAsSuperEditor(event, emit),
+    // );
+    // on<SignedInAsArticleEditor>(
+    // (event, emit) => _signedInAsArticleEditor(event, emit),
+    // );
     on<SignedInAsGuestEditor>(
-          (event, emit) => _signedInAsGuestEditor(event, emit),
+      (event, emit) => _signedInAsGuestEditor(event, emit),
     );
-    on<SignOut>((event, emit) => _signOut(event, emit));
 
     on<ForceRefresh>((event, emit) => _forceRefresh(event, emit));
 
@@ -70,14 +76,14 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     on<PublishSnippet>((event, emit) => _publishSnippet(event, emit));
     on<RevertSnippet>((event, emit) => _revertSnippet(event, emit));
     on<ToggleAutoPublishingOfSnippet>(
-          (event, emit) => _toggleAutoPublishingOfSnippet(event, emit),
+      (event, emit) => _toggleAutoPublishingOfSnippet(event, emit),
     );
     on<EnterSelectWidgetMode>(
-          (event, emit) => _enterSelectWidgetMode(event, emit),
+      (event, emit) => _enterSelectWidgetMode(event, emit),
     );
     on<UpdateTappableRects>((event, emit) => _updateTappableRects(event, emit));
     on<ExitSelectWidgetMode>(
-          (event, emit) => _exitSelectWidgetMode(event, emit),
+      (event, emit) => _exitSelectWidgetMode(event, emit),
     );
     on<PushSnippetEditor>((event, emit) => _pushSnippetEditor(event, emit));
     on<ChangedSnippet>((event, emit) => _changedSnippet(event, emit));
@@ -100,10 +106,10 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     on<AppendChild>((event, emit) => _addChild(event, emit));
     on<PrependArticle>((event, emit) => _prependArticle(event, emit));
     on<AddSiblingBefore>(
-          (event, emit) => _addSibling(event, emit, before: true),
+      (event, emit) => _addSibling(event, emit, before: true),
     );
     on<AddSiblingAfter>(
-          (event, emit) => _addSibling(event, emit, before: false),
+      (event, emit) => _addSibling(event, emit, before: false),
     );
     on<PasteChild>((event, emit) => _pasteChild(event, emit));
     on<PasteReplacement>((event, emit) => _pasteReplacement(event, emit));
@@ -113,69 +119,148 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     on<DeleteArticle>((event, emit) => _deleteArticle(event, emit));
     on<CompleteDeletion>((event, emit) => _completeDeletion(event, emit));
     on<SelectedDirectoryOrNode>(
-          (event, emit) => _selectedDirectoryOrNode(event, emit),
+      (event, emit) => _selectedDirectoryOrNode(event, emit),
     );
     on<CutNode>((event, emit) => _cutNode(event, emit));
     on<CopyNode>((event, emit) => _copyNode(event, emit));
     on<CopySnippetJsonToClipboard>(
-          (event, emit) => _copySnippetJsonToClipboard(event, emit),
+      (event, emit) => _copySnippetJsonToClipboard(event, emit),
     );
     on<ReplaceSnippetFromJson>(
-          (event, emit) => _replaceSnippetFromJson(event, emit),
+      (event, emit) => _replaceSnippetFromJson(event, emit),
     );
     on<ToggleSnippetVisibility>(
-          (event, emit) => _toggleSnippetVisibility(event, emit),
+      (event, emit) => _toggleSnippetVisibility(event, emit),
     );
     // on<PageAdded>((event, emit) => _pageAdded(event, emit));
     on<Undo>((event, emit) => _undo(event, emit));
     on<Redo>((event, emit) => _redo(event, emit));
     on<ReorderSibling>((event, emit) => _reorderSibling(event, emit));
     on<ToggleNodeProperties>(
-          (event, emit) => _toggleNodeProperties(event, emit),
+      (event, emit) => _toggleNodeProperties(event, emit),
     );
   }
 
-  Future<void> _verifiedEa(VerifiedEa event, Emitter<CAPIState> emit) async {
-    emit(state.copyWith(verifiedEa: event.ea));
-    // auto sync newly verified user
-    // var changedUserState = await _sync(emit, true);
-    // await _refreshUserAfterSync(changedUserState, emit);
+  /// auth ---------------
+  Future<void> _onRequestToken(
+    GenerateTokenAndSendConfirmationEmail event,
+    Emitter<CAPIState> emit,
+  ) async {
+    emit(state.copyWith(awaitingConfirmation: true, authErrorMessage: null));
+    try {
+      final token = await modelRepo.requestToken(
+        ea: event.ea,
+        appId: fsdui.appId,
+        appName: fsdui.appName,
+      );
+      if (token == null) {
+        emit(
+          state.copyWith(
+            awaitingConfirmation: false,
+            authErrorMessage: 'Failed to send verification email.',
+          ),
+        );
+        return;
+      }
+      emit(
+        state.copyWith(awaitingConfirmation: false, ea: event.ea, token: token),
+      );
+      _startListening(token: token, ea: event.ea);
+    } catch (e) {
+      emit(
+        state.copyWith(
+          awaitingConfirmation: false,
+          authErrorMessage: e.toString(),
+        ),
+      );
+    }
   }
+
+  void _startListening({required String token, required String ea}) {
+    _tokenSub?.cancel();
+    _tokenSub = modelRepo
+        .watchTokenConfirmation(token, ea)
+        .where((confirmed) => confirmed)
+        .listen((_) {
+          add(TokenConfirmed(ea: ea, token: token));
+        });
+  }
+
+  void _onTokenConfirmed(TokenConfirmed event, Emitter<CAPIState> emit) {
+    _tokenSub?.cancel();
+    _tokenSub = null;
+    emit(
+      state.copyWith(
+        verified: true,
+        ea: event.ea,
+        token: event.token,
+        isSignedInAsSuperEditor: fsdui.appInfo.superEditorEas.contains(
+          event.ea,
+        ),
+        isSignedInAsArticleEditor: fsdui.appInfo.articleEditorEas.contains(
+          event.ea,
+        ),
+      ),
+    );
+    // add(VerifiedEa(ea: event.ea));
+  }
+
+  void _onSignOut(SignOutRequested event, Emitter<CAPIState> emit) {
+    _tokenSub?.cancel();
+    _tokenSub = null;
+    emit(
+      state.copyWith(
+        token: null,
+        verified: false,
+        isSignedInAsSuperEditor: false,
+        isSignedInAsArticleEditor: false,
+        isSignedInAsGuestEditor: false,
+      ),
+    );
+  }
+
+  @override
+  Future<void> close() {
+    _tokenSub?.cancel();
+    return super.close();
+  }
+
+  /// end auth -----------
+
+  // Future<void> _verifiedEa(VerifiedEa event, Emitter<CAPIState> emit) async {
+  //   emit(state.copyWith(ea: event.ea));
+  //   // auto sync newly verified user
+  //   // var changedUserState = await _sync(emit, true);
+  //   // await _refreshUserAfterSync(changedUserState, emit);
+  // }
 
   void _setThemeMode(SetThemeMode event, Emitter<CAPIState> emit) {
     final index = ThemeMode.values.indexOf(event.themeMode);
     emit(state.copyWith(themeModeIndex: index == -1 ? 0 : index));
   }
 
-  void _signedInAsSuperEditor(SignedInAsSuperEditor event,
-      Emitter<CAPIState> emit,) async {
-    await fsdui.localStorage.write("signed-in-as-super-editor", true);
-    emit(state.copyWith(isSignedInAsSuperEditor: true));
-  }
+  // void _signedInAsSuperEditor(
+  //   SignedInAsSuperEditor event,
+  //   Emitter<CAPIState> emit,
+  // ) async {
+  //   await fsdui.localStorage.write("signed-in-as-super-editor", true);
+  //   emit(state.copyWith(isSignedInAsSuperEditor: true));
+  // }
 
-  void _signedInAsArticleEditor(SignedInAsArticleEditor event,
-      Emitter<CAPIState> emit,) async {
-    await fsdui.localStorage.write("signed-in-as-article-editor", true);
-    emit(state.copyWith(isSignedInAsArticleEditor: true));
-  }
+  // void _signedInAsArticleEditor(
+  //   SignedInAsArticleEditor event,
+  //   Emitter<CAPIState> emit,
+  // ) async {
+  //   await fsdui.localStorage.write("signed-in-as-article-editor", true);
+  //   emit(state.copyWith(isSignedInAsArticleEditor: true));
+  // }
 
-  void _signedInAsGuestEditor(SignedInAsGuestEditor event,
-      Emitter<CAPIState> emit,) async {
+  void _signedInAsGuestEditor(
+    SignedInAsGuestEditor event,
+    Emitter<CAPIState> emit,
+  ) async {
     await fsdui.localStorage.write("signed-in-as-guest-editor", true);
     emit(state.copyWith(isSignedInAsGuestEditor: true));
-  }
-
-  void _signOut(SignOut event, Emitter<CAPIState> emit) async {
-    await fsdui.localStorage.write("signed-in-as-super-editor", false);
-    await fsdui.localStorage.write("signed-in-as-article-editor", false);
-    await fsdui.localStorage.write("signed-in-as-guest-editor", false);
-    emit(
-      state.copyWith(
-        isSignedInAsSuperEditor: false,
-        isSignedInAsArticleEditor: false,
-        isSignedInAsGuestEditor: false,
-      ),
-    );
   }
 
   Future<void> _sync(Sync event, Emitter<CAPIState> emit) async {
@@ -185,13 +270,17 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     // await _refreshUserAfterSync(changedUserState, emit);
   }
 
-  Future<void> _updateAppRating(UpdateAppRating event,
-      Emitter<CAPIState> emit,) async {
-    emit(state.copyWith());
+  Future<void> _updateAppRating(
+    UpdateAppRating event,
+    Emitter<CAPIState> emit,
+  ) async {
+    emit(state.copyWith(appRating: event.stars));
   }
 
-  Future<void> _revertSnippet(RevertSnippet event,
-      Emitter<CAPIState> emit,) async {
+  Future<void> _revertSnippet(
+    RevertSnippet event,
+    Emitter<CAPIState> emit,
+  ) async {
     SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(
       event.snippetName,
       // ??
@@ -200,8 +289,7 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     );
     if (snippetInfo == null) return;
 
-    final stopwatch = Stopwatch()
-      ..start();
+    final stopwatch = Stopwatch()..start();
     fsdui.showToastOverlay(
       calloutConfig: CalloutConfig(
         cId: "reverting-model",
@@ -223,7 +311,7 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
       snippetName: event.snippetName,
       newEditingVersionId: event.versionId,
       newPublishingVersionId:
-      snippetInfo.autoPublish ?? fsdui.appInfo.autoPublishDefault
+          snippetInfo.autoPublish ?? fsdui.appInfo.autoPublishDefault
           ? event.versionId
           : snippetInfo.publishedVersionId,
     );
@@ -231,7 +319,7 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     if (stopwatch.elapsedMilliseconds < 2000) {
       Future.delayed(
         Duration(milliseconds: 2000 - stopwatch.elapsedMilliseconds),
-            () {
+        () {
           fsdui.dismiss('reverting-model');
         },
       );
@@ -286,8 +374,9 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
   // }
 
   Future<void> _toggleAutoPublishingOfSnippet(
-      ToggleAutoPublishingOfSnippet event,
-      emit,) async {
+    ToggleAutoPublishingOfSnippet event,
+    emit,
+  ) async {
     SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(
       event.snippetName,
     );
@@ -305,10 +394,11 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     emit(state.copyWith(force: (state.force ?? 0) + 1));
   }
 
-  Future<void> _publishSnippet(PublishSnippet event,
-      Emitter<CAPIState> emit,) async {
-    final stopwatch = Stopwatch()
-      ..start();
+  Future<void> _publishSnippet(
+    PublishSnippet event,
+    Emitter<CAPIState> emit,
+  ) async {
+    final stopwatch = Stopwatch()..start();
     fsdui.showToastOverlay(
       calloutConfig: CalloutConfig(
         cId: "publishing-version",
@@ -345,8 +435,10 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     // ));
   }
 
-  Future<void> _toggleSnippetVisibility(ToggleSnippetVisibility event,
-      emit,) async {
+  Future<void> _toggleSnippetVisibility(
+    ToggleSnippetVisibility event,
+    emit,
+  ) async {
     SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(
       event.snippetName!,
     );
@@ -378,14 +470,18 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
   }
 
   /// copy snippet json to clipboard
-  Future<void> _copySnippetJsonToClipboard(CopySnippetJsonToClipboard event,
-      emit,) async {
+  Future<void> _copySnippetJsonToClipboard(
+    CopySnippetJsonToClipboard event,
+    emit,
+  ) async {
     await FlutterClipboard.copy(event.rootNode.toJson());
   }
 
   /// paste clipboard, or supplied json String to form a snippet
-  Future<void> _replaceSnippetFromJson(ReplaceSnippetFromJson event,
-      emit,) async {
+  Future<void> _replaceSnippetFromJson(
+    ReplaceSnippetFromJson event,
+    emit,
+  ) async {
     SNode? rootNode;
     if (event.snippetJson == null) {
       // var snippetJson = jsonEncode({"name":"we-create-flutter-apps","tags":"","child":{"csPropGroup":{"fillColors":{"color1":{"a":1,"r":1,"g":1,"b":1},"color2":null,"color3":null,"color4":null,"color5":null,"color6":null,"color1Value":null,"color2Value":null,"color3Value":null,"color4Value":null,"color5Value":null,"color6Value":null},"fillColorValues":null,"radialGradient":null,"margin":{"top":30,"left":30,"bottom":30,"right":30},"padding":{"top":30,"left":30,"bottom":30,"right":30},"width":null,"height":440,"alignment":"center","decorationShapeEnum":"rounded_rectangle","borderThickness":8,"borderColors":{"color1":{"a":1,"r":0.12941176470588237,"g":0.5882352941176471,"b":0.9529411764705882},"color2":{"a":1,"r":0.2980392156862745,"g":0.6862745098039216,"b":0.3137254901960784},"color3":{"a":1,"r":1,"g":0.9215686274509803,"b":0.23137254901960785},"color4":{"a":1,"r":0.9137254901960784,"g":0.11764705882352941,"b":0.38823529411764707},"color5":null,"color6":null,"color1Value":null,"color2Value":null,"color3Value":null,"color4Value":null,"color5Value":null,"color6Value":null},"borderColorValues":null,"borderRadius":16,"starPoints":null,"dash":null,"gap":null,"badgeWidth":null,"badgeHeight":null,"badgeCorner":null,"badgeText":null,"outlinedBorderGroup":null},"child":{"padding":null,"child":{"mainAxisAlignment":null,"mainAxisSize":"max","crossAxisAlignment":null,"children":[{"flex":1,"fit":"loose","child":{"deltaJsonString":"[{\"insert\":\"We create Flutter apps\",\"attributes\":{\"size\":\"huge\",\"bold\":true}},{\"insert\":\"\\n\\n\"}]","DK:snode":"CL","DK:cl":"QuillTextNode"},"DK:snode":"SC","DK:sc":"FlexibleNode"},{"flex":1,"fit":"loose","child":{"mainAxisAlignment":null,"mainAxisSize":"max","crossAxisAlignment":"start","children":[{"gap":20,"DK:snode":"CL","DK:cl":"GapNode"},{"name":"assets/images/icon_flutter.png","fit":"cover","alignment":null,"width":37,"height":46,"scale":2,"DK:snode":"CL","DK:cl":"AssetImageNode"},{"gap":20,"DK:snode":"CL","DK:cl":"GapNode"},{"flex":10,"fit":"loose","child":{"deltaJsonString":"[{\"insert\":\"We created \",\"attributes\":{\"size\":\"huge\"}},{\"insert\":\"Algorithm Creator\",\"attributes\":{\"color\":\"#FF2196F3\",\"size\":\"huge\",\"bold\":true,\"link\":\"http://algorithmcreator.com\"}},{\"insert\":\", an app that whose mission is to help resurrect the dying art of algorithm modelling. It does this (a) by redefining the \\\"flowchart notation\\\" - now any algorithm or process can be modelled using just 3 shapes: actions, decisions and loops. \",\"attributes\":{\"size\":\"huge\"}},{\"insert\":\"(\",\"attributes\":{\"size\":\"large\"}},{\"insert\":\"actually there's also a Function and Async Function shape for coders\",\"attributes\":{\"size\":\"large\",\"italic\":true}},{\"insert\":\"), \",\"attributes\":{\"size\":\"large\"}},{\"insert\":\"and (b) by having a ui that make iteration fast.\",\"attributes\":{\"size\":\"huge\"}},{\"insert\":\"\\n\\n\"},{\"insert\":\"Designing your app's logic graphically with \",\"attributes\":{\"size\":\"large\"}},{\"insert\":\"Algorithm Creator\",\"attributes\":{\"size\":\"large\",\"bold\":true}},{\"insert\":\" before starting to write code in your IDE significantly improves code robustness: it's more likely to work first time. Our app makes it easy and fast to iterate (refine) your logic.\",\"attributes\":{\"size\":\"large\"}},{\"insert\":\"\\n\\n\"},{\"insert\":\"A fun app to build, refine, publish, and share logic, it will help youngsters learn how to think about Algorithms.\",\"attributes\":{\"size\":\"large\",\"italic\":true}},{\"insert\":\"\\n\"}]","DK:snode":"CL","DK:cl":"QuillTextNode"},"DK:snode":"SC","DK:sc":"FlexibleNode"},{"gap":20,"DK:snode":"CL","DK:cl":"GapNode"},{"flex":6,"child":{"name":"assets/images/algc-icon-423-233.png","fit":"contain","alignment":"center","width":null,"height":null,"scale":2,"DK:snode":"CL","DK:cl":"AssetImageNode"},"DK:snode":"SC","DK:sc":"FlexibleNode","DK:flexible":"ExpandedNode"}],"DK:snode":"MC","DK:mc":"FlexNode","DK:flex":"RowNode"},"DK:snode":"SC","DK:sc":"FlexibleNode"}],"DK:snode":"MC","DK:mc":"FlexNode","DK:flex":"ColumnNode"},"DK:snode":"SC","DK:sc":"SingleChildScrollViewNode"},"DK:snode":"SC","DK:sc":"ContainerNode"},"DK:snode":"SC","DK:sc":"SnippetRootNode"});
@@ -405,8 +501,10 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     emit(state.copyWith(force: (state.force ?? 0) + 1));
   }
 
-  Future<void> _clearClipboard(ClearClipboard event,
-      Emitter<CAPIState> emit,) async {
+  Future<void> _clearClipboard(
+    ClearClipboard event,
+    Emitter<CAPIState> emit,
+  ) async {
     _updateClipboard(null);
     emit(state.copyWith(force: (state.force ?? 0) + 1));
     fsdui.modelRepo.saveAppInfo();
@@ -414,9 +512,10 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
 
   // whenever you use what's on the clipboard, clone it first
   // otherwise will get duplicate GK etc.
-  Future<void> _updateClipboard(SNode? newContent,
-      //
-      ) async {
+  Future<void> _updateClipboard(
+    SNode? newContent,
+    //
+  ) async {
     fsdui.appInfo.clipboard = newContent?.clone();
     // possibly hide or show clipbaord tab
     fsdui.appInfo.hideClipboard();
@@ -433,22 +532,19 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
   // }
 
   void _pushSnippetEditor(PushSnippetEditor event, Emitter<CAPIState> emit) {
-    SnippetTreeController newTreeC() =>
-        SnippetTreeController(
-          roots: [event.rootNode],
-          childrenProvider: SNode.childrenProvider,
-          parentProvider: SNode.parentProvider,
-        );
+    SnippetTreeController newTreeC() => SnippetTreeController(
+      roots: [event.rootNode],
+      childrenProvider: SNode.childrenProvider,
+      parentProvider: SNode.parentProvider,
+    );
 
     SnippetBeingEdited snippetBeingEdited = SnippetBeingEdited(
       jsonBeforeAnyChange: event.rootNode.toJson(),
-      treeC: newTreeC()
-        ..expandAll(),
+      treeC: newTreeC()..expandAll(),
       selectedNode: event.selectedNode,
       showProperties: false,
       nodeBeingDeleted: null,
-    )
-      ..setRootNode(event.rootNode);
+    )..setRootNode(event.rootNode);
 
     emit(
       state.copyWith(
@@ -474,8 +570,10 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     );
   }
 
-  Future<void> _popSnippetEditor(PopSnippetEditor event,
-      Emitter<CAPIState> emit,) async {
+  Future<void> _popSnippetEditor(
+    PopSnippetEditor event,
+    Emitter<CAPIState> emit,
+  ) async {
     // if (state.snippetBeingEdited?.aNodeIsNotSelected??false) return;
     // if (event.save || (state.snippetBeingEdited?.updatesPending ?? false)) {
     //   fco.modelRepo.saveNewVersionOfSnippetBeingEdited();
@@ -485,8 +583,10 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     emit(state.copyWith(snippetBeingEdited: null));
   }
 
-  void _enterSelectWidgetMode(EnterSelectWidgetMode event,
-      Emitter<CAPIState> emit,) async {
+  void _enterSelectWidgetMode(
+    EnterSelectWidgetMode event,
+    Emitter<CAPIState> emit,
+  ) async {
     fsdui.nodesByGK.clear();
     emit(
       state.copyWith(
@@ -498,8 +598,10 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     // frame is rendered and then dispatching an 'UpdateTappableRects' event.
   }
 
-  void _updateTappableRects(UpdateTappableRects event,
-      Emitter<CAPIState> emit,) async {
+  void _updateTappableRects(
+    UpdateTappableRects event,
+    Emitter<CAPIState> emit,
+  ) async {
     if (showTappableBorderRects()) {
       emit(
         state.copyWith(
@@ -511,8 +613,10 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     }
   }
 
-  void _exitSelectWidgetMode(ExitSelectWidgetMode event,
-      Emitter<CAPIState> emit,) {
+  void _exitSelectWidgetMode(
+    ExitSelectWidgetMode event,
+    Emitter<CAPIState> emit,
+  ) {
     fsdui.dismissAll();
     emit(state.copyWith(activeSnippetName: null));
   }
@@ -527,8 +631,10 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
   //==========================================================================================
   //====  SNIPPET EDITING  ===================================================================
   //==========================================================================================
-  void _forceSnippetRefresh(ForceSnippetRefresh event,
-      Emitter<CAPIState> emit,) {
+  void _forceSnippetRefresh(
+    ForceSnippetRefresh event,
+    Emitter<CAPIState> emit,
+  ) {
     fsdui.logger.i("forceSnippetRefresh");
     emit(state.copyWith(force: (state.force ?? 0) + 1));
   }
@@ -579,16 +685,20 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     // }
   }
 
-  Future<void> _deleteNodeTapped(DeleteNodeTapped event,
-      Emitter<CAPIState> emit,) async {
+  Future<void> _deleteNodeTapped(
+    DeleteNodeTapped event,
+    Emitter<CAPIState> emit,
+  ) async {
     if (state.snippetBeingEdited?.aNodeIsNotSelected ?? false) return;
     state.snippetBeingEdited!.nodeBeingDeleted =
         state.snippetBeingEdited!.selectedNode;
     emit(state.copyWith(force: (state.force ?? 0) + 1));
   }
 
-  Future<void> _completeDeletion(CompleteDeletion event,
-      Emitter<CAPIState> emit,) async {
+  Future<void> _completeDeletion(
+    CompleteDeletion event,
+    Emitter<CAPIState> emit,
+  ) async {
     if (state.snippetBeingEdited?.aNodeIsNotSelected ?? false) return;
     _pushUndo();
 
@@ -622,8 +732,10 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     );
   }
 
-  Future<void> _deleteArticle(DeleteArticle event,
-      Emitter<CAPIState> emit,) async {
+  Future<void> _deleteArticle(
+    DeleteArticle event,
+    Emitter<CAPIState> emit,
+  ) async {
     event.articleSnippet.removeFromParent();
     final newSnippet = event.articleSnippet.rootNodeOfSnippet();
     final snippetName = newSnippet?.snippetName;
@@ -677,7 +789,7 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
       selParent.children.remove(sel);
       final root = selParent.rootNodeOfSnippet();
       final tabBarView =
-      root?.findDescendant(TabBarViewNode) as TabBarViewNode?;
+          root?.findDescendant(TabBarViewNode) as TabBarViewNode?;
       if (index < (tabBarView?.children.length ?? 0)) {
         tabBarView?.children.removeAt(index);
       }
@@ -877,119 +989,106 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
   SNode _typeAsATreeNode(Type t, SNode? childNode, String notFoundMsg) {
     // in case tabbar specified
     return switch (t) {
-      const (AlignNode) =>
-          AlignNode(
-            child: childNode,
-            alignment: AlignmentEnum.topLeft,
-          ),
+      const (AlignNode) => AlignNode(
+        child: childNode,
+        alignment: AlignmentEnum.topLeft,
+      ),
       const (AspectRatioNode) => AspectRatioNode(child: childNode),
       const (AssetImageNode) => AssetImageNode(),
       const (AlgCNode) => AlgCNode(),
-    // const (AppBarWithTabBarNode) => AppBarWithTabBarNode(
-    //     tabBarName: uniqueTabBarName,
-    //     height: 24,
-    //     title: GenericSingleChildNode(
-    //       propertyName: 'title',
-    //       child: TextNode(text: ''),
-    //     ),
-    //     bottom: GenericSingleChildNode(
-    //       propertyName: 'bottom',
-    //       child: TabBarNode(name: uniqueTabBarName, children: []),
-    //     )),
-    // const (AppBarWithMenuBarNode) => AppBarWithMenuBarNode(
-    //     height: 24,
-    //     title: GenericSingleChildNode(
-    //       propertyName: 'title',
-    //       child: TextNode(text: ''),
-    //     ),
-    //     bottom: GenericSingleChildNode(
-    //         propertyName: 'bottom', child: MenuBarNode(children: [])),
-    //   ),
-      const (AppBarNode) =>
-          AppBarNode(
-            title: NamedSC(
-              propertyName: 'title',
-              child: TextNode(
-                text: 'appbar title',
-                tsPropGroup: TextStyleProperties(),
-              ),
-            ),
-            titleTextStyle: TextStyleProperties(),
-            actions: NamedMC(propertyName: 'actions', children: []),
-            leading: NamedSC(propertyName: 'leading'),
-            bottom: NamedPS(propertyName: 'bottom'),
+      // const (AppBarWithTabBarNode) => AppBarWithTabBarNode(
+      //     tabBarName: uniqueTabBarName,
+      //     height: 24,
+      //     title: GenericSingleChildNode(
+      //       propertyName: 'title',
+      //       child: TextNode(text: ''),
+      //     ),
+      //     bottom: GenericSingleChildNode(
+      //       propertyName: 'bottom',
+      //       child: TabBarNode(name: uniqueTabBarName, children: []),
+      //     )),
+      // const (AppBarWithMenuBarNode) => AppBarWithMenuBarNode(
+      //     height: 24,
+      //     title: GenericSingleChildNode(
+      //       propertyName: 'title',
+      //       child: TextNode(text: ''),
+      //     ),
+      //     bottom: GenericSingleChildNode(
+      //         propertyName: 'bottom', child: MenuBarNode(children: [])),
+      //   ),
+      const (AppBarNode) => AppBarNode(
+        title: NamedSC(
+          propertyName: 'title',
+          child: TextNode(
+            text: 'appbar title',
+            tsPropGroup: TextStyleProperties(),
           ),
+        ),
+        titleTextStyle: TextStyleProperties(),
+        actions: NamedMC(propertyName: 'actions', children: []),
+        leading: NamedSC(propertyName: 'leading'),
+        bottom: NamedPS(propertyName: 'bottom'),
+      ),
       const (ArticleListViewNode) => ArticleListViewNode(children: []),
       const (UMLImageNode) => UMLImageNode(),
       const (StorageImageNode) => StorageImageNode(),
-    // const (FirebaseStorageImageNode) => FirebaseStorageImageNode(),
+      // const (FirebaseStorageImageNode) => FirebaseStorageImageNode(),
       const (ConstrainedBoxNode) => ConstrainedBoxNode(),
-      const (CarouselNode) =>
-          CarouselNode(
-            children: childNode != null ? [childNode] : [],
-          ),
+      const (CarouselNode) => CarouselNode(
+        children: childNode != null ? [childNode] : [],
+      ),
       const (CenterNode) => CenterNode(child: childNode),
       const (ChipNode) => ChipNode(labelTSPropGroup: TextStyleProperties()),
-      const (ColumnNode) =>
-          ColumnNode(
-            mainAxisSize: MainAxisSizeEnum.max,
-            children: childNode != null ? [childNode] : [],
-          ),
-      const (ContainerNode) =>
-      state.snippetBeingEdited!.selectedNode?.getParent() is ContainerNode
-          ? ContainerNode(
-        csPropGroup: ContainerStyleProperties(
-          alignment: AlignmentEnum.center,
-        ),
-        child: childNode,
-      )
-          : ContainerNode(
-        csPropGroup: ContainerStyleProperties(),
-        child: childNode,
+      const (ColumnNode) => ColumnNode(
+        mainAxisSize: MainAxisSizeEnum.max,
+        children: childNode != null ? [childNode] : [],
       ),
-    // const (ContentSnippetRootNode) => ContentSnippetRootNode(name: 'content', child: childNode),
+      const (ContainerNode) =>
+        state.snippetBeingEdited!.selectedNode?.getParent() is ContainerNode
+            ? ContainerNode(
+                csPropGroup: ContainerStyleProperties(
+                  alignment: AlignmentEnum.center,
+                ),
+                child: childNode,
+              )
+            : ContainerNode(
+                csPropGroup: ContainerStyleProperties(),
+                child: childNode,
+              ),
+      // const (ContentSnippetRootNode) => ContentSnippetRootNode(name: 'content', child: childNode),
       const (CrosswordNode) => CrosswordNode(),
       const (CustomScrollViewNode) => CustomScrollViewNode(slivers: []),
-      const (DefaultTextStyleNode) =>
-          DefaultTextStyleNode(
-            child: childNode,
-            tsPropGroup: TextStyleProperties(
-              fontSizeName: Material3TextSizeEnum.bodyM,
-            ),
-          ),
-    // const (FSBucketNode) => FSBucketNode(
-    //     name: 'bucket name missing ?',
-    //     root: GenericSingleChildNode(
-    //         propertyName: 'root',
-    //         child: FSDirectoryNode(name: 'root', children: []))),
+      const (DefaultTextStyleNode) => DefaultTextStyleNode(
+        child: childNode,
+        tsPropGroup: TextStyleProperties(
+          fontSizeName: Material3TextSizeEnum.bodyM,
+        ),
+      ),
+      // const (FSBucketNode) => FSBucketNode(
+      //     name: 'bucket name missing ?',
+      //     root: GenericSingleChildNode(
+      //         propertyName: 'root',
+      //         child: FSDirectoryNode(name: 'root', children: []))),
       const (DirectoryNode) => DirectoryNode(children: []),
-    // const (FSDirectoryNode) => FSDirectoryNode(children: []),
+      // const (FSDirectoryNode) => FSDirectoryNode(children: []),
       const (ExpandedNode) => ExpandedNode(child: childNode),
-      const (ElevatedButtonNode) =>
-          ElevatedButtonNode(
-            child: TextNode(
-                text: 'some-text', tsPropGroup: TextStyleProperties()),
-            bsPropGroup: ButtonStyleProperties(
-                tsPropGroup: TextStyleProperties()),
-          ),
+      const (ElevatedButtonNode) => ElevatedButtonNode(
+        child: TextNode(text: 'some-text', tsPropGroup: TextStyleProperties()),
+        bsPropGroup: ButtonStyleProperties(tsPropGroup: TextStyleProperties()),
+      ),
       const (FileNode) => FileNode(fileName: '', src: ''),
-    // const (FSFileNode) => FSFileNode(name: ''),
-      const (FilledButtonNode) =>
-          FilledButtonNode(
-            child: TextNode(
-                text: 'some-text', tsPropGroup: TextStyleProperties()),
-            bsPropGroup: ButtonStyleProperties(
-                tsPropGroup: TextStyleProperties()),
-          ),
+      // const (FSFileNode) => FSFileNode(name: ''),
+      const (FilledButtonNode) => FilledButtonNode(
+        child: TextNode(text: 'some-text', tsPropGroup: TextStyleProperties()),
+        bsPropGroup: ButtonStyleProperties(tsPropGroup: TextStyleProperties()),
+      ),
       const (FlexibleNode) => FlexibleNode(child: childNode),
       const (GapNode) => GapNode(gap: 0),
       const (GoogleDriveIFrameNode) => GoogleDriveIFrameNode(),
       const (GridViewNode) => GridViewNode(children: []),
-      const (IconButtonNode) =>
-          IconButtonNode(
-            bsPropGroup: ButtonStyleProperties(
-                tsPropGroup: TextStyleProperties()),
-          ),
+      const (IconButtonNode) => IconButtonNode(
+        bsPropGroup: ButtonStyleProperties(tsPropGroup: TextStyleProperties()),
+      ),
       const (IFrameNode) => IFrameNode(),
       const (InteractiveViewerNode) => InteractiveViewerNode(child: childNode),
       const (IntrinsicWidthNode) => IntrinsicWidthNode(child: childNode),
@@ -997,275 +1096,247 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
       const (ListViewNode) => ListViewNode(children: []),
       const (MarkdownNode) => MarkdownNode(),
       const (MenuBarNode) => MenuBarNode(children: []),
-      const (MenuItemButtonNode) =>
-          MenuItemButtonNode(
-            child: TextNode(
-                text: 'item-text', tsPropGroup: TextStyleProperties()),
-            bsPropGroup: ButtonStyleProperties(
-                tsPropGroup: TextStyleProperties()),
-          ),
-      const (OutlinedButtonNode) =>
-          OutlinedButtonNode(
-            bsPropGroup: ButtonStyleProperties(
-                tsPropGroup: TextStyleProperties()),
-          ),
-      const (PaddingNode) =>
-          PaddingNode(
-            padding: EdgeInsets.zero,
-            child: childNode,
-          ),
+      const (MenuItemButtonNode) => MenuItemButtonNode(
+        child: TextNode(text: 'item-text', tsPropGroup: TextStyleProperties()),
+        bsPropGroup: ButtonStyleProperties(tsPropGroup: TextStyleProperties()),
+      ),
+      const (OutlinedButtonNode) => OutlinedButtonNode(
+        bsPropGroup: ButtonStyleProperties(tsPropGroup: TextStyleProperties()),
+      ),
+      const (PaddingNode) => PaddingNode(
+        padding: EdgeInsets.zero,
+        child: childNode,
+      ),
       const (PlaceholderNode) => PlaceholderNode(),
       const (PinnedHeaderSliverNode) => PinnedHeaderSliverNode(),
-      const (PollNode) =>
-          PollNode(
-            pollName: 'sample-poll',
-            title: 'Sample Poll',
-            children: [
-              PollOptionNode(text: 'option 1 text?'),
-              PollOptionNode(text: 'option 2 text?'),
-              PollOptionNode(text: 'option 3 text?'),
-            ],
-          ),
+      const (PollNode) => PollNode(
+        pollName: 'sample-poll',
+        title: 'Sample Poll',
+        children: [
+          PollOptionNode(text: 'option 1 text?'),
+          PollOptionNode(text: 'option 2 text?'),
+          PollOptionNode(text: 'option 3 text?'),
+        ],
+      ),
       const (PollOptionNode) => PollOptionNode(text: 'new option text?'),
-      const (PositionedNode) =>
-          PositionedNode(
-            top: 0,
-            left: 0,
-            child: childNode,
-          ),
+      const (PositionedNode) => PositionedNode(
+        top: 0,
+        left: 0,
+        child: childNode,
+      ),
       const (QuillTextNode) => QuillTextNode(),
-      const (RichTextNode) =>
-          RichTextNode(
-            text: TextSpanNode(
-              text: 'rich',
-              tsPropGroup: TextStyleProperties(color: Colors.blue),
-              children: [
-                TextSpanNode(text: '-', tsPropGroup: TextStyleProperties()),
-                TextSpanNode(
-                  text: '-text',
-                  tsPropGroup: TextStyleProperties(color: Colors.red),
-                ),
-              ],
+      const (RichTextNode) => RichTextNode(
+        text: TextSpanNode(
+          text: 'rich',
+          tsPropGroup: TextStyleProperties(color: Colors.blue),
+          children: [
+            TextSpanNode(text: '-', tsPropGroup: TextStyleProperties()),
+            TextSpanNode(
+              text: '-text',
+              tsPropGroup: TextStyleProperties(color: Colors.red),
             ),
+          ],
+        ),
+      ),
+      const (RowNode) => RowNode(
+        children: childNode != null ? [childNode] : [],
+      ),
+      const (ScaffoldNode) => ScaffoldNode(
+        appBar: NamedPS(
+          propertyName: 'appBar',
+          child: AppBarNode(
+            title: NamedSC(propertyName: 'title'),
+            titleTextStyle: TextStyleProperties(),
+            leading: NamedSC(propertyName: 'leading'),
+            bottom: NamedPS(propertyName: 'bottom'),
+            actions: NamedMC(propertyName: 'actions', children: []),
           ),
-      const (RowNode) =>
-          RowNode(
-            children: childNode != null ? [childNode] : [],
-          ),
-      const (ScaffoldNode) =>
-          ScaffoldNode(
-            appBar: NamedPS(
-              propertyName: 'appBar',
-              child: AppBarNode(
-                title: NamedSC(propertyName: 'title'),
-                titleTextStyle: TextStyleProperties(),
-                leading: NamedSC(propertyName: 'leading'),
-                bottom: NamedPS(propertyName: 'bottom'),
-                actions: NamedMC(propertyName: 'actions', children: []),
-              ),
-            ),
-            body: NamedSC(propertyName: 'body', child: childNode),
-          ),
-      const (SingleChildScrollViewNode) =>
-          SingleChildScrollViewNode(
-            child: childNode,
-          ),
+        ),
+        body: NamedSC(propertyName: 'body', child: childNode),
+      ),
+      const (SingleChildScrollViewNode) => SingleChildScrollViewNode(
+        child: childNode,
+      ),
       const (SizedBoxNode) => SizedBoxNode(child: childNode),
-      const (SliverAppBarNode) =>
-          SliverAppBarNode(
+      const (SliverAppBarNode) => SliverAppBarNode(
+        title: NamedSC(
+          propertyName: 'title',
+          child: TextNode(
+            text: 'sliver appbar title',
+            tsPropGroup: TextStyleProperties(),
+          ),
+        ),
+        titleTextStyle: TextStyleProperties(),
+        leading: NamedSC(propertyName: 'leading'),
+        actions: NamedMC(propertyName: 'actions', children: []),
+        bottom: NamedPS(propertyName: 'bottom'),
+        flexibleSpace: NamedSC(
+          propertyName: 'flexibleSpace',
+          child: FlexibleSpaceBarNode(
             title: NamedSC(
               propertyName: 'title',
               child: TextNode(
-                text: 'sliver appbar title',
+                text: 'sliver appbar flexible space bar title',
                 tsPropGroup: TextStyleProperties(),
               ),
             ),
-            titleTextStyle: TextStyleProperties(),
-            leading: NamedSC(propertyName: 'leading'),
-            actions: NamedMC(propertyName: 'actions', children: []),
-            bottom: NamedPS(propertyName: 'bottom'),
-            flexibleSpace: NamedSC(
-              propertyName: 'flexibleSpace',
-              child: FlexibleSpaceBarNode(
-                title: NamedSC(
-                  propertyName: 'title',
-                  child: TextNode(
-                    text: 'sliver appbar flexible space bar title',
-                    tsPropGroup: TextStyleProperties(),
-                  ),
-                ),
-                background: NamedSC(
-                  propertyName: 'background',
-                  child: PlaceholderNode(),
-                ),
-              ),
+            background: NamedSC(
+              propertyName: 'background',
+              child: PlaceholderNode(),
             ),
           ),
+        ),
+      ),
       const (SliverListListNode) => SliverListListNode(children: []),
       const (SliverToBoxAdapterNode) => SliverToBoxAdapterNode(),
       const (SliverFloatingHeaderNode) => SliverFloatingHeaderNode(),
       const (SliverResizingHeaderNode) => SliverResizingHeaderNode(),
-      const (SplitViewNode) =>
-          SplitViewNode(
-            children: childNode != null
-                ? [childNode]
-                : [
-              CenterNode(
-                child: ContainerNode(
-                  csPropGroup: ContainerStyleProperties(
-                    fillColors: UpTo6Colors(color1: Colors.red),
+      const (SplitViewNode) => SplitViewNode(
+        children: childNode != null
+            ? [childNode]
+            : [
+                CenterNode(
+                  child: ContainerNode(
+                    csPropGroup: ContainerStyleProperties(
+                      fillColors: UpTo6Colors(color1: Colors.red),
+                    ),
                   ),
                 ),
-              ),
-              CenterNode(
-                child: ContainerNode(
-                  csPropGroup: ContainerStyleProperties(
-                    fillColors: UpTo6Colors(color1: Colors.blue),
+                CenterNode(
+                  child: ContainerNode(
+                    csPropGroup: ContainerStyleProperties(
+                      fillColors: UpTo6Colors(color1: Colors.blue),
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+      ),
+      const (StackNode) => StackNode(
+        children: childNode != null ? [childNode] : [],
+      ),
+      const (StepNode) => StepNode(
+        title: NamedSC(
+          propertyName: 'title',
+          child: TextNode(
+            text: 'step title',
+            tsPropGroup: TextStyleProperties(),
           ),
-      const (StackNode) =>
-          StackNode(
-            children: childNode != null ? [childNode] : [],
-          ),
-      const (StepNode) =>
+        ),
+        subtitle: NamedSC(
+          propertyName: 'subtitle',
+          child: TextNode(text: 'subtitle', tsPropGroup: TextStyleProperties()),
+        ),
+        content: NamedSC(
+          propertyName: 'content',
+          child: TextNode(text: 'content', tsPropGroup: TextStyleProperties()),
+        ),
+      ),
+      const (StepperNode) => StepperNode(
+        children: [
           StepNode(
             title: NamedSC(
               propertyName: 'title',
               child: TextNode(
-                text: 'step title',
+                text: 'step 1 title',
                 tsPropGroup: TextStyleProperties(),
               ),
             ),
             subtitle: NamedSC(
               propertyName: 'subtitle',
               child: TextNode(
-                  text: 'subtitle', tsPropGroup: TextStyleProperties()),
+                text: 'subtitle',
+                tsPropGroup: TextStyleProperties(),
+              ),
             ),
             content: NamedSC(
               propertyName: 'content',
               child: TextNode(
-                  text: 'content', tsPropGroup: TextStyleProperties()),
+                text: 'my content 1',
+                tsPropGroup: TextStyleProperties(),
+              ),
             ),
           ),
-      const (StepperNode) =>
-          StepperNode(
-            children: [
-              StepNode(
-                title: NamedSC(
-                  propertyName: 'title',
-                  child: TextNode(
-                    text: 'step 1 title',
-                    tsPropGroup: TextStyleProperties(),
-                  ),
-                ),
-                subtitle: NamedSC(
-                  propertyName: 'subtitle',
-                  child: TextNode(
-                    text: 'subtitle',
-                    tsPropGroup: TextStyleProperties(),
-                  ),
-                ),
-                content: NamedSC(
-                  propertyName: 'content',
-                  child: TextNode(
-                    text: 'my content 1',
-                    tsPropGroup: TextStyleProperties(),
-                  ),
-                ),
+          StepNode(
+            title: NamedSC(
+              propertyName: 'title',
+              child: TextNode(
+                text: 'step 2 title',
+                tsPropGroup: TextStyleProperties(),
               ),
-              StepNode(
-                title: NamedSC(
-                  propertyName: 'title',
-                  child: TextNode(
-                    text: 'step 2 title',
-                    tsPropGroup: TextStyleProperties(),
-                  ),
-                ),
-                subtitle: NamedSC(
-                  propertyName: 'subtitle',
-                  child: TextNode(
-                    text: 'subtitle',
-                    tsPropGroup: TextStyleProperties(),
-                  ),
-                ),
-                content: NamedSC(
-                  propertyName: 'content',
-                  child: TextNode(
-                    text: 'my content 2',
-                    tsPropGroup: TextStyleProperties(),
-                  ),
-                ),
+            ),
+            subtitle: NamedSC(
+              propertyName: 'subtitle',
+              child: TextNode(
+                text: 'subtitle',
+                tsPropGroup: TextStyleProperties(),
               ),
-              StepNode(
-                title: NamedSC(
-                  propertyName: 'title',
-                  child: TextNode(
-                    text: 'step 3 title',
-                    tsPropGroup: TextStyleProperties(),
-                  ),
-                ),
-                subtitle: NamedSC(
-                  propertyName: 'subtitle',
-                  child: TextNode(
-                    text: 'subtitle',
-                    tsPropGroup: TextStyleProperties(),
-                  ),
-                ),
-                content: NamedSC(
-                  propertyName: 'content',
-                  child: TextNode(
-                    text: 'my content 3',
-                    tsPropGroup: TextStyleProperties(),
-                  ),
-                ),
+            ),
+            content: NamedSC(
+              propertyName: 'content',
+              child: TextNode(
+                text: 'my content 2',
+                tsPropGroup: TextStyleProperties(),
               ),
-            ],
+            ),
           ),
-      const (SubmenuButtonNode) =>
-          SubmenuButtonNode(
-            menuChildren: childNode != null ? [childNode] : [],
+          StepNode(
+            title: NamedSC(
+              propertyName: 'title',
+              child: TextNode(
+                text: 'step 3 title',
+                tsPropGroup: TextStyleProperties(),
+              ),
+            ),
+            subtitle: NamedSC(
+              propertyName: 'subtitle',
+              child: TextNode(
+                text: 'subtitle',
+                tsPropGroup: TextStyleProperties(),
+              ),
+            ),
+            content: NamedSC(
+              propertyName: 'content',
+              child: TextNode(
+                text: 'my content 3',
+                tsPropGroup: TextStyleProperties(),
+              ),
+            ),
           ),
-    // const (SubtitleSnippetRootNode) => SubtitleSnippetRootNode(name: 'subtitle', child: childNode),
-    // const (TargetButtonNode) =>
-    //   TargetButtonNode(name: 'no name!', child: childNode),
+        ],
+      ),
+      const (SubmenuButtonNode) => SubmenuButtonNode(
+        menuChildren: childNode != null ? [childNode] : [],
+      ),
+      // const (SubtitleSnippetRootNode) => SubtitleSnippetRootNode(name: 'subtitle', child: childNode),
+      // const (TargetButtonNode) =>
+      //   TargetButtonNode(name: 'no name!', child: childNode),
       const (TargetsWrapperNode) => TargetsWrapperNode(child: childNode),
       const (TabNode) => TabNode(text: 'new tab'),
-      const (TabBarNode) =>
-          TabBarNode(
-            labelTSPropGroup: TextStyleProperties(),
-            children: childNode != null ? [childNode] : [],
-          ),
-      const (TabBarViewNode) =>
-          TabBarViewNode(
-            children: childNode != null ? [childNode] : [],
-          ),
+      const (TabBarNode) => TabBarNode(
+        labelTSPropGroup: TextStyleProperties(),
+        children: childNode != null ? [childNode] : [],
+      ),
+      const (TabBarViewNode) => TabBarViewNode(
+        children: childNode != null ? [childNode] : [],
+      ),
       const (TabDataNode) => TabDataNode(),
       const (DynamicTabBarNode) => DynamicTabBarNode(children: [TabDataNode()]),
-      const (TextButtonNode) =>
-          TextButtonNode(
-            child: TextNode(
-                text: 'some-text', tsPropGroup: TextStyleProperties()),
-            bsPropGroup: ButtonStyleProperties(
-                tsPropGroup: TextStyleProperties()),
-          ),
-      const (TextNode) =>
-          TextNode(
-            text: 'some-text',
-            tsPropGroup: TextStyleProperties(),
-          ),
-      const (TextSpanNode) =>
-          TextSpanNode(
-            children: [],
-            tsPropGroup: TextStyleProperties(),
-          ),
+      const (TextButtonNode) => TextButtonNode(
+        child: TextNode(text: 'some-text', tsPropGroup: TextStyleProperties()),
+        bsPropGroup: ButtonStyleProperties(tsPropGroup: TextStyleProperties()),
+      ),
+      const (TextNode) => TextNode(
+        text: 'some-text',
+        tsPropGroup: TextStyleProperties(),
+      ),
+      const (TextSpanNode) => TextSpanNode(
+        children: [],
+        tsPropGroup: TextStyleProperties(),
+      ),
       const (WidgetSpanNode) => WidgetSpanNode(child: childNode),
-      const (WrapNode) =>
-          WrapNode(
-            children: childNode != null ? [childNode] : [],
-          ),
+      const (WrapNode) => WrapNode(
+        children: childNode != null ? [childNode] : [],
+      ),
       const (YTNode) => YTNode(),
       _ => throw (Exception(notFoundMsg)),
     };
@@ -1279,10 +1350,10 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     SNode? selectedNodeParent = selectedNode.getParent() as SNode?;
     SNode w = event.nodeType != null
         ? _typeAsATreeNode(
-      event.nodeType!,
-      selectedNode,
-      "_wrapWith() missing ${event.nodeType.toString()}",
-    )
+            event.nodeType!,
+            selectedNode,
+            "_wrapWith() missing ${event.nodeType.toString()}",
+          )
         : event.testNode!;
 
     if (w is ScaffoldNode) {
@@ -1336,8 +1407,7 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
             borderThickness: 4,
           ),
           child: w,
-        )
-          ..setParent((pollParent));
+        )..setParent((pollParent));
         (w).child!.setParent(w);
       } else if (w is StepperNode) {
         w.children
@@ -1417,10 +1487,10 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
 
     SNode newNode = event.nodeType != null
         ? _typeAsATreeNode(
-      event.nodeType!,
-      null,
-      "_replaceWith() missing ${event.nodeType.toString()}",
-    )
+            event.nodeType!,
+            null,
+            "_replaceWith() missing ${event.nodeType.toString()}",
+          )
         : event.testNode!;
     _replaceWithNewNodeOrClipboard(selectedNode, emit, newNode);
   }
@@ -1508,8 +1578,7 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     final newSnippetBeingEdited = SnippetBeingEdited(
       treeC: possiblyNewTreeC,
       jsonBeforeAnyChange: r.toJson(),
-    )
-      ..selectedNode = r;
+    )..selectedNode = r;
 
     // state.snippetBeingEdited!
     //   ..selectedNode = r
@@ -1534,10 +1603,10 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
     SNode newNode = event.nodeType != null
         ? _typeAsATreeNode(
-      event.nodeType!,
-      null,
-      "_addChild() missing ${event.nodeType.toString()}",
-    )
+            event.nodeType!,
+            null,
+            "_addChild() missing ${event.nodeType.toString()}",
+          )
         : event.testNode!;
     _addOrPasteChild(selectedNode, emit, newNode);
   }
@@ -1561,11 +1630,11 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     SNode rootNode = state.snippetBeingEdited!.getRootNode();
     if (selectedNode is TabBarNode) {
       TabBarViewNode? tabBarViewNode =
-      state.snippetBeingEdited!.treeC.findNodeTypeInTree(
-        rootNode,
-        TabBarViewNode,
-      )
-      as TabBarViewNode?;
+          state.snippetBeingEdited!.treeC.findNodeTypeInTree(
+                rootNode,
+                TabBarViewNode,
+              )
+              as TabBarViewNode?;
       SNode newTabView = PlaceholderNode();
       tabBarViewNode?.children.add(newTabView);
       newTabView.setParent(tabBarViewNode);
@@ -1575,11 +1644,11 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
       // ScaffoldNode? scaffoldNode = state.treeC
       //     .findNodeTypeInTree(rootNode, ScaffoldNode) as ScaffoldNode?;
       TabBarNode? tabBarNode =
-      state.snippetBeingEdited!.treeC.findNodeTypeInTree(
-        rootNode,
-        TabBarNode,
-      )
-      as TabBarNode?;
+          state.snippetBeingEdited!.treeC.findNodeTypeInTree(
+                rootNode,
+                TabBarNode,
+              )
+              as TabBarNode?;
       SNode newTab = TabNode(text: 'new tab');
       tabBarNode?.children.add(newTab);
       newTab.setParent(tabBarNode);
@@ -1612,8 +1681,7 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     final newSnippetBeingEdited = SnippetBeingEdited(
       treeC: state.snippetBeingEdited!.treeC,
       jsonBeforeAnyChange: newSnippet.toJson(),
-    )
-      ..selectedNode = newSnippet;
+    )..selectedNode = newSnippet;
 
     emit(
       state.copyWith(
@@ -1628,10 +1696,10 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
 
     SNode newNode = event.nodeType != null
         ? _typeAsATreeNode(
-      event.nodeType!,
-      null,
-      "_addChild() missing ${event.nodeType.toString()}",
-    )
+            event.nodeType!,
+            null,
+            "_addChild() missing ${event.nodeType.toString()}",
+          )
         : event.testNode!;
 
     _prependChild(event.listNode, emit, newNode);
@@ -1691,10 +1759,10 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     if (siblings == null) return;
     SNode newNode = event.nodeType != null
         ? _typeAsATreeNode(
-      event.nodeType!,
-      null,
-      "_addSiblingBefore() missing ${event.nodeType.toString()}",
-    )
+            event.nodeType!,
+            null,
+            "_addSiblingBefore() missing ${event.nodeType.toString()}",
+          )
         : event.testNode!;
     int i = siblings.indexOf(selectedNode);
     _addSiblingAt(newNode, emit, i + (before ? 0 : 1));
@@ -1707,7 +1775,7 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     if (fsdui.appInfo.clipboard != null) {
       if (state.snippetBeingEdited?.selectedNode?.getParent() is MC) {
         final parent =
-        state.snippetBeingEdited?.selectedNode?.getParent() as MC;
+            state.snippetBeingEdited?.selectedNode?.getParent() as MC;
         int i = parent.children.indexOf(selectedNode);
         _pasteSiblingAt(fsdui.appInfo.clipboard!, emit, i);
       }
@@ -1715,25 +1783,25 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
 
     if (state.snippetBeingEdited?.selectedNode?.getParent() is TextSpanNode) {
       int i =
-      (state.snippetBeingEdited?.selectedNode?.getParent() as TextSpanNode)
-          .children!
-          .indexOf(selectedNode as InlineSpanNode);
+          (state.snippetBeingEdited?.selectedNode?.getParent() as TextSpanNode)
+              .children!
+              .indexOf(selectedNode as InlineSpanNode);
       _pasteSiblingAt(fsdui.appInfo.clipboard!, emit, i);
     }
     if (state.snippetBeingEdited?.selectedNode?.getParent() is ListViewNode) {
       int i =
-      (state.snippetBeingEdited?.selectedNode?.getParent() as ListViewNode)
-          .children
-          .indexOf(selectedNode);
+          (state.snippetBeingEdited?.selectedNode?.getParent() as ListViewNode)
+              .children
+              .indexOf(selectedNode);
       _pasteSiblingAt(fsdui.appInfo.clipboard!, emit, i);
     }
     if (state.snippetBeingEdited?.selectedNode?.getParent()
-    is CustomScrollViewNode) {
+        is CustomScrollViewNode) {
       int i =
-      (state.snippetBeingEdited?.selectedNode?.getParent()
-      as CustomScrollViewNode)
-          .slivers
-          .indexOf(selectedNode);
+          (state.snippetBeingEdited?.selectedNode?.getParent()
+                  as CustomScrollViewNode)
+              .slivers
+              .indexOf(selectedNode);
       _pasteSiblingAt(fsdui.appInfo.clipboard!, emit, i);
     }
   }
@@ -1751,31 +1819,33 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     }
     if (state.snippetBeingEdited!.selectedNode?.getParent() is TextSpanNode) {
       int i =
-      (state.snippetBeingEdited!.selectedNode?.getParent() as TextSpanNode)
-          .children!
-          .indexOf(selectedNode as InlineSpanNode);
+          (state.snippetBeingEdited!.selectedNode?.getParent() as TextSpanNode)
+              .children!
+              .indexOf(selectedNode as InlineSpanNode);
       _pasteSiblingAt(clipboardNode, emit, i + 1);
     }
     if (state.snippetBeingEdited?.selectedNode?.getParent() is ListViewNode) {
       int i =
-      (state.snippetBeingEdited?.selectedNode?.getParent() as ListViewNode)
-          .children
-          .indexOf(selectedNode);
+          (state.snippetBeingEdited?.selectedNode?.getParent() as ListViewNode)
+              .children
+              .indexOf(selectedNode);
       _pasteSiblingAt(clipboardNode, emit, i + 1);
     }
     if (state.snippetBeingEdited?.selectedNode?.getParent()
-    is CustomScrollViewNode) {
+        is CustomScrollViewNode) {
       int i =
-      (state.snippetBeingEdited?.selectedNode?.getParent()
-      as CustomScrollViewNode)
-          .slivers
-          .indexOf(selectedNode);
+          (state.snippetBeingEdited?.selectedNode?.getParent()
+                  as CustomScrollViewNode)
+              .slivers
+              .indexOf(selectedNode);
       _pasteSiblingAt(clipboardNode, emit, i + 1);
     }
   }
 
-  void _toggleNodeProperties(ToggleNodeProperties event,
-      Emitter<CAPIState> emit,) {
+  void _toggleNodeProperties(
+    ToggleNodeProperties event,
+    Emitter<CAPIState> emit,
+  ) {
     final sbe = state.snippetBeingEdited;
     if (sbe == null || sbe.selectedNode == null) return;
     sbe.showProperties = !sbe.showProperties;
@@ -1805,32 +1875,30 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     SNode rootNode = state.snippetBeingEdited!.getRootNode();
 
     SNode? parent =
-    state.snippetBeingEdited!.selectedNode?.getParent() as SNode?;
+        state.snippetBeingEdited!.selectedNode?.getParent() as SNode?;
 
     if (parent is TabBarNode) {
       TabBarViewNode? tabBarViewNode =
-      state.snippetBeingEdited!.treeC.findNodeTypeInTree(
-        rootNode,
-        TabBarViewNode,
-      )
-      as TabBarViewNode?;
+          state.snippetBeingEdited!.treeC.findNodeTypeInTree(
+                rootNode,
+                TabBarViewNode,
+              )
+              as TabBarViewNode?;
       tabBarViewNode?.children.insert(
         i,
-        PlaceholderNode()
-          ..setParent(tabBarViewNode),
+        PlaceholderNode()..setParent(tabBarViewNode),
       );
       parent.children.insert(i, newNode..setParent(parent));
     } else if (parent is TabBarViewNode) {
       TabBarNode? tabBarNode =
-      state.snippetBeingEdited!.treeC.findNodeTypeInTree(
-        rootNode,
-        TabBarNode,
-      )
-      as TabBarNode?;
+          state.snippetBeingEdited!.treeC.findNodeTypeInTree(
+                rootNode,
+                TabBarNode,
+              )
+              as TabBarNode?;
       tabBarNode?.children.insert(
         i,
-        TabNode(text: 'new tab')
-          ..setParent(tabBarNode),
+        TabNode(text: 'new tab')..setParent(tabBarNode),
       );
       parent.children.insert(i, newNode..setParent(parent));
     } else {
@@ -1876,9 +1944,9 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
       newNode.setParent(state.snippetBeingEdited!.selectedNode?.getParent());
     }
     if (state.snippetBeingEdited!.selectedNode?.getParent()
-    is CustomScrollViewNode) {
+        is CustomScrollViewNode) {
       (state.snippetBeingEdited!.selectedNode?.getParent()
-      as CustomScrollViewNode)
+              as CustomScrollViewNode)
           .slivers
           .insert(i, newNode);
       newNode.setParent(state.snippetBeingEdited!.selectedNode?.getParent());
@@ -1900,14 +1968,18 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     }
   }
 
-  void _selectedDirectoryOrNode(SelectedDirectoryOrNode event,
-      Emitter<CAPIState> emit,) {
+  void _selectedDirectoryOrNode(
+    SelectedDirectoryOrNode event,
+    Emitter<CAPIState> emit,
+  ) {
     state.snippetBeingEdited!.selectedNode = event.selectedNode;
     emit(state.copyWith(force: (state.force ?? 0) + 1));
   }
 
-  Future<void> _saveNodeAsSnippet(SaveNodeAsSnippet event,
-      Emitter<CAPIState> emit,) async {
+  Future<void> _saveNodeAsSnippet(
+    SaveNodeAsSnippet event,
+    Emitter<CAPIState> emit,
+  ) async {
     //_createSnippetUndo();
 
     //_cutIncludingAnyChildren(event.node);
@@ -1953,9 +2025,9 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
       int index = parentOC.indexOf(event.node);
       parentOC[index] = refNode;
     } else if (state.snippetBeingEdited!.selectedNode?.getParent()
-    is WidgetSpanNode) {
+        is WidgetSpanNode) {
       (state.snippetBeingEdited!.selectedNode?.getParent() as WidgetSpanNode)
-          .child =
+              .child =
           refNode;
     }
     state.snippetBeingEdited!.treeC.expand(newRootNode);
@@ -2022,7 +2094,7 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
 
   bool dontShowTappableBorderRects() =>
       !(state.isSignedInAsSuperEditor ?? false) ||
-          state.activeSnippetName == null;
+      state.activeSnippetName == null;
 
   bool aSnippetIsBeingEdited() => state.snippetBeingEdited != null;
 
@@ -2036,12 +2108,24 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
   HotspotTargetModel? getNewestTarget() => state.newestTarget;
 
   @override
-  CAPIState? fromJson(Map<String, dynamic> json) => CAPIState(
-    themeModeIndex: json['themeModeIndex'] as int?,
-  );
+  Map<String, dynamic>? toJson(CAPIState state) => {
+    'ea': state.ea,
+    'token': state.token,
+    'verified': state.verified,
+    'themeModeIndex': state.themeModeIndex,
+    'isSignedInAsSuperEditor': state.isSignedInAsSuperEditor,
+    'isSignedInAsArticleEditor': state.isSignedInAsArticleEditor,
+    'isSignedInAsGuestEditor': state.isSignedInAsGuestEditor,
+  };
 
   @override
-  Map<String, dynamic>? toJson(CAPIState state) => {
-    'themeModeIndex': state.themeModeIndex,
-  };
+  CAPIState? fromJson(Map<String, dynamic> json) => CAPIState(
+    ea: json['ea'] as String?,
+    token: json['token'] as String?,
+    verified: (json['verified'] as bool?) ?? false,
+    themeModeIndex: json['themeModeIndex'] as int?,
+    isSignedInAsSuperEditor: json['isSignedInAsSuperEditor'] ?? false,
+    isSignedInAsArticleEditor: json['isSignedInAsArticleEditor'] ?? false,
+    isSignedInAsGuestEditor: json['isSignedInAsGuestEditor'] ?? false,
+  );
 }

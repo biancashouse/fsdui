@@ -21,10 +21,9 @@ class EditablePage extends StatefulWidget {
   });
 
   // allow a page widget to find its parent EditablePage
-  static EditablePageState? of(BuildContext context) =>
-      context.mounted
-          ? context.findAncestorStateOfType<EditablePageState>()
-          : null;
+  static EditablePageState? of(BuildContext context) => context.mounted
+      ? context.findAncestorStateOfType<EditablePageState>()
+      : null;
 
   // static ScrollController? ancestorSc(BuildContext context, Axis? axis) {
   //   ScrollableState? scrollableState = Scrollable.maybeOf(context, axis: axis);
@@ -64,9 +63,8 @@ class EditablePageState extends State<EditablePage> {
     SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(
       fsdui.capiBloc.state.activeSnippetName != null
           ? fsdui.capiBloc.state.activeSnippetName!
-          : fsdui.capiBloc.state.snippetBeingEdited
-          ?.getRootNode()
-          .name ?? '???',
+          : fsdui.capiBloc.state.snippetBeingEdited?.getRootNode().name ??
+                '???',
     );
     rootNode = snippetInfo?.currentVersionInCache();
     // traverse node
@@ -94,7 +92,7 @@ class EditablePageState extends State<EditablePage> {
     // print('build - borderRects: ${borderRects.length}');
     return BlocConsumer<CAPIBloC, CAPIState>(
       listenWhen: (prev, curr) =>
-      prev.activeSnippetName != curr.activeSnippetName ||
+          prev.activeSnippetName != curr.activeSnippetName ||
           (prev.snippetBeingEdited == null) !=
               (curr.snippetBeingEdited == null) ||
           prev.snippetBeingEdited?.selectedNode !=
@@ -139,11 +137,11 @@ class EditablePageState extends State<EditablePage> {
           return true;
         }
         if ((previous.isSignedInAsSuperEditor !=
-            current.isSignedInAsSuperEditor) &&
+                current.isSignedInAsSuperEditor) &&
             !fsdui.canEditAnyContent()) {
           return true;
         }
-        if (current.onlyTargetsWrappers??false) return false;
+        if (current.onlyTargetsWrappers ?? false) return false;
         return false;
       },
       builder: (BuildContext context, CAPIState state) {
@@ -175,9 +173,7 @@ class EditablePageState extends State<EditablePage> {
       }
 
       if (SNode.isHotspotCalloutContent(snippetName)) {
-        final cc = fsdui
-            .findOE(snippetName)
-            ?.calloutConfig;
+        final cc = fsdui.findOE(snippetName)?.calloutConfig;
         cc?.rebuild(() {
           cc
             ..barrier = null
@@ -186,15 +182,16 @@ class EditablePageState extends State<EditablePage> {
       }
 
       pushThenShowNamedSnippetWithNodeSelected(rootNode, node);
-    } catch(e) {
-      throw(e.toString());
+    } catch (e) {
+      throw (e.toString());
     }
   }
 
-  void pushThenShowNamedSnippetWithNodeSelected(SNode rootNode,
-      SNode selectedNode, {
-        HotspotTargetModel? targetBeingConfigured,
-      }) {
+  void pushThenShowNamedSnippetWithNodeSelected(
+    SNode rootNode,
+    SNode selectedNode, {
+    HotspotTargetModel? targetBeingConfigured,
+  }) {
     var snippetRootContext = rootNode.nodeWidgetGK?.currentContext;
     if (snippetRootContext == null) {
       fsdui.showToast(
@@ -207,10 +204,7 @@ class EditablePageState extends State<EditablePage> {
     }
 
     context.read<CAPIBloC>().add(
-      PushSnippetEditor(
-        rootNode: rootNode,
-        selectedNode: selectedNode,
-      ),
+      PushSnippetEditor(rootNode: rootNode, selectedNode: selectedNode),
     );
     fsdui.afterNextBuildDo(() {
       if (fsdui.snippetBeingEdited != null) {
@@ -250,9 +244,7 @@ class EditablePageState extends State<EditablePage> {
         bloc.showTappableBorderRects() || bloc.aSnippetIsBeingEdited();
     final snippetName =
         bloc.state.activeSnippetName ??
-            bloc.state.snippetBeingEdited
-                ?.getRootNode()
-                .name;
+        bloc.state.snippetBeingEdited?.getRootNode().name;
 
     return Stack(
       children: [
@@ -261,9 +253,9 @@ class EditablePageState extends State<EditablePage> {
           SnippetBuilder(
             // the snippet should already exist in the cache at this point
             initialValue: TextNode(
-                name: snippetName,
-                text: 'Missing Snippet: $snippetName !',
-                tsPropGroup: TextStyleProperties(color: Colors.red)
+              name: snippetName,
+              text: 'Missing Snippet: $snippetName !',
+              tsPropGroup: TextStyleProperties(color: Colors.red),
             ),
             onLayoutDone: () {
               if (_needsToPopulateRects && mounted) {
@@ -292,8 +284,9 @@ class EditablePageState extends State<EditablePage> {
               if (bloc.aSnippetIsBeingEdited()) {
                 fsdui.dismiss('pink-overlay');
                 bloc.add(SelectNode(node: node));
-                fsdui.afterNextBuildDo(() =>
-                    SNodeWidget.pointOutSelectedNode());
+                fsdui.afterNextBuildDo(
+                  () => SNodeWidget.pointOutSelectedNode(),
+                );
               } else {
                 if (node is QuillTextNode || node is MarkdownNode) return;
                 _tappedToEditSnippetAndSelectNode(node);
@@ -304,134 +297,134 @@ class EditablePageState extends State<EditablePage> {
     );
   }
 
-  static final String cid_EditorPassword = "editor-password";
+  // static final String cid_EditorPassword = "editor-password";
 
-  void editorPasswordDialog() {
-    fsdui.registerKeystrokeHandler(cid_EditorPassword, (KeyEvent event) {
-      // final key = event.logicalKey.keyLabel;
+  // void editorPasswordDialog() {
+  //   fsdui.registerKeystrokeHandler(cid_EditorPassword, (KeyEvent event) {
+  //     // final key = event.logicalKey.keyLabel;
 
-      // if (event is KeyDownEvent) {
-      //   print("Key down: $key");
-      // } else if (event is KeyUpEvent) {
-      //   print("Key up: $key");
-      // } else if (event is KeyRepeatEvent) {
-      //   print("Key repeat: $key");
-      // }
+  //     // if (event is KeyDownEvent) {
+  //     //   print("Key down: $key");
+  //     // } else if (event is KeyUpEvent) {
+  //     //   print("Key up: $key");
+  //     // } else if (event is KeyRepeatEvent) {
+  //     //   print("Key repeat: $key");
+  //     // }
 
-      if (event.logicalKey == LogicalKeyboardKey.escape) {
-        fsdui.dismiss(cid_EditorPassword);
-      }
+  //     if (event.logicalKey == LogicalKeyboardKey.escape) {
+  //       fsdui.dismiss(cid_EditorPassword);
+  //     }
 
-      return false;
-    });
-    // final gk = GlobalKey();
-    fsdui.showOverlay(
-      calloutContent: Card(
-        color: Colors.white,
-        elevation: 4,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        child: Container(
-          margin: EdgeInsets.all(12),
-          width: 320,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              fsdui.purpleText(
-                "Editor Access\n",
-                fontSize: 24,
-                family: 'Merriweather',
-              ),
+  //     return false;
+  //   });
+  //   // final gk = GlobalKey();
+  //   fsdui.showOverlay(
+  //     calloutContent: Card(
+  //       color: Colors.white,
+  //       elevation: 4,
+  //       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+  //       child: Container(
+  //         margin: EdgeInsets.all(12),
+  //         width: 320,
+  //         child: Column(
+  //           mainAxisSize: MainAxisSize.min,
+  //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             fsdui.purpleText(
+  //               "Editor Access\n",
+  //               fontSize: 24,
+  //               family: 'Merriweather',
+  //             ),
 
-              StringOrNumberEditor(
-                inputType: String,
-                prompt: () => 'password',
-                originalS: '',
-                onTextChangedF: (String s) async {
-                  // print(s);
-                  if (fsdui.appInfo.superEditorEas.contains(s)) {
-                    fsdui.dismissAll();
-                    fsdui.capiBloc.add(SignedInAsSuperEditor());
-                  } else if (fsdui.appInfo.articleEditorEas.contains(s)) {
-                    fsdui.dismissAll();
-                    fsdui.capiBloc.add(SignedInAsArticleEditor());
-                  } else if (s == 'GUEST') {
-                    fsdui.dismissAll();
-                    fsdui.capiBloc.add(SignedInAsGuestEditor());
-                  }
-                },
-                onEscapedF: (_) {
-                  fsdui.dismiss(cid_EditorPassword);
-                },
-                dontAutoFocus: false,
-                isPassword: true,
-                onEditingCompleteF: (s) {
-                  // if (s == "lakebeachocean") {
-                  //   FCO.om.remove("TrainerPassword".hashCode);
-                  //   setState(() {
-                  //     HydratedBloc.storage.write("trainerIsSignedIn", true);
-                  //   });
-                  // }
-                },
-              ),
-              Text.rich(
-                TextSpan(
-                  text: '\n\nAnonymous Users:\n',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                  children: [
-                    TextSpan(
-                      text:
-                      'If you\'d like to see how editing works in an\n'
-                          'app built with our ',
-                      style: TextStyle(fontWeight: FontWeight.normal),
-                    ),
-                    TextSpan(
-                      text: 'fsdui',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    TextSpan(
-                      text:
-                      ' package,\nuse password "GUEST".\n'
-                          'Any changes you make will be discarded when\n'
-                          'you leave this browser tab, or sign out.',
-                      style: TextStyle(fontWeight: FontWeight.normal),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      calloutConfig: CalloutConfig(
-        cId: cid_EditorPassword,
-        // initialTargetAlignment: Alignment.bottomLeft,
-        // initialCalloutAlignment: Alignment.topRight,
-        // finalSeparation: 200,
-        barrier: CalloutBarrierConfig(
-          opacity: .5,
-          onTappedF: () async {
-            fsdui.dismiss(cid_EditorPassword);
-          },
-        ),
-        // initialCalloutW: 300,
-        // initialCalloutH: 240,
-        // decorationBorderRadius: 12,
-        // // arrowType: ArrowTypeEnumModel.THIN_REVERSED,
-        // decorationFillColors: ColorOrGradient.color(Colors.white),
-        onDismissedF: () {
-          fsdui.removeKeystrokeHandler(cid_EditorPassword);
-        },
-      ),
-      // targetGkF: ()=> fco.authIconGK,
-      wrapInPointerInterceptor: true,
-      // targetGK: gk,
-    );
-  }
+  //             StringOrNumberEditor(
+  //               inputType: String,
+  //               prompt: () => 'password',
+  //               originalS: '',
+  //               onTextChangedF: (String s) async {
+  //                 // print(s);
+  //                 if (fsdui.appInfo.superEditorEas.contains(s)) {
+  //                   fsdui.dismissAll();
+  //                   fsdui.capiBloc.add(SignedInAsSuperEditor());
+  //                 } else if (fsdui.appInfo.articleEditorEas.contains(s)) {
+  //                   fsdui.dismissAll();
+  //                   fsdui.capiBloc.add(SignedInAsArticleEditor());
+  //                 } else if (s == 'GUEST') {
+  //                   fsdui.dismissAll();
+  //                   fsdui.capiBloc.add(SignedInAsGuestEditor());
+  //                 }
+  //               },
+  //               onEscapedF: (_) {
+  //                 fsdui.dismiss(cid_EditorPassword);
+  //               },
+  //               dontAutoFocus: false,
+  //               isPassword: true,
+  //               onEditingCompleteF: (s) {
+  //                 // if (s == "lakebeachocean") {
+  //                 //   FCO.om.remove("TrainerPassword".hashCode);
+  //                 //   setState(() {
+  //                 //     HydratedBloc.storage.write("trainerIsSignedIn", true);
+  //                 //   });
+  //                 // }
+  //               },
+  //             ),
+  //             Text.rich(
+  //               TextSpan(
+  //                 text: '\n\nAnonymous Users:\n',
+  //                 style: TextStyle(
+  //                   fontWeight: FontWeight.bold,
+  //                   color: Colors.black,
+  //                 ),
+  //                 children: [
+  //                   TextSpan(
+  //                     text:
+  //                     'If you\'d like to see how editing works in an\n'
+  //                         'app built with our ',
+  //                     style: TextStyle(fontWeight: FontWeight.normal),
+  //                   ),
+  //                   TextSpan(
+  //                     text: 'fsdui',
+  //                     style: TextStyle(fontWeight: FontWeight.bold),
+  //                   ),
+  //                   TextSpan(
+  //                     text:
+  //                     ' package,\nuse password "GUEST".\n'
+  //                         'Any changes you make will be discarded when\n'
+  //                         'you leave this browser tab, or sign out.',
+  //                     style: TextStyle(fontWeight: FontWeight.normal),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //     calloutConfig: CalloutConfig(
+  //       cId: cid_EditorPassword,
+  //       // initialTargetAlignment: Alignment.bottomLeft,
+  //       // initialCalloutAlignment: Alignment.topRight,
+  //       // finalSeparation: 200,
+  //       barrier: CalloutBarrierConfig(
+  //         opacity: .5,
+  //         onTappedF: () async {
+  //           fsdui.dismiss(cid_EditorPassword);
+  //         },
+  //       ),
+  //       // initialCalloutW: 300,
+  //       // initialCalloutH: 240,
+  //       // decorationBorderRadius: 12,
+  //       // // arrowType: ArrowTypeEnumModel.THIN_REVERSED,
+  //       // decorationFillColors: ColorOrGradient.color(Colors.white),
+  //       onDismissedF: () {
+  //         fsdui.removeKeystrokeHandler(cid_EditorPassword);
+  //       },
+  //     ),
+  //     // targetGkF: ()=> fco.authIconGK,
+  //     wrapInPointerInterceptor: true,
+  //     // targetGK: gk,
+  //   );
+  // }
 
   static final String cid_editablePageName = "user-editable-page-name";
 
@@ -477,7 +470,8 @@ class EditablePageState extends State<EditablePage> {
                       pageName,
                     )) {
                   // jsArray issue
-                  List<String> newList = fsdui.appInfo
+                  List<String> newList = fsdui
+                      .appInfo
                       .anonymousUserEditablePages
                       .toList();
                   newList.add(pageName);
@@ -562,12 +556,10 @@ class SelectionCutoutPainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     // 2. Create the cutout path
-    final cutoutPath = Path()
-      ..addRect(cutoutRect);
+    final cutoutPath = Path()..addRect(cutoutRect);
 
     // 3. Create the full canvas path
-    final fullCanvasPath = Path()
-      ..addRect(Offset.zero & size);
+    final fullCanvasPath = Path()..addRect(Offset.zero & size);
 
     // 4. Combine the paths using difference
     final combinedPath = Path.combine(

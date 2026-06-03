@@ -1,17 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 
-import '../bloc/auth/auth_bloc.dart';
-import '../bloc/auth/auth_event.dart';
-import '../bloc/auth/auth_state.dart';
-
 class LoginScreenPasswordless extends StatefulWidget {
-  final ValueChanged<String> onSignedInF;
+  // final ValueChanged<String> onSignedInF;
 
-  const LoginScreenPasswordless({
-    required this.onSignedInF,
-    super.key,
-  });
+  const LoginScreenPasswordless({super.key});
 
   @override
   State<LoginScreenPasswordless> createState() =>
@@ -20,7 +13,7 @@ class LoginScreenPasswordless extends StatefulWidget {
 
 class _LoginScreenPasswordlessState extends State<LoginScreenPasswordless> {
   final _formKey = GlobalKey<FormState>();
-  final _eaController = TextEditingController();
+  late TextEditingController _eaController;
   final _eaFocusNode = FocusNode();
 
   @override
@@ -28,6 +21,17 @@ class _LoginScreenPasswordlessState extends State<LoginScreenPasswordless> {
     super.initState();
     // autofocus: true is ignored inside overlays — request focus explicitly
     // after the overlay's focus scope is active.
+    //
+    // autofocus: true is silently ignored inside overlays because the overlay's FocusScope isn't the active one when Flutter
+    //   processes the autofocus request on first build. The fix is a FocusNode + addPostFrameCallback — runs after the frame is fully
+    //   laid out and the overlay's scope is active.
+
+    if (fsdui.capiBloc.state.ea != null) {
+      _eaController = TextEditingController(text: fsdui.capiBloc.state.ea!);
+    } else {
+      _eaController = TextEditingController();
+    }
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) _eaFocusNode.requestFocus();
     });
@@ -44,12 +48,10 @@ class _LoginScreenPasswordlessState extends State<LoginScreenPasswordless> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return BlocConsumer<AuthBloc, AuthState>(
+    return BlocConsumer<CAPIBloC, CAPIState>(
       listener: (context, state) {
-        if (state.verified && state.ea != null) {
-          fsdui.localStorage.write('vea', state.ea!);
-          widget.onSignedInF(state.ea!);
-          fsdui.dismiss("passwordless-stepper");
+        if ((state.verified ?? false) && state.ea != null) {
+          fsdui.dismissAll();
         }
       },
       builder: (context, state) {
@@ -73,7 +75,7 @@ class _LoginScreenPasswordlessState extends State<LoginScreenPasswordless> {
   Widget _buildStep1(
     BuildContext context,
     ColorScheme colorScheme,
-    AuthState state,
+    CAPIState state,
   ) {
     return Form(
       key: _formKey,
@@ -81,7 +83,11 @@ class _LoginScreenPasswordlessState extends State<LoginScreenPasswordless> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Icon(Icons.lock_outline_rounded, size: 56, color: colorScheme.primary),
+          Icon(
+            Icons.lock_outline_rounded,
+            size: 56,
+            color: colorScheme.primary,
+          ),
           const SizedBox(height: 16),
           Text(
             'Passwordless sign-in — we\'ll email you a verify button',
@@ -104,7 +110,7 @@ class _LoginScreenPasswordlessState extends State<LoginScreenPasswordless> {
             onFieldSubmitted: (_) => _submit(context),
           ),
           const SizedBox(height: 16),
-          if (state.errorMessage != null) ...[
+          if (state.authErrorMessage != null) ...[
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
@@ -112,7 +118,7 @@ class _LoginScreenPasswordlessState extends State<LoginScreenPasswordless> {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
-                state.errorMessage!,
+                state.authErrorMessage!,
                 style: TextStyle(color: colorScheme.onErrorContainer),
                 textAlign: TextAlign.center,
               ),
@@ -120,8 +126,10 @@ class _LoginScreenPasswordlessState extends State<LoginScreenPasswordless> {
             const SizedBox(height: 16),
           ],
           FilledButton(
-            onPressed: state.isLoading ? null : () => _submit(context),
-            child: state.isLoading
+            onPressed: state.awaitingConfirmation ?? false
+                ? null
+                : () => _submit(context),
+            child: state.awaitingConfirmation ?? false
                 ? const SizedBox(
                     height: 20,
                     width: 20,
@@ -134,12 +142,16 @@ class _LoginScreenPasswordlessState extends State<LoginScreenPasswordless> {
     );
   }
 
-  Widget _buildStep2(ColorScheme colorScheme, AuthState state) {
+  Widget _buildStep2(ColorScheme colorScheme, CAPIState state) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Icon(Icons.mark_email_unread_outlined, size: 56, color: colorScheme.primary),
+        Icon(
+          Icons.mark_email_unread_outlined,
+          size: 56,
+          color: colorScheme.primary,
+        ),
         const SizedBox(height: 16),
         Text(
           'Check your inbox',
@@ -161,7 +173,7 @@ class _LoginScreenPasswordlessState extends State<LoginScreenPasswordless> {
         const SizedBox(height: 24),
         TextButton(
           onPressed: () {
-            context.read<AuthBloc>().add(const SignOutRequested());
+            context.read<CAPIBloC>().add(const SignOutRequested());
           },
           child: const Text('Use a different email'),
         ),
@@ -177,10 +189,8 @@ class _LoginScreenPasswordlessState extends State<LoginScreenPasswordless> {
         fsdui.dismiss("passwordless-stepper");
         return;
       }
-      context.read<AuthBloc>().add(
-        GenerateTokenAndSendConfirmationEmail(
-          ea: ea,
-        ),
+      context.read<CAPIBloC>().add(
+        GenerateTokenAndSendConfirmationEmail(ea: ea),
       );
     }
   }

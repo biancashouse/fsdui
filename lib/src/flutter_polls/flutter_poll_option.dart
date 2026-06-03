@@ -11,13 +11,11 @@ import 'flutter_poll.dart';
 class FlutterPollOption extends HookWidget {
   final PollOptionId optionId;
   final Widget optionWidget;
-  
 
   const FlutterPollOption({
     required this.optionId,
     required this.optionWidget,
-    required 
-    super.key,
+    required super.key,
   });
 
   @override
@@ -36,15 +34,15 @@ class FlutterPollOption extends HookWidget {
         int optionVotes = state.optionVoteCounts[optionId] ?? 0;
         return AnimatedSwitcher(
           duration: const Duration(milliseconds: 300),
-          child: pollBloc.state.userAlreadyVoted() ||
-                  pollBloc.state.pollHasEnded()
+          child:
+              pollBloc.state.userAlreadyVoted() || pollBloc.state.pollHasEnded()
               ? Container(
                   key: UniqueKey(),
                   margin: EdgeInsets.only(
                     bottom: parentPollState.widget.heightBetweenOptions ?? 8,
                   ),
-                  decoration: parentPollState.widget.votedPollOptionsBorder !=
-                          null
+                  decoration:
+                      parentPollState.widget.votedPollOptionsBorder != null
                       ? BoxDecoration(
                           border: parentPollState.widget.votedPollOptionsBorder,
                           borderRadius: BorderRadius.all(
@@ -56,7 +54,8 @@ class FlutterPollOption extends HookWidget {
                   child: LinearPercentIndicator(
                     width: parentPollState.widget.pollOptionsWidth,
                     lineHeight: parentPollState.widget.pollOptionsHeight!,
-                    barRadius: parentPollState.widget.votedPollOptionsRadius ??
+                    barRadius:
+                        parentPollState.widget.votedPollOptionsRadius ??
                         const Radius.circular(8),
                     padding: EdgeInsets.zero,
                     percent: totalVotes == 0 ? 0 : optionVotes / totalVotes,
@@ -70,9 +69,7 @@ class FlutterPollOption extends HookWidget {
                         : parentPollState.widget.leadingVotedProgessColor,
                     center: Container(
                       width: double.infinity,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 14),
                       child: Row(
                         children: [
                           optionWidget,
@@ -134,43 +131,43 @@ class FlutterPollOption extends HookWidget {
                       //   }
                       // }
 
-                      if (!pollBloc.state.userAlreadyVoted()) {
-                        final String? vea = fsdui.localStorage.read('vea');
-                        if (vea == null) {
-                          final gcrServerUrl = fsdui.gcrServerUrl;
-                          if (gcrServerUrl != null) {
-                            fsdui.showPasswordlessSignIn(
-                              targetGK: key as GlobalKey?,
-                              gcrServerUrl: gcrServerUrl,
-                              onSignedInF: (ea) {
-                                pollBloc.add(
-                                  PollEvent.userVoted(
-                                      voterId: ea,
-                                      poll: parentPollState.widget.poll,
-                                      optionId: optionId),
-                                );
-                              },
-                               
-                            );
-                          } else {
-                            fsdui.logger.d('missing gcr-bh-apps-dart');
-                          }
-                        } else {
-                          pollBloc.add(
-                            PollEvent.userVoted(
-                                voterId: vea,
-                                poll: parentPollState.widget.poll,
-                                optionId: optionId),
-                          );
-                        }
+                      // if (!pollBloc.state.userAlreadyVoted()) {
+                      //   // final String? vea = fsdui.localStorage.read('vea');
+                      //   // if (vea == null) {
+                      //     if (fsdui.gcrServerUrl != null) {
+                      //       fsdui.showPasswordlessSignIn(
+                      //         targetGK: key as GlobalKey?,
+                      //         onSignedInF: (ea) {
+                      //           pollBloc.add(
+                      //             PollEvent.userVoted(
+                      //                 voterId: ea,
+                      //                 poll: parentPollState.widget.poll,
+                      //                 optionId: optionId),
+                      //           );
+                      //         },
+
+                      //       );
+                      //     } else {
+                      //       fsdui.logger.d('missing gcr-bh-apps-dart');
+                      //     }
+                      //   } else {
+                      final vea = fsdui.capiBloc.state.ea;
+                      if (vea != null) {
+                        pollBloc.add(
+                          PollEvent.userVoted(
+                            voterId: vea,
+                            poll: parentPollState.widget.poll,
+                            optionId: optionId,
+                          ),
+                        );
                       }
+                      //     }
+                      //   }
                     },
-                    splashColor: parentPollState.widget.pollOptionsSplashColor,
+                    // splashColor: parentPollState.widget.pollOptionsSplashColor,
                     borderRadius:
                         parentPollState.widget.pollOptionsBorderRadius ??
-                            BorderRadius.circular(
-                              8,
-                            ),
+                        BorderRadius.circular(8),
                     child: Container(
                       height: parentPollState.widget.pollOptionsHeight,
                       width: parentPollState.widget.pollOptionsWidth,
@@ -179,20 +176,14 @@ class FlutterPollOption extends HookWidget {
                         color: pollBloc.state.userVote?.optionId != optionId
                             ? parentPollState.widget.voteInProgressColor
                             : parentPollState.widget.pollOptionsFillColor,
-                        border: parentPollState.widget.pollOptionsBorder ??
-                            Border.all(
-                              color: Colors.black,
-                              width: 1,
-                            ),
+                        border:
+                            parentPollState.widget.pollOptionsBorder ??
+                            Border.all(color: Colors.black, width: 1),
                         borderRadius:
                             parentPollState.widget.pollOptionsBorderRadius ??
-                                BorderRadius.circular(
-                                  8,
-                                ),
+                            BorderRadius.circular(8),
                       ),
-                      child: Center(
-                        child: optionWidget,
-                      ),
+                      child: Center(child: optionWidget),
                     ),
                   ),
                 ),

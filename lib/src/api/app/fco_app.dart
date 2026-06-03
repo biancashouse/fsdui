@@ -10,11 +10,9 @@ import 'package:flutter/services.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import '../../bloc/auth/auth_bloc.dart';
 import '../../mappers/color_mapper.dart';
 import '../../mappers/size_mapper.dart';
 import '../../mappers/edge_insets_mapper.dart';
-import '../../repositories/auth_repository.dart';
 import 'url_strategy_stub.dart' if (dart.library.html) 'url_strategy_web.dart';
 
 // conditional import for webview ------------------
@@ -115,9 +113,6 @@ class FlutterContentAppState extends State<FlutterContentApp>
   int tapCount = 0;
   DateTime? lastTapTime;
 
-  // Instantiate repositories once at the top of the tree.
-  final authRepository = AuthRepository();
-
   // YoutubePlayerController? ytController;
 
   @override
@@ -202,115 +197,101 @@ class FlutterContentAppState extends State<FlutterContentApp>
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.hasData) {
-          return RepositoryProvider.value(
-            value: authRepository,
-            child: MultiBlocProvider(
-              providers: [
-                // AuthBloc is hydrated – state is restored automatically.
-                BlocProvider(
-                  create: (_) => AuthBloc(
-                    authRepository: authRepository,
-                    capiBloc: snapshot.data!,
-                  ),
-                ),
-                // CAPIBloc is also hydrated
-                BlocProvider<CAPIBloC>(
-                  create: (BuildContext context) => snapshot.data!,
-                ),
-              ],
-              child: BlocBuilder<CAPIBloC, CAPIState>(
-                buildWhen: (prev, curr) =>
-                    prev.themeModeIndex != curr.themeModeIndex,
-                builder: (context, state) {
-                  ThemeMode themeMode = ThemeMode.values[state.themeModeIndex ?? 0];
-                  return widget.routingConfig != null
-                      ? MaterialApp.router(
-                          // following line not valid for router;
-                          // instead pass navigatorKey: fco.globalNavigatorKey
-                          // to GoRouter.routingConfig()
-                          routerConfig: fsdui.router,
-                          localizationsDelegates: const [
-                            GlobalMaterialLocalizations.delegate,
-                            GlobalCupertinoLocalizations.delegate,
-                            GlobalWidgetsLocalizations.delegate,
-                            FlutterQuillLocalizations.delegate,
-                          ],
-                          themeMode: themeMode,
-                          theme: widget.materialAppThemeF(),
-                          darkTheme: ThemeData(
-                            brightness: Brightness.light,
-                            primarySwatch: Colors.purple,
-                            // ... other dark theme properties
-                            scaffoldBackgroundColor: Colors.black54,
-                            // Example
-                            textTheme: TextTheme(
-                              bodyMedium: TextStyle(color: Colors.black87),
-                            ),
-                            appBarTheme: AppBarTheme(
-                              backgroundColor: Colors.grey[850],
-                            ),
+          return BlocProvider<CAPIBloC>(
+            create: (BuildContext context) => snapshot.data!,
+            child: BlocBuilder<CAPIBloC, CAPIState>(
+              buildWhen: (prev, curr) =>
+                  prev.themeModeIndex != curr.themeModeIndex,
+              builder: (context, state) {
+                ThemeMode themeMode =
+                    ThemeMode.values[state.themeModeIndex ?? 1];
+                return widget.routingConfig != null
+                    ? MaterialApp.router(
+                        // following line not valid for router;
+                        // instead pass navigatorKey: fco.globalNavigatorKey
+                        // to GoRouter.routingConfig()
+                        routerConfig: fsdui.router,
+                        localizationsDelegates: const [
+                          GlobalMaterialLocalizations.delegate,
+                          GlobalCupertinoLocalizations.delegate,
+                          GlobalWidgetsLocalizations.delegate,
+                          FlutterQuillLocalizations.delegate,
+                        ],
+                        themeMode: themeMode,
+                        theme: widget.materialAppThemeF(),
+                        darkTheme: ThemeData(
+                          brightness: Brightness.light,
+                          primarySwatch: Colors.purple,
+                          // ... other dark theme properties
+                          scaffoldBackgroundColor: Colors.black54,
+                          // Example
+                          textTheme: TextTheme(
+                            bodyMedium: TextStyle(color: Colors.black87),
                           ),
-                          debugShowCheckedModeBanner: false,
-                          title: widget.title,
-                          scrollBehavior: const ConstantScrollBehavior(),
-                        )
-                      : MaterialApp(
-                          navigatorKey: fsdui.globalNavigatorKey,
-                          home: widget.home,
-                          localizationsDelegates: const [
-                            GlobalMaterialLocalizations.delegate,
-                            GlobalCupertinoLocalizations.delegate,
-                            GlobalWidgetsLocalizations.delegate,
-                            FlutterQuillLocalizations.delegate,
-                          ],
-                          themeMode: themeMode,
-                          theme: widget.materialAppThemeF(),
-                          darkTheme: ThemeData(
-                            brightness: Brightness.light,
-                            primarySwatch: Colors.purple,
-                            // ... other dark theme properties
-                            scaffoldBackgroundColor: Colors.black54,
-                            // Example
-                            textTheme: TextTheme(
-                              bodyMedium: TextStyle(color: Colors.black87),
-                            ),
-                            appBarTheme: AppBarTheme(
-                              backgroundColor: Colors.grey[850],
-                            ),
+                          appBarTheme: AppBarTheme(
+                            backgroundColor: Colors.grey[850],
                           ),
-                          debugShowCheckedModeBanner: false,
-                          title: widget.title,
-                          scrollBehavior: const ConstantScrollBehavior(),
-                        );
-                },
-              ),
-              // child: ValueListenableBuilder<ThemeMode>(
-              //   valueListenable: fsdui.themeModeNotifier,
-              //   builder: (context, currentMode, child) {
-              //     return BlocBuilder<AuthBloc, AuthState>(
-              //       buildWhen: (prev, curr) =>
-              //       prev.user.status != curr.user.status,
-              //       builder: (context, state) {
-              //         return AnimatedSwitcher(
-              //           duration: const Duration(milliseconds: 300),
-              //           child: switch (state.user.status) {
-              //             AuthStatus.authenticated => _signedInPage(currentMode),
-              //             _ => MaterialApp(
-              //               title: 'Sign In',
-              //               debugShowCheckedModeBanner: false,
-              //               theme: ThemeData(
-              //                 colorSchemeSeed: Colors.indigo,
-              //                 useMaterial3: true,
-              //               ),
-              //               home: LoginScreenPasswordless(appId: widget.appId, appName: widget.appName),
-              //             ),
-              //           },
-              //         );
-              //       },
-              //     );
-              //   },
-              // ),
+                        ),
+                        debugShowCheckedModeBanner: false,
+                        title: widget.title,
+                        scrollBehavior: const ConstantScrollBehavior(),
+                      )
+                    : MaterialApp(
+                        navigatorKey: fsdui.globalNavigatorKey,
+                        home: widget.home,
+                        localizationsDelegates: const [
+                          GlobalMaterialLocalizations.delegate,
+                          GlobalCupertinoLocalizations.delegate,
+                          GlobalWidgetsLocalizations.delegate,
+                          FlutterQuillLocalizations.delegate,
+                        ],
+                        themeMode: themeMode,
+                        theme: widget.materialAppThemeF(),
+                        darkTheme: ThemeData(
+                          brightness: Brightness.light,
+                          primarySwatch: Colors.purple,
+                          // ... other dark theme properties
+                          scaffoldBackgroundColor: Colors.black54,
+                          // Example
+                          textTheme: TextTheme(
+                            bodyMedium: TextStyle(color: Colors.black87),
+                          ),
+                          appBarTheme: AppBarTheme(
+                            backgroundColor: Colors.grey[850],
+                          ),
+                        ),
+                        debugShowCheckedModeBanner: false,
+                        title: widget.title,
+                        scrollBehavior: const ConstantScrollBehavior(),
+                      );
+              },
             ),
+            // child: ValueListenableBuilder<ThemeMode>(
+            //   valueListenable: fsdui.themeModeNotifier,
+            //   builder: (context, currentMode, child) {
+            //     return BlocBuilder<AuthBloc, AuthState>(
+            //       buildWhen: (prev, curr) =>
+            //       prev.user.status != curr.user.status,
+            //       builder: (context, state) {
+            //         return AnimatedSwitcher(
+            //           duration: const Duration(milliseconds: 300),
+            //           child: switch (state.user.status) {
+            //             AuthStatus.authenticated => _signedInPage(currentMode),
+            //             _ => MaterialApp(
+            //               title: 'Sign In',
+            //               debugShowCheckedModeBanner: false,
+            //               theme: ThemeData(
+            //                 colorSchemeSeed: Colors.indigo,
+            //                 useMaterial3: true,
+            //               ),
+            //               home: LoginScreenPasswordless(appId: widget.appId, appName: widget.appName),
+            //             ),
+            //           },
+            //         );
+            //       },
+            //     );
+            //   },
+            // ),
           );
         } else {
           return const Offstage();

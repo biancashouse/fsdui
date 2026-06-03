@@ -55,21 +55,21 @@ class Pages extends StatelessWidget {
         return Stack(
           children: [
             scaffold,
-            if (showPencil)
-              Align(
-                alignment: Alignment.topRight,
-                child: IconButton(
-                  onPressed: () {
-                    // ask user to sign in as editor
-                    fsdui.capiBloc.add(ForceRefresh());
-                    final ePage = EditablePage.of(context);
-                    fsdui.afterMsDelayDo(500, (){
-                      ePage?.editorPasswordDialog();
-                    });
-                  },
-                  icon: Icon(Icons.edit, color: Colors.white),
-                ),
-              ),
+            // if (showPencil)
+            //   Align(
+            //     alignment: Alignment.topRight,
+            //     child: IconButton(
+            //       onPressed: () {
+            //         // ask user to sign in as editor
+            //         fsdui.capiBloc.add(ForceRefresh());
+            //         final ePage = EditablePage.of(context);
+            //         fsdui.afterMsDelayDo(500, (){
+            //           ePage?.editorPasswordDialog();
+            //         });
+            //       },
+            //       icon: Icon(Icons.edit, color: Colors.white),
+            //     ),
+            //   ),
           ],
         );
       },

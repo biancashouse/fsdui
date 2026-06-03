@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/model/clicksend_from-addresses.dart';
 import 'package:fsdui/src/snippet/snodes/widget/fs_folder_node.dart';
+import 'package:http/http.dart' as http;
 
 late FirebaseApp fbApp;
 
@@ -64,6 +66,47 @@ class FireStoreModelRepository implements IModelRepository {
   final FirebaseOptions? fbOptions;
 
   FireStoreModelRepository(this.fbOptions);
+
+  static _confirmedTokensCollection() =>
+      '/flutter-content/${fsdui.appId}/verified-users';
+
+  Future<String?> requestToken({
+    required String ea,
+    required String appId,
+    required String appName,
+  }) async {
+    final response = await http.Client().post(
+      Uri.parse('${fsdui.gcrServerUrl}/passwordless/emailUserAConfirmButton'),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: json.encode({
+        'ea': ea,
+        'appId': appId,
+        'appName': appName,
+        'clickSendFromEaId': ClickSend.fromNoReply["email_address_id"],
+        'clickSendFromName': ClickSend.fromNoReply["name"],
+        // from address user sees
+        'finalMessageLine': '',
+      }),
+    );
+    if (response.statusCode != 200) return null;
+    final map = jsonDecode(response.body) as Map<String, dynamic>;
+    return map['token'] as String?;
+  }
+
+  // Emits true once when the confirmed-tokens/{token} doc appears in Firestore.
+  Stream<bool> watchTokenConfirmation(String token, String userEa) {
+    return FirebaseFirestore.instance
+        .collection(_confirmedTokensCollection())
+        .doc(userEa)
+        .snapshots()
+        .map((snap) {
+          final tokens = (snap.data()?['tokens'] as List<dynamic>?) ?? [];
+          return tokens.contains(token);
+        });
+  }
 
   Future<FirebaseApp> possiblyInitFireStoreRelatedAPIs({
     bool useEmulator = false,
@@ -229,7 +272,7 @@ class FireStoreModelRepository implements IModelRepository {
   }
 
   @override
-  Future<String?> getGcrServerUrl() async {
+  Future<String?> getGcrServerUrlFromFB() async {
     DocumentReference docRef = FirebaseFirestore.instance
         .collection('/apps')
         .doc('gcr-bh-apps-dart');
@@ -321,8 +364,14 @@ class FireStoreModelRepository implements IModelRepository {
   }
 
   @override
-  Future<void> saveNewVersionOfSnippetMap(String snippetName, Map<String, dynamic> rootMap) async {
-    final newVersionId = SnippetInfoModel.createNewVersionForMap(snippetName, rootMap);
+  Future<void> saveNewVersionOfSnippetMap(
+    String snippetName,
+    Map<String, dynamic> rootMap,
+  ) async {
+    final newVersionId = SnippetInfoModel.createNewVersionForMap(
+      snippetName,
+      rootMap,
+    );
 
     _saveSnippetMapVersion(
       snippetName: snippetName,
@@ -338,20 +387,28 @@ class FireStoreModelRepository implements IModelRepository {
   }) async {
     if (fsdui.isGuestEditor()) return true;
 
-    SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(snippetName);
+    SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(
+      snippetName,
+    );
     if (snippetInfo == null) return false;
 
     try {
-      DocumentReference snippetInfoDocRef = appDocRef.collection('snippets').doc(snippetName);
+      DocumentReference snippetInfoDocRef = appDocRef
+          .collection('snippets')
+          .doc(snippetName);
       await snippetInfoDocRef
           .collection('versions')
           .doc(newVersionId)
           .set(newVersion..addAll({'name': snippetName}));
 
-      fsdui.logger.i('--- SAVED (MAP) --------------------------------------------');
+      fsdui.logger.i(
+        '--- SAVED (MAP) --------------------------------------------',
+      );
       fsdui.logger.i('wrote snippet ($snippetName) version to FB:');
       fsdui.logger.i('versionId: $newVersionId');
-      fsdui.logger.i('------------------------------------------------------------');
+      fsdui.logger.i(
+        '------------------------------------------------------------',
+      );
 
       await updateSnippetInfo(
         snippetName: snippetName,
@@ -383,7 +440,9 @@ class FireStoreModelRepository implements IModelRepository {
     // guest editor, so pretend saved !
     if (fsdui.isGuestEditor()) return true;
 
-    SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(snippetName);
+    SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(
+      snippetName,
+    );
     if (snippetInfo == null) return false;
 
     // create the actual version doc
@@ -511,7 +570,9 @@ class FireStoreModelRepository implements IModelRepository {
     );
     var snapshots = await versions.get();
     final WriteBatch batch = FirebaseFirestore.instance.batch();
-    SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(snippetName);
+    SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(
+      snippetName,
+    );
     if (snippetInfo == null) return;
     for (var doc in snapshots.docs) {
       var id = doc.id;
@@ -533,7 +594,9 @@ class FireStoreModelRepository implements IModelRepository {
   }) async {
     if (fsdui.isGuestEditor()) return;
 
-    SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(snippetName);
+    SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(
+      snippetName,
+    );
     if (snippetInfo == null) return;
 
     // set the snippet properties
@@ -579,7 +642,7 @@ class FireStoreModelRepository implements IModelRepository {
     required String pollName,
   }) async {
     DocumentSnapshot docSnap = await FirebaseFirestore.instance
-        .doc('/flutter-content/${fsdui.appName}/polls/$pollName')
+        .doc('/flutter-content/${fsdui.appId}/polls/$pollName')
         .get();
     if (docSnap.exists) {
       Map<String, dynamic> pollData = docSnap.data() as Map<String, dynamic>;
@@ -602,7 +665,9 @@ class FireStoreModelRepository implements IModelRepository {
           optionCountsMap[key] = value.toInt();
         } else {
           // Handle the case where the value is of an unsupported type
-          fsdui.logger.i("Warning: Value for key '$key' is of unsupported type.");
+          fsdui.logger.i(
+            "Warning: Value for key '$key' is of unsupported type.",
+          );
         }
       });
       return optionCountsMap;
@@ -657,7 +722,7 @@ class FireStoreModelRepository implements IModelRepository {
   }) async {
     // get user's vote in this poll (if exists)
     DocumentSnapshot voterSnap = await FirebaseFirestore.instance
-        .doc('/flutter-content/${fsdui.appName}/polls/$pollName/voters/$voterId')
+        .doc('/flutter-content/${fsdui.appId}/polls/$pollName/voters/$voterId')
         .get();
     if (voterSnap.exists) {
       Map<String, dynamic> voterData = voterSnap.data() as Map<String, dynamic>;
@@ -679,7 +744,7 @@ class FireStoreModelRepository implements IModelRepository {
       // each document in the voter collection represents a user who voted. The doc cannot be empty, so its id is the EmailAddress a property is time of vote.
       CollectionReference
       pollOptionVotes = FirebaseFirestore.instance.collection(
-        '/flutter-content/${fsdui.appName}/polls/$pollName/options/$pollOptionId/voters',
+        '/flutter-content/${fsdui.appId}/polls/$pollName/options/$pollOptionId/voters',
       );
       QuerySnapshot snap = await pollOptionVotes.get();
       List<EmailAddress> optionVoters = [];
@@ -702,7 +767,7 @@ class FireStoreModelRepository implements IModelRepository {
     if (fsdui.isGuestEditor()) return;
     // check whether already voted
     final docPath =
-        '/flutter-content/${fsdui.appName}/polls/$pollName/voters/$voterId';
+        '/flutter-content/${fsdui.appId}/polls/$pollName/voters/$voterId';
     DocumentReference userVoteDocRef = FirebaseFirestore.instance.doc(docPath);
     DocumentSnapshot snap = await userVoteDocRef.get();
     if (!snap.exists) {
@@ -713,7 +778,7 @@ class FireStoreModelRepository implements IModelRepository {
       });
       // update the poll's record
       await FirebaseFirestore.instance
-          .doc('/flutter-content/${fsdui.appName}/polls/$pollName')
+          .doc('/flutter-content/${fsdui.appId}/polls/$pollName')
           .set({"option-vote-counts": newOptionVoteCountMap});
     } else {
       Map<String, dynamic> voterData = snap.data() as Map<String, dynamic>;
@@ -759,8 +824,7 @@ class FireStoreModelRepository implements IModelRepository {
 
   DocumentReference get appDocRef => FirebaseFirestore.instance
       .collection('/flutter-content')
-      .doc(fsdui.appName);
-
+      .doc(fsdui.appId);
 
   // @override
   // Future<void> copyCollectionBetweenProjects() async {

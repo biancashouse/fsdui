@@ -5,7 +5,7 @@ import 'package:fsdui/fsdui.dart';
 class Page_Home extends StatefulWidget {
   const Page_Home({super.key});
 
-   @override
+  @override
   State<Page_Home> createState() => _Page_HomeState();
 }
 
@@ -67,43 +67,43 @@ class _Page_HomeState extends State<Page_Home> {
 
     final uniqueTabBarName = DateTime.now().millisecondsSinceEpoch.toString();
     SnippetBuilder sp = SnippetBuilder(
-      initialValue:  ScaffoldNode(
-          name: 'home-scaffold-with-tabs',
-          // appBar: NamedPS(
-          //   propertyName: 'appBar',
-          //   child: AppBarNode(
-          //     // tabBarName: uniqueTabBarName,
-          //     bgColor: Colors.grey,
-          //     title: NamedSC(
-          //       propertyName: 'title',
-          //       child: TextNode(
-          //         text: 'my title',
-          //         tsPropGroup: TextStyleProperties(),
-          //       ),
-          //     ),
-          //     titleTextStyle: TextStyleProperties(),
-          //     actions: NamedMC(propertyName: 'actions', children: []),
-          //     leading: NamedSC(propertyName: 'leading'),
-          //     bottom: NamedPS(
-          //       propertyName: 'bottom',
-          //       // child: TabBarNode(
-          //       //   tabBarName: uniqueTabBarName,
-          //       //   labelTSPropGroup: TextStyleProperties(),
-          //       //   children: [
-          //       //     TextNode(text: 'tab 1', tsPropGroup: TextStyleProperties()),
-          //       //     TextNode(text: 'Tab 2', tsPropGroup: TextStyleProperties()),
-          //       //   ],
-          //       // ),
-          //     ),
-          //   ),
-          // ),
-          // body: NamedSC(
-          //   propertyName: 'body',
-          //   // child: TabBarViewNode(
-          //   //   tabBarName: uniqueTabBarName,
-          //   //   children: [PlaceholderNode(), PlaceholderNode()],
-          //   // ),
-          // ),
+      initialValue: ScaffoldNode(
+        name: 'home-scaffold-with-tabs',
+        // appBar: NamedPS(
+        //   propertyName: 'appBar',
+        //   child: AppBarNode(
+        //     // tabBarName: uniqueTabBarName,
+        //     bgColor: Colors.grey,
+        //     title: NamedSC(
+        //       propertyName: 'title',
+        //       child: TextNode(
+        //         text: 'my title',
+        //         tsPropGroup: TextStyleProperties(),
+        //       ),
+        //     ),
+        //     titleTextStyle: TextStyleProperties(),
+        //     actions: NamedMC(propertyName: 'actions', children: []),
+        //     leading: NamedSC(propertyName: 'leading'),
+        //     bottom: NamedPS(
+        //       propertyName: 'bottom',
+        //       // child: TabBarNode(
+        //       //   tabBarName: uniqueTabBarName,
+        //       //   labelTSPropGroup: TextStyleProperties(),
+        //       //   children: [
+        //       //     TextNode(text: 'tab 1', tsPropGroup: TextStyleProperties()),
+        //       //     TextNode(text: 'Tab 2', tsPropGroup: TextStyleProperties()),
+        //       //   ],
+        //       // ),
+        //     ),
+        //   ),
+        // ),
+        // body: NamedSC(
+        //   propertyName: 'body',
+        //   // child: TabBarViewNode(
+        //   //   tabBarName: uniqueTabBarName,
+        //   //   children: [PlaceholderNode(), PlaceholderNode()],
+        //   // ),
+        // ),
       ),
 
       // snippetRootNode: SnippetRootNode(
@@ -118,7 +118,10 @@ class _Page_HomeState extends State<Page_Home> {
       builder: (BuildContext context, st) => Scaffold(
         appBar: AppBar(
           title: Text(title),
-          actions: [fsdui.NavigationDD(pencilIconColor: Colors.red)],
+          actions: [
+            fsdui.NavigationDD(pencilIconColor: Colors.red),
+            SizedBox(width: 10, height: 1),
+          ],
         ),
         body: Center(
           // Center is a layout widget. It takes a single child and positions it

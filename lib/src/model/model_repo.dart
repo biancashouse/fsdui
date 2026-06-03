@@ -1,3 +1,8 @@
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:fsdui/src/model/clicksend_from-addresses.dart';
+import 'package:http/http.dart' as http;
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/snodes/widget/fs_folder_node.dart';
 
@@ -6,6 +11,18 @@ import 'package:fsdui/src/snippet/snodes/widget/fs_folder_node.dart';
 // enum FSAction { undo, redo }
 
 abstract class IModelRepository {
+  /// auth repo --------------------------------------------
+  ///
+  Future<String?> requestToken({
+    required String ea,
+    required String appId,
+    required String appName,
+  });
+
+  // Emits true once when the confirmed-tokens/{token} doc appears in Firestore.
+  Stream<bool> watchTokenConfirmation(String token, String userEa);
+
+  // -- end of auth rep
   Future<void> ensureSnippetInfoCached({required SnippetName snippetName});
 
   // Future<void> migrateCollection();
@@ -19,7 +36,7 @@ abstract class IModelRepository {
     required VersionId versionId,
   });
 
-  Future<String?> getGcrServerUrl();
+  Future<String?> getGcrServerUrlFromFB();
 
   Future<AppInfoModel?> getAppInfo();
 
@@ -35,7 +52,10 @@ abstract class IModelRepository {
 
   // Future<bool> saveNewVersionOfSnippetBeingEdited();
   Future<void> saveNewVersionOfSnippet(SNode rootNode);
-  Future<void> saveNewVersionOfSnippetMap(String snippetName, Map<String, dynamic> rootMap);
+  Future<void> saveNewVersionOfSnippetMap(
+    String snippetName,
+    Map<String, dynamic> rootMap,
+  );
 
   Future<bool> saveBrandNewSnippet({
     required SnippetName snippetName,

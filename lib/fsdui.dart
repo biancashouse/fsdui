@@ -514,7 +514,7 @@ class FSDUI_Mixins
         logger.e(e);
       }
 
-      _gcrServerUrl = await modelRepo.getGcrServerUrl();
+      _gcrServerUrl = await modelRepo.getGcrServerUrlFromFB();
 
       // fco.logger.i('init 3. ${fco.stopwatch.elapsedMilliseconds}');
 
@@ -593,7 +593,7 @@ class FSDUI_Mixins
   }
 
   bool isArticleEditor() => capiBloc.state.isSignedInAsArticleEditor ?? false;
-
+  bool isSuperEditor() => capiBloc.state.isSignedInAsSuperEditor ?? false;
   bool isGuestEditor() => capiBloc.state.isSignedInAsGuestEditor ?? false;
 
   GlobalKey authIconGK = GlobalKey();

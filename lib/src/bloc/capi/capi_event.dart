@@ -12,30 +12,26 @@ final class UpdateAppRating extends CAPIEvent {
   UpdateAppRating(this.stars);
 }
 
-final class VerifiedEa extends CAPIEvent {
-  String? ea;
+// final class VerifiedEa extends CAPIEvent {
+//   String? ea;
 
-  VerifiedEa({this.ea});
-}
+//   VerifiedEa({this.ea});
+// }
 
 final class Sync extends CAPIEvent {
   Sync();
 }
 
-final class SignedInAsSuperEditor extends CAPIEvent {
-  SignedInAsSuperEditor();
-}
+// final class SignedInAsSuperEditor extends CAPIEvent {
+//   SignedInAsSuperEditor();
+// }
 
-final class SignedInAsArticleEditor extends CAPIEvent {
-  SignedInAsArticleEditor();
-}
+// final class SignedInAsArticleEditor extends CAPIEvent {
+//   SignedInAsArticleEditor();
+// }
 
 final class SignedInAsGuestEditor extends CAPIEvent {
   SignedInAsGuestEditor();
-}
-
-final class SignOut extends CAPIEvent {
-SignOut();
 }
 
 final class OverrideTargetGK extends CAPIEvent {
@@ -307,4 +303,21 @@ final class ReorderSibling extends CAPIEvent {
 
 final class ToggleNodeProperties extends CAPIEvent {
   ToggleNodeProperties();
+}
+
+/// auth events
+final class GenerateTokenAndSendConfirmationEmail extends CAPIEvent {
+  const GenerateTokenAndSendConfirmationEmail({required this.ea});
+  final String ea;
+}
+
+// Internal event fired by the Firestore stream when the token doc appears.
+final class TokenConfirmed extends CAPIEvent {
+  const TokenConfirmed({required this.ea, required this.token});
+  final String ea;
+  final String token;
+}
+
+final class SignOutRequested extends CAPIEvent {
+  const SignOutRequested();
 }
