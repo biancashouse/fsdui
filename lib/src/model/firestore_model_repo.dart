@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart' show PlatformDispatcher;
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/model/clicksend_from-addresses.dart';
 import 'package:fsdui/src/snippet/snodes/widget/fs_folder_node.dart';
@@ -67,7 +68,7 @@ class FireStoreModelRepository implements IModelRepository {
 
   FireStoreModelRepository(this.fbOptions);
 
-  static _confirmedTokensCollection() =>
+  static _confirmedTokensCollection(String appId) =>
       '/flutter-content/${fsdui.appId}/verified-users';
 
   Future<String?> requestToken({
@@ -97,9 +98,13 @@ class FireStoreModelRepository implements IModelRepository {
   }
 
   // Emits true once when the confirmed-tokens/{token} doc appears in Firestore.
-  Stream<bool> watchTokenConfirmation(String token, String userEa) {
+  Stream<bool> watchTokenConfirmation(
+    String appId,
+    String token,
+    String userEa,
+  ) {
     return FirebaseFirestore.instance
-        .collection(_confirmedTokensCollection())
+        .collection(_confirmedTokensCollection(appId))
         .doc(userEa)
         .snapshots()
         .map((snap) {
@@ -822,10 +827,40 @@ class FireStoreModelRepository implements IModelRepository {
     return doc.exists;
   }
 
+  @override
+  Future<void> saveRating(String appId, String email, int stars) async {
+    await FirebaseFirestore.instance
+        .collection(_confirmedTokensCollection(appId))
+        .doc(email)
+        .set({'rating': stars, 'platform': _platform}, SetOptions(merge: true));
+  }
+
+  @override
+  Future<void> saveFeedback(String appId, String email, String feedback) async {
+    await FirebaseFirestore.instance
+        .collection(_confirmedTokensCollection(appId))
+        .doc(email)
+        .set(
+          {'feedback': FieldValue.arrayUnion([feedback])},
+          SetOptions(merge: true),
+        );
+  }
+
   DocumentReference get appDocRef => FirebaseFirestore.instance
       .collection('/flutter-content')
       .doc(fsdui.appId);
 
+  static String get _platform {
+    if (fsdui.isIOS) {
+      // iPads have a shortest side >= 768pt; iPhones are smaller
+      final view = PlatformDispatcher.instance.views.first;
+      final shortSide = view.physicalSize.shortestSide / view.devicePixelRatio;
+      return shortSide >= 600 ? 'ipados' : 'ios';
+    }
+    if (fsdui.isMac) return 'macos';
+    if (fsdui.isWindows) return 'windows';
+    return 'web';
+  }
   // @override
   // Future<void> copyCollectionBetweenProjects() async {
   //

@@ -1,8 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
 
-import 'package:fsdui/src/model/clicksend_from-addresses.dart';
-import 'package:http/http.dart' as http;
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/snodes/widget/fs_folder_node.dart';
 
@@ -20,7 +17,11 @@ abstract class IModelRepository {
   });
 
   // Emits true once when the confirmed-tokens/{token} doc appears in Firestore.
-  Stream<bool> watchTokenConfirmation(String token, String userEa);
+  Stream<bool> watchTokenConfirmation(
+    String appId,
+    String token,
+    String userEa,
+  );
 
   // -- end of auth rep
   Future<void> ensureSnippetInfoCached({required SnippetName snippetName});
@@ -52,6 +53,7 @@ abstract class IModelRepository {
 
   // Future<bool> saveNewVersionOfSnippetBeingEdited();
   Future<void> saveNewVersionOfSnippet(SNode rootNode);
+
   Future<void> saveNewVersionOfSnippetMap(
     String snippetName,
     Map<String, dynamic> rootMap,
@@ -101,4 +103,7 @@ abstract class IModelRepository {
   });
 
   Future<bool> tokenConfirmed(String token);
+
+  Future<void> saveRating(String appId, String email, int stars);
+  Future<void> saveFeedback(String appId, String email, String feedback);
 }
