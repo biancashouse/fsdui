@@ -39,6 +39,8 @@ class FlutterContentApp extends StatefulWidget {
   final RoutingConfig? routingConfig;
   final String? initialRoutePath;
 
+  final VoidCallback? aboutUsF;
+
   final Widget? home;
 
   // // --- globally available -----------------------------------------------------
@@ -76,6 +78,7 @@ class FlutterContentApp extends StatefulWidget {
     this.onReadyF,
     this.alsoInitF,
     this.namedVoidCallbacks,
+    this.aboutUsF,
   });
 
   const FlutterContentApp({
@@ -95,6 +98,7 @@ class FlutterContentApp extends StatefulWidget {
     this.onReadyF,
     this.alsoInitF,
     this.namedVoidCallbacks,
+    this.aboutUsF,
   });
 
   static FlutterContentAppState? of(BuildContext context) =>
@@ -177,6 +181,7 @@ class FlutterContentAppState extends State<FlutterContentApp>
       useEmulator: widget.useEmulator,
       routingConfig: widget.routingConfig,
       initialRoutePath: widget.initialRoutePath,
+      aboutUsF: widget.aboutUsF,
     );
     widget.onReadyF?.call();
     SNode.hideAllTargetCovers();

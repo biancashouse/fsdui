@@ -38,9 +38,11 @@ mixin NavMixin {
         },
       );
 
-  Widget _dropdownButtonNotSignedIn(BuildContext context,
-      CAPIState state,
-      Color pencilIconColor,) {
+  Widget _dropdownButtonNotSignedIn(
+    BuildContext context,
+    CAPIState state,
+    Color pencilIconColor,
+  ) {
     List<DropdownMenuItem<String>> dropdownItems = [
       _dropdownItemWithPI(
         value: 'sign-in',
@@ -68,6 +70,8 @@ mixin NavMixin {
         ),
       ),
 
+      _aboutUsItem(context, state),
+
       if (fsdui.canEditAnyContent() && fsdui.router != null)
         _dropdownItemWithPI(
           value: 'create-editable-page',
@@ -87,7 +91,7 @@ mixin NavMixin {
         ),
     ];
 
-    addBrightnessItem(context, state, dropdownItems);
+    _addBrightnessItem(context, state, dropdownItems);
 
     return PointerInterceptor(
       child: Theme(
@@ -116,6 +120,8 @@ mixin NavMixin {
       // signed in as super, article or guest editor
       // if (!(state.isSignedInAsNormalUser ?? false))
       _dropdownItemWithPI(value: 'sign-out', child: _signOutBtn(context)),
+      _aboutUsItem(context, state),
+
       if (fsdui.canEditAnyContent() && fsdui.router != null)
         _dropdownItemWithPI(
           value: 'create-editable-page',
@@ -139,13 +145,10 @@ mixin NavMixin {
       for (String pagePath in fsdui.pageList) {
         // skip currentPath
         try {
-          final String currentPath = GoRouterState
-              .of(context)
-              .uri
-              .toString();
+          final String currentPath = GoRouterState.of(context).uri.toString();
           if (pagePath != currentPath) {
             String sandboxIndicator =
-            (fsdui.appInfo.anonymousUserEditablePages.contains(pagePath))
+                (fsdui.appInfo.anonymousUserEditablePages.contains(pagePath))
                 ? ' *'
                 : "";
             dropdownItems.add(
@@ -161,46 +164,69 @@ mixin NavMixin {
       }
     }
 
-    addBrightnessItem(context, state, dropdownItems);
+    _addBrightnessItem(context, state, dropdownItems);
 
     return PointerInterceptor(
-        child: Theme(
-          data: Theme.of(context).copyWith(hoverColor: Colors.transparent),
-          child: DropdownButton<String>(
-            items: dropdownItems,
-            underline: Offstage(),
-            focusColor: Colors.transparent,
-            icon: PointerInterceptor(
-              child: (state.verified ?? false) &&
-                  !state.isSignedInAsNormalUser()
-                  ? Icon(
-                Icons.more_vert,
-                color: fsdui.canEditAnyContent()
-                    ? Colors.red
-                    : Colors.purpleAccent,
-                size: 24,
-              )
-                  : Tooltip(
-                message: 'signed in as ${state.ea}',
-                child: Icon(Icons.verified_user, color: Colors.green, size: 24),
-              )),
-              onChanged: (value) {
-                if (fsdui.router != null) {
-                  switch (value) {
-                    case 'create-editable-page':
-                      EditablePage.of(context)?.showPageNameDialog();
-                      break;
-                    default:
-                      break;
-                  }
-                }
-              },
-            ),
+      child: Theme(
+        data: Theme.of(context).copyWith(hoverColor: Colors.transparent),
+        child: DropdownButton<String>(
+          items: dropdownItems,
+          underline: Offstage(),
+          focusColor: Colors.transparent,
+          icon: PointerInterceptor(
+            child: (state.verified ?? false) && !state.isSignedInAsNormalUser()
+                ? Icon(
+                    Icons.more_vert,
+                    color: fsdui.canEditAnyContent()
+                        ? Colors.red
+                        : Colors.purpleAccent,
+                    size: 24,
+                  )
+                : Tooltip(
+                    message: 'signed in as ${state.ea}',
+                    child: Icon(
+                      Icons.verified_user,
+                      color: Colors.green,
+                      size: 24,
+                    ),
+                  ),
           ),
-        );
-    }
+          onChanged: (value) {
+            if (fsdui.router != null) {
+              switch (value) {
+                case 'create-editable-page':
+                  EditablePage.of(context)?.showPageNameDialog();
+                  break;
+                default:
+                  break;
+              }
+            }
+          },
+        ),
+      ),
+    );
+  }
 
-  void addBrightnessItem(BuildContext context, CAPIState state, dropdownItems) {
+  DropdownMenuItem<String> _aboutUsItem(
+    BuildContext context,
+    CAPIState state,
+  ) => _dropdownItemWithPI(
+    value: 'about-us',
+    child: MenuItemButton(
+      onPressed: () {
+        Navigator.pop(context);
+        // context.go('/about-us');
+        fsdui.aboutUsF?.call();
+      },
+      child: Text('about us'),
+    ),
+  );
+
+  void _addBrightnessItem(
+    BuildContext context,
+    CAPIState state,
+    dropdownItems,
+  ) {
     String buttonText;
     ThemeMode nextMode;
     IconData buttonIcon;
@@ -216,7 +242,7 @@ mixin NavMixin {
         nextMode = ThemeMode.system;
         buttonIcon = Icons.brightness_auto; // Auto icon
         break;
-    // case ThemeMode.system:
+      // case ThemeMode.system:
       default: // Treat system as default, cycle to light
         buttonText = 'Switch to Light Mode';
         nextMode = ThemeMode.light;
@@ -239,112 +265,111 @@ mixin NavMixin {
     );
   }
 
-  Widget _signOutBtn(context) =>
-      TextButton(
-        onPressed: () {
-          if (!fsdui.anyPresent([HotspotTargetConfigToolbar.CID])) {
-            fsdui.capiBloc.add(SignOutRequested());
-            Navigator.pop(context);
-          }
-        },
-        child: fsdui.coloredText('Sign Out', color: Colors.red),
-      );
+  Widget _signOutBtn(context) => TextButton(
+    onPressed: () {
+      if (!fsdui.anyPresent([HotspotTargetConfigToolbar.CID])) {
+        fsdui.capiBloc.add(SignOutRequested());
+        Navigator.pop(context);
+      }
+    },
+    child: fsdui.coloredText('Sign Out', color: Colors.red),
+  );
 
-  Widget _pageNavBtn(BuildContext context,
-      String pagePath,
-      String sandboxIndicator,) =>
-      GestureDetector(
-        onTap: () {
-          context.go(pagePath);
-          // something funny going on when not in prod mode
-          // if (false && kDebugMode) {
-          //   fsdui.afterMsDelayDo(1000, () {
-          //     fsdui.refreshCurrentPage();
-          //   });
-          // }
-        },
-        child: SizedBox(
-          width: 400,
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: RichText(
-                  text: TextSpan(
-                    text: 'goto ',
-                    style: TextStyle(color: Colors.grey),
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: '$pagePath$sandboxIndicator',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blue,
-                        ),
-                      ),
-                    ],
+  Widget _pageNavBtn(
+    BuildContext context,
+    String pagePath,
+    String sandboxIndicator,
+  ) => GestureDetector(
+    onTap: () {
+      context.go(pagePath);
+      // something funny going on when not in prod mode
+      // if (false && kDebugMode) {
+      //   fsdui.afterMsDelayDo(1000, () {
+      //     fsdui.refreshCurrentPage();
+      //   });
+      // }
+    },
+    child: SizedBox(
+      width: 400,
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: RichText(
+              text: TextSpan(
+                text: 'goto ',
+                style: TextStyle(color: Colors.grey),
+                children: <TextSpan>[
+                  TextSpan(
+                    text: '$pagePath$sandboxIndicator',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue,
+                    ),
                   ),
-                ),
+                ],
               ),
-              // if (pagePath != '/') Spacer(),
-              if (pagePath != '/')
-                IconButton(
-                  onPressed: () async {
-                    fsdui.appInfo.snippetNames.remove(pagePath);
-                    // because dart_mappable creates jsarrays
-                    var potentiallyUnmodifiablePages =
-                        fsdui.appInfo.anonymousUserEditablePages;
-                    List<String> modifiablePages = List.from(
-                      potentiallyUnmodifiablePages,
-                    );
-                    modifiablePages.remove(pagePath);
-                    fsdui.appInfo = fsdui.appInfo.copyWith(
-                      anonymousUserEditablePages: modifiablePages,
-                    );
-                    fsdui.deleteSubRoute(path: pagePath);
-                    context.pop();
-                    await fsdui.modelRepo.saveAppInfo();
-                    await fsdui.modelRepo.deleteSnippet(pagePath);
-                    fsdui.appInfo.removeFromCache(pagePath);
-                    fsdui.capiBloc.add(ForceRefresh());
-                  },
-                  icon: Icon(Icons.delete, color: Colors.red),
-                ),
-            ],
+            ),
           ),
-        ),
-      );
+          // if (pagePath != '/') Spacer(),
+          if (pagePath != '/')
+            IconButton(
+              onPressed: () async {
+                fsdui.appInfo.snippetNames.remove(pagePath);
+                // because dart_mappable creates jsarrays
+                var potentiallyUnmodifiablePages =
+                    fsdui.appInfo.anonymousUserEditablePages;
+                List<String> modifiablePages = List.from(
+                  potentiallyUnmodifiablePages,
+                );
+                modifiablePages.remove(pagePath);
+                fsdui.appInfo = fsdui.appInfo.copyWith(
+                  anonymousUserEditablePages: modifiablePages,
+                );
+                fsdui.deleteSubRoute(path: pagePath);
+                context.pop();
+                await fsdui.modelRepo.saveAppInfo();
+                await fsdui.modelRepo.deleteSnippet(pagePath);
+                fsdui.appInfo.removeFromCache(pagePath);
+                fsdui.capiBloc.add(ForceRefresh());
+              },
+              icon: Icon(Icons.delete, color: Colors.red),
+            ),
+        ],
+      ),
+    ),
+  );
 
   DropdownMenuItem<String> _dropdownItemWithPI({
     required String value,
     required Widget child,
-  }) =>
-      DropdownMenuItem<String>(
-        value: value,
-        child: PointerInterceptor(child: child),
-      );
+  }) => DropdownMenuItem<String>(
+    value: value,
+    child: PointerInterceptor(child: child),
+  );
 
-// Widget _pageNavBtnOLD(context, String pagePath) => Row(
-//   mainAxisSize: MainAxisSize.max,
-//   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//   children: [
-//     TextButton(
-//       onPressed: () {
-//         context.replace(pagePath);
-//       },
-//       child: Text(pagePath),
-//     ),
-//     if (pagePath != '/')
-//       IconButton(
-//         onPressed: () async {
-//           fco.appInfo.snippetNames.remove(pagePath);
-//           fco.deleteSubRoute(path: pagePath);
-//           await fco.modelRepo.saveAppInfo();
-//           await fco.modelRepo.deleteSnippet(pagePath);
-//           SnippetInfoModel.removeFromCache(pagePath);
-//         },
-//         icon: Icon(Icons.delete, color: Colors.red),
-//       ),
-//   ],
-// );
+  // Widget _pageNavBtnOLD(context, String pagePath) => Row(
+  //   mainAxisSize: MainAxisSize.max,
+  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //   children: [
+  //     TextButton(
+  //       onPressed: () {
+  //         context.replace(pagePath);
+  //       },
+  //       child: Text(pagePath),
+  //     ),
+  //     if (pagePath != '/')
+  //       IconButton(
+  //         onPressed: () async {
+  //           fco.appInfo.snippetNames.remove(pagePath);
+  //           fco.deleteSubRoute(path: pagePath);
+  //           await fco.modelRepo.saveAppInfo();
+  //           await fco.modelRepo.deleteSnippet(pagePath);
+  //           SnippetInfoModel.removeFromCache(pagePath);
+  //         },
+  //         icon: Icon(Icons.delete, color: Colors.red),
+  //       ),
+  //   ],
+  // );
 }

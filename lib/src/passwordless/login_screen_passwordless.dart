@@ -190,7 +190,7 @@ class _LoginScreenPasswordlessState extends State<LoginScreenPasswordless> {
         return;
       }
       context.read<CAPIBloC>().add(
-        GenerateTokenAndSendConfirmationEmail(ea: ea),
+        GenerateTokenAndSendConfirmationEmail(appId: fsdui.appId, ea: ea),
       );
     }
   }

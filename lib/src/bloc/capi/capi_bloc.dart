@@ -58,6 +58,7 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     on<SetThemeMode>((event, emit) => _setThemeMode(event, emit));
     // on<VerifiedEa>((event, emit) => _verifiedEa(event, emit));
     on<UpdateAppRating>((event, emit) => _updateAppRating(event, emit));
+    on<SaveFeedback>((event, emit) => _saveFeedback(event, emit));
     on<Sync>((event, emit) => _sync(event, emit));
 
     // on<SignedInAsSuperEditor>(
@@ -165,7 +166,7 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
       emit(
         state.copyWith(awaitingConfirmation: false, ea: event.ea, token: token),
       );
-      _startListening(token: token, ea: event.ea);
+      _startListening(appId: event.appId, token: token, ea: event.ea);
     } catch (e) {
       emit(
         state.copyWith(
@@ -176,10 +177,14 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     }
   }
 
-  void _startListening({required String token, required String ea}) {
+  void _startListening({
+    required String appId,
+    required String token,
+    required String ea,
+  }) {
     _tokenSub?.cancel();
     _tokenSub = modelRepo
-        .watchTokenConfirmation(token, ea)
+        .watchTokenConfirmation(appId, token, ea)
         .where((confirmed) => confirmed)
         .listen((_) {
           add(TokenConfirmed(ea: ea, token: token));
@@ -202,6 +207,9 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
         ),
       ),
     );
+    fsdui.afterNextBuildDo(() {
+      fsdui.aboutUsF?.call();
+    });
     // add(VerifiedEa(ea: event.ea));
   }
 
@@ -274,7 +282,17 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     UpdateAppRating event,
     Emitter<CAPIState> emit,
   ) async {
-    emit(state.copyWith(appRating: event.stars));
+    if (state.ea != null) {
+      await fsdui.modelRepo.saveRating(fsdui.appId, state.ea!, event.stars!);
+      emit(state.copyWith(appRating: event.stars));
+    }
+  }
+
+  Future<void> _saveFeedback(
+    SaveFeedback event,
+    Emitter<CAPIState> emit,
+  ) async {
+    await fsdui.modelRepo.saveFeedback(fsdui.appId, state.ea!, event.feedback);
   }
 
   Future<void> _revertSnippet(
@@ -2116,6 +2134,7 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     'isSignedInAsSuperEditor': state.isSignedInAsSuperEditor,
     'isSignedInAsArticleEditor': state.isSignedInAsArticleEditor,
     'isSignedInAsGuestEditor': state.isSignedInAsGuestEditor,
+    'appRating': state.appRating,
   };
 
   @override
@@ -2127,5 +2146,6 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     isSignedInAsSuperEditor: json['isSignedInAsSuperEditor'] ?? false,
     isSignedInAsArticleEditor: json['isSignedInAsArticleEditor'] ?? false,
     isSignedInAsGuestEditor: json['isSignedInAsGuestEditor'] ?? false,
+    appRating: json['appRating'] ?? 0,
   );
 }

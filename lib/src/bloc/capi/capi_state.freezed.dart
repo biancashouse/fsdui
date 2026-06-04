@@ -39,11 +39,11 @@ mixin _$CAPIState {
   bool? get isSignedInAsGuestEditor => throw _privateConstructorUsedError;
   int? get themeModeIndex =>
       throw _privateConstructorUsedError; // system, light, dark
-  // persisted -----------
+  int? get appRating =>
+      throw _privateConstructorUsedError; // persisted -----------
   // awaitingConfirmation and authErrorMessage are transient — excluded from HydratedBloc serialisation.
   bool? get awaitingConfirmation => throw _privateConstructorUsedError;
   String? get authErrorMessage => throw _privateConstructorUsedError;
-  int? get appRating => throw _privateConstructorUsedError;
   String? get textTBD => throw _privateConstructorUsedError;
   bool? get showClipboardContent => throw _privateConstructorUsedError;
   int? get force =>
@@ -85,9 +85,9 @@ abstract class $CAPIStateCopyWith<$Res> {
     bool? isSignedInAsArticleEditor,
     bool? isSignedInAsGuestEditor,
     int? themeModeIndex,
+    int? appRating,
     bool? awaitingConfirmation,
     String? authErrorMessage,
-    int? appRating,
     String? textTBD,
     bool? showClipboardContent,
     int? force,
@@ -122,9 +122,9 @@ class _$CAPIStateCopyWithImpl<$Res, $Val extends CAPIState>
     Object? isSignedInAsArticleEditor = freezed,
     Object? isSignedInAsGuestEditor = freezed,
     Object? themeModeIndex = freezed,
+    Object? appRating = freezed,
     Object? awaitingConfirmation = freezed,
     Object? authErrorMessage = freezed,
-    Object? appRating = freezed,
     Object? textTBD = freezed,
     Object? showClipboardContent = freezed,
     Object? force = freezed,
@@ -171,6 +171,10 @@ class _$CAPIStateCopyWithImpl<$Res, $Val extends CAPIState>
                 ? _value.themeModeIndex
                 : themeModeIndex // ignore: cast_nullable_to_non_nullable
                       as int?,
+            appRating: freezed == appRating
+                ? _value.appRating
+                : appRating // ignore: cast_nullable_to_non_nullable
+                      as int?,
             awaitingConfirmation: freezed == awaitingConfirmation
                 ? _value.awaitingConfirmation
                 : awaitingConfirmation // ignore: cast_nullable_to_non_nullable
@@ -179,10 +183,6 @@ class _$CAPIStateCopyWithImpl<$Res, $Val extends CAPIState>
                 ? _value.authErrorMessage
                 : authErrorMessage // ignore: cast_nullable_to_non_nullable
                       as String?,
-            appRating: freezed == appRating
-                ? _value.appRating
-                : appRating // ignore: cast_nullable_to_non_nullable
-                      as int?,
             textTBD: freezed == textTBD
                 ? _value.textTBD
                 : textTBD // ignore: cast_nullable_to_non_nullable
@@ -236,9 +236,9 @@ abstract class _$$CAPIStateImplCopyWith<$Res>
     bool? isSignedInAsArticleEditor,
     bool? isSignedInAsGuestEditor,
     int? themeModeIndex,
+    int? appRating,
     bool? awaitingConfirmation,
     String? authErrorMessage,
-    int? appRating,
     String? textTBD,
     bool? showClipboardContent,
     int? force,
@@ -272,9 +272,9 @@ class __$$CAPIStateImplCopyWithImpl<$Res>
     Object? isSignedInAsArticleEditor = freezed,
     Object? isSignedInAsGuestEditor = freezed,
     Object? themeModeIndex = freezed,
+    Object? appRating = freezed,
     Object? awaitingConfirmation = freezed,
     Object? authErrorMessage = freezed,
-    Object? appRating = freezed,
     Object? textTBD = freezed,
     Object? showClipboardContent = freezed,
     Object? force = freezed,
@@ -321,6 +321,10 @@ class __$$CAPIStateImplCopyWithImpl<$Res>
             ? _value.themeModeIndex
             : themeModeIndex // ignore: cast_nullable_to_non_nullable
                   as int?,
+        appRating: freezed == appRating
+            ? _value.appRating
+            : appRating // ignore: cast_nullable_to_non_nullable
+                  as int?,
         awaitingConfirmation: freezed == awaitingConfirmation
             ? _value.awaitingConfirmation
             : awaitingConfirmation // ignore: cast_nullable_to_non_nullable
@@ -329,10 +333,6 @@ class __$$CAPIStateImplCopyWithImpl<$Res>
             ? _value.authErrorMessage
             : authErrorMessage // ignore: cast_nullable_to_non_nullable
                   as String?,
-        appRating: freezed == appRating
-            ? _value.appRating
-            : appRating // ignore: cast_nullable_to_non_nullable
-                  as int?,
         textTBD: freezed == textTBD
             ? _value.textTBD
             : textTBD // ignore: cast_nullable_to_non_nullable
@@ -379,9 +379,9 @@ class _$CAPIStateImpl extends _CAPIState {
     this.isSignedInAsArticleEditor,
     this.isSignedInAsGuestEditor,
     this.themeModeIndex,
+    this.appRating,
     this.awaitingConfirmation,
     this.authErrorMessage,
-    this.appRating,
     this.textTBD,
     this.showClipboardContent,
     this.force,
@@ -422,14 +422,14 @@ class _$CAPIStateImpl extends _CAPIState {
   @override
   final int? themeModeIndex;
   // system, light, dark
+  @override
+  final int? appRating;
   // persisted -----------
   // awaitingConfirmation and authErrorMessage are transient — excluded from HydratedBloc serialisation.
   @override
   final bool? awaitingConfirmation;
   @override
   final String? authErrorMessage;
-  @override
-  final int? appRating;
   @override
   final String? textTBD;
   @override
@@ -457,7 +457,7 @@ class _$CAPIStateImpl extends _CAPIState {
 
   @override
   String toString() {
-    return 'CAPIState(newestTarget: $newestTarget, selectedTarget: $selectedTarget, ea: $ea, token: $token, verified: $verified, isSignedInAsSuperEditor: $isSignedInAsSuperEditor, isSignedInAsArticleEditor: $isSignedInAsArticleEditor, isSignedInAsGuestEditor: $isSignedInAsGuestEditor, themeModeIndex: $themeModeIndex, awaitingConfirmation: $awaitingConfirmation, authErrorMessage: $authErrorMessage, appRating: $appRating, textTBD: $textTBD, showClipboardContent: $showClipboardContent, force: $force, onlyTargetsWrappers: $onlyTargetsWrappers, routeName: $routeName, activeSnippetName: $activeSnippetName, snippetBeingEdited: $snippetBeingEdited)';
+    return 'CAPIState(newestTarget: $newestTarget, selectedTarget: $selectedTarget, ea: $ea, token: $token, verified: $verified, isSignedInAsSuperEditor: $isSignedInAsSuperEditor, isSignedInAsArticleEditor: $isSignedInAsArticleEditor, isSignedInAsGuestEditor: $isSignedInAsGuestEditor, themeModeIndex: $themeModeIndex, appRating: $appRating, awaitingConfirmation: $awaitingConfirmation, authErrorMessage: $authErrorMessage, textTBD: $textTBD, showClipboardContent: $showClipboardContent, force: $force, onlyTargetsWrappers: $onlyTargetsWrappers, routeName: $routeName, activeSnippetName: $activeSnippetName, snippetBeingEdited: $snippetBeingEdited)';
   }
 
   @override
@@ -490,12 +490,12 @@ class _$CAPIStateImpl extends _CAPIState {
                 other.isSignedInAsGuestEditor == isSignedInAsGuestEditor) &&
             (identical(other.themeModeIndex, themeModeIndex) ||
                 other.themeModeIndex == themeModeIndex) &&
+            (identical(other.appRating, appRating) ||
+                other.appRating == appRating) &&
             (identical(other.awaitingConfirmation, awaitingConfirmation) ||
                 other.awaitingConfirmation == awaitingConfirmation) &&
             (identical(other.authErrorMessage, authErrorMessage) ||
                 other.authErrorMessage == authErrorMessage) &&
-            (identical(other.appRating, appRating) ||
-                other.appRating == appRating) &&
             (identical(other.textTBD, textTBD) || other.textTBD == textTBD) &&
             (identical(other.showClipboardContent, showClipboardContent) ||
                 other.showClipboardContent == showClipboardContent) &&
@@ -522,9 +522,9 @@ class _$CAPIStateImpl extends _CAPIState {
     isSignedInAsArticleEditor,
     isSignedInAsGuestEditor,
     themeModeIndex,
+    appRating,
     awaitingConfirmation,
     authErrorMessage,
-    appRating,
     textTBD,
     showClipboardContent,
     force,
@@ -554,9 +554,9 @@ abstract class _CAPIState extends CAPIState {
     final bool? isSignedInAsArticleEditor,
     final bool? isSignedInAsGuestEditor,
     final int? themeModeIndex,
+    final int? appRating,
     final bool? awaitingConfirmation,
     final String? authErrorMessage,
-    final int? appRating,
     final String? textTBD,
     final bool? showClipboardContent,
     final int? force,
@@ -596,14 +596,13 @@ abstract class _CAPIState extends CAPIState {
   bool? get isSignedInAsGuestEditor;
   @override
   int? get themeModeIndex; // system, light, dark
-  // persisted -----------
+  @override
+  int? get appRating; // persisted -----------
   // awaitingConfirmation and authErrorMessage are transient — excluded from HydratedBloc serialisation.
   @override
   bool? get awaitingConfirmation;
   @override
   String? get authErrorMessage;
-  @override
-  int? get appRating;
   @override
   String? get textTBD;
   @override

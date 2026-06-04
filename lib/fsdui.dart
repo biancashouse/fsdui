@@ -458,6 +458,7 @@ class FSDUI_Mixins
     // Map<String, void Function(GlobalKey? gk)> namedCallbacks = const {},
     RoutingConfig? routingConfig,
     String? initialRoutePath,
+    VoidCallback? aboutUsF,
     bool skipAssetPkgName =
         false, // would only use true when pkg dir is actually inside current project
   }) async {
@@ -471,6 +472,8 @@ class FSDUI_Mixins
 
     this.appId = appId;
     this.appName = appName;
+
+    this.aboutUsF = aboutUsF;
 
     // Bloc.observer = MyGlobalObserver();
 
@@ -561,6 +564,8 @@ class FSDUI_Mixins
   bool emailIsValid(String theEA) => EmailValidator.validate(theEA);
 
   late IModelRepository modelRepo;
+  
+   VoidCallback? aboutUsF;
 
   // reusable across all PNodes
   TextStyleNameSearchAnchor? textStyleNameAnchor;

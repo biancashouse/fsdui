@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:example_using_go_router/pages/about-us.dart';
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 
@@ -69,6 +70,7 @@ void main({bool useEmulator = false}) async {
           ),
           fbOptions: BH_APPS_DefaultFirebaseOptions.currentPlatform,
           useEmulator: useEmulator,
+          aboutUsF: AboutUs.show,
           // onReadyF: () {},
         ),
       );

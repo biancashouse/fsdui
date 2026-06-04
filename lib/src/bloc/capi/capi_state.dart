@@ -37,12 +37,12 @@ class CAPIState with _$CAPIState {
     bool? isSignedInAsArticleEditor,
     bool? isSignedInAsGuestEditor,
     int? themeModeIndex, // system, light, dark
+    int? appRating,
     // persisted -----------
 
     // awaitingConfirmation and authErrorMessage are transient — excluded from HydratedBloc serialisation.
     bool? awaitingConfirmation,
     String? authErrorMessage,
-    int? appRating,
     String? textTBD,
 
     bool? showClipboardContent,

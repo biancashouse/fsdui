@@ -61,11 +61,11 @@ class CalloutConfig implements TickerProvider {
   ScrollConfig? scrollConfig;
 
   double scrollOffsetX() => scrollConfig?.direction == Axis.horizontal
-      ? scrollConfig!.controller?.offset??0.0
+      ? scrollConfig!.controller?.offset ?? 0.0
       : 0.0;
 
   double scrollOffsetY() => scrollConfig?.direction == Axis.vertical
-      ? scrollConfig!.controller?.offset??0.0
+      ? scrollConfig!.controller?.offset ?? 0.0
       : 0.0;
 
   Offset translateOffsetForScroll(Offset offset) => offset.translate(
@@ -233,7 +233,6 @@ class CalloutConfig implements TickerProvider {
     _top = newTop;
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @JsonKey(includeFromJson: false, includeToJson: false)
   double? left;
 
@@ -537,9 +536,9 @@ class CalloutConfig implements TickerProvider {
       cId: cId,
       gravity: gravity ?? this.gravity,
       initialTargetAlignment:
-      initialTargetAlignment ?? this.initialTargetAlignment,
+          initialTargetAlignment ?? this.initialTargetAlignment,
       initialCalloutAlignment:
-      initialCalloutAlignment ?? this.initialCalloutAlignment,
+          initialCalloutAlignment ?? this.initialCalloutAlignment,
       initialCalloutPos: initialCalloutPos ?? this.initialCalloutPos,
       finalSeparation: finalSeparation ?? this.finalSeparation,
       barrier: barrier ?? this.barrier,
@@ -549,11 +548,11 @@ class CalloutConfig implements TickerProvider {
       decorationShape: decorationShape ?? this.decorationShape,
       decorationFillColors: decorationFillColors ?? this.decorationFillColors,
       decorationBorderColors:
-      decorationBorderColors ?? this.decorationBorderColors,
+          decorationBorderColors ?? this.decorationBorderColors,
       decorationBorderThickness:
-      decorationBorderThickness ?? this.decorationBorderThickness,
+          decorationBorderThickness ?? this.decorationBorderThickness,
       decorationBorderRadius:
-      decorationBorderRadius ?? this.decorationBorderRadius,
+          decorationBorderRadius ?? this.decorationBorderRadius,
       decorationStarPoints: decorationStarPoints ?? this.decorationStarPoints,
 
       elevation: elevation ?? this.elevation,
@@ -564,7 +563,7 @@ class CalloutConfig implements TickerProvider {
       closeButtonPos: closeButtonPos ?? this.closeButtonPos,
       gotitAxis: gotitAxis ?? this.gotitAxis,
       bubbleOrTargetPointerColor:
-      targetPointerColor ?? this.bubbleOrTargetPointerColor,
+          targetPointerColor ?? this.bubbleOrTargetPointerColor,
       targetPointerType: targetPointerType ?? this.targetPointerType,
       animatePointer: animate ?? this.animatePointer,
       lineLabelBuilder: lineLabelBuilder ?? this.lineLabelBuilder,
@@ -577,7 +576,7 @@ class CalloutConfig implements TickerProvider {
       targetTranslateY: targetTranslateY ?? this.targetTranslateY,
       scaleTarget: scaleTarget ?? this.scaleTarget,
       resizeableH: resizeableH ?? this.resizeableH,
-      resizeableV: resizeableH ?? this.resizeableH,
+      resizeableV: resizeableV ?? this.resizeableV,
       draggable: draggable ?? this.draggable,
       draggableColor: draggableColor ?? this.draggableColor,
       dragHandleHeight: dragHandleHeight ?? this.dragHandleHeight,
@@ -895,12 +894,12 @@ class CalloutConfig implements TickerProvider {
     return _calloutW == null || _calloutH == null
         ? const Offstage()
         : _renderCallout(
-      targetRect,
-      calloutContentF,
-      rebuildF,
-      wrapInPointerInterceptor,
-      skipOnScreenCheck,
-    );
+            targetRect,
+            calloutContentF,
+            rebuildF,
+            wrapInPointerInterceptor,
+            skipOnScreenCheck,
+          );
   }
 
   // Future<Widget> _measureThenRenderCallout(
@@ -928,13 +927,13 @@ class CalloutConfig implements TickerProvider {
   double prevLeft = -1;
 
   Widget _renderCallout(
-      Rect targetRect,
-      WidgetBuilder calloutContent,
-      VoidCallback rebuildF,
-      // Target? configurableTarget,
-      bool wrapInPointerInterceptor,
-      bool skipOnScreenCheck,
-      ) {
+    Rect targetRect,
+    WidgetBuilder calloutContent,
+    VoidCallback rebuildF,
+    // Target? configurableTarget,
+    bool wrapInPointerInterceptor,
+    bool skipOnScreenCheck,
+  ) {
     // if (_finishedAnimatingSeparation) {
     //   print('prevsep: $prevSeparation');
     // }
@@ -1124,136 +1123,139 @@ class CalloutConfig implements TickerProvider {
     return _calloutStack(content, wrapInPointerInterceptor);
   }
 
-  Stack _calloutStack(content, wrapWithPointerInterceptor) {
+  Widget _calloutStack(content, wrapWithPointerInterceptor) {
     if (notToast &&
         targetPointerType != null &&
         targetPointerType?.name != 'none' &&
         targetPointerType?.name != "bubble") {
       // print('line');
     }
-    return Stack(
-      children: [
-        if (notToast && barrier != null && barrier!.opacity > 0.0)
-          PointerInterceptor(child: _createBarrier()),
-        if (notToast && frameTarget) _createTargetBorder(),
-        if (resizeableH && resizeableV)
-          topLeftCorner = DraggableCorner_OP(
-            alignment: Alignment.topLeft,
-            thickness: draggableEdgeThickness,
-            color: draggableColor!,
-            parent: this,
-            wrapInPointerInterceptor: wrapWithPointerInterceptor,
+    return SizedBox(width: calloutW, height: calloutH,
+      child: Stack(
+        // fit: StackFit.expand,
+        children: [
+          if (notToast && barrier != null && barrier!.opacity > 0.0)
+            PointerInterceptor(child: _createBarrier()),
+          if (notToast && frameTarget) _createTargetBorder(),
+          if (resizeableH && resizeableV)
+            topLeftCorner = DraggableCorner_OP(
+              alignment: Alignment.topLeft,
+              thickness: draggableEdgeThickness,
+              color: draggableColor!,
+              parent: this,
+              wrapInPointerInterceptor: wrapWithPointerInterceptor,
+            ),
+          if (resizeableH && resizeableV)
+            topRightCorner = DraggableCorner_OP(
+              alignment: Alignment.topRight,
+              thickness: draggableEdgeThickness,
+              color: draggableColor!,
+              parent: this,
+              wrapInPointerInterceptor: wrapWithPointerInterceptor,
+            ),
+          if (resizeableH && resizeableV)
+            bottomLeftCorner = DraggableCorner_OP(
+              alignment: Alignment.bottomLeft,
+              thickness: draggableEdgeThickness,
+              color: draggableColor!,
+              parent: this,
+              wrapInPointerInterceptor: wrapWithPointerInterceptor,
+            ),
+          if (resizeableH && resizeableV)
+            bottomRightCorner = DraggableCorner_OP(
+              alignment: Alignment.bottomRight,
+              thickness: draggableEdgeThickness,
+              color: draggableColor!,
+              parent: this,
+              wrapInPointerInterceptor: wrapWithPointerInterceptor,
+            ),
+          if (resizeableH && resizeableV)
+            leftEdge = DraggableEdge_OP(
+              side: SideEnum.LEFT,
+              thickness: draggableEdgeThickness,
+              color: draggableColor!,
+              parent: this,
+              wrapInPointerInterceptor: wrapWithPointerInterceptor,
+            ),
+          if (resizeableH && resizeableV)
+            topEdge = DraggableEdge_OP(
+              side: SideEnum.TOP,
+              thickness: draggableEdgeThickness,
+              color: draggableColor!,
+              parent: this,
+              wrapInPointerInterceptor: wrapWithPointerInterceptor,
+            ),
+          if (resizeableH && resizeableV)
+            rightEdge = DraggableEdge_OP(
+              side: SideEnum.RIGHT,
+              thickness: draggableEdgeThickness,
+              color: draggableColor!,
+              parent: this,
+              wrapInPointerInterceptor: wrapWithPointerInterceptor,
+            ),
+          if (resizeableH && resizeableV)
+            bottomEdge = DraggableEdge_OP(
+              side: SideEnum.BOTTOM,
+              thickness: draggableEdgeThickness,
+              color: draggableColor!,
+              parent: this,
+              wrapInPointerInterceptor: wrapWithPointerInterceptor,
+            ),
+          if (resizeableH && !resizeableV)
+            leftEdge = DraggableEdge_OP(
+              side: SideEnum.LEFT,
+              thickness: draggableEdgeThickness,
+              color: draggableColor!,
+              parent: this,
+              wrapInPointerInterceptor: wrapWithPointerInterceptor,
+            ),
+          if (resizeableH && !resizeableV)
+            rightEdge = DraggableEdge_OP(
+              side: SideEnum.RIGHT,
+              thickness: draggableEdgeThickness,
+              color: draggableColor!,
+              parent: this,
+              wrapInPointerInterceptor: wrapWithPointerInterceptor,
+            ),
+          if (resizeableV && !resizeableH)
+            topEdge = DraggableEdge_OP(
+              side: SideEnum.TOP,
+              thickness: draggableEdgeThickness,
+              color: draggableColor!,
+              parent: this,
+              wrapInPointerInterceptor: wrapWithPointerInterceptor,
+            ),
+          if (resizeableV && !resizeableH)
+            bottomEdge = DraggableEdge_OP(
+              side: SideEnum.BOTTOM,
+              thickness: draggableEdgeThickness,
+              color: draggableColor!,
+              parent: this,
+              wrapInPointerInterceptor: wrapWithPointerInterceptor,
+            ),
+          if (notToast && targetPointerType?.name == "bubble")
+            _positionedBubbleBg(),
+          PositionedBoxContent(
+            this,
+            content,
+            wrapWithPointerInterceptor,
+            key: ValueKey(cId),
           ),
-        if (resizeableH && resizeableV)
-          topRightCorner = DraggableCorner_OP(
-            alignment: Alignment.topRight,
-            thickness: draggableEdgeThickness,
-            color: draggableColor!,
-            parent: this,
-            wrapInPointerInterceptor: wrapWithPointerInterceptor,
-          ),
-        if (resizeableH && resizeableV)
-          bottomLeftCorner = DraggableCorner_OP(
-            alignment: Alignment.bottomLeft,
-            thickness: draggableEdgeThickness,
-            color: draggableColor!,
-            parent: this,
-            wrapInPointerInterceptor: wrapWithPointerInterceptor,
-          ),
-        if (resizeableH && resizeableV)
-          bottomRightCorner = DraggableCorner_OP(
-            alignment: Alignment.bottomRight,
-            thickness: draggableEdgeThickness,
-            color: draggableColor!,
-            parent: this,
-            wrapInPointerInterceptor: wrapWithPointerInterceptor,
-          ),
-        if (resizeableH && resizeableV)
-          leftEdge = DraggableEdge_OP(
-            side: SideEnum.LEFT,
-            thickness: draggableEdgeThickness,
-            color: draggableColor!,
-            parent: this,
-            wrapInPointerInterceptor: wrapWithPointerInterceptor,
-          ),
-        if (resizeableH && resizeableV)
-          topEdge = DraggableEdge_OP(
-            side: SideEnum.TOP,
-            thickness: draggableEdgeThickness,
-            color: draggableColor!,
-            parent: this,
-            wrapInPointerInterceptor: wrapWithPointerInterceptor,
-          ),
-        if (resizeableH && resizeableV)
-          rightEdge = DraggableEdge_OP(
-            side: SideEnum.RIGHT,
-            thickness: draggableEdgeThickness,
-            color: draggableColor!,
-            parent: this,
-            wrapInPointerInterceptor: wrapWithPointerInterceptor,
-          ),
-        if (resizeableH && resizeableV)
-          bottomEdge = DraggableEdge_OP(
-            side: SideEnum.BOTTOM,
-            thickness: draggableEdgeThickness,
-            color: draggableColor!,
-            parent: this,
-            wrapInPointerInterceptor: wrapWithPointerInterceptor,
-          ),
-        if (resizeableH && !resizeableV)
-          leftEdge = DraggableEdge_OP(
-            side: SideEnum.LEFT,
-            thickness: draggableEdgeThickness,
-            color: draggableColor!,
-            parent: this,
-            wrapInPointerInterceptor: wrapWithPointerInterceptor,
-          ),
-        if (resizeableH && !resizeableV)
-          rightEdge = DraggableEdge_OP(
-            side: SideEnum.RIGHT,
-            thickness: draggableEdgeThickness,
-            color: draggableColor!,
-            parent: this,
-            wrapInPointerInterceptor: wrapWithPointerInterceptor,
-          ),
-        if (resizeableV && !resizeableH)
-          topEdge = DraggableEdge_OP(
-            side: SideEnum.TOP,
-            thickness: draggableEdgeThickness,
-            color: draggableColor!,
-            parent: this,
-            wrapInPointerInterceptor: wrapWithPointerInterceptor,
-          ),
-        if (resizeableV && !resizeableH)
-          bottomEdge = DraggableEdge_OP(
-            side: SideEnum.BOTTOM,
-            thickness: draggableEdgeThickness,
-            color: draggableColor!,
-            parent: this,
-            wrapInPointerInterceptor: wrapWithPointerInterceptor,
-          ),
-        if (notToast && targetPointerType?.name == "bubble")
-          _positionedBubbleBg(),
-        PositionedBoxContent(
-          this,
-          content,
-          wrapWithPointerInterceptor,
-          key: ValueKey(cId),
-        ),
-        if (notToast &&
-            targetPointerType != null &&
-            targetPointerType?.name != 'none' &&
-            targetPointerType?.name != "bubble")
-          _createPointingLine(),
-        if (notToast &&
-            targetPointerType != null &&
-            targetPointerType?.name != 'none' &&
-            targetPointerType?.name != "bubble" &&
-            lineLabelBuilder != null &&
-            tE != null)
-          _createLineLabel(),
-        // if (isConfigurable && _zoomer != null) _createConfigToolbar(Side.TOP),
-      ],
+          if (notToast &&
+              targetPointerType != null &&
+              targetPointerType?.name != 'none' &&
+              targetPointerType?.name != "bubble")
+            _createPointingLine(),
+          if (notToast &&
+              targetPointerType != null &&
+              targetPointerType?.name != 'none' &&
+              targetPointerType?.name != "bubble" &&
+              lineLabelBuilder != null &&
+              tE != null)
+            _createLineLabel(),
+          // if (isConfigurable && _zoomer != null) _createConfigToolbar(Side.TOP),
+        ],
+      ),
     );
   }
 
@@ -1345,17 +1347,17 @@ class CalloutConfig implements TickerProvider {
     ).translate(scrollOffsetX(), scrollOffsetY());
     bool result =
         scrRectGlobal.contains(rGlobal.topLeft) &&
-            scrRectGlobal.contains(rGlobal.bottomRight);
+        scrRectGlobal.contains(rGlobal.bottomRight);
     return result;
   }
 
   (double, double) _adjustTopLeftForSeparation(
-      double theSeparation,
-      double initialTop,
-      double initialLeft,
-      Coord initialCE,
-      Offset targetCentre,
-      ) {
+    double theSeparation,
+    double initialTop,
+    double initialLeft,
+    Coord initialCE,
+    Offset targetCentre,
+  ) {
     // move cE
     Coord cEafter = Coord.changeDistanceBetweenPoints(
       Coord.fromOffset(targetCentre),
@@ -1506,13 +1508,13 @@ class CalloutConfig implements TickerProvider {
 
         Offset calloutTopLeft = _targetRect.topLeft
             .translate(
-          targetAlignmentIntersectionLocalPos.dx,
-          targetAlignmentIntersectionLocalPos.dy,
-        )
+              targetAlignmentIntersectionLocalPos.dx,
+              targetAlignmentIntersectionLocalPos.dy,
+            )
             .translate(
-          -calloutAlignmentIntersectionLocalPos.dx,
-          -calloutAlignmentIntersectionLocalPos.dy,
-        );
+              -calloutAlignmentIntersectionLocalPos.dx,
+              -calloutAlignmentIntersectionLocalPos.dy,
+            );
         actualTop = calloutTopLeft.dy + (followScroll ? scrollOffsetY() : 0.0);
         actualLeft = calloutTopLeft.dx + (followScroll ? scrollOffsetX() : 0.0);
 
@@ -1523,45 +1525,6 @@ class CalloutConfig implements TickerProvider {
     dragCalloutOffset = Offset.zero;
     top = actualTop;
     left = actualLeft;
-    return;
-
-    // ensure callout will be on onscreen
-    // only needs  to be scrollable when can't fit on screen
-    // fca.logger.i('============   screenH = ${Useful.screenH()}');
-    needsToScrollH = _calloutW! > fca.scrW;
-    needsToScrollV = _calloutH! > (fca.scrH - fca.keyboardHeight);
-    if (!notToast) {
-      fca.logger.i('must skip screen bounds check');
-    }
-    if (!needsToScrollV && !needsToScrollH) {
-      var definitelyOnScreen = fca.ensureOnScreen(
-        calloutRect: Rect.fromLTWH(
-          actualLeft,
-          actualTop,
-          _calloutW!,
-          _calloutH!,
-        ),
-        minAlwaysVisibleH: _calloutW!,
-        minAlwaysVisibleV: _calloutH!,
-        scrollOffsetX: scrollOffsetX(),
-        scrollOffsetY: scrollOffsetY(),
-        skipOnScreenCheck: skipOnScreenCheck,
-      );
-      actualTop = definitelyOnScreen.$2;
-      actualLeft = definitelyOnScreen.$1;
-      // } else if (needsToScrollV) {
-      //   actualTop = 0.0;
-      // } else if (needsToScrollH) {
-      //   actualLeft = 0.0;
-    }
-
-    dragCalloutOffset = Offset.zero;
-
-    // don't let callout be off screen
-    top = actualTop;
-    left = actualLeft;
-    // fca.logger.i('top: $top');
-    // fca.logger.i('left: $left');
   }
 
   /// Gemini generated method.
@@ -1656,13 +1619,13 @@ class CalloutConfig implements TickerProvider {
       // print('top: $top old');
       top =
           event.globalPosition.dy -
-              dragCalloutOffset.dy +
-              (followScroll ? scrollOffsetY() : 0.0);
+          dragCalloutOffset.dy +
+          (followScroll ? scrollOffsetY() : 0.0);
       // print('top: $top new');
       left =
           event.globalPosition.dx -
-              dragCalloutOffset.dx +
-              (followScroll ? scrollOffsetX() : 0.0);
+          dragCalloutOffset.dx +
+          (followScroll ? scrollOffsetX() : 0.0);
       // var definitelyOnScreen = fca.ensureOnScreen(
       //   calloutRect: Rect.fromLTWH(left!, top!, _calloutW!, dragHandleHeight ?? _calloutH!)
       //   // .translate(
@@ -1901,9 +1864,9 @@ class CalloutConfig implements TickerProvider {
   );
 
   Widget _possiblyScrollableContents(
-      Widget contents,
-      wrapWithPointerInterceptor,
-      ) {
+    Widget contents,
+    wrapWithPointerInterceptor,
+  ) {
     bool renderingABarrier =
         notToast && barrier != null && barrier!.opacity > 0.0;
 
@@ -1950,10 +1913,7 @@ class CalloutConfig implements TickerProvider {
     }
 
     if (tE != null && cE != null) {
-      Rect r = Rect.fromPoints(
-        tE!.asOffset,
-        cE!.asOffset,
-      );
+      Rect r = Rect.fromPoints(tE!.asOffset, cE!.asOffset);
       Offset to = tE!.asOffset.translate(-r.left, -r.top);
       Offset from = cE!.asOffset.translate(
         -r.left,
@@ -2251,14 +2211,14 @@ class CalloutConfig implements TickerProvider {
     return Ticker(onTick);
   }
 
-// void redraw() {
-//   if (_cachedCalloutContent == null || _rebuildOverlayEntryF == null) return;
-//   oeContentWidget(
-//     targetRect: tR(),
-//     calloutContent: _cachedCalloutContent!,
-//     rebuildF: _rebuildOverlayEntryF!,
-//   );
-// }
+  // void redraw() {
+  //   if (_cachedCalloutContent == null || _rebuildOverlayEntryF == null) return;
+  //   oeContentWidget(
+  //     targetRect: tR(),
+  //     calloutContent: _cachedCalloutContent!,
+  //     rebuildF: _rebuildOverlayEntryF!,
+  //   );
+  // }
 }
 
 class CalloutBarrierConfig {
@@ -2294,11 +2254,11 @@ class PositionedBoxContent extends StatelessWidget {
   final bool wrapWithPointerInterceptor;
 
   const PositionedBoxContent(
-      this.cc,
-      this.child,
-      this.wrapWithPointerInterceptor, {
-        super.key,
-      });
+    this.cc,
+    this.child,
+    this.wrapWithPointerInterceptor, {
+    super.key,
+  });
 
   static PositionedBoxContent? of(BuildContext context) =>
       context.findAncestorWidgetOfExactType<PositionedBoxContent>();
@@ -2331,13 +2291,13 @@ class PositionedBoxContent extends StatelessWidget {
 
     double topPos =
         (cc.followScroll ? -cc.scrollOffsetY() : 0.0) +
-            (cc.top ?? 0) +
-            (cc.contentTranslateY ?? 0.0);
+        (cc.top ?? 0) +
+        (cc.contentTranslateY ?? 0.0);
 
     return Positioned(
       top: topPos,
       left:
-      (cc.followScroll ? -cc.scrollOffsetX() : 0.0) +
+          (cc.followScroll ? -cc.scrollOffsetX() : 0.0) +
           (cc.left ?? 0) +
           (cc.contentTranslateX ?? 0.0),
       child: GestureDetector(
@@ -2360,42 +2320,47 @@ class PositionedBoxContent extends StatelessWidget {
             child: Container(
               decoration: (cc.decorationShape ?? DecorationShape.rectangle())
                   .toDecoration(
-                fillColorOrGradient: cc.decorationFillColors,
-                borderColorOrGradient: cc.decorationBorderColors,
-                borderRadius: cc.decorationBorderRadius,
-                borderThickness: cc.decorationBorderThickness,
-                starPoints: cc.decorationStarPoints,
-              ),
+                    fillColorOrGradient: cc.decorationFillColors,
+                    borderColorOrGradient: cc.decorationBorderColors,
+                    borderRadius: cc.decorationBorderRadius,
+                    borderThickness: cc.decorationBorderThickness,
+                    starPoints: cc.decorationStarPoints,
+                  ),
               // color: cc.decorationShape == null ? cc.decorationUpTo6FillColors?.onlyColor : null,
               child: FocusableActionDetector(
                 focusNode: cc.focusNode,
                 autofocus: true,
-                child: Stack(
-                  children: <Widget>[
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: cc.showGotitButton
-                          ? Flex(
-                        direction: cc.gotitAxis ?? Axis.horizontal,
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: calloutContent(
-                              cc,
-                              wrapWithPointerInterceptor,
-                            ),
-                          ),
-                          if (cc.gotitAxis != null && !cc.showcpi)
-                            cc._gotitButton(),
-                          if (cc.showcpi) cc._cpi(),
-                        ],
-                      )
-                          : calloutContent(cc, wrapWithPointerInterceptor),
-                    ),
-                    if (cc.showCloseButton) cc._closeButton(),
-                  ],
+                child: SizedBox(
+                  width: cc.calloutW,
+                  height: cc.calloutH,
+                  child: Stack(
+                    children: <Widget>[
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: cc.showGotitButton
+                            ? Flex(
+                                direction: cc.gotitAxis ?? Axis.horizontal,
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: calloutContent(
+                                      cc,
+                                      wrapWithPointerInterceptor,
+                                    ),
+                                  ),
+                                  if (cc.gotitAxis != null && !cc.showcpi)
+                                    cc._gotitButton(),
+                                  if (cc.showcpi) cc._cpi(),
+                                ],
+                              )
+                            : calloutContent(cc, wrapWithPointerInterceptor),
+                      ),
+                      if (cc.showCloseButton) cc._closeButton(),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -2407,12 +2372,12 @@ class PositionedBoxContent extends StatelessWidget {
 
   Widget calloutContent(CalloutConfig cc, wrapWithPointerInterceptor) =>
       cc.draggable
-          ? MouseRegion(
-        cursor: SystemMouseCursors.grab,
-        child: cc._possiblyScrollableContents(
-          child,
-          wrapWithPointerInterceptor,
-        ),
-      )
-          : cc._possiblyScrollableContents(child, wrapWithPointerInterceptor);
+      ? MouseRegion(
+          cursor: SystemMouseCursors.grab,
+          child: cc._possiblyScrollableContents(
+            child,
+            wrapWithPointerInterceptor,
+          ),
+        )
+      : cc._possiblyScrollableContents(child, wrapWithPointerInterceptor);
 }

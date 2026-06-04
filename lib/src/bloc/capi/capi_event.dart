@@ -12,6 +12,12 @@ final class UpdateAppRating extends CAPIEvent {
   UpdateAppRating(this.stars);
 }
 
+final class SaveFeedback extends CAPIEvent {
+  String feedback;
+
+  SaveFeedback(this.feedback);
+}
+
 // final class VerifiedEa extends CAPIEvent {
 //   String? ea;
 
@@ -307,7 +313,11 @@ final class ToggleNodeProperties extends CAPIEvent {
 
 /// auth events
 final class GenerateTokenAndSendConfirmationEmail extends CAPIEvent {
-  const GenerateTokenAndSendConfirmationEmail({required this.ea});
+  const GenerateTokenAndSendConfirmationEmail({
+    required this.appId,
+    required this.ea,
+  });
+  final String appId;
   final String ea;
 }
 
