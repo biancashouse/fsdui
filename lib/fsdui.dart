@@ -458,7 +458,9 @@ class FSDUI_Mixins
     // Map<String, void Function(GlobalKey? gk)> namedCallbacks = const {},
     RoutingConfig? routingConfig,
     String? initialRoutePath,
-    VoidCallback? aboutUsF,
+    VoidCallback? aboutUsNotSignedInF,
+    VoidCallback? aboutUsSignedInF,
+    VoidCallback? signedInWelcomeF,
     bool skipAssetPkgName =
         false, // would only use true when pkg dir is actually inside current project
   }) async {
@@ -473,7 +475,9 @@ class FSDUI_Mixins
     this.appId = appId;
     this.appName = appName;
 
-    this.aboutUsF = aboutUsF;
+    this.aboutUsNotSignedInF = aboutUsNotSignedInF;
+    this.aboutUsSignedInF = aboutUsSignedInF;
+    this.signedInWelcomeF = signedInWelcomeF;
 
     // Bloc.observer = MyGlobalObserver();
 
@@ -564,8 +568,10 @@ class FSDUI_Mixins
   bool emailIsValid(String theEA) => EmailValidator.validate(theEA);
 
   late IModelRepository modelRepo;
-  
-   VoidCallback? aboutUsF;
+
+  VoidCallback? aboutUsNotSignedInF;
+  VoidCallback? aboutUsSignedInF;
+  VoidCallback? signedInWelcomeF;
 
   // reusable across all PNodes
   TextStyleNameSearchAnchor? textStyleNameAnchor;
@@ -600,6 +606,7 @@ class FSDUI_Mixins
   bool isArticleEditor() => capiBloc.state.isSignedInAsArticleEditor ?? false;
   bool isSuperEditor() => capiBloc.state.isSignedInAsSuperEditor ?? false;
   bool isGuestEditor() => capiBloc.state.isSignedInAsGuestEditor ?? false;
+  bool isNotSignedIn() => !capiBloc.state.isNotSignedIn();
 
   GlobalKey authIconGK = GlobalKey();
 

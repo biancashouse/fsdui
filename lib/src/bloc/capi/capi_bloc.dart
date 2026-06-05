@@ -208,9 +208,8 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
       ),
     );
     fsdui.afterNextBuildDo(() {
-      fsdui.aboutUsF?.call();
+      fsdui.signedInWelcomeF?.call();
     });
-    // add(VerifiedEa(ea: event.ea));
   }
 
   void _onSignOut(SignOutRequested event, Emitter<CAPIState> emit) {

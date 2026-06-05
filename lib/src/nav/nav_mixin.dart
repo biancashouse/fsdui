@@ -216,7 +216,11 @@ mixin NavMixin {
       onPressed: () {
         Navigator.pop(context);
         // context.go('/about-us');
-        fsdui.aboutUsF?.call();
+        if (state.isNotSignedIn()) {
+          fsdui.aboutUsNotSignedInF?.call();
+        } else {
+          fsdui.aboutUsSignedInF?.call();
+        }
       },
       child: Text('about us'),
     ),

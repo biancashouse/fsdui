@@ -67,8 +67,15 @@ class CAPIState with _$CAPIState {
     // @Default(true) bool ONLY_TESTING,
   }) = _CAPIState;
 
+  bool isNotSignedIn() {
+    return ea == null || token == null || !(verified ?? false);
+  }
+
   bool isSignedInAsNormalUser() {
-    return !(isSignedInAsSuperEditor ?? false) &&
+    return ea != null &&
+        token != null &&
+        verified == true &&
+        !(isSignedInAsSuperEditor ?? false) &&
         !(isSignedInAsArticleEditor ?? false) &&
         !(isSignedInAsGuestEditor ?? false);
   }

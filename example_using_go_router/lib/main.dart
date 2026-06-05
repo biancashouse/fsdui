@@ -1,6 +1,8 @@
 import 'dart:async';
 
-import 'package:example_using_go_router/pages/about-us.dart';
+import 'package:example_using_go_router/pages/about_us_not_signed_in.dart';
+import 'package:example_using_go_router/pages/about_us_signed_in.dart';
+import 'package:example_using_go_router/pages/signed_in_welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 
@@ -70,7 +72,10 @@ void main({bool useEmulator = false}) async {
           ),
           fbOptions: BH_APPS_DefaultFirebaseOptions.currentPlatform,
           useEmulator: useEmulator,
-          aboutUsF: AboutUs.show,
+          signedInWelcomeF: SignedInWelcomePopup.show,
+          aboutUsSignedInF: AboutUsSignedIn.show,
+          aboutUsNotSignedInF: AboutUsNotSignedIn.show,
+
           // onReadyF: () {},
         ),
       );

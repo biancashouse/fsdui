@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 
-class AboutUs extends StatefulWidget {
-  const AboutUs({super.key});
+class AboutUsSignedIn extends StatefulWidget {
+  const AboutUsSignedIn({super.key});
 
   static void show() {
     fsdui.showOverlay(
@@ -12,11 +12,17 @@ class AboutUs extends StatefulWidget {
         initialCalloutH: 560,
         decorationBorderRadius: 16,
         decorationFillColors: ColorOrGradient.color(Colors.black),
-        showCloseButton: true,
+        // showCloseButton: true,
+        barrier: CalloutBarrierConfig(
+          opacity: 0.5,
+          onTappedF: () async {
+            fsdui.dismiss("about-us");
+          },
+        ),
       ),
       calloutContent: const Padding(
         padding: EdgeInsets.all(18.0),
-        child: const AboutUs(),
+        child: const AboutUsSignedIn(),
       ),
       // calloutContent: Padding(
       //   padding: EdgeInsets.all(18.0),
@@ -28,10 +34,10 @@ class AboutUs extends StatefulWidget {
   }
 
   @override
-  State<AboutUs> createState() => _AboutUsState();
+  State<AboutUsSignedIn> createState() => _AboutUsSignedInState();
 }
 
-class _AboutUsState extends State<AboutUs> {
+class _AboutUsSignedInState extends State<AboutUsSignedIn> {
   final _feedbackTeC = TextEditingController();
 
   // bool _saving = false;
@@ -115,7 +121,10 @@ class _AboutUsState extends State<AboutUs> {
                       style: TextStyle(color: Colors.white70, fontSize: 20),
                     ),
                     const Gap(20),
-                    _starsRow(rating: state.appRating),
+                    Opacity(
+                      opacity: state.isNotSignedIn() ? 0.2 : 1.0,
+                      child: _starsRow(rating: state.appRating),
+                    ),
                   ],
                 ),
               ),
@@ -279,7 +288,7 @@ class _AboutUsState extends State<AboutUs> {
           const Text(
             'Sign in to rate & send feedback, and to keep your game and puzzle progress and history — handy for tracking how you\'re improving over time.',
             style: TextStyle(
-              color: Color.fromARGB(179, 237, 200, 200),
+              color: Color.fromARGB(179, 235, 150, 59),
               height: 1.5,
               fontSize: 16,
             ),

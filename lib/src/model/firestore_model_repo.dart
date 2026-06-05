@@ -83,7 +83,7 @@ class FireStoreModelRepository implements IModelRepository {
         'Content-Type': 'application/json',
       },
       body: json.encode({
-        'ea': ea,
+        'ea': _normaliseEa(ea),
         'appId': appId,
         'appName': appName,
         'clickSendFromEaId': ClickSend.fromNoReply["email_address_id"],
@@ -98,6 +98,7 @@ class FireStoreModelRepository implements IModelRepository {
   }
 
   // Emits true once when the confirmed-tokens/{token} doc appears in Firestore.
+  @override
   Stream<bool> watchTokenConfirmation(
     String appId,
     String token,
@@ -105,7 +106,7 @@ class FireStoreModelRepository implements IModelRepository {
   ) {
     return FirebaseFirestore.instance
         .collection(_confirmedTokensCollection(appId))
-        .doc(userEa)
+        .doc(_normaliseEa(userEa))
         .snapshots()
         .map((snap) {
           final tokens = (snap.data()?['tokens'] as List<dynamic>?) ?? [];
@@ -831,7 +832,7 @@ class FireStoreModelRepository implements IModelRepository {
   Future<void> saveRating(String appId, String email, int stars) async {
     await FirebaseFirestore.instance
         .collection(_confirmedTokensCollection(appId))
-        .doc(email)
+        .doc(_normaliseEa(email))
         .set({'rating': stars, 'platform': _platform}, SetOptions(merge: true));
   }
 
@@ -839,11 +840,10 @@ class FireStoreModelRepository implements IModelRepository {
   Future<void> saveFeedback(String appId, String email, String feedback) async {
     await FirebaseFirestore.instance
         .collection(_confirmedTokensCollection(appId))
-        .doc(email)
-        .set(
-          {'feedback': FieldValue.arrayUnion([feedback])},
-          SetOptions(merge: true),
-        );
+        .doc(_normaliseEa(email))
+        .set({
+          'feedback': FieldValue.arrayUnion([feedback]),
+        }, SetOptions(merge: true));
   }
 
   DocumentReference get appDocRef => FirebaseFirestore.instance
@@ -861,6 +861,24 @@ class FireStoreModelRepository implements IModelRepository {
     if (fsdui.isWindows) return 'windows';
     return 'web';
   }
+
+  String _normaliseEa(String rawEmail) {
+    String normalizedEmail = rawEmail.trim().toLowerCase();
+
+    // Check if it's a valid format with an '@' split point
+    if (normalizedEmail.contains('@')) {
+      List<String> parts = normalizedEmail.split('@');
+      String username = parts[0].replaceAll(
+        '.',
+        '',
+      ); // Remove dots only from username
+      String domain = parts[1];
+      return '$username@$domain';
+    }
+
+    throw 'Invalid email: $rawEmail';
+  }
+
   // @override
   // Future<void> copyCollectionBetweenProjects() async {
   //
