@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 
+import '../algc/model/m/string_encoder_decoder.dart';
+
 class LoginScreenPasswordless extends StatefulWidget {
   // final ValueChanged<String> onSignedInF;
 
@@ -11,7 +13,8 @@ class LoginScreenPasswordless extends StatefulWidget {
       _LoginScreenPasswordlessState();
 }
 
-class _LoginScreenPasswordlessState extends State<LoginScreenPasswordless> {
+class _LoginScreenPasswordlessState extends State<LoginScreenPasswordless>
+    with StringEncoderDecoder {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _eaController;
   final _eaFocusNode = FocusNode();
@@ -46,7 +49,9 @@ class _LoginScreenPasswordlessState extends State<LoginScreenPasswordless> {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final colorScheme = Theme
+        .of(context)
+        .colorScheme;
 
     return BlocConsumer<CAPIBloC, CAPIState>(
       listener: (context, state) {
@@ -72,11 +77,9 @@ class _LoginScreenPasswordlessState extends State<LoginScreenPasswordless> {
     );
   }
 
-  Widget _buildStep1(
-    BuildContext context,
-    ColorScheme colorScheme,
-    CAPIState state,
-  ) {
+  Widget _buildStep1(BuildContext context,
+      ColorScheme colorScheme,
+      CAPIState state,) {
     return Form(
       key: _formKey,
       child: Column(
@@ -91,7 +94,11 @@ class _LoginScreenPasswordlessState extends State<LoginScreenPasswordless> {
           const SizedBox(height: 16),
           Text(
             'Passwordless sign-in — we\'ll email you a verify button',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            style: Theme
+                .of(context)
+                .textTheme
+                .bodyMedium
+                ?.copyWith(
               color: colorScheme.onSurfaceVariant,
             ),
             textAlign: TextAlign.center,
@@ -131,10 +138,12 @@ class _LoginScreenPasswordlessState extends State<LoginScreenPasswordless> {
                 : () => _submit(context),
             child: state.awaitingConfirmation ?? false
                 ? const SizedBox(
-                    height: 20,
-                    width: 20,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  )
+              height: 20,
+              width: 20,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            )
+                : state.ea != null
+                ? const Text('Sign back in')
                 : const Text('Send verification email'),
           ),
         ],
@@ -164,7 +173,8 @@ class _LoginScreenPasswordlessState extends State<LoginScreenPasswordless> {
         ),
         const SizedBox(height: 8),
         Text(
-          'We sent a verification email to ${state.ea}.\nTap the button in that email and you\'ll be signed in automatically.',
+          'We sent a verification email to ${state
+              .ea}.\nTap the button in that email and you\'ll be signed in automatically.',
           textAlign: TextAlign.center,
           style: TextStyle(color: colorScheme.onSurfaceVariant),
         ),
@@ -182,13 +192,17 @@ class _LoginScreenPasswordlessState extends State<LoginScreenPasswordless> {
   }
 
   void _submit(BuildContext context) {
-    if (_formKey.currentState?.validate() ?? false) {
-      final ea = _eaController.text.trim();
+    final ea = removeDotsAndForceLowercase(_eaController.text.trim());
+    final prevEa = fsdui.capiBloc.state.ea != null ? removeDotsAndForceLowercase(fsdui.capiBloc.state.ea!.trim()) : null;
+    if (prevEa == ea) {
+      // simply sign back in (applies to users who are editors)
+      context.read<CAPIBloC>().add(SignBackIn());
+    } else if (_formKey.currentState?.validate() ?? false) {
       if (!fsdui.emailIsValid(ea)) return;
-      if (fsdui.localStorage.read('vea') == ea) {
-        fsdui.dismiss("passwordless-stepper");
-        return;
-      }
+      // if (fsdui.localStorage.read('vea') == ea) {
+      //   fsdui.dismiss("passwordless-stepper");
+      //   return;
+      // }
       context.read<CAPIBloC>().add(
         GenerateTokenAndSendConfirmationEmail(appId: fsdui.appId, ea: ea),
       );

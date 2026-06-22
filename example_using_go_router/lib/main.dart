@@ -28,6 +28,7 @@ void disableOverflowErrors() {
 }
 
 void main({bool useEmulator = false}) async {
+  debugPrintGlobalKeyedWidgetLifecycle = true;
   runZonedGuarded<Future<void>>(
     () async {
       WidgetsFlutterBinding.ensureInitialized();

@@ -39,6 +39,9 @@ final class Sync extends CAPIEvent {
 final class SignedInAsGuestEditor extends CAPIEvent {
   SignedInAsGuestEditor();
 }
+final class SignBackIn extends CAPIEvent {
+  SignBackIn();
+}
 
 final class OverrideTargetGK extends CAPIEvent {
   OverrideTargetGK({

@@ -52,6 +52,7 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     on<GenerateTokenAndSendConfirmationEmail>(_onRequestToken);
     on<TokenConfirmed>(_onTokenConfirmed);
     on<SignOutRequested>(_onSignOut);
+    on<SignBackIn>(_onSignBackIn);
     // end auth ------------
     // _ur = SnippetUndoRedoStack(this);
 
@@ -217,11 +218,29 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     _tokenSub = null;
     emit(
       state.copyWith(
+        // leave ea if user is an editor
+        ea: !state.isSignedInAsNormalUser() ? state.ea : null,
         token: null,
         verified: false,
         isSignedInAsSuperEditor: false,
         isSignedInAsArticleEditor: false,
         isSignedInAsGuestEditor: false,
+      ),
+    );
+  }
+
+  void _onSignBackIn(SignBackIn event, Emitter<CAPIState> emit) {
+     emit(
+      state.copyWith(
+        verified: true,
+        ea: state.ea!,
+        token: state.token,
+        isSignedInAsSuperEditor: fsdui.appInfo.superEditorEas.contains(
+          state.ea!,
+        ),
+        isSignedInAsArticleEditor: fsdui.appInfo.articleEditorEas.contains(
+          state.ea!,
+        ),
       ),
     );
   }

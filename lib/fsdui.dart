@@ -606,7 +606,7 @@ class FSDUI_Mixins
   bool isArticleEditor() => capiBloc.state.isSignedInAsArticleEditor ?? false;
   bool isSuperEditor() => capiBloc.state.isSignedInAsSuperEditor ?? false;
   bool isGuestEditor() => capiBloc.state.isSignedInAsGuestEditor ?? false;
-  bool isNotSignedIn() => !capiBloc.state.isNotSignedIn();
+  bool isNotSignedIn() => capiBloc.state.isNotSignedIn();
 
   GlobalKey authIconGK = GlobalKey();
 

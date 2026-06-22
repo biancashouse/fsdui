@@ -6,7 +6,7 @@ import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'web_util_stub.dart' if (dart.library.html) 'web_util_web.dart';
 
 mixin NavMixin {
-  final GlobalKey _userIconGK = GlobalKey();
+  // final GlobalKey _userIconGK = GlobalKey();
 
   /// Triggers a hard refresh of the current web page using the 'web' package.
   ///
@@ -29,9 +29,6 @@ mixin NavMixin {
         builder: (context, state) {
           // final dropdownItems = <DropdownMenuItem<String>>[];
           bool showPencil = !(state.verified ?? false);
-          !fsdui.canEditAnyContent() &&
-              !fsdui.isArticleEditor() &&
-              !fsdui.isGuestEditor();
           return showPencil
               ? _dropdownButtonNotSignedIn(context, state, pencilIconColor)
               : _dropdownButtonSignedIn(context, state);
@@ -47,7 +44,6 @@ mixin NavMixin {
       _dropdownItemWithPI(
         value: 'sign-in',
         child: MenuItemButton(
-          key: _userIconGK,
           onPressed: () {
             String? gcrServerUrl = fsdui.gcrServerUrl;
             if (gcrServerUrl != null) {

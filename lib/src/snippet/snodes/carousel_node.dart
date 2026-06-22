@@ -38,9 +38,9 @@ class CarouselNode extends SNode with MC, CarouselNodeMappable {
 
   CarouselNode({
     super.name,
-    this.autoPlay = true,
+    this.autoPlay = false,
     this.autoPlayIntervalSecs = 2,
-    this.enlargeCenterPage = true,
+    this.enlargeCenterPage = false,
     this.aspectRatio = 1.0,
     this.height,
     this.axis = AxisEnum.horizontal,
@@ -53,47 +53,62 @@ class CarouselNode extends SNode with MC, CarouselNodeMappable {
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
     DecimalPNode(
-          snode: this,
-          name: 'aspectRatio',
-          decimalValue: aspectRatio,
-          onDoubleChange: (newValue) =>
-              refreshWithUpdate(context,() => aspectRatio = newValue ?? 1.0),
-        ),
-        IntPNode(
-            snode: this,
-            name: 'autoPlayInterval (secs)',
-            intValue: autoPlayIntervalSecs,
-            onIntChange: (newValue) =>
-                refreshWithUpdate(context,() => autoPlayIntervalSecs = newValue ?? 2),
-            calloutButtonSize: const Size(180, 30),
-            viaButton: false),
-        BoolPNode(
-          snode: this,
-          name: 'autoPlay',
-          boolValue: autoPlay,
-          onBoolChange: (newValue) =>
-              refreshWithUpdate(context,() => autoPlay = newValue ?? true),
-        ),
-        BoolPNode(
-          snode: this,
-          name: 'enlargeCenterPage',
-          boolValue: enlargeCenterPage,
-          onBoolChange: (newValue) =>
-              refreshWithUpdate(context,() => enlargeCenterPage = newValue ?? true),
-        ),
-        EnumPNode<AxisEnum?>(
-          snode: this,
-          name: 'axis',
-          valueIndex: axis.index,
-          onIndexChange: (newValue) => refreshWithUpdate(context,
-              () => axis = AxisEnum.of(newValue) ?? AxisEnum.horizontal),
-        ),
+      snode: this,
+      name: 'aspectRatio',
+      decimalValue: aspectRatio,
+      onDoubleChange: (newValue) =>
+          refreshWithUpdate(context, () => aspectRatio = newValue ?? 1.0),
+    ),
+    IntPNode(
+      snode: this,
+      name: 'autoPlayInterval (secs)',
+      intValue: autoPlayIntervalSecs,
+      onIntChange: (newValue) => refreshWithUpdate(
+        context,
+        () => autoPlayIntervalSecs = newValue ?? 2,
+      ),
+      calloutButtonSize: const Size(180, 30),
+      viaButton: false,
+    ),
+    BoolPNode(
+      snode: this,
+      name: 'autoPlay',
+      boolValue: autoPlay,
+      onBoolChange: (newValue) =>
+          refreshWithUpdate(context, () => autoPlay = newValue ?? true),
+    ),
+    BoolPNode(
+      snode: this,
+      name: 'enlargeCenterPage',
+      boolValue: enlargeCenterPage,
+      onBoolChange: (newValue) => refreshWithUpdate(
+        context,
+        () => enlargeCenterPage = newValue ?? true,
+      ),
+    ),
+    EnumPNode<AxisEnum?>(
+      snode: this,
+      name: 'axis',
+      valueIndex: axis.index,
+      onIndexChange: (newValue) => refreshWithUpdate(
+        context,
+        () => axis = AxisEnum.of(newValue) ?? AxisEnum.horizontal,
+      ),
+    ),
+    DecimalPNode(
+      snode: this,
+      name: 'height',
+      decimalValue: height,
+      onDoubleChange: (newValue) =>
+          refreshWithUpdate(context, () => height = newValue),
+    ),
     FlutterDocPNode(
-        buttonLabel: 'Carousel',
-        webLink: 'https://pub.dev/packages/carousel_slider',
-        snode: this,
-        name: 'fyi'),
-      ];
+      buttonLabel: 'Carousel',
+      webLink: 'https://pub.dev/packages/carousel_slider',
+      snode: this,
+      name: 'fyi',
+    ),
+  ];
 
   @override
   String toSource(BuildContext context) => '''Carousel(
@@ -105,37 +120,28 @@ class CarouselNode extends SNode with MC, CarouselNodeMappable {
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     try {
       setParent(parentNode);
-      List<Widget> images = children.isEmpty
-              ? kDemoImages
-                  .map((name) => Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            boxShadow: kElevationToShadow[2],
-                            image: DecorationImage(
-                                image: AssetImage(
-                                  name,
-                                  package: 'fsdui',
-                                ),
-                                fit: BoxFit.fill),
-                          ),
+      List<Widget> widgets = children.isEmpty
+          ? kDemoImages
+                .map(
+                  (name) => Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        boxShadow: kElevationToShadow[2],
+                        image: DecorationImage(
+                          image: AssetImage(name, package: 'fsdui'),
+                          fit: BoxFit.fill,
                         ),
-                      ))
-                  .toList()
-              : children
-                  .map((SNode node) => node is AssetImageNode
-                      ? node.build(context, this)
-                      : node is StorageImageNode
-                          ? node.build(context, this)
-                          : const Placeholder(
-                              child: Text('not an asset image!'),
-                            ))
-                  .toList();
+                      ),
+                    ),
+                  ),
+                )
+                .toList()
+          : children.map((SNode node) => node.build(context, this)).toList();
 
       //ScrollControllerName? scName = EditablePage.name(context);
-    //possiblyHighlightSelectedNode(scName);
-
+      //possiblyHighlightSelectedNode(scName);
 
       // SnippetPanelState? spState = SnippetPanel.of(context);  // vsync
       // if (spState == null) return fco.errorIcon(Colors.red);
@@ -158,24 +164,31 @@ class CarouselNode extends SNode with MC, CarouselNodeMappable {
       // );
 
       return CarouselSlider.builder(
-            key: createNodeWidgetGK(),
-            itemCount: images.length,
-            options: CarouselOptions(
-              autoPlay: autoPlay,
-              aspectRatio: aspectRatio,
-              autoPlayInterval: Duration(seconds: autoPlayIntervalSecs),
-              enlargeCenterPage: enlargeCenterPage,
-              scrollDirection: axis.flutterValue,
-            ),
-            itemBuilder: (context, itemIndex, realIndex) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: images[itemIndex],
-              );
-            },
+        key: createNodeWidgetGK(),
+        itemCount: widgets.length,
+        options: CarouselOptions(
+          autoPlay: autoPlay,
+          aspectRatio: aspectRatio,
+          autoPlayInterval: Duration(seconds: autoPlayIntervalSecs),
+          enlargeCenterPage: enlargeCenterPage,
+          scrollDirection: axis.flutterValue,
+          height: height
+        ),
+        itemBuilder: (context, itemIndex, realIndex) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: widgets[itemIndex],
           );
+        },
+      );
     } catch (e) {
-      return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());
+      return Error(
+        key: createNodeWidgetGK(),
+        FLUTTER_TYPE,
+        color: Colors.red,
+        size: 16,
+        errorMsg: e.toString(),
+      );
     }
   }
 
@@ -186,10 +199,8 @@ class CarouselNode extends SNode with MC, CarouselNodeMappable {
   // List<Type> addChildOnly() => [AssetImageNode, StorageImageNode];
 
   @override
-  Widget? widgetLogo() => Image.asset(
-    fsdui.asset('lib/assets/images/pub.dev.png'),
-    width: 16,
-  );
+  Widget? widgetLogo() =>
+      Image.asset(fsdui.asset('lib/assets/images/pub.dev.png'), width: 16);
 
   @override
   String toString() => FLUTTER_TYPE;

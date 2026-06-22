@@ -572,6 +572,8 @@ mixin CalloutMixin {
     msg: msg,
     bgColor: bgColor,
     textColor: textColor,
+    fontSize: fontSize,
+    fontWeight: fontWeight,
     showCPI: showCPI,
     removeAfterMs: removeAfterMs,
   );
