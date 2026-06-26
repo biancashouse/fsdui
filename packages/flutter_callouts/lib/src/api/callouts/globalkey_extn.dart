@@ -45,6 +45,12 @@ extension GlobalKeyExtension on GlobalKey {
       // mounted==true but its render object is detached. getTransformTo
       // asserts attached, so bail out before calling it.
       if (!renderObject.attached) return null;
+      // Guard against "Cannot hit test a render box with no size" — the box
+      // exists in the tree but hasn't been through a layout pass yet.
+      if (renderObject is RenderBox && !renderObject.hasSize) {
+        fca.logger.i('GlobalKeyExtension: RenderBox not yet laid out (hasSize=false).');
+        return null;
+      }
       paintBounds = renderObject.paintBounds;
 
       if (!_alreadyGaveGlobalPosAndSizeWarning &&
