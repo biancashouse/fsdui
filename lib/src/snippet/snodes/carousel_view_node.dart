@@ -4,7 +4,6 @@ import 'dart:async';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
-import 'package:fsdui/src/measuring/size_aware_widget.dart';
 import 'package:fsdui/src/snippet/pnodes/bool_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
 // import 'package:fsdui/src/snippet/pnodes/enum_pnode.dart';
@@ -33,10 +32,6 @@ class CarouselViewNode extends SNode with MC, CarouselViewNodeMappable {
   // bool enableSplash;
   // bool infinite;
   // String flexWeights;
-
-  // Cache each item's measured size by index, so it's only measured once
-  // rather than on every rebuild (itemBuilder re-runs as the ListView scrolls).
-  final Map<int, Size> _itemSizeCache = {};
 
   CarouselViewNode({
     super.name,
@@ -190,19 +185,9 @@ class CarouselViewNode extends SNode with MC, CarouselViewNodeMappable {
                 .toList()
           : children.map((SNode node) => node.build(context, this)).toList();
 
-      // IntrinsicWidth previously sized each item, but it queries the
-      // child RenderObject's intrinsic width during layout. Children that
-      // build to a Viewport (ListViewNode, GridViewNode,
-      // ArticleListViewNode) don't support that query and throw a layout
-      // assertion that isn't caught by the try/catch below, since it
-      // happens after build. Measure the rendered size once instead via
-      // SizeAwareWidget and cache it, so later rebuilds (e.g. on scroll)
-      // can size the item directly with a SizedBox.
       Widget view = _AutoPlayingListView(
         key: createNodeWidgetGK(),
-        itemSizeCache: _itemSizeCache,
         autoPlay: autoPlay,
-        // infinite: infinite,
         children: widgets,
       );
 
@@ -244,22 +229,17 @@ class CarouselViewNode extends SNode with MC, CarouselViewNodeMappable {
 }
 
 /// Horizontal item list that, when [autoPlay] is on, advances to the next
-/// item on a timer. Item widths vary (children are wrapped in
-/// [IntrinsicWidth]), so the scroll-to offsets are computed from
-/// [itemSizeCache], which is filled in as each item is measured after its
-/// first frame via [SizeAwareWidget].
+/// item on a timer. Each item is sized to the full viewport width via
+/// LayoutBuilder, which avoids IntrinsicWidth's intrinsic-dimension queries
+/// and prevents "Cannot hit test a render box with no size" during scroll.
 class _AutoPlayingListView extends StatefulWidget {
   final List<Widget> children;
-  final Map<int, Size> itemSizeCache;
   final bool autoPlay;
-  // final bool infinite;
 
   const _AutoPlayingListView({
     super.key,
     required this.children,
-    required this.itemSizeCache,
     required this.autoPlay,
-    // required this.infinite,
   });
 
   @override
@@ -275,6 +255,9 @@ class _AutoPlayingListViewState extends State<_AutoPlayingListView> {
   final _scrollController = ScrollController();
   Timer? _timer;
   int _currentIndex = 0;
+  // Set from LayoutBuilder so _advance() can compute scroll offsets without
+  // needing a size cache.
+  double _itemWidth = _fallbackItemExtent;
 
   @override
   void initState() {
@@ -320,14 +303,9 @@ class _AutoPlayingListViewState extends State<_AutoPlayingListView> {
     );
   }
 
-  double _offsetForIndex(int index) {
-    var offset = 0.0;
-    for (var i = 0; i < index; i++) {
-      final itemWidth = widget.itemSizeCache[i]?.width ?? _fallbackItemExtent;
-      offset += itemWidth + _itemHorizontalPadding;
-    }
-    return offset;
-  }
+  // All items are the same width, so offset is a direct formula.
+  double _offsetForIndex(int index) =>
+      index * (_itemWidth + _itemHorizontalPadding);
 
   @override
   void dispose() {
@@ -338,20 +316,22 @@ class _AutoPlayingListViewState extends State<_AutoPlayingListView> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      controller: _scrollController,
-      scrollDirection: Axis.horizontal,
-      // PageScrollPhysics() works if items are screen-width.
-      // For custom widths, ClampingScrollPhysics feels best natively,
-      // or you can use the 'snap_scroll_physics' package.
-      physics: const ClampingScrollPhysics(),
-      itemCount: widget.children.length,
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: SizeAwareWidget(
-            onSizeAvailable: (size) => widget.itemSizeCache[index] = size,
-            child: IntrinsicWidth(child: widget.children[index]),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Each item fills the visible viewport width. Using an explicit
+        // SizedBox instead of IntrinsicWidth means every RenderBox has a
+        // definite size before any hit-test can reach it.
+        _itemWidth = constraints.maxWidth.isFinite && constraints.maxWidth > 0
+            ? constraints.maxWidth - _itemHorizontalPadding
+            : _fallbackItemExtent;
+        return ListView.builder(
+          controller: _scrollController,
+          scrollDirection: Axis.horizontal,
+          physics: const ClampingScrollPhysics(),
+          itemCount: widget.children.length,
+          itemBuilder: (context, index) => Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: SizedBox(width: _itemWidth, child: widget.children[index]),
           ),
         );
       },
