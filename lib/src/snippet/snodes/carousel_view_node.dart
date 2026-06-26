@@ -188,7 +188,19 @@ class CarouselViewNode extends SNode with MC, CarouselViewNodeMappable {
                   ),
                 )
                 .toList()
-          : children.map((SNode node) => node.build(context, this)).toList();
+          : children.map((SNode node) {
+              final w = node.build(context, this);
+              // ListView / GridView / CustomScrollView render as RenderViewport,
+              // which asserts on computeMinIntrinsicWidth. Pre-wrap them in a
+              // SizedBox so _AutoPlayingListView's IntrinsicWidth measures the
+              // SizedBox (safe) rather than the viewport directly.
+              if (node is ListViewNode ||
+                  node is GridViewNode ||
+                  node is CustomScrollViewNode) {
+                return SizedBox(width: height, child: w);
+              }
+              return w;
+            }).toList();
 
       Widget view = _AutoPlayingListView(
         key: createNodeWidgetGK(),
@@ -201,7 +213,7 @@ class CarouselViewNode extends SNode with MC, CarouselViewNodeMappable {
       // cross-axis extent (height, for the default horizontal
       // scrollDirection). Without it, ancestors that hand out unbounded
       // height (e.g. a Column) trigger a hasSize assertion failure.
-      return height == null ? view : SizedBox(height: height, child: view);
+      return /* height == null ? view : */ SizedBox(height: height, child: view);
     } catch (e) {
       return Error(
         key: createNodeWidgetGK(),

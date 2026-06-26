@@ -601,6 +601,8 @@ abstract class SNode extends Node with SNodeMappable {
     final parent = getParent() as SNode?;
     if (parent == null) return null;
     if (parent is CustomScrollViewNode) return parent.slivers;
+    if (parent is ListViewNode) return parent.children;
+    if (parent is GridViewNode) return parent.children;
     if (parent is TextSpanNode) return parent.children;
     if (parent is MC) return parent.children;
     return null;

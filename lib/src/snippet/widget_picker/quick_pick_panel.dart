@@ -200,11 +200,16 @@ class _QuickPickPanelState extends State<QuickPickPanel> {
           ),
         ),
         const Divider(height: 1),
-        // Results list.
+        // Results list. Wrapped in Material so that ListTile ink effects have
+        // a proper ancestor on the correct side of the callout's white
+        // background Container (which would otherwise trigger the
+        // "ListTile background color or ink splashes may be invisible" warning).
         Expanded(
-          child: ListView.builder(
-            itemCount: items.length,
-            itemBuilder: (context, index) {
+          child: Material(
+            color: Colors.transparent,
+            child: ListView.builder(
+              itemCount: items.length,
+              itemBuilder: (context, index) {
               final item = items[index];
               if (item is _Header) {
                 return Container(
@@ -246,6 +251,7 @@ class _QuickPickPanelState extends State<QuickPickPanel> {
               }
               return const SizedBox.shrink();
             },
+          ),
           ),
         ),
       ],

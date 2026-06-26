@@ -1001,6 +1001,12 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
           parentNode.children.remove(node);
         } else if (parentNode is TextSpanNode) {
           parentNode.children?.remove(node);
+        } else if (parentNode is ListViewNode) {
+          parentNode.children.remove(node);
+        } else if (parentNode is GridViewNode) {
+          parentNode.children.remove(node);
+        } else if (parentNode is CustomScrollViewNode) {
+          parentNode.slivers.remove(node);
         }
       }
     }
@@ -1701,8 +1707,14 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     // } else if (selectedNode is CarouselViewNode) {
     //   // special case wrap with Intrincsic when adding to CarouselViewNode
     //   selectedNode.children.add(IntrinsicWidthNode(child: newNode));
+    } else if (selectedNode is GridViewNode) {
+      selectedNode.children.add(newNode);
     } else if (selectedNode is MC) {
       selectedNode.children.add(newNode);
+    } else if (selectedNode is ListViewNode) {
+      selectedNode.children.add(newNode);
+    } else if (selectedNode is CustomScrollViewNode) {
+      selectedNode.slivers.add(newNode);
     } else if (selectedNode is TextSpanNode && newNode is InlineSpanNode) {
       selectedNode.children ??= [];
       selectedNode.children!.add(newNode);
