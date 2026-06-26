@@ -68,6 +68,7 @@ class SNodeMapper extends ClassMapperBase<SNode> {
       TabNodeMapper.ensureInitialized();
       TargetsWrapperNodeMapper.ensureInitialized();
       CarouselNodeMapper.ensureInitialized();
+      CarouselViewNodeMapper.ensureInitialized();
       DirectoryNodeMapper.ensureInitialized();
       DynamicTabBarNodeMapper.ensureInitialized();
       FlexNodeMapper.ensureInitialized();

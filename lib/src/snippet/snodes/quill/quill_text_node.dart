@@ -25,6 +25,13 @@ class QuillTextNode extends SNode with QuillTextNodeMappable {
 
   CalloutId get quillTextToolbarCID => 'quill-toolbar-$uid';
 
+  /// The rendered size of this node's widget, or null if it hasn't been
+  /// laid out yet (e.g. not built, or not yet attached to the tree).
+  Size? get size => nodeWidgetGK?.globalPaintBounds(
+    skipWidthConstraintWarning: true,
+    skipHeightConstraintWarning: true,
+  )?.size;
+
   // keep transient copy of each Embed's  gk
   // @JsonKey(includeFromJson: false, includeToJson: false)
   // Map<String,GlobalKey> targetGks = {};

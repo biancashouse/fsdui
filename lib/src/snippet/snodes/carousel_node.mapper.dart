@@ -28,13 +28,13 @@ class CarouselNodeMapper extends SubClassMapperBase<CarouselNode> {
       Field('name', _$name, opt: true);
   static bool _$autoPlay(CarouselNode v) => v.autoPlay;
   static const Field<CarouselNode, bool> _f$autoPlay =
-      Field('autoPlay', _$autoPlay, opt: true, def: true);
+      Field('autoPlay', _$autoPlay, opt: true, def: false);
   static int _$autoPlayIntervalSecs(CarouselNode v) => v.autoPlayIntervalSecs;
   static const Field<CarouselNode, int> _f$autoPlayIntervalSecs =
       Field('autoPlayIntervalSecs', _$autoPlayIntervalSecs, opt: true, def: 2);
   static bool _$enlargeCenterPage(CarouselNode v) => v.enlargeCenterPage;
   static const Field<CarouselNode, bool> _f$enlargeCenterPage =
-      Field('enlargeCenterPage', _$enlargeCenterPage, opt: true, def: true);
+      Field('enlargeCenterPage', _$enlargeCenterPage, opt: true, def: false);
   static double _$aspectRatio(CarouselNode v) => v.aspectRatio;
   static const Field<CarouselNode, double> _f$aspectRatio =
       Field('aspectRatio', _$aspectRatio, opt: true, def: 1.0);

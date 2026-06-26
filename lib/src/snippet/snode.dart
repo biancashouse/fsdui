@@ -10,6 +10,7 @@ import 'package:fsdui/src/snippet/snodes/hotspots/widgets/hotspot_target_config_
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'widget_picker/quick_pick_panel.dart';
 import 'widget_picker/widget_entry.dart';
+
 // import 'widget_picker/widget_picker_dialog.dart';
 import 'widget_picker/widget_registry.dart';
 
@@ -77,6 +78,7 @@ const List<Type> singleChildSubClasses = [
 
 const List<Type> multiChildSubClasses = [
   CarouselNode,
+  CarouselViewNode,
   DirectoryNode,
   DynamicTabBarNode,
   FlexNode,
@@ -190,6 +192,7 @@ enum NodeAction {
     TargetsWrapperNode,
     // multi-child
     CarouselNode,
+    CarouselViewNode,
     DirectoryNode,
     DynamicTabBarNode,
     FlexNode,
@@ -787,15 +790,15 @@ abstract class SNode extends Node with SNodeMappable {
     SNode? rootNode = await snippetInfo.currentVersionFromCacheOrFB();
     if (rootNode == null) return;
 
-    if (rootNode.nodeWidgetGK?.currentContext == null) {
-      fsdui.showToast(
-        msg: "This node is not visible right now",
-        bgColor: Colors.white,
-        textColor: Colors.purple,
-        removeAfterMs: 5000,
-      );
-      return;
-    }
+    // if (rootNode.nodeWidgetGK?.currentContext == null) {
+    //   fsdui.showToast(
+    //     msg: "This node is not visible right now",
+    //     bgColor: Colors.white,
+    //     textColor: Colors.purple,
+    //     removeAfterMs: 5000,
+    //   );
+    //   return;
+    // }
 
     fsdui.capiBloc.add(
       PushSnippetEditor(rootNode: rootNode, selectedNode: selectedNode),
@@ -921,6 +924,7 @@ abstract class SNode extends Node with SNodeMappable {
 
   bool get canShowTappableNodeWidgetOverlay =>
       getParent() is! CarouselNode &&
+      getParent() is! CarouselViewNode &&
       getParent() is! MarkdownNode &&
       getParent() is! QuillTextNode;
 
@@ -2415,6 +2419,7 @@ abstract class SNode extends Node with SNodeMappable {
             action,
           ),
           menuItemButton(context, "Carousel", CarouselNode, action),
+          menuItemButton(context, "CarouselView", CarouselViewNode, action),
           menuItemButton(context, "Aspect Ratio", AspectRatioNode, action),
         ],
         child: fsdui.coloredText("image", fontWeight: FontWeight.normal),
@@ -2478,7 +2483,7 @@ abstract class SNode extends Node with SNodeMappable {
       if (getParent() is SubmenuButtonNode) ...[
         menuItemButton(context, "MenuItemButton", MenuItemButtonNode, action),
       ],
-      if (getParent() is CarouselNode) ...[
+      if (getParent() is CarouselNode || getParent() is CarouselViewNode) ...[
         menuItemButton(context, "AssetImage", AssetImageNode, action),
         menuItemButton(context, "Algorithm", AlgCNode, action),
         menuItemButton(context, "UML", UMLImageNode, action),
@@ -2714,6 +2719,7 @@ abstract class SNode extends Node with SNodeMappable {
               action,
             ),
             menuItemButton(context, "Carousel", CarouselNode, action),
+            menuItemButton(context, "CarouselView", CarouselViewNode, action),
             menuItemButton(context, "Aspect Ratio", AspectRatioNode, action),
           ],
           child: fsdui.coloredText("image", fontWeight: FontWeight.normal),
@@ -2922,11 +2928,14 @@ abstract class SNode extends Node with SNodeMappable {
     );
   }
 
-  SNode clone() {
+  SNode clone({bool newId = false}) {
     String jsonS = toJson();
     var clonedNode = SNodeMapper.fromJson(jsonS);
     if (nodeWidgetGK != null && nodeWidgetGK == clonedNode.nodeWidgetGK) {
       fsdui.logger.d('gk cloned !)');
+    }
+    if (newId) {
+      clonedNode.uid = UniqueKey().toString();
     }
     return clonedNode;
   }

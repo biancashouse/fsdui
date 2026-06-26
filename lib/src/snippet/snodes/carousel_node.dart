@@ -1,4 +1,5 @@
 // ignore_for_file: constant_identifier_names
+// import 'package:carousel_slider_plus/carousel_slider_plus.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
@@ -47,8 +48,8 @@ class CarouselNode extends SNode with MC, CarouselNodeMappable {
     required this.children,
   });
 
-  @override
-  List<SNode>? get ownChildren => children;
+  // @override
+  // List<SNode>? get ownChildren => children;
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
@@ -131,7 +132,7 @@ class CarouselNode extends SNode with MC, CarouselNodeMappable {
                         boxShadow: kElevationToShadow[2],
                         image: DecorationImage(
                           image: AssetImage(name, package: 'fsdui'),
-                          fit: BoxFit.fill,
+                          fit: BoxFit.contain,
                         ),
                       ),
                     ),
@@ -172,7 +173,11 @@ class CarouselNode extends SNode with MC, CarouselNodeMappable {
           autoPlayInterval: Duration(seconds: autoPlayIntervalSecs),
           enlargeCenterPage: enlargeCenterPage,
           scrollDirection: axis.flutterValue,
-          height: height
+          height: height,
+          // carousel_slider's infinite-scroll page recycling builds the same
+          // logical item into more than one simultaneous PageView slot when
+          // there's only one item, colliding on that item's stable GlobalKey.
+          enableInfiniteScroll: widgets.length > 1,
         ),
         itemBuilder: (context, itemIndex, realIndex) {
           return Padding(

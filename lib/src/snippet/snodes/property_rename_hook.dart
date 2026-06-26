@@ -17,10 +17,12 @@ class PropertyRenameHook extends MappingHook {
     // First, handle the simple top-level property rename.
     // This is much cleaner and safer than the previous implementation.
     final map = Map<String, dynamic>.from(value);
-    if (map.containsKey(oldName)) {
+    // Only migrate genuinely old-format data (no newName key yet). Modern
+    // JSON always includes oldName (often null, since dart_mappable encodes
+    // null fields by default) alongside a real newName value, and blindly
+    // renaming would clobber it with that null every time it's reloaded.
+    if (map.containsKey(oldName) && !map.containsKey(newName)) {
       map[newName] = map.remove(oldName);
-      // After renaming, we can attempt to decode with the updated structure.
-      // Or if this hook is only for migration, we can just return the modified map.
     }
 
     // Now, handle the deep nested migration for 'ExpandedNode'.

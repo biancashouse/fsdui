@@ -192,16 +192,16 @@ class EditablePageState extends State<EditablePage> {
     SNode selectedNode, {
     HotspotTargetModel? targetBeingConfigured,
   }) {
-    var snippetRootContext = rootNode.nodeWidgetGK?.currentContext;
-    if (snippetRootContext == null) {
-      fsdui.showToast(
-        msg: "This node is not visible right now",
-        bgColor: Colors.yellow,
-        textColor: Colors.red,
-        removeAfterMs: 5000,
-      );
-      return;
-    }
+    // var snippetRootContext = rootNode.nodeWidgetGK?.currentContext;
+    // if (snippetRootContext == null) {
+    //   fsdui.showToast(
+    //     msg: "This node is not visible right now",
+    //     bgColor: Colors.yellow,
+    //     textColor: Colors.red,
+    //     removeAfterMs: 5000,
+    //   );
+    //   return;
+    // }
 
     context.read<CAPIBloC>().add(
       PushSnippetEditor(rootNode: rootNode, selectedNode: selectedNode),

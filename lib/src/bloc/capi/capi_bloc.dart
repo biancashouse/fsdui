@@ -1534,6 +1534,10 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
   void _replaceWithNewNodeOrClipboard(SNode sel, emit, SNode r) {
     if (state.snippetBeingEdited?.aNodeIsNotSelected ?? false) return;
 
+    String? selSnippetName = sel.rootNodeOfSnippet()?.name;
+
+    r.name = null;
+
     if (sel is InlineSpanNode && r is! InlineSpanNode) return;
     if (sel is! InlineSpanNode && r is InlineSpanNode) return;
     if (sel is PollOptionNode && r is! PollOptionNode) return;
@@ -1554,13 +1558,14 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
         // PlaceholderNode. SnippetBuilder renders via currentVersionInCache(),
         // which is the same object as the active root for property edits but
         // becomes stale on root replacement without this update.
-        SnippetInfoModel? snippetInfo = fsdui.appInfo.cachedSnippetInfo(
-          r.name!,
-        );
-        if (snippetInfo != null) {
-          VersionId? currVersionId = snippetInfo.currentVersionId();
+        SnippetInfoModel? selSnippetInfo = selSnippetName != null
+            ?  fsdui.appInfo.cachedSnippetInfo(
+          selSnippetName,
+        ) : null;
+        if (selSnippetInfo != null) {
+          VersionId? currVersionId = selSnippetInfo.currentVersionId();
           if (currVersionId != null) {
-            snippetInfo.cacheVersion(currVersionId, r);
+            selSnippetInfo.cacheVersion(currVersionId, r);
           }
         }
       } else if (parent is SC) {
@@ -1620,8 +1625,8 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     //   ..selectedNode = r
     //   ..treeC = possiblyNewTreeC;
 
-    if (parent == null) {
-      fsdui.appInfo.cachedSnippetInfo(r.name!)?.notifyChange(r);
+    if (parent == null && selSnippetName != null) {
+      fsdui.appInfo.cachedSnippetInfo(selSnippetName)?.notifyChange(r);
     }
 
     emit(
@@ -1647,7 +1652,7 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     _addOrPasteChild(selectedNode, emit, newNode);
   }
 
-  void _addOrPasteChild(SNode selectedNode, emit, SNode newNode) {
+  void _addOrPasteChild(SNode selectedNode, emit, SNode nodeToAddOrPaste) {
     // state.snippetBeingEdited?.newVersion();
 
     // STreeNode? childNode;
@@ -1664,6 +1669,8 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     //   }
     // } else
     SNode rootNode = state.snippetBeingEdited!.getRootNode();
+    final newNode = nodeToAddOrPaste.clone();
+    newNode.name = null;
     if (selectedNode is TabBarNode) {
       TabBarViewNode? tabBarViewNode =
           state.snippetBeingEdited!.treeC.findNodeTypeInTree(
@@ -1691,6 +1698,9 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
       selectedNode.children.add(newNode);
     } else if (selectedNode is SC) {
       selectedNode.child = newNode;
+    // } else if (selectedNode is CarouselViewNode) {
+    //   // special case wrap with Intrincsic when adding to CarouselViewNode
+    //   selectedNode.children.add(IntrinsicWidthNode(child: newNode));
     } else if (selectedNode is MC) {
       selectedNode.children.add(newNode);
     } else if (selectedNode is TextSpanNode && newNode is InlineSpanNode) {
@@ -1707,10 +1717,10 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
 
     state.snippetBeingEdited!
       ..treeC.expand(selectedNode)
-      ..treeC.rebuild()
-      ..getRootNode().validateTree();
+      ..treeC.rebuild();
+    rootNode..validateTree();
 
-    final newSnippet = state.snippetBeingEdited!.getRootNode();
+    final newSnippet = rootNode;
     // fco.modelRepo.saveNewVersionOfSnippet(newSnippet);
     fsdui.appInfo.cachedSnippetInfo(newSnippet.name!)?.notifyChange(newSnippet);
 
