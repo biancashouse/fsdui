@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/measuring/size_aware_widget.dart';
 import 'package:fsdui/src/snippet/pnodes/bool_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
 // import 'package:fsdui/src/snippet/pnodes/enum_pnode.dart';
@@ -32,6 +33,10 @@ class CarouselViewNode extends SNode with MC, CarouselViewNodeMappable {
   // bool enableSplash;
   // bool infinite;
   // String flexWeights;
+
+  // Cache each item's measured size so _offsetForIndex can compute accurate
+  // scroll offsets for auto-play without querying intrinsic dimensions.
+  final Map<int, Size> _itemSizeCache = {};
 
   CarouselViewNode({
     super.name,
@@ -188,6 +193,7 @@ class CarouselViewNode extends SNode with MC, CarouselViewNodeMappable {
       Widget view = _AutoPlayingListView(
         key: createNodeWidgetGK(),
         autoPlay: autoPlay,
+        itemSizeCache: _itemSizeCache,
         children: widgets,
       );
 
@@ -229,16 +235,20 @@ class CarouselViewNode extends SNode with MC, CarouselViewNodeMappable {
 }
 
 /// Horizontal item list that, when [autoPlay] is on, advances to the next
-/// item on a timer. Each item is sized to the full viewport width via
-/// LayoutBuilder, which avoids IntrinsicWidth's intrinsic-dimension queries
-/// and prevents "Cannot hit test a render box with no size" during scroll.
+/// item on a timer. Uses [ListView] (not [ListView.builder]) so all items
+/// are built and laid out eagerly in one pass — this prevents the
+/// "Cannot hit test a render box with no size" error that occurs when
+/// [ListView.builder] lazily constructs items mid-scroll and a pointer event
+/// arrives before their layout is complete.
 class _AutoPlayingListView extends StatefulWidget {
   final List<Widget> children;
+  final Map<int, Size> itemSizeCache;
   final bool autoPlay;
 
   const _AutoPlayingListView({
     super.key,
     required this.children,
+    required this.itemSizeCache,
     required this.autoPlay,
   });
 
@@ -255,9 +265,6 @@ class _AutoPlayingListViewState extends State<_AutoPlayingListView> {
   final _scrollController = ScrollController();
   Timer? _timer;
   int _currentIndex = 0;
-  // Set from LayoutBuilder so _advance() can compute scroll offsets without
-  // needing a size cache.
-  double _itemWidth = _fallbackItemExtent;
 
   @override
   void initState() {
@@ -303,9 +310,15 @@ class _AutoPlayingListViewState extends State<_AutoPlayingListView> {
     );
   }
 
-  // All items are the same width, so offset is a direct formula.
-  double _offsetForIndex(int index) =>
-      index * (_itemWidth + _itemHorizontalPadding);
+  double _offsetForIndex(int index) {
+    var offset = 0.0;
+    for (var i = 0; i < index; i++) {
+      final itemWidth =
+          widget.itemSizeCache[i]?.width ?? _fallbackItemExtent;
+      offset += itemWidth + _itemHorizontalPadding;
+    }
+    return offset;
+  }
 
   @override
   void dispose() {
@@ -316,25 +329,20 @@ class _AutoPlayingListViewState extends State<_AutoPlayingListView> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        // Each item fills the visible viewport width. Using an explicit
-        // SizedBox instead of IntrinsicWidth means every RenderBox has a
-        // definite size before any hit-test can reach it.
-        _itemWidth = constraints.maxWidth.isFinite && constraints.maxWidth > 0
-            ? constraints.maxWidth - _itemHorizontalPadding
-            : _fallbackItemExtent;
-        return ListView.builder(
-          controller: _scrollController,
-          scrollDirection: Axis.horizontal,
-          physics: const ClampingScrollPhysics(),
-          itemCount: widget.children.length,
-          itemBuilder: (context, index) => Padding(
+    return ListView(
+      controller: _scrollController,
+      scrollDirection: Axis.horizontal,
+      physics: const ClampingScrollPhysics(),
+      children: [
+        for (var i = 0; i < widget.children.length; i++)
+          Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: SizedBox(width: _itemWidth, child: widget.children[index]),
+            child: SizeAwareWidget(
+              onSizeAvailable: (size) => widget.itemSizeCache[i] = size,
+              child: IntrinsicWidth(child: widget.children[i]),
+            ),
           ),
-        );
-      },
+      ],
     );
   }
 }
