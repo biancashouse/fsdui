@@ -22,6 +22,9 @@ class TextSpanNode extends SNode with InlineSpanNode, TextSpanNodeMappable {
   TextStyleProperties tsPropGroup;
   List<InlineSpanNode>? children;
 
+  @override
+  List<SNode>? get ownChildren => children;
+
   TextSpanNode({
     super.name,
     this.text,

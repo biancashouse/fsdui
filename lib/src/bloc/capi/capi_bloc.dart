@@ -1587,9 +1587,9 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
       } else {
         // Handles ListViewNode, GridViewNode, CustomScrollViewNode, and any
         // other node with a children list that does not mixin MC.
-        // maybeSiblings() returns the parent's actual mutable list, so
+        // ownChildren returns the parent's actual mutable list, so
         // assigning into it updates the real field.
-        final kids = sel.maybeSiblings();
+        final kids = parent.ownChildren;
         if (kids != null) {
           final index = kids.indexOf(sel);
           if (index >= 0) kids[index] = r;

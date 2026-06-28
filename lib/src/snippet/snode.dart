@@ -570,22 +570,19 @@ abstract class SNode extends Node with SNodeMappable {
     return null;
   }
 
+  // Canonical accessor for a node's multi-child list.
+  // SC nodes return null here; wrap in [child] via maybeChildren() if needed.
+  // Override in every node that owns a list of SNode children.
+  List<SNode>? get ownChildren => null;
+
   // useful in generic tree actions, such as node deletion
   List<SNode>? maybeChildren() {
     if (this is SC) {
       final c = (this as SC).child;
       if (c != null) return [c];
-    } else if (this is MC) {
-      if (this is CustomScrollViewNode) {
-        return (this as CustomScrollViewNode).slivers;
-      }
-      if (this is TextSpanNode) {
-        return (this as TextSpanNode).children;
-      } else {
-        return (this as MC).children;
-      }
+      return null;
     }
-    return null;
+    return ownChildren;
   }
 
   bool hasSingleChild() => maybeChildren()?.length == 1;
@@ -597,16 +594,7 @@ abstract class SNode extends Node with SNodeMappable {
 
   bool hasChildren() => !hasNoChildren();
 
-  List<SNode>? maybeSiblings() {
-    final parent = getParent() as SNode?;
-    if (parent == null) return null;
-    if (parent is CustomScrollViewNode) return parent.slivers;
-    if (parent is ListViewNode) return parent.children;
-    if (parent is GridViewNode) return parent.children;
-    if (parent is TextSpanNode) return parent.children;
-    if (parent is MC) return parent.children;
-    return null;
-  }
+  List<SNode>? maybeSiblings() => (getParent() as SNode?)?.ownChildren;
 
   bool parentCanHaveMultipleChildren() =>
       getParent() is TextSpanNode ||
@@ -2947,10 +2935,9 @@ abstract class SNode extends Node with SNodeMappable {
     if (node is SC) {
       final c = node.child;
       if (c != null) _reassignUids(c);
-    } else if (node is MC) {
-      for (final child in node.children) {
-        _reassignUids(child);
-      }
+    }
+    for (final child in node.ownChildren ?? const []) {
+      _reassignUids(child);
     }
   }
 

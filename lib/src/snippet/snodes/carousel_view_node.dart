@@ -53,8 +53,8 @@ class CarouselViewNode extends SNode with MC, CarouselViewNodeMappable {
     required this.children,
   });
 
-  // @override
-  // List<SNode>? get ownChildren => children;
+  @override
+  List<SNode>? get ownChildren => children;
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
