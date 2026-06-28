@@ -1584,6 +1584,16 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
         parent.children![index] = r as InlineSpanNode;
       } else if (parent is RichTextNode) {
         parent.text = r as InlineSpanNode;
+      } else {
+        // Handles ListViewNode, GridViewNode, CustomScrollViewNode, and any
+        // other node with a children list that does not mixin MC.
+        // maybeSiblings() returns the parent's actual mutable list, so
+        // assigning into it updates the real field.
+        final kids = sel.maybeSiblings();
+        if (kids != null) {
+          final index = kids.indexOf(sel);
+          if (index >= 0) kids[index] = r;
+        }
       }
 
       // move any child or children to the replacement node

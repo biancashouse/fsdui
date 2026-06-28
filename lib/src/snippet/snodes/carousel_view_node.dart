@@ -1,6 +1,4 @@
 // ignore_for_file: constant_identifier_names
-import 'dart:async';
-
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
@@ -269,82 +267,31 @@ class _AutoPlayingListView extends StatefulWidget {
 }
 
 class _AutoPlayingListViewState extends State<_AutoPlayingListView> {
-  static const _itemHorizontalPadding = 8.0 * 2;
-  static const _autoPlayInterval = Duration(seconds: 4);
-  static const _scrollAnimationDuration = Duration(milliseconds: 600);
-  static const _fallbackItemExtent = 200.0;
-
   final _scrollController = ScrollController();
-  Timer? _timer;
-  int _currentIndex = 0;
+  Offset _slideOffset = const Offset(0.5, 0);
 
   @override
   void initState() {
     super.initState();
-    _syncTimer();
-  }
-
-  @override
-  void didUpdateWidget(_AutoPlayingListView oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.autoPlay != widget.autoPlay ||
-        oldWidget.children.length != widget.children.length) {
-      _currentIndex = 0;
-      _syncTimer();
+    if (widget.autoPlay && widget.children.length > 1) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) setState(() => _slideOffset = Offset.zero);
+      });
     }
-  }
-
-  void _syncTimer() {
-    _timer?.cancel();
-    _timer = widget.autoPlay && widget.children.length > 1
-        ? Timer.periodic(_autoPlayInterval, (_) => _advance())
-        : null;
-  }
-
-  void _advance() {
-    if (!_scrollController.hasClients) return;
-    final itemCount = widget.children.length;
-    final atLastItem = _currentIndex >= itemCount - 1;
-    if (atLastItem) {
-      _currentIndex = 0;
-      _scrollController.animateTo(
-        0,
-        duration: _scrollAnimationDuration,
-        curve: Curves.easeInOut,
-      );
-      return;
-    }
-    _currentIndex = atLastItem ? 0 : _currentIndex + 1;
-    _scrollController.animateTo(
-      _offsetForIndex(_currentIndex),
-      duration: _scrollAnimationDuration,
-      curve: Curves.easeInOut,
-    );
-  }
-
-  double _offsetForIndex(int index) {
-    var offset = 0.0;
-    for (var i = 0; i < index; i++) {
-      final itemWidth =
-          widget.itemSizeCache[i]?.width ?? _fallbackItemExtent;
-      offset += itemWidth + _itemHorizontalPadding;
-    }
-    return offset;
   }
 
   @override
   void dispose() {
-    _timer?.cancel();
     _scrollController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    Widget list = ListView(
       controller: _scrollController,
       scrollDirection: Axis.horizontal,
-      physics: const ClampingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       children: [
         for (var i = 0; i < widget.children.length; i++)
           Padding(
@@ -355,6 +302,17 @@ class _AutoPlayingListViewState extends State<_AutoPlayingListView> {
             ),
           ),
       ],
+    );
+
+    if (!widget.autoPlay) return list;
+
+    return ClipRect(
+      child: AnimatedSlide(
+        offset: _slideOffset,
+        duration: const Duration(milliseconds: 600),
+        curve: Curves.easeOut,
+        child: list,
+      ),
     );
   }
 }

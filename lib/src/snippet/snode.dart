@@ -2937,9 +2937,21 @@ abstract class SNode extends Node with SNodeMappable {
       fsdui.logger.d('gk cloned !)');
     }
     if (newId) {
-      clonedNode.uid = UniqueKey().toString();
+      _reassignUids(clonedNode);
     }
     return clonedNode;
+  }
+
+  static void _reassignUids(SNode node) {
+    node.uid = UniqueKey().toString();
+    if (node is SC) {
+      final c = node.child;
+      if (c != null) _reassignUids(c);
+    } else if (node is MC) {
+      for (final child in node.children) {
+        _reassignUids(child);
+      }
+    }
   }
 
   static SNode? parentProvider(Node node) => node.getParent() as SNode?;

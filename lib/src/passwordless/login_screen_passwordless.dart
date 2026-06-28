@@ -185,7 +185,7 @@ class _LoginScreenPasswordlessState extends State<LoginScreenPasswordless>
           onPressed: () {
             context.read<CAPIBloC>().add(const SignOutRequested());
           },
-          child: const Text('Use a different email'),
+          child: const Text('or Use a different email.'),
         ),
       ],
     );
