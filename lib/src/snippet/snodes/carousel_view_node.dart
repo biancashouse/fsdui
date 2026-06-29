@@ -288,20 +288,24 @@ class _AutoPlayingListViewState extends State<_AutoPlayingListView> {
 
   @override
   Widget build(BuildContext context) {
-    Widget list = ListView(
+    Widget list = Scrollbar(
       controller: _scrollController,
-      scrollDirection: Axis.horizontal,
-      physics: const BouncingScrollPhysics(),
-      children: [
-        for (var i = 0; i < widget.children.length; i++)
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: SizeAwareWidget(
-              onSizeAvailable: (size) => widget.itemSizeCache[i] = size,
-              child: IntrinsicWidth(child: widget.children[i]),
+      thumbVisibility: true,
+      child: ListView(
+        controller: _scrollController,
+        scrollDirection: Axis.horizontal,
+        physics: const BouncingScrollPhysics(),
+        children: [
+          for (var i = 0; i < widget.children.length; i++)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: SizeAwareWidget(
+                onSizeAvailable: (size) => widget.itemSizeCache[i] = size,
+                child: IntrinsicWidth(child: widget.children[i]),
+              ),
             ),
-          ),
-      ],
+        ],
+      ),
     );
 
     if (!widget.autoPlay) return list;
