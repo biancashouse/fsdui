@@ -449,10 +449,6 @@ class CalloutConfig implements TickerProvider {
     // }
 
     initialised = true;
-    // set gotit automatically once used
-    if (onlyOnce ?? false) {
-      fca.gotit(cId);
-    }
 
     isDraggable = draggable;
 

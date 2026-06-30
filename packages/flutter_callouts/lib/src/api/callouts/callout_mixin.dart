@@ -54,6 +54,9 @@ mixin CalloutMixin {
 
     if (anyPresent([calloutConfig.cId])) return;
 
+    // onlyOnce: mark as seen now so it never shows again after this first time.
+    if (calloutConfig.onlyOnce ?? false) fca.gotit(calloutConfig.cId);
+
     // if ((calloutConfig.calloutW ?? 0) < 0) {
     //   fca.logger.w('negative width ?');
     // }
