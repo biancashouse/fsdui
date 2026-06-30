@@ -10,5 +10,5 @@ class ScrollConfig {
 
   Axis? get direction => scrollDirection;
 
-  double get scrollOffset => sc?.offset ?? 0.0;
+  double get scrollOffset => (sc != null && sc!.hasClients) ? sc!.offset : 0.0;
  }

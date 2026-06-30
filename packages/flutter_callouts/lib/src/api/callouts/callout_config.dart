@@ -60,13 +60,17 @@ class CalloutConfig implements TickerProvider {
   @JsonKey(includeFromJson: false, includeToJson: false)
   ScrollConfig? scrollConfig;
 
-  double scrollOffsetX() => scrollConfig?.direction == Axis.horizontal
-      ? scrollConfig!.controller?.offset ?? 0.0
-      : 0.0;
+  double scrollOffsetX() {
+    if (scrollConfig?.direction != Axis.horizontal) return 0.0;
+    final c = scrollConfig!.controller;
+    return (c != null && c.hasClients) ? c.offset : 0.0;
+  }
 
-  double scrollOffsetY() => scrollConfig?.direction == Axis.vertical
-      ? scrollConfig!.controller?.offset ?? 0.0
-      : 0.0;
+  double scrollOffsetY() {
+    if (scrollConfig?.direction != Axis.vertical) return 0.0;
+    final c = scrollConfig!.controller;
+    return (c != null && c.hasClients) ? c.offset : 0.0;
+  }
 
   Offset translateOffsetForScroll(Offset offset) => offset.translate(
     scrollConfig?.direction == Axis.horizontal
