@@ -9,7 +9,7 @@ import 'package:fsdui/src/snippet/snodes/button_style_hook.dart';
 part 'text_button_node.mapper.dart';
 
 @MappableClass()
-class TextButtonNode extends SNode with SC, ButtonNode, TextButtonNodeMappable {
+class TextButtonNode extends SNode with SC, ButtonMixin, TextButtonNodeMappable {
   @override
   String? destinationRoutePathSnippetName;
   @override
@@ -50,18 +50,16 @@ class TextButtonNode extends SNode with SC, ButtonNode, TextButtonNodeMappable {
     try {
       ButtonStyle? btnStyle = bsPropGroup.toButtonStyle(context, defaultButtonStyle:defaultButtonStyle());
       // possible handler
-      void Function(BuildContext)? f = onTapHandlerName != null ? fsdui.namedHandler(onTapHandlerName!) : null;
-
-      setParent(parentNode);
 
       final gk = createNodeWidgetGK();
+
+      setParent(parentNode);
 
       return Container(
             // container only for possble selection gk
             key: gk,
             child: TextButton(
               onPressed: ()=>onPressed(context, gk),
-              onLongPress: ()=>f?.call(context),
               style: btnStyle,
               child: child?.build(context, this) ?? const Text('empty'),
             ),

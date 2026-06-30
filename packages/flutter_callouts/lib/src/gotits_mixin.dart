@@ -9,7 +9,8 @@ mixin GotitsMixin {
   Future<void> initGotits() async {
     if (initCalled) return;
     initCalled = true;
-    gotits = (await fca.localStorage).read('gotits') ?? [];
+    final raw = (await fca.localStorage).read('gotits');
+    gotits = raw == null ? [] : List<String>.from(raw as List);
   }
 
   Future<void> gotit(String feature,

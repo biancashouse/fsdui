@@ -9,7 +9,7 @@ import 'package:fsdui/src/snippet/snodes/button_style_hook.dart';
 part 'elevated_button_node.mapper.dart';
 
 @MappableClass()
-class ElevatedButtonNode extends SNode with SC, ButtonNode, ElevatedButtonNodeMappable {
+class ElevatedButtonNode extends SNode with SC, ButtonMixin, ElevatedButtonNodeMappable {
   @override
   String? destinationRoutePathSnippetName;
   @override
@@ -50,8 +50,6 @@ class ElevatedButtonNode extends SNode with SC, ButtonNode, ElevatedButtonNodeMa
     try {
       ButtonStyle? btnStyle = bsPropGroup.toButtonStyle(context, defaultButtonStyle: defaultButtonStyle());
       // possible handler
-      void Function(BuildContext)? f = onTapHandlerName != null ? fsdui.namedHandler(onTapHandlerName!) : null;
-
       setParent(parentNode);
 
       final gk = createNodeWidgetGK();
@@ -60,8 +58,7 @@ class ElevatedButtonNode extends SNode with SC, ButtonNode, ElevatedButtonNodeMa
             // container only for possble selection gk
             key: gk,
             child: ElevatedButton(
-              onPressed: ()=>onPressed(context, gk),
-              onLongPress: () => f?.call(context),
+              onPressed: onTapHandlerName == null ? null : ()=>onPressed(context, gk),
               style: btnStyle,
               child: child?.build(context, this),
             ),

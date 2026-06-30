@@ -50,7 +50,6 @@ final List<WidgetEntry> widgetRegistry = [
   // button
   const WidgetEntry(label: 'ElevatedButton', type: ElevatedButtonNode, category: WidgetCategory.button),
   const WidgetEntry(label: 'FilledButton', type: FilledButtonNode, category: WidgetCategory.button),
-  const WidgetEntry(label: 'IconButton', type: IconButtonNode, category: WidgetCategory.button),
   const WidgetEntry(label: 'OutlinedButton', type: OutlinedButtonNode, category: WidgetCategory.button),
   const WidgetEntry(label: 'TextButton', type: TextButtonNode, category: WidgetCategory.button),
   // navigation

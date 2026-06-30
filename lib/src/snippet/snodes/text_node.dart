@@ -92,7 +92,7 @@ class TextNode extends SNode with TextNodeMappable {
       //     calloutButtonSize: const Size(280, 70),
       //     calloutWidth: 280,
       //   ),
-      if (parentSNode is! TabBarNode && parentSNode is! ButtonNode)
+      if (parentSNode is! TabBarNode && parentSNode is! ButtonMixin)
         TextStylePNode /*Group*/ (
           snode: this,
           name: 'textStyle',
@@ -112,14 +112,14 @@ class TextNode extends SNode with TextNodeMappable {
             msg: "for text styling, see\nparent TabBar's labelStyle",
             snode: this,
             name: 'fyi'),
-      if (parentSNode is ButtonNode)
+      if (parentSNode is ButtonMixin)
         FYIPNode(
             label: "Button text styling...",
             msg:
                 "for text styling, see parent Button's\nButtonStyle, which has a TextStyle",
             snode: this,
             name: 'fyi'),
-      if (parentSNode is! ButtonNode && parentSNode?.getParent() is! AppBarNode)
+      if (parentSNode is! ButtonMixin && parentSNode?.getParent() is! AppBarNode)
         EnumPNode<TextAlignEnum?>(
           snode: this,
           name: 'textAlign',

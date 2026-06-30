@@ -9,7 +9,7 @@ import 'package:fsdui/src/snippet/snodes/button_style_hook.dart';
 part 'outlined_button_node.mapper.dart';
 
 @MappableClass()
-class OutlinedButtonNode extends SNode with SC, ButtonNode, OutlinedButtonNodeMappable {
+class OutlinedButtonNode extends SNode with SC, ButtonMixin, OutlinedButtonNodeMappable {
   @override
   String? destinationRoutePathSnippetName;
   @override
@@ -56,7 +56,6 @@ class OutlinedButtonNode extends SNode with SC, ButtonNode, OutlinedButtonNodeMa
     try {
       ButtonStyle? btnStyle = bsPropGroup.toButtonStyle(context, defaultButtonStyle: defaultButtonStyle());
       // possible handler
-      void Function(BuildContext)? f = onTapHandlerName != null ? fsdui.namedHandler(onTapHandlerName!) : null;
       setParent(parentNode);
 
       final gk = createNodeWidgetGK();
@@ -66,7 +65,6 @@ class OutlinedButtonNode extends SNode with SC, ButtonNode, OutlinedButtonNodeMa
             key: gk,
             child: OutlinedButton(
               onPressed: ()=>onPressed(context, gk),
-              onLongPress: () => f?.call(context),
               style: btnStyle,
               child: child?.build(context, this),
             ),

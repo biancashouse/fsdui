@@ -24,14 +24,13 @@ mixin NavMixin {
     }
   }
 
-  Widget NavigationDD({Color pencilIconColor = Colors.white}) =>
+  Widget NavigationDD({Color pencilIconColor = Colors.white, String? appVersion}) =>
       BlocBuilder<CAPIBloC, CAPIState>(
         builder: (context, state) {
-          // final dropdownItems = <DropdownMenuItem<String>>[];
           bool showPencil = !(state.verified ?? false);
           return showPencil
-              ? _dropdownButtonNotSignedIn(context, state, pencilIconColor)
-              : _dropdownButtonSignedIn(context, state);
+              ? _dropdownButtonNotSignedIn(context, state, pencilIconColor, appVersion)
+              : _dropdownButtonSignedIn(context, state, appVersion);
         },
       );
 
@@ -39,6 +38,7 @@ mixin NavMixin {
     BuildContext context,
     CAPIState state,
     Color pencilIconColor,
+    String? appVersion,
   ) {
     List<DropdownMenuItem<String>> dropdownItems = [
       _dropdownItemWithPI(
@@ -88,6 +88,7 @@ mixin NavMixin {
     ];
 
     _addBrightnessItem(context, state, dropdownItems);
+    _addVersionItem(appVersion, dropdownItems);
 
     return PointerInterceptor(
       child: Theme(
@@ -111,7 +112,7 @@ mixin NavMixin {
     );
   }
 
-  Widget _dropdownButtonSignedIn(BuildContext context, CAPIState state) {
+  Widget _dropdownButtonSignedIn(BuildContext context, CAPIState state, String? appVersion) {
     List<DropdownMenuItem<String>> dropdownItems = [
       // signed in as super, article or guest editor
       // if (!(state.isSignedInAsNormalUser ?? false))
@@ -161,6 +162,7 @@ mixin NavMixin {
     }
 
     _addBrightnessItem(context, state, dropdownItems);
+    _addVersionItem(appVersion, dropdownItems);
 
     return PointerInterceptor(
       child: Theme(
@@ -340,6 +342,19 @@ mixin NavMixin {
       ),
     ),
   );
+
+  void _addVersionItem(String? appVersion, List<DropdownMenuItem<String>> items) {
+    if (appVersion == null || appVersion.isEmpty) return;
+    items.add(
+      _dropdownItemWithPI(
+        value: 'version',
+        child: Text(
+          'v$appVersion',
+          style: const TextStyle(color: Colors.grey, fontSize: 12),
+        ),
+      ),
+    );
+  }
 
   DropdownMenuItem<String> _dropdownItemWithPI({
     required String value,

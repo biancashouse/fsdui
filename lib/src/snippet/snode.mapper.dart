@@ -45,7 +45,6 @@ class SNodeMapper extends ClassMapperBase<SNode> {
       OutlinedButtonNodeMapper.ensureInitialized();
       TextButtonNodeMapper.ensureInitialized();
       FilledButtonNodeMapper.ensureInitialized();
-      IconButtonNodeMapper.ensureInitialized();
       MenuItemButtonNodeMapper.ensureInitialized();
       CenterNodeMapper.ensureInitialized();
       ConstrainedBoxNodeMapper.ensureInitialized();

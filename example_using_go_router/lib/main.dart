@@ -15,9 +15,10 @@ void disableOverflowErrors() {
     final exception = details.exception;
     final isOverflowError =
         exception is FlutterError &&
-        !exception.diagnostics.any(
-          (e) => e.value.toString().startsWith("A RenderFlex overflowed by"),
-        );
+            !exception.diagnostics.any(
+                  (e) =>
+                  e.value.toString().startsWith("A RenderFlex overflowed by"),
+            );
 
     if (isOverflowError) {
       fsdui.logger.d(details.toString());
@@ -30,7 +31,7 @@ void disableOverflowErrors() {
 void main({bool useEmulator = false}) async {
   debugPrintGlobalKeyedWidgetLifecycle = true;
   runZonedGuarded<Future<void>>(
-    () async {
+        () async {
       WidgetsFlutterBinding.ensureInitialized();
 
       // if (fco.isMac || fco.isWindows) {
@@ -66,11 +67,12 @@ void main({bool useEmulator = false}) async {
           // use web, mobile or desktop routingConfig defined in your routes_config.dart
           routingConfig: webRoutingConfig,
           initialRoutePath: '/',
-          materialAppThemeF: () => ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            primaryColor: fsdui.FUCHSIA_X,
-            primarySwatch: Colors.purple,
-          ),
+          materialAppThemeF: () =>
+              ThemeData(
+                colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+                primaryColor: fsdui.FUCHSIA_X,
+                primarySwatch: Colors.purple,
+              ),
           fbOptions: BH_APPS_DefaultFirebaseOptions.currentPlatform,
           useEmulator: useEmulator,
           signedInWelcomeF: SignedInWelcomePopup.show,
@@ -81,7 +83,7 @@ void main({bool useEmulator = false}) async {
         ),
       );
     },
-    (Object error, StackTrace stack) {
+        (Object error, StackTrace stack) {
       // Handle the error here, e.g., log it, show a dialog, etc.
       print('Caught error in runZonedGuarded: $error');
       print('Stack trace: $stack');

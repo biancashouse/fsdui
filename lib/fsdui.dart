@@ -3,6 +3,7 @@
 // library fsdui;
 
 import 'dart:async';
+import 'dart:core';
 
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -60,7 +61,6 @@ import 'package:fsdui/src/snippet/snodes/named_preferredsize_single_child_node.d
 import 'package:fsdui/src/snippet/snodes/named_single_child_node.dart';
 import 'package:fsdui/src/snippet/snodes/google_drive_iframe_node.dart';
 import 'package:fsdui/src/snippet/snodes/hotspots/hotspots_node.dart';
-import 'package:fsdui/src/snippet/snodes/icon_button_node.dart';
 import 'package:fsdui/src/snippet/snodes/iframe_node.dart';
 
 // import 'package:fsdui/src/snippet/snodes/inlinespan_node.dart';
@@ -216,7 +216,7 @@ export 'src/snippet/snodes/sliver_floating_header_node.dart';
 export 'src/snippet/snodes/sliver_to_box_adapter_node.dart';
 export 'src/snippet/snodes/aspect_ratio_node.dart';
 export 'src/snippet/snodes/asset_image_node.dart';
-export 'src/snippet/snodes/button_node.dart';
+export 'src/snippet/snodes/button_mixin.dart';
 export 'src/snippet/snodes/carousel_node.dart';
 export 'src/snippet/snodes/carousel_view_node.dart';
 export 'src/snippet/snodes/center_node.dart';
@@ -457,7 +457,7 @@ class FSDUI_Mixins
     // created in tests by a when(mockRepository.getCAPIModel(modelName: modelName...
     Widget? testWidget,
     bool showThemeModeIcon = false,
-    // Map<String, void Function(GlobalKey? gk)> namedCallbacks = const {},
+    Map<String, void Function(BuildContext, GlobalKey?)> tapHandlers = const {},
     RoutingConfig? routingConfig,
     String? initialRoutePath,
     VoidCallback? aboutUsNotSignedInF,
@@ -480,6 +480,8 @@ class FSDUI_Mixins
     this.aboutUsNotSignedInF = aboutUsNotSignedInF;
     this.aboutUsSignedInF = aboutUsSignedInF;
     this.signedInWelcomeF = signedInWelcomeF;
+
+    this.namedTapHandlers.addAll(tapHandlers);
 
     // Bloc.observer = MyGlobalObserver();
 
@@ -606,8 +608,11 @@ class FSDUI_Mixins
   }
 
   bool isArticleEditor() => capiBloc.state.isSignedInAsArticleEditor ?? false;
+
   bool isSuperEditor() => capiBloc.state.isSignedInAsSuperEditor ?? false;
+
   bool isGuestEditor() => capiBloc.state.isSignedInAsGuestEditor ?? false;
+
   bool isNotSignedIn() => capiBloc.state.isNotSignedIn();
 
   GlobalKey authIconGK = GlobalKey();
@@ -820,12 +825,23 @@ class FSDUI_Mixins
 
   final List<String> googleFontNames = [];
 
-  final Map<String, void Function(BuildContext, GlobalKey?)> namedCallbacks =
-      {};
+  // final Map<String, void Function(BuildContext, GlobalKey?)> namedCallbacks =
+  //     {};
 
-  Map<TextStyleName, TextStyleProperties> namedTextStyles = {};
-  Map<ButtonStyleName, ButtonStyleProperties> namedButtonStyles = {};
-  Map<ContainerStyleName, ContainerStyleProperties> namedContainerStyles = {};
+  final Map<TextStyleName, TextStyleProperties> namedTextStyles = {};
+  final Map<ButtonStyleName, ButtonStyleProperties> namedButtonStyles = {};
+  final Map<ContainerStyleName, ContainerStyleProperties> namedContainerStyles = {};
+  final Map<HandlerName, void Function(BuildContext, GlobalKey?)> namedTapHandlers = {};
+
+  // void Function(BuildContext, GlobalKey?) registerTapHandler(
+  //     HandlerName name,
+  //     void Function(BuildContext, GlobalKey?) f,
+  //     ) => _tapHandlers[name] = f;
+  //
+  // void Function(BuildContext, GlobalKey?)? namedTapHandler(HandlerName name) =>
+  //     _tapHandlers[name];
+  //
+  // List<HandlerName> tapHandlers() => _tapHandlers.keys.toList();toList
 
   // used to restore expanded state on pnodes
   Map<PropertyName, PNode> pNodes = {};
@@ -881,18 +897,6 @@ class FSDUI_Mixins
   void setDevToolsFABPos(Offset newPos) => _devToolsFABPos = newPos;
 
   bool? showingNodeBoundaryOverlays;
-
-  final Map<HandlerName, void Function(BuildContext)> _handlers = {};
-
-  void Function(BuildContext p1) registerHandler(
-    HandlerName name,
-    void Function(BuildContext) f,
-  ) => _handlers[name] = f;
-
-  void Function(BuildContext)? namedHandler(HandlerName name) =>
-      _handlers[name];
-
-  List<HandlerName> handlers() => _handlers.keys.toList();
 
   String? currentEditablePagePath; // gets set by EditablePage initState()
 
@@ -1206,7 +1210,6 @@ class FSDUI_Mixins
     OutlinedButtonNodeMapper.ensureInitialized();
     TextButtonNodeMapper.ensureInitialized();
     FilledButtonNodeMapper.ensureInitialized();
-    IconButtonNodeMapper.ensureInitialized();
     MenuItemButtonNodeMapper.ensureInitialized();
     // Flex
     RowNodeMapper.ensureInitialized();

@@ -9,7 +9,7 @@ import 'package:fsdui/src/snippet/snodes/button_style_hook.dart';
 part 'menu_item_button_node.mapper.dart';
 
 @MappableClass()
-class MenuItemButtonNode extends SNode with SC, ButtonNode, MenuItemButtonNodeMappable {
+class MenuItemButtonNode extends SNode with SC, ButtonMixin, MenuItemButtonNodeMappable {
   @override
   String? destinationRoutePathSnippetName;
   @override

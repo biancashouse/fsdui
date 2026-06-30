@@ -1128,9 +1128,6 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
       const (GapNode) => GapNode(gap: 0),
       const (GoogleDriveIFrameNode) => GoogleDriveIFrameNode(),
       const (GridViewNode) => GridViewNode(children: []),
-      const (IconButtonNode) => IconButtonNode(
-        bsPropGroup: ButtonStyleProperties(tsPropGroup: TextStyleProperties()),
-      ),
       const (IFrameNode) => IFrameNode(),
       const (InteractiveViewerNode) => InteractiveViewerNode(child: childNode),
       const (IntrinsicWidthNode) => IntrinsicWidthNode(child: childNode),

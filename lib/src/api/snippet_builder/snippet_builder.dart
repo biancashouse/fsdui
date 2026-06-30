@@ -14,7 +14,7 @@ class SnippetBuilder extends StatefulWidget {
   // original snippet (tree of nodes) - root node will have the snippet name
   final SNode initialValue;
 
-  final Map<String, void Function(BuildContext)>? handlers;
+  // final Map<String, void Function(BuildContext)>? handlers;
 
   final bool justPlaying;
 
@@ -26,7 +26,7 @@ class SnippetBuilder extends StatefulWidget {
 
   const SnippetBuilder({
     required this.initialValue,
-    this.handlers,
+    // this.handlers,
     this.onScrollF,
     this.justPlaying = false,
     // this.tc,
@@ -64,10 +64,10 @@ class SnippetBuilderState extends State<SnippetBuilder> {
     fsdui.snippetBuilderStates[widget.initialValue.name!] = this;
     // print('fsdui.snippetBuilderStates[${widget.initialValue.name}] = $this');
 
-    widget.handlers?.forEach((key, value) {
-      fsdui.registerHandler(key, value);
-      fsdui.logger.i("registered handler '$key'");
-    });
+    // widget.handlers?.forEach((key, value) {
+    //   fsdui.registerTapHandler(key, value);
+    //   fsdui.logger.i("registered handler '$key'");
+    // });
 
     // removed snippet place naming functionality - use tab bar instead
     // if (widget.panelName != null &&

@@ -27,7 +27,7 @@ class _Page_HomeState extends State<Page_Home> {
         animatePointer: true,
       );
 
-      fsdui.namedCallbacks['sample-popup'] = (context, gk) => fsdui.showOverlay(
+      fsdui.namedTapHandlers['sample-popup'] = (context, gk) => fsdui.showOverlay(
         calloutConfig: cc,
         calloutContent: const Padding(
           padding: EdgeInsets.all(8.0),

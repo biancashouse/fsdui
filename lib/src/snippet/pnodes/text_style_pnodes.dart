@@ -31,7 +31,7 @@ class TextStyleWithoutColorPNode /*Group*/ extends PNode /*Group*/ {
             // fco.forceRefresh();
             onGroupChange.call(newProps, false);
           }),
-      if (snode is ButtonNode)
+      if (snode is ButtonMixin)
         FYIPNode(
             label: "about button text colour...",
             msg: "Button's f/g color defines\nthe button's text color",

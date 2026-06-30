@@ -4,11 +4,10 @@ import 'package:fsdui/src/snippet/pnodes/button_style_pnodes.dart';
 import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:fsdui/src/snippet/pnodes/string_pnode.dart';
 
-mixin ButtonNode on SNode {
+mixin ButtonMixin on SNode {
   // when navigating to path, which is also used as the page's snippet name
   abstract String? destinationRoutePathSnippetName;
 
-  @override
   abstract SNode? child;
 
   abstract ButtonStyleProperties bsPropGroup;
@@ -79,7 +78,7 @@ mixin ButtonNode on SNode {
           });
         },
       ),
-      if (fsdui.handlers().isNotEmpty)
+      // if (fsdui.handlers().isNotEmpty)
         StringPNode(
           snode: this,
           name: 'onTapHandlerName',
@@ -97,7 +96,7 @@ mixin ButtonNode on SNode {
     GlobalKey? gk,
   ) {
     if (onTapHandlerName != null) {
-      fsdui.namedCallbacks[onTapHandlerName!]?.call(context, gk);
+      fsdui.namedTapHandlers[onTapHandlerName!]?.call(context, gk);
     }
   }
 

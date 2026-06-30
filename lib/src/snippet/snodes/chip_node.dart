@@ -242,10 +242,9 @@ class ChipNode extends SNode with ChipNodeMappable {
   void onPressed(
     BuildContext context,
     GlobalKey? gk,
-    
   ) {
     if (onTapHandlerName != null) {
-      fsdui.namedCallbacks[onTapHandlerName!]?.call(context, gk);
+      fsdui.namedTapHandlers[onTapHandlerName!]?.call(context, gk);
     }
     // else if (feature != null) {
     //   // possible callout

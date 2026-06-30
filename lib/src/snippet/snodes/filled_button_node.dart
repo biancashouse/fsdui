@@ -9,7 +9,7 @@ import 'package:fsdui/src/snippet/snodes/button_style_hook.dart';
 part 'filled_button_node.mapper.dart';
 
 @MappableClass()
-class FilledButtonNode extends SNode with SC, ButtonNode, FilledButtonNodeMappable {
+class FilledButtonNode extends SNode with SC, ButtonMixin, FilledButtonNodeMappable {
   @override
   String? destinationRoutePathSnippetName;
   @override
@@ -51,8 +51,6 @@ class FilledButtonNode extends SNode with SC, ButtonNode, FilledButtonNodeMappab
       ButtonStyle? btnStyle = bsPropGroup.toButtonStyle(context, defaultButtonStyle: defaultButtonStyle());
 
       // possible handler
-      void Function(BuildContext)? f = onTapHandlerName != null ? fsdui.namedHandler(onTapHandlerName!) : null;
-
       setParent(parentNode);
 
       final gk = createNodeWidgetGK();
@@ -62,7 +60,6 @@ class FilledButtonNode extends SNode with SC, ButtonNode, FilledButtonNodeMappab
             key: gk,
             child: FilledButton(
               onPressed: ()=>onPressed(context, gk),
-              onLongPress: () => f?.call(context),
               style: btnStyle,
               child: child?.build(context, this),
             ),

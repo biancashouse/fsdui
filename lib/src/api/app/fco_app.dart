@@ -31,7 +31,6 @@ class FlutterContentApp extends StatefulWidget {
   final MaterialAppThemeFunc materialAppThemeF;
   final FirebaseOptions? fbOptions;
   final bool useEmulator;
-  final Map<String, void Function(BuildContext)>? namedVoidCallbacks;
   final bool hideStatusBar;
   final VoidCallback? onReadyF;
   final VoidCallback? alsoInitF;
@@ -42,6 +41,7 @@ class FlutterContentApp extends StatefulWidget {
   final VoidCallback? aboutUsNotSignedInF;
   final VoidCallback? aboutUsSignedInF;
   final VoidCallback? signedInWelcomeF;
+  final Map<String, void Function(BuildContext, GlobalKey?)> namedTapHandlers;
 
   final Widget? home;
 
@@ -79,7 +79,7 @@ class FlutterContentApp extends StatefulWidget {
     // @visibleForTesting this.testWidget,
     this.onReadyF,
     this.alsoInitF,
-    this.namedVoidCallbacks,
+    this.namedTapHandlers = const {},
     this.aboutUsNotSignedInF,
     this.aboutUsSignedInF,
     this.signedInWelcomeF,
@@ -101,7 +101,7 @@ class FlutterContentApp extends StatefulWidget {
     // @visibleForTesting this.testWidget,
     this.onReadyF,
     this.alsoInitF,
-    this.namedVoidCallbacks,
+    this.namedTapHandlers = const {},
     this.aboutUsNotSignedInF,
     this.aboutUsSignedInF,
     this.signedInWelcomeF,
@@ -190,6 +190,7 @@ class FlutterContentAppState extends State<FlutterContentApp>
       aboutUsNotSignedInF: widget.aboutUsNotSignedInF,
       aboutUsSignedInF: widget.aboutUsSignedInF,
       signedInWelcomeF: widget.signedInWelcomeF,
+      tapHandlers: widget.namedTapHandlers,
     );
     widget.onReadyF?.call();
     SNode.hideAllTargetCovers();
