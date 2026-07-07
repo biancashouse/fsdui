@@ -48,13 +48,21 @@ class ListViewNode extends SNode with ScrollViewNode, BoxScrollViewNode, ListVie
     List<Widget> listViewChildren = children
         .map((childNode) => childNode.build(context, this))
         .toList();
-    return ListView(
-      key: createNodeWidgetGK(),
+    return RawScrollbar(
       controller: sc,
-      scrollDirection: scrollDirection.flutterValue,
-      shrinkWrap: shrinkWrap ?? false,
-      padding: padding,
-      children: listViewChildren,
+      thumbVisibility: true,
+      trackVisibility: false,
+      thumbColor: Colors.black26,
+      thickness: 4.0,
+      radius: const Radius.circular(4.0),
+      child: ListView(
+        key: createNodeWidgetGK(),
+        controller: sc,
+        scrollDirection: scrollDirection.flutterValue,
+        shrinkWrap: shrinkWrap ?? false,
+        padding: padding,
+        children: listViewChildren,
+      ),
     );
   }
 
