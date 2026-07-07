@@ -1,8 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fsdui/fsdui.dart'
-    show fsdui, FlutterContentApp;
+import 'package:fsdui/fsdui.dart' show fsdui, FlutterContentApp, GoogleFonts;
 import 'bh-apps.firebase_options.dart';
 import 'mapper_tests.dart';
 import 'page_home.dart';
@@ -69,6 +68,15 @@ void main({bool useEmulator = false}) {
             ),
             fbOptions: BH_APPS_DefaultFirebaseOptions.currentPlatform,
             useEmulator: useEmulator,
+            googleFontNames: {
+              'merriweather': GoogleFonts.merriweather().fontFamily!,
+              'hand-writing': GoogleFonts.damion().fontFamily!,
+              'Tino': GoogleFonts.tinos().fontFamily!,
+              'Damion': GoogleFonts.damion().fontFamily!,
+              'Archivo Black': GoogleFonts.archivoBlack().fontFamily!,
+              'Poppins': GoogleFonts.poppins().fontFamily!,
+              'Courier Prime': GoogleFonts.courierPrime().fontFamily!,
+            },
             // onReadyF: () {},
           ),
         );

@@ -42,8 +42,8 @@ dependencies:
   numeric_keyboard: ^1.1.0
   smooth_page_indicator: ^1.2.0+3
   flutter_bloc: ^9.1.1
-  hydrated_bloc: ^10.0.0
-  path_provider: ^2.1.5
+#  hydrated_bloc: ^10.0.0
+#  path_provider: ^2.1.5
   google_fonts: ^7.0.2
   watcher: ^1.1.0
   multi_split_view: ^3.5.0

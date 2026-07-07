@@ -22,6 +22,7 @@ export 'src/api/callouts/callout_config.dart';
 
 // export mixin
 export 'src/widget/double_tappable.dart';
+export 'package:hydrated_bloc/hydrated_bloc.dart';
 export 'src/api/material_app_with_navigator_key.dart';
 export 'src/api/callouts/callout_mixin.dart';
 export 'src/api/callouts/callout_using_overlayportal.dart';

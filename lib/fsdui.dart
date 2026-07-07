@@ -138,42 +138,44 @@ import 'src/typedefs.dart';
 // hide the Firestore Pipelines API (unused here) since its generic names
 // (Field, Type, Constant, Count, Sum, ...) collide with dart:core and dart_mappable
 export 'package:cloud_firestore/cloud_firestore.dart'
-    hide
-        AggregateOptions,
-        AggregateStageOptions,
-        AliasedAggregateFunction,
-        AliasedExpression,
-        ArrayAgg,
-        ArrayAggDistinct,
-        Average,
-        BooleanExpression,
-        Concat,
-        Constant,
-        Count,
-        CountAll,
-        CountDistinct,
-        DistanceMeasure,
-        ExecuteOptions,
-        Expression,
-        Field,
-        First,
-        FunctionExpression,
-        IndexMode,
-        Last,
-        Maximum,
-        Minimum,
-        OrderDirection,
-        Ordering,
-        Pipeline,
-        PipelineAggregateFunction,
-        PipelineResult,
-        PipelineSample,
-        PipelineSerializable,
-        PipelineSnapshot,
-        PipelineSource,
-        Selectable,
-        Sum,
-        Type;
+    // hide
+    //     AggregateOptions,
+    //     AggregateStageOptions,
+    //     AliasedAggregateFunction,
+    //     AliasedExpression,
+    //     ArrayAgg,
+    //     ArrayAggDistinct,
+    //     Average,
+    //     BooleanExpression,
+    //     Concat,
+    //     Constant,
+    //     Count,
+    //     CountAll,
+    //     CountDistinct,
+    //     DistanceMeasure,
+    //     ExecuteOptions,
+    //     Expression,
+    //     Field,
+    //     First,
+    //     FunctionExpression,
+    //     IndexMode,
+    //     Last,
+    //     Maximum,
+    //     Minimum,
+    //     OrderDirection,
+    //     Ordering,
+    //     Pipeline,
+    //     PipelineAggregateFunction,
+    //     PipelineResult,
+    //     PipelineSample,
+    //     PipelineSerializable,
+    //     PipelineSnapshot,
+    //     PipelineSource,
+    //     Selectable,
+    //     Sum,
+    //     Type
+;
+export 'package:hydrated_bloc/hydrated_bloc.dart';
 export 'package:firebase_core/firebase_core.dart';
 export 'package:firebase_storage/firebase_storage.dart';
 export 'package:firebase_ui_storage/firebase_ui_storage.dart';
@@ -501,6 +503,7 @@ class FSDUI_Mixins
     VoidCallback? aboutUsNotSignedInF,
     VoidCallback? aboutUsSignedInF,
     VoidCallback? signedInWelcomeF,
+    Map<String,String> googleFontMap = const {},
     bool skipAssetPkgName =
         false, // would only use true when pkg dir is actually inside current project
   }) async {
@@ -510,7 +513,8 @@ class FSDUI_Mixins
 
     // fco.logger.d('init() ${stopwatch.elapsedMilliseconds}');
 
-    loadGoogleFontNames(googleFontNames);
+    // loadGoogleFontNames(googleFontNames);
+    this.googleFontMap = googleFontMap;
 
     this.appId = appId;
     this.appName = appName;
@@ -675,6 +679,13 @@ class FSDUI_Mixins
   // FocusChangeNotifier focusNodeCN = FocusChangeNotifier();
   FocusNode? focussedFN;
   final quillTextToolbarCIDVN = ValueNotifier<CalloutId?>(null);
+
+  // >0 while one of the QuillTextToolbar's MenuAnchor popups (font family,
+  // font size) is open. Each popup renders in its own OverlayEntry (a
+  // structural sibling of the toolbar, not a focus/widget-tree descendant),
+  // so Flutter's focus system can't tell us it's open — we have to track it
+  // ourselves via the MenuAnchor's onOpen/onClose callbacks.
+  int quillToolbarOpenPopupCount = 0;
 
   //
   SnippetBeingEdited? get snippetBeingEdited =>
@@ -861,15 +872,17 @@ class FSDUI_Mixins
   /// Note, on iOS if an app has no buildNumber specified this property will return version
   /// Docs about CFBundleVersion: https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleversion
 
-  final List<String> googleFontNames = [];
+  Map<String,String> googleFontMap = {};
 
   // final Map<String, void Function(BuildContext, GlobalKey?)> namedCallbacks =
   //     {};
 
   final Map<TextStyleName, TextStyleProperties> namedTextStyles = {};
   final Map<ButtonStyleName, ButtonStyleProperties> namedButtonStyles = {};
-  final Map<ContainerStyleName, ContainerStyleProperties> namedContainerStyles = {};
-  final Map<HandlerName, void Function(BuildContext, GlobalKey?)> namedTapHandlers = {};
+  final Map<ContainerStyleName, ContainerStyleProperties> namedContainerStyles =
+      {};
+  final Map<HandlerName, void Function(BuildContext, GlobalKey?)>
+  namedTapHandlers = {};
 
   // void Function(BuildContext, GlobalKey?) registerTapHandler(
   //     HandlerName name,

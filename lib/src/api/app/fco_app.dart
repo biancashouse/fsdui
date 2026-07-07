@@ -42,7 +42,7 @@ class FlutterContentApp extends StatefulWidget {
   final VoidCallback? aboutUsSignedInF;
   final VoidCallback? signedInWelcomeF;
   final Map<String, void Function(BuildContext, GlobalKey?)> namedTapHandlers;
-
+  final Map<String,String> googleFontNames;
   final Widget? home;
 
   // // --- globally available -----------------------------------------------------
@@ -83,6 +83,7 @@ class FlutterContentApp extends StatefulWidget {
     this.aboutUsNotSignedInF,
     this.aboutUsSignedInF,
     this.signedInWelcomeF,
+    required this.googleFontNames,
   });
 
   const FlutterContentApp({
@@ -105,6 +106,7 @@ class FlutterContentApp extends StatefulWidget {
     this.aboutUsNotSignedInF,
     this.aboutUsSignedInF,
     this.signedInWelcomeF,
+    required this.googleFontNames,
   });
 
   static FlutterContentAppState? of(BuildContext context) =>
@@ -191,6 +193,7 @@ class FlutterContentAppState extends State<FlutterContentApp>
       aboutUsSignedInF: widget.aboutUsSignedInF,
       signedInWelcomeF: widget.signedInWelcomeF,
       tapHandlers: widget.namedTapHandlers,
+      googleFontMap: widget.googleFontNames,
     );
     widget.onReadyF?.call();
     SNode.hideAllTargetCovers();

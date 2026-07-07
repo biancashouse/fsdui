@@ -3,8 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
-import 'snippet_menu_anchor.dart'
-    show SnippetMenuAnchor, AnchorWidgetEnum;
+import 'snippet_menu_anchor.dart' show SnippetMenuAnchor, AnchorWidgetEnum;
 
 const BODY_PLACEHOLDER = 'body-placeholder';
 
@@ -42,7 +41,6 @@ class SnippetBuilder extends StatefulWidget {
 }
 
 class SnippetBuilderState extends State<SnippetBuilder> {
-
   // ZoomerState? get parentTSState => Zoomer.of(context);
 
   // int countTabs() {
@@ -57,7 +55,7 @@ class SnippetBuilderState extends State<SnippetBuilder> {
     super.initState();
 
     if (widget.initialValue.name == null) {
-      throw('SnippetBuilder(initialValue.name is null!)');
+      throw ('SnippetBuilder(initialValue.name is null!)');
     }
 
     // register snippetBuilderState i.o.t. access its state
@@ -109,7 +107,8 @@ class SnippetBuilderState extends State<SnippetBuilder> {
     return notifier != null
         ? ValueListenableBuilder<String>(
             valueListenable: notifier,
-            builder: (context, value, _) => buildWithBloc(updatedSnippetJson: value),
+            builder: (context, value, _) =>
+                buildWithBloc(updatedSnippetJson: value),
           )
         : buildWithBloc(updatedSnippetJson: '');
   }
@@ -118,11 +117,11 @@ class SnippetBuilderState extends State<SnippetBuilder> {
     return BlocBuilder<CAPIBloC, CAPIState>(
       buildWhen: (previous, current) {
         bool result =
-        (!(current.onlyTargetsWrappers??false)
+            (!(current.onlyTargetsWrappers ?? false)
             //     &&
             // previous.snippetNameShowingTappableOverlaysFor !=
             //     current.snippetNameShowingTappableOverlaysFor
-        );
+            );
         // print('buildWhen is $result');
         return result;
       },
@@ -173,7 +172,9 @@ class SnippetBuilderState extends State<SnippetBuilder> {
               // optimise by first checking whether already in memory
               // can avoid unnecessary futurebuilder
               var appInfo = fsdui.appInfo;
-              bool snippetExists = appInfo.snippetNames.contains(widget.initialValue.name);
+              bool snippetExists = appInfo.snippetNames.contains(
+                widget.initialValue.name,
+              );
               if (!snippetExists) {
                 // SNIPPET DOES NOT YET EXIST - use template to create
                 // first version as a clone of the template
@@ -186,18 +187,15 @@ class SnippetBuilderState extends State<SnippetBuilder> {
                 );
                 fsdui.modelRepo
                     .saveBrandNewSnippet(
-                  snippetName: widget.initialValue.name!,
-                  versionId: newVersionId,
-                  initialVersion: widget.initialValue,
-                )
+                      snippetName: widget.initialValue.name!,
+                      versionId: newVersionId,
+                      initialVersion: widget.initialValue,
+                    )
                     .then((b) {
-                  fsdui.modelRepo.saveAppInfo();
-                });
+                      fsdui.modelRepo.saveAppInfo();
+                    });
 
-                return _stackWidget(
-                  widget.initialValue,
-                  updatedSnippetJson,
-                );
+                return _stackWidget(widget.initialValue, updatedSnippetJson);
               }
 
               // ALREADY EXIST - SNIPPET MAY BE IN CACHE (avoid Future)
@@ -233,7 +231,7 @@ class SnippetBuilderState extends State<SnippetBuilder> {
                       color: Colors.red,
                       size: 18,
                       errorMsg:
-                      "${widget.initialValue.name}: ${snapshot.error.toString()}",
+                          "${widget.initialValue.name}: ${snapshot.error.toString()}",
                       key: GlobalKey(),
                     );
                   }
@@ -258,22 +256,42 @@ class SnippetBuilderState extends State<SnippetBuilder> {
       widget.onLayoutDone?.call();
     });
 
+    // Each entry below is keyed so Flutter's Stack reconciliation always
+    // matches widgets by identity rather than by list position. Several
+    // entries are conditional on fsdui.canEditAnyContent(), which flips
+    // mid-sign-in — without stable keys, Flutter can reuse/reparent the
+    // wrong Element when the list's shape changes between builds, corrupting
+    // the element tree (surfaces as a framework-internal
+    // "LateInitializationError: Field '_children' has not been initialized").
     late List<Widget> stackChildren;
 
     try {
-      stackChildren = [snippet.build(context, null)];
+      stackChildren = [
+        KeyedSubtree(
+          key: const ValueKey('snippet-content'),
+          child: snippet.build(context, null),
+        ),
+      ];
     } catch (e) {
-      stackChildren = [Icon(Icons.error, size: 40, color: Colors.purpleAccent)];
+      stackChildren = [
+        KeyedSubtree(
+          key: const ValueKey('snippet-content'),
+          child: Icon(Icons.error, size: 40, color: Colors.purpleAccent),
+        ),
+      ];
     }
 
     SnippetInfoModel snippetInfo = fsdui.appInfo.cachedSnippetInfo(
       widget.initialValue.name!,
     )!;
 
-    bool isPublishedVersion = fsdui.isEditingVersionPublished(widget.initialValue.name!);
+    bool isPublishedVersion = fsdui.isEditingVersionPublished(
+      widget.initialValue.name!,
+    );
 
-    Color baseTriangleColor = isPublishedVersion ? Colors.purpleAccent : Colors
-        .deepOrange;
+    Color baseTriangleColor = isPublishedVersion
+        ? Colors.purpleAccent
+        : Colors.deepOrange;
 
     // orange indicator when not signed in and
     // showing an unpublished snippet
@@ -282,6 +300,7 @@ class SnippetBuilderState extends State<SnippetBuilder> {
         !fsdui.canEditAnyContent()) {
       stackChildren.add(
         Align(
+          key: const ValueKey('unpublished-indicator'),
           alignment: Alignment.topLeft,
           child: Container(
             color: Colors.deepOrange,
@@ -300,19 +319,19 @@ class SnippetBuilderState extends State<SnippetBuilder> {
         !fsdui.anyPresent([], startsWith: 'quill-toolbar-')) {
       stackChildren.add(
         Align(
+          key: const ValueKey('snippet-menu-anchor-triangle'),
           alignment: Alignment.topRight,
           child: PointerInterceptor(
             child: ValueListenableBuilder<bool>(
               valueListenable: snippetInfo.changesPendingNotifier,
-              builder: (context, isPending, _) =>
-                  SnippetMenuAnchor(
-                    this,
-                    anchorWidget: AnchorWidgetEnum.Triangle,
-                    triangleColor: isPending
-                        ? Colors.yellowAccent
-                        : baseTriangleColor,
-                    snippetInfo: snippetInfo,
-                  ),
+              builder: (context, isPending, _) => SnippetMenuAnchor(
+                this,
+                anchorWidget: AnchorWidgetEnum.Triangle,
+                triangleColor: isPending
+                    ? Colors.yellowAccent
+                    : baseTriangleColor,
+                snippetInfo: snippetInfo,
+              ),
             ),
           ),
         ),
@@ -329,13 +348,13 @@ class SnippetBuilderState extends State<SnippetBuilder> {
         SNode.isHotspotCalloutContent(widget.initialValue.name!)) {
       stackChildren.add(
         Align(
+          key: const ValueKey('snippet-menu-anchor-hotspot'),
           alignment: Alignment.topRight,
           child: PointerInterceptor(
             child: Tooltip(
               message: isPublishedVersion
                   ? 'show Snippet menu\n${snippetInfo.name}'
-                  : 'show Snippet menu\n${snippetInfo
-                  .name}\n*** NOT PUBLISHED ***',
+                  : 'show Snippet menu\n${snippetInfo.name}\n*** NOT PUBLISHED ***',
               child: Container(
                 width: 20,
                 height: 20,

@@ -40,7 +40,6 @@ class FocusAwareQuillEditor extends StatefulWidget {
 }
 
 class _FocusAwareQuillEditorState extends State<FocusAwareQuillEditor> {
-
   // bool _hasFocus = false;
   bool _isDirty = false;
   int _numEmbeds = 0;
@@ -131,9 +130,8 @@ class _FocusAwareQuillEditorState extends State<FocusAwareQuillEditor> {
   }
 
   void _focusListener() {
-    if (!_focusNode.hasFocus) {
-      // LOST FOCUS
-      // print('lost focus');
+
+    void dismissToolbarForLostFocus() {
       if (_isDirty) {
         final newJson = jsonEncode(_controller.document.toDelta().toJson());
         widget.onChange(newJson);
@@ -141,21 +139,32 @@ class _FocusAwareQuillEditorState extends State<FocusAwareQuillEditor> {
       }
       fsdui.dismiss(fsdui.quillTextToolbarCIDVN.value!);
       fsdui.quillTextToolbarCIDVN.value = null;
-      // if (fco.focussedCId.value != null) {
-      //   fco.dismiss(fco.focussedCId.value!);
-      //   // fco.focussedCId.value = null;
-      // }
-      // if (fco.focussedFN != _focusNode) {
-      //   fco.focussedFN!.unfocus();
-      // }
+    }
+
+    if (!_focusNode.hasFocus) {
+      // Opening one of the toolbar's dropdowns (font family, font size —
+      // each a MenuAnchor popup) can make the editor report a focus loss
+      // even though the user hasn't navigated away. quillToolbarOpenPopupCount
+      // is incremented synchronously by the popup's onOpen callback, but on
+      // its very first open in a session it can lose the race against this
+      // focus-loss notification — so re-check after the current frame
+      // settles rather than trusting this snapshot.
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        if (_focusNode.hasFocus) return;
+        if (fsdui.quillToolbarOpenPopupCount > 0) return;
+        dismissToolbarForLostFocus();
+      });
     } else {
       // GAINED FOCUS
       // print('gained focus');
-      if (fsdui.quillTextToolbarCIDVN.value != widget.parentSNode.quillTextToolbarCID) {
+      if (fsdui.quillTextToolbarCIDVN.value !=
+          widget.parentSNode.quillTextToolbarCID) {
         if (fsdui.quillTextToolbarCIDVN.value != null) {
           fsdui.dismiss(fsdui.quillTextToolbarCIDVN.value!);
         }
-        fsdui.quillTextToolbarCIDVN.value = widget.parentSNode.quillTextToolbarCID;
+        fsdui.quillTextToolbarCIDVN.value =
+            widget.parentSNode.quillTextToolbarCID;
         QuillTextToolbar.show(
           parentSNode: widget.parentSNode,
           focusNode: _focusNode,
@@ -169,6 +178,7 @@ class _FocusAwareQuillEditorState extends State<FocusAwareQuillEditor> {
       // }
     }
   }
+
 
   // void notifyChange() {
   // final newJson = jsonEncode(_controller.document.toDelta().toJson());

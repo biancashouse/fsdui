@@ -57,7 +57,7 @@ class _PropertyButtonFontFamilyState extends State<PropertyButtonFontFamily> {
     }
 
     // get list of font families
-    final fontFamilyLabels = fsdui.googleFontNames..sort;
+    final fontFamilyLabels = fsdui.googleFontMap.keys.toList()..sort;
     final fontFamilyTiles = fontFamilyLabels.map((family) {
       try {
         final listTile = ListTile(
@@ -101,7 +101,7 @@ class _PropertyButtonFontFamilyState extends State<PropertyButtonFontFamily> {
           ),
         );
       },
-      calloutSize: Size(240, 50.0 * fsdui.googleFontNames.length),
+      calloutSize: Size(240, 50.0 * fsdui.googleFontMap.keys.toList().length),
     );
   }
 
