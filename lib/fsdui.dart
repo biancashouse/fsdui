@@ -135,7 +135,45 @@ import 'src/snippet/snode.dart';
 import 'src/typedefs.dart';
 
 // make available to apps using this pkg
-export 'package:cloud_firestore/cloud_firestore.dart';
+// hide the Firestore Pipelines API (unused here) since its generic names
+// (Field, Type, Constant, Count, Sum, ...) collide with dart:core and dart_mappable
+export 'package:cloud_firestore/cloud_firestore.dart'
+    hide
+        AggregateOptions,
+        AggregateStageOptions,
+        AliasedAggregateFunction,
+        AliasedExpression,
+        ArrayAgg,
+        ArrayAggDistinct,
+        Average,
+        BooleanExpression,
+        Concat,
+        Constant,
+        Count,
+        CountAll,
+        CountDistinct,
+        DistanceMeasure,
+        ExecuteOptions,
+        Expression,
+        Field,
+        First,
+        FunctionExpression,
+        IndexMode,
+        Last,
+        Maximum,
+        Minimum,
+        OrderDirection,
+        Ordering,
+        Pipeline,
+        PipelineAggregateFunction,
+        PipelineResult,
+        PipelineSample,
+        PipelineSerializable,
+        PipelineSnapshot,
+        PipelineSource,
+        Selectable,
+        Sum,
+        Type;
 export 'package:firebase_core/firebase_core.dart';
 export 'package:firebase_storage/firebase_storage.dart';
 export 'package:firebase_ui_storage/firebase_ui_storage.dart';
