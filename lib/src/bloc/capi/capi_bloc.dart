@@ -195,10 +195,15 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
   void _onTokenConfirmed(TokenConfirmed event, Emitter<CAPIState> emit) {
     _tokenSub?.cancel();
     _tokenSub = null;
+    List<String> newList = List.of(state.verifiedEas);
+    if (!state.verifiedEas.contains(event.ea)) {
+      newList.add(event.ea);
+    }
     emit(
       state.copyWith(
         verified: true,
         ea: event.ea,
+        verifiedEas: newList,
         token: event.token,
         isSignedInAsSuperEditor: fsdui.appInfo.superEditorEas.contains(
           event.ea,

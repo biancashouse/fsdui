@@ -34,6 +34,7 @@ mixin _$CAPIState {
   String? get ea => throw _privateConstructorUsedError;
   String? get token => throw _privateConstructorUsedError;
   bool? get verified => throw _privateConstructorUsedError;
+  List<String> get verifiedEas => throw _privateConstructorUsedError;
   bool? get isSignedInAsSuperEditor => throw _privateConstructorUsedError;
   bool? get isSignedInAsArticleEditor => throw _privateConstructorUsedError;
   bool? get isSignedInAsGuestEditor => throw _privateConstructorUsedError;
@@ -81,6 +82,7 @@ abstract class $CAPIStateCopyWith<$Res> {
     String? ea,
     String? token,
     bool? verified,
+    List<String> verifiedEas,
     bool? isSignedInAsSuperEditor,
     bool? isSignedInAsArticleEditor,
     bool? isSignedInAsGuestEditor,
@@ -118,6 +120,7 @@ class _$CAPIStateCopyWithImpl<$Res, $Val extends CAPIState>
     Object? ea = freezed,
     Object? token = freezed,
     Object? verified = freezed,
+    Object? verifiedEas = null,
     Object? isSignedInAsSuperEditor = freezed,
     Object? isSignedInAsArticleEditor = freezed,
     Object? isSignedInAsGuestEditor = freezed,
@@ -155,6 +158,10 @@ class _$CAPIStateCopyWithImpl<$Res, $Val extends CAPIState>
                 ? _value.verified
                 : verified // ignore: cast_nullable_to_non_nullable
                       as bool?,
+            verifiedEas: null == verifiedEas
+                ? _value.verifiedEas
+                : verifiedEas // ignore: cast_nullable_to_non_nullable
+                      as List<String>,
             isSignedInAsSuperEditor: freezed == isSignedInAsSuperEditor
                 ? _value.isSignedInAsSuperEditor
                 : isSignedInAsSuperEditor // ignore: cast_nullable_to_non_nullable
@@ -232,6 +239,7 @@ abstract class _$$CAPIStateImplCopyWith<$Res>
     String? ea,
     String? token,
     bool? verified,
+    List<String> verifiedEas,
     bool? isSignedInAsSuperEditor,
     bool? isSignedInAsArticleEditor,
     bool? isSignedInAsGuestEditor,
@@ -268,6 +276,7 @@ class __$$CAPIStateImplCopyWithImpl<$Res>
     Object? ea = freezed,
     Object? token = freezed,
     Object? verified = freezed,
+    Object? verifiedEas = null,
     Object? isSignedInAsSuperEditor = freezed,
     Object? isSignedInAsArticleEditor = freezed,
     Object? isSignedInAsGuestEditor = freezed,
@@ -305,6 +314,10 @@ class __$$CAPIStateImplCopyWithImpl<$Res>
             ? _value.verified
             : verified // ignore: cast_nullable_to_non_nullable
                   as bool?,
+        verifiedEas: null == verifiedEas
+            ? _value._verifiedEas
+            : verifiedEas // ignore: cast_nullable_to_non_nullable
+                  as List<String>,
         isSignedInAsSuperEditor: freezed == isSignedInAsSuperEditor
             ? _value.isSignedInAsSuperEditor
             : isSignedInAsSuperEditor // ignore: cast_nullable_to_non_nullable
@@ -375,6 +388,7 @@ class _$CAPIStateImpl extends _CAPIState {
     this.ea,
     this.token,
     this.verified,
+    final List<String> verifiedEas = const <String>[],
     this.isSignedInAsSuperEditor,
     this.isSignedInAsArticleEditor,
     this.isSignedInAsGuestEditor,
@@ -389,7 +403,8 @@ class _$CAPIStateImpl extends _CAPIState {
     this.routeName,
     this.activeSnippetName,
     this.snippetBeingEdited,
-  }) : super._();
+  }) : _verifiedEas = verifiedEas,
+       super._();
 
   // required bool useFirebase,
   // @Default(false) bool localTestingFilePaths, // because filepaths and fonts accedd differently in own package
@@ -413,6 +428,15 @@ class _$CAPIStateImpl extends _CAPIState {
   final String? token;
   @override
   final bool? verified;
+  final List<String> _verifiedEas;
+  @override
+  @JsonKey()
+  List<String> get verifiedEas {
+    if (_verifiedEas is EqualUnmodifiableListView) return _verifiedEas;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_verifiedEas);
+  }
+
   @override
   final bool? isSignedInAsSuperEditor;
   @override
@@ -457,7 +481,7 @@ class _$CAPIStateImpl extends _CAPIState {
 
   @override
   String toString() {
-    return 'CAPIState(newestTarget: $newestTarget, selectedTarget: $selectedTarget, ea: $ea, token: $token, verified: $verified, isSignedInAsSuperEditor: $isSignedInAsSuperEditor, isSignedInAsArticleEditor: $isSignedInAsArticleEditor, isSignedInAsGuestEditor: $isSignedInAsGuestEditor, themeModeIndex: $themeModeIndex, appRating: $appRating, awaitingConfirmation: $awaitingConfirmation, authErrorMessage: $authErrorMessage, textTBD: $textTBD, showClipboardContent: $showClipboardContent, force: $force, onlyTargetsWrappers: $onlyTargetsWrappers, routeName: $routeName, activeSnippetName: $activeSnippetName, snippetBeingEdited: $snippetBeingEdited)';
+    return 'CAPIState(newestTarget: $newestTarget, selectedTarget: $selectedTarget, ea: $ea, token: $token, verified: $verified, verifiedEas: $verifiedEas, isSignedInAsSuperEditor: $isSignedInAsSuperEditor, isSignedInAsArticleEditor: $isSignedInAsArticleEditor, isSignedInAsGuestEditor: $isSignedInAsGuestEditor, themeModeIndex: $themeModeIndex, appRating: $appRating, awaitingConfirmation: $awaitingConfirmation, authErrorMessage: $authErrorMessage, textTBD: $textTBD, showClipboardContent: $showClipboardContent, force: $force, onlyTargetsWrappers: $onlyTargetsWrappers, routeName: $routeName, activeSnippetName: $activeSnippetName, snippetBeingEdited: $snippetBeingEdited)';
   }
 
   @override
@@ -473,6 +497,10 @@ class _$CAPIStateImpl extends _CAPIState {
             (identical(other.token, token) || other.token == token) &&
             (identical(other.verified, verified) ||
                 other.verified == verified) &&
+            const DeepCollectionEquality().equals(
+              other._verifiedEas,
+              _verifiedEas,
+            ) &&
             (identical(
                   other.isSignedInAsSuperEditor,
                   isSignedInAsSuperEditor,
@@ -518,6 +546,7 @@ class _$CAPIStateImpl extends _CAPIState {
     ea,
     token,
     verified,
+    const DeepCollectionEquality().hash(_verifiedEas),
     isSignedInAsSuperEditor,
     isSignedInAsArticleEditor,
     isSignedInAsGuestEditor,
@@ -550,6 +579,7 @@ abstract class _CAPIState extends CAPIState {
     final String? ea,
     final String? token,
     final bool? verified,
+    final List<String> verifiedEas,
     final bool? isSignedInAsSuperEditor,
     final bool? isSignedInAsArticleEditor,
     final bool? isSignedInAsGuestEditor,
@@ -588,6 +618,8 @@ abstract class _CAPIState extends CAPIState {
   String? get token;
   @override
   bool? get verified;
+  @override
+  List<String> get verifiedEas;
   @override
   bool? get isSignedInAsSuperEditor;
   @override

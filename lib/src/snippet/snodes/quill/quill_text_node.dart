@@ -5,6 +5,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/model/quill_target_model.dart';
+import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 
 // import 'package:fsdui/src/snippet/pnodes/quill_text_pnode.dart';
@@ -21,7 +22,29 @@ const k_emptyDeltaJsonString = '[{"insert":"\\n"}]';
 class QuillTextNode extends SNode with QuillTextNodeMappable {
   String deltaJsonString;
 
-  QuillTextNode({super.name, this.deltaJsonString = k_emptyDeltaJsonString});
+  // Gap below h1/h2/h3 headings and between list items. flutter_quill's
+  // built-in heading styles only add spacing *above* a heading, so these
+  // give control over the (missing) spacing below, Google-Docs style. See
+  // quillHeadingGapStyles() in quill_default_styles.dart.
+  double h1BottomGap;
+  double h2BottomGap;
+  double h3BottomGap;
+  double listItemGap;
+
+  // Gap below a plain paragraph. flutter_quill's default paragraph style
+  // has *no* spacing at all (top or bottom), so paragraphs sit flush
+  // against each other unless this is set.
+  double paragraphBottomGap;
+
+  QuillTextNode({
+    super.name,
+    this.deltaJsonString = k_emptyDeltaJsonString,
+    this.h1BottomGap = 16.0,
+    this.h2BottomGap = 12.0,
+    this.h3BottomGap = 8.0,
+    this.listItemGap = 8.0,
+    this.paragraphBottomGap = 16.0,
+  });
 
   CalloutId get quillTextToolbarCID => 'quill-toolbar-$uid';
 
@@ -44,6 +67,43 @@ class QuillTextNode extends SNode with QuillTextNodeMappable {
         webLink: 'https://pub.dev/packages/flutter_quill',
         snode: this,
         name: 'fyi',
+      ),
+      DecimalPNode(
+        snode: this,
+        name: 'h1BottomGap',
+        decimalValue: h1BottomGap,
+        onDoubleChange: (newValue) =>
+            refreshWithUpdate(context, () => h1BottomGap = newValue ?? 16.0),
+      ),
+      DecimalPNode(
+        snode: this,
+        name: 'h2BottomGap',
+        decimalValue: h2BottomGap,
+        onDoubleChange: (newValue) =>
+            refreshWithUpdate(context, () => h2BottomGap = newValue ?? 12.0),
+      ),
+      DecimalPNode(
+        snode: this,
+        name: 'h3BottomGap',
+        decimalValue: h3BottomGap,
+        onDoubleChange: (newValue) =>
+            refreshWithUpdate(context, () => h3BottomGap = newValue ?? 8.0),
+      ),
+      DecimalPNode(
+        snode: this,
+        name: 'listItemGap',
+        decimalValue: listItemGap,
+        onDoubleChange: (newValue) =>
+            refreshWithUpdate(context, () => listItemGap = newValue ?? 8.0),
+      ),
+      DecimalPNode(
+        snode: this,
+        name: 'paragraphBottomGap',
+        decimalValue: paragraphBottomGap,
+        onDoubleChange: (newValue) => refreshWithUpdate(
+          context,
+          () => paragraphBottomGap = newValue ?? 8.0,
+        ),
       ),
       // QuillTextPNode(
       //   snode: this,

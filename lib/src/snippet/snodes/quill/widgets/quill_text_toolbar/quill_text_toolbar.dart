@@ -84,6 +84,13 @@ class QuillTextToolbarState extends State<QuillTextToolbar> {
       '36': '36',
     };
 
+    final headerStyleItems = {
+      'Normal': 'clear',
+      'Heading 1': '1',
+      'Heading 2': '2',
+      'Heading 3': '3',
+    };
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -116,6 +123,14 @@ class QuillTextToolbarState extends State<QuillTextToolbar> {
                   parseValue: (raw) =>
                       raw == 'clear' ? null : double.parse(raw),
                 ),
+                _QuillAttributeMenuButton(
+                  items: headerStyleItems,
+                  controller: widget.controller,
+                  attributeKey: Attribute.header.key,
+                  defaultDisplayText: 'Normal',
+                  tooltip: 'header style',
+                  parseValue: (raw) => raw == 'clear' ? null : int.parse(raw),
+                ),
                 QuillSimpleToolbar(
                   controller: widget.controller,
                   config: QuillSimpleToolbarConfig(
@@ -124,6 +139,7 @@ class QuillTextToolbarState extends State<QuillTextToolbar> {
                     toolbarIconCrossAlignment: WrapCrossAlignment.start,
                     showFontFamily: false,
                     showFontSize: false,
+                    showHeaderStyle: false,
                     showClipboardCopy: true,
                     showClipboardPaste: true,
                     showSubscript: false,

@@ -7,15 +7,22 @@ import 'package:fsdui/src/snippet/pnodes/container_style_pnodes.dart';
 import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:fsdui/src/snippet/snodes/container_style_hook.dart';
 
+import '../pnodes/decimal_pnode.dart';
+
 part 'container_node.mapper.dart';
 
 @MappableClass()
 class ContainerNode extends SNode with SC, ContainerNodeMappable {
   @override
   SNode? child;
+  double? minWidth;
+  double? minHeight;
+  double? maxWidth;
+  double? maxHeight;
 
   @override
   bool canAppendAChild() => child == null;
+
   @MappableField(hook: ContainerStyleHook())
   ContainerStyleProperties csPropGroup;
 
@@ -70,6 +77,10 @@ class ContainerNode extends SNode with SC, ContainerNodeMappable {
     // this.badgeCorner,
     // this.badgeText,
     // this.outlinedBorderGroup,
+    this.minWidth,
+    this.maxHeight,
+    this.maxWidth,
+    this.minHeight,
     this.child,
   });
 
@@ -100,9 +111,36 @@ class ContainerNode extends SNode with SC, ContainerNodeMappable {
             if (refreshPTree) {
               forcePropertyTreeRefresh(context);
             }
-          },
-          alsoRefreshPropertiesView: refreshPTree);
+          }, alsoRefreshPropertiesView: refreshPTree);
         },
+      ),
+      DecimalPNode(
+        snode: this,
+        name: 'minWidth',
+        decimalValue: minWidth,
+        onDoubleChange: (newValue) =>
+            refreshWithUpdate(context, () => minWidth = newValue),
+      ),
+      DecimalPNode(
+        snode: this,
+        name: 'minHeight',
+        decimalValue: minHeight,
+        onDoubleChange: (newValue) =>
+            refreshWithUpdate(context, () => minHeight = newValue),
+      ),
+      DecimalPNode(
+        snode: this,
+        name: 'maxWidth',
+        decimalValue: maxWidth,
+        onDoubleChange: (newValue) =>
+            refreshWithUpdate(context, () => maxWidth = newValue),
+      ),
+      DecimalPNode(
+        snode: this,
+        name: 'maxHeight',
+        decimalValue: maxHeight,
+        onDoubleChange: (newValue) =>
+            refreshWithUpdate(context, () => maxHeight = newValue),
       ),
       FlutterDocPNode(
         buttonLabel: 'Container',
@@ -111,16 +149,21 @@ class ContainerNode extends SNode with SC, ContainerNodeMappable {
         name: 'fyi',
       ),
       FYIPNode(
-          label: "Fill the parent. (Designed to take up all the space allowed by its parent's constraints)",
-          msg: "Fills the parent if it has no explicit width or height and no child that sets a size (i.e., it tries to be as big as possible).\n\n"
-              "If a Container has constraints from its parent (e.g., inside a Center), it will expand to those maximum bounds.",
-          snode: this,
-          name: 'fyi'),
+        label:
+            "Fill the parent. (Designed to take up all the space allowed by its parent's constraints)",
+        msg:
+            "Fills the parent if it has no explicit width or height and no child that sets a size (i.e., it tries to be as big as possible).\n\n"
+            "If a Container has constraints from its parent (e.g., inside a Center), it will expand to those maximum bounds.",
+        snode: this,
+        name: 'fyi',
+      ),
       FYIPNode(
-          label: "Constraint Imposed on Child: 'Tight' if it has fixed width and height",
-          msg: "forces its child to be a specific, fixed width and/or height.",
-          snode: this,
-          name: 'fyi'),
+        label:
+            "Constraint Imposed on Child: 'Tight' if it has fixed width and height",
+        msg: "forces its child to be a specific, fixed width and/or height.",
+        snode: this,
+        name: 'fyi',
+      ),
 
       // SizePNode(
       //   snode: this,
@@ -284,8 +327,20 @@ class ContainerNode extends SNode with SC, ContainerNodeMappable {
     //       skipHeightConstraintWarning: true);
     //   fco.logger.i("Container GK: $gk, $r");
     // });
+    BoxConstraints? boxConstraints =
+        minWidth != null ||
+            minHeight != null ||
+            maxWidth != null ||
+            maxHeight != null
+        ? BoxConstraints(
+            minWidth: minWidth != null ? minWidth! : 0.0,
+            minHeight: minHeight != null ? minHeight! : 0.0,
+            maxWidth: maxWidth != null ? maxWidth! : double.infinity,
+            maxHeight: maxHeight != null ? maxHeight! : double.infinity,
+          )
+        : null;
     try {
-      return Container(
+      Widget content = Container(
         key: gk,
         decoration: csPropGroup.decorationShapeEnum?.toDecoration(
           fillColorOrGradient: csPropGroup.fillColors?.getColorOrGradient(
@@ -299,9 +354,31 @@ class ContainerNode extends SNode with SC, ContainerNodeMappable {
         margin: csPropGroup.margin,
         width: csPropGroup.width,
         height: csPropGroup.height,
-        alignment: csPropGroup.alignment?.alignment,
+        // Only applied here (rather than always) when there are no
+        // boxConstraints: see the Align below for why.
+        alignment: boxConstraints == null
+            ? csPropGroup.alignment?.alignment
+            : null,
         child: child?.build(context, this),
       );
+
+      if (boxConstraints != null) {
+        // Container puts its `constraints` ConstrainedBox *outside* its
+        // `alignment` Align, so under a parent that hands us a tight width
+        // (e.g. a ListView slot), ConstrainedBox.enforce() clamps our
+        // maxWidth back up to match that tight width before Align ever gets
+        // a chance to loosen it — silently discarding the cap. Wrapping
+        // with an Align *outside* the ConstrainedBox here fixes that: Align
+        // absorbs the tight parent constraint and loosens it for its child,
+        // so the ConstrainedBox beneath actually gets to apply maxWidth.
+        content = ConstrainedBox(constraints: boxConstraints, child: content);
+        content = Align(
+          alignment: csPropGroup.alignment?.alignment ?? Alignment.center,
+          child: content,
+        );
+      }
+
+      return content;
     } catch (e) {
       return Error(
         key: createNodeWidgetGK(),

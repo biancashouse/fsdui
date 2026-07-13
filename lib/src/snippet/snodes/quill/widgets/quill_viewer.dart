@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/snodes/quill/widgets/help_icon_embed.dart';
+import 'package:fsdui/src/snippet/snodes/quill/widgets/quill_default_styles.dart';
 import 'package:fsdui/src/snippet/snodes/quill/widgets/timestamp_embed.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_quill/flutter_quill.dart';
@@ -93,12 +94,22 @@ class QuillViewer extends HookWidget {
 
     // final focusNode = useFocusNode();
 
-    final linkStyle = DefaultStyles(
-      link: const TextStyle(
-        color: Colors.blue,
-        decoration: TextDecoration.none,
-      ),
-    );
+    final linkStyle =
+        quillHeadingGapStyles(
+          context,
+          h1Bottom: parentSNode.h1BottomGap,
+          h2Bottom: parentSNode.h2BottomGap,
+          h3Bottom: parentSNode.h3BottomGap,
+          listBottom: parentSNode.listItemGap,
+          paragraphBottom: parentSNode.paragraphBottomGap,
+        ).merge(
+          DefaultStyles(
+            link: const TextStyle(
+              color: Colors.blue,
+              decoration: TextDecoration.none,
+            ),
+          ),
+        );
 
     // 4. Build the UI with a conditional border.
     return Stack(
@@ -113,6 +124,11 @@ class QuillViewer extends HookWidget {
             controller: controller,
             focusNode: focusNode,
             config: QuillEditorConfig(
+              scrollable: false, // CRITICAL: Prevents viewport conflicts
+              autoFocus: false,
+              showCursor: false, // Hides the flashing cursor
+              enableInteractiveSelection:
+                  false, // Prevents text selection popups from breaking the grid
               customStyles: linkStyle,
               embedBuilders: [
                 HelpIconEmbedBuilder(parentSNode: parentSNode),

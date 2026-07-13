@@ -30,6 +30,18 @@ class ContainerNodeMapper extends SubClassMapperBase<ContainerNode> {
       v.csPropGroup;
   static const Field<ContainerNode, ContainerStyleProperties> _f$csPropGroup =
       Field('csPropGroup', _$csPropGroup, hook: ContainerStyleHook());
+  static double? _$minWidth(ContainerNode v) => v.minWidth;
+  static const Field<ContainerNode, double> _f$minWidth =
+      Field('minWidth', _$minWidth, opt: true);
+  static double? _$maxHeight(ContainerNode v) => v.maxHeight;
+  static const Field<ContainerNode, double> _f$maxHeight =
+      Field('maxHeight', _$maxHeight, opt: true);
+  static double? _$maxWidth(ContainerNode v) => v.maxWidth;
+  static const Field<ContainerNode, double> _f$maxWidth =
+      Field('maxWidth', _$maxWidth, opt: true);
+  static double? _$minHeight(ContainerNode v) => v.minHeight;
+  static const Field<ContainerNode, double> _f$minHeight =
+      Field('minHeight', _$minHeight, opt: true);
   static SNode? _$child(ContainerNode v) => v.child;
   static const Field<ContainerNode, SNode> _f$child =
       Field('child', _$child, opt: true);
@@ -60,6 +72,10 @@ class ContainerNodeMapper extends SubClassMapperBase<ContainerNode> {
   final MappableFields<ContainerNode> fields = const {
     #name: _f$name,
     #csPropGroup: _f$csPropGroup,
+    #minWidth: _f$minWidth,
+    #maxHeight: _f$maxHeight,
+    #maxWidth: _f$maxWidth,
+    #minHeight: _f$minHeight,
     #child: _f$child,
     #uid: _f$uid,
     #tags: _f$tags,
@@ -83,6 +99,10 @@ class ContainerNodeMapper extends SubClassMapperBase<ContainerNode> {
     return ContainerNode(
         name: data.dec(_f$name),
         csPropGroup: data.dec(_f$csPropGroup),
+        minWidth: data.dec(_f$minWidth),
+        maxHeight: data.dec(_f$maxHeight),
+        maxWidth: data.dec(_f$maxWidth),
+        minHeight: data.dec(_f$minHeight),
         child: data.dec(_f$child));
   }
 
@@ -143,7 +163,14 @@ abstract class ContainerNodeCopyWith<$R, $In extends ContainerNode, $Out>
       ContainerStyleProperties> get csPropGroup;
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({String? name, ContainerStyleProperties? csPropGroup, SNode? child});
+  $R call(
+      {String? name,
+      ContainerStyleProperties? csPropGroup,
+      double? minWidth,
+      double? maxHeight,
+      double? maxWidth,
+      double? minHeight,
+      SNode? child});
   ContainerNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -167,16 +194,28 @@ class _ContainerNodeCopyWithImpl<$R, $Out>
   $R call(
           {Object? name = $none,
           ContainerStyleProperties? csPropGroup,
+          Object? minWidth = $none,
+          Object? maxHeight = $none,
+          Object? maxWidth = $none,
+          Object? minHeight = $none,
           Object? child = $none}) =>
       $apply(FieldCopyWithData({
         if (name != $none) #name: name,
         if (csPropGroup != null) #csPropGroup: csPropGroup,
+        if (minWidth != $none) #minWidth: minWidth,
+        if (maxHeight != $none) #maxHeight: maxHeight,
+        if (maxWidth != $none) #maxWidth: maxWidth,
+        if (minHeight != $none) #minHeight: minHeight,
         if (child != $none) #child: child
       }));
   @override
   ContainerNode $make(CopyWithData data) => ContainerNode(
       name: data.get(#name, or: $value.name),
       csPropGroup: data.get(#csPropGroup, or: $value.csPropGroup),
+      minWidth: data.get(#minWidth, or: $value.minWidth),
+      maxHeight: data.get(#maxHeight, or: $value.maxHeight),
+      maxWidth: data.get(#maxWidth, or: $value.maxWidth),
+      minHeight: data.get(#minHeight, or: $value.minHeight),
       child: data.get(#child, or: $value.child));
 
   @override

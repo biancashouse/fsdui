@@ -33,6 +33,7 @@ class CAPIState with _$CAPIState {
     String? ea,
     String? token,
     bool? verified,
+    @Default(<String>[]) List<String> verifiedEas,
     bool? isSignedInAsSuperEditor,
     bool? isSignedInAsArticleEditor,
     bool? isSignedInAsGuestEditor,

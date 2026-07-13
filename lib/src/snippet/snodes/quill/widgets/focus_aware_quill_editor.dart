@@ -4,6 +4,7 @@ import 'package:fsdui/fsdui.dart' hide Line;
 import 'package:fsdui/src/model/quill_target_model.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
 import 'package:fsdui/src/snippet/snodes/quill/widgets/help_icon_embed.dart';
+import 'package:fsdui/src/snippet/snodes/quill/widgets/quill_default_styles.dart';
 import 'package:fsdui/src/snippet/snodes/quill/widgets/quill_text_toolbar/quill_text_toolbar.dart';
 
 import 'package:flutter_quill/flutter_quill.dart';
@@ -338,6 +339,14 @@ class _FocusAwareQuillEditorState extends State<FocusAwareQuillEditor> {
     config: QuillEditorConfig(
       placeholder: 'Start writing...',
       padding: const EdgeInsets.all(16),
+      customStyles: quillHeadingGapStyles(
+        context,
+        h1Bottom: widget.parentSNode.h1BottomGap,
+        h2Bottom: widget.parentSNode.h2BottomGap,
+        h3Bottom: widget.parentSNode.h3BottomGap,
+        listBottom: widget.parentSNode.listItemGap,
+        paragraphBottom: widget.parentSNode.paragraphBottomGap,
+      ),
       embedBuilders: [
         HelpIconEmbedBuilder(parentSNode: widget.parentSNode),
         // TimeStampEmbedBuilder(),
