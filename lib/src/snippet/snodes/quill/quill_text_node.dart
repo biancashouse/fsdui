@@ -3,14 +3,16 @@
 import 'dart:convert';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/quill_delta.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/model/quill_target_model.dart';
 import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 
 // import 'package:fsdui/src/snippet/pnodes/quill_text_pnode.dart';
-import 'package:fsdui/src/snippet/snodes/quill/widgets/quill_viewer.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:vsc_quill_delta_to_html/vsc_quill_delta_to_html.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 import 'widgets/focus_aware_quill_editor.dart';
 
@@ -50,10 +52,12 @@ class QuillTextNode extends SNode with QuillTextNodeMappable {
 
   /// The rendered size of this node's widget, or null if it hasn't been
   /// laid out yet (e.g. not built, or not yet attached to the tree).
-  Size? get size => nodeWidgetGK?.globalPaintBounds(
-    skipWidthConstraintWarning: true,
-    skipHeightConstraintWarning: true,
-  )?.size;
+  Size? get size => nodeWidgetGK
+      ?.globalPaintBounds(
+        skipWidthConstraintWarning: true,
+        skipHeightConstraintWarning: true,
+      )
+      ?.size;
 
   // keep transient copy of each Embed's  gk
   // @JsonKey(includeFromJson: false, includeToJson: false)
@@ -164,7 +168,24 @@ class QuillTextNode extends SNode with QuillTextNodeMappable {
         ),
       );
     } else {
-      editor = QuillViewer(key: gk, parentSNode: this);
+      final deltaOps = List<Map<String, dynamic>>.from(
+        jsonDecode(deltaJsonString),
+      );
+
+      // inlineStylesFlag forces attributes like `font` to be emitted as
+      // inline `style="font-family:..."` rather than a CSS class (e.g.
+      // `class="ql-font-Merriweather"`). flutter_html has no CSS engine to
+      // resolve classes against a stylesheet, so class-based font/size/align
+      // attributes are silently dropped; inline styles are the only form it
+      // can actually read.
+      final converter = QuillDeltaToHtmlConverter(
+        deltaOps,
+        ConverterOptions(
+          converterOptions: OpConverterOptions(inlineStylesFlag: true),
+        ),
+      );
+
+      editor = Html(data: converter.convert());
     }
 
     // for safety, if parent is a flex, wrap with an Expanded widget
