@@ -168,6 +168,8 @@ class QuillTextNode extends SNode with QuillTextNodeMappable {
         ),
       );
     } else {
+      // editor = QuillViewer(key: gk, parentSNode: this);
+
       final deltaOps = List<Map<String, dynamic>>.from(
         jsonDecode(deltaJsonString),
       );
