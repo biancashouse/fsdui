@@ -1116,6 +1116,9 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
       //     root: GenericSingleChildNode(
       //         propertyName: 'root',
       //         child: FSDirectoryNode(name: 'root', children: []))),
+      const (DashboardNode) => DashboardNode(
+        children: childNode != null ? [childNode] : [],
+      ),
       const (DirectoryNode) => DirectoryNode(children: []),
       // const (FSDirectoryNode) => FSDirectoryNode(children: []),
       const (ExpandedNode) => ExpandedNode(child: childNode),

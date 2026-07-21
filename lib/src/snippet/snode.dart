@@ -78,6 +78,7 @@ const List<Type> singleChildSubClasses = [
 const List<Type> multiChildSubClasses = [
   CarouselNode,
   CarouselViewNode,
+  DashboardNode,
   DirectoryNode,
   DynamicTabBarNode,
   FlexNode,
@@ -190,6 +191,7 @@ enum NodeAction {
     // multi-child
     CarouselNode,
     CarouselViewNode,
+    DashboardNode,
     DirectoryNode,
     DynamicTabBarNode,
     FlexNode,
@@ -2170,6 +2172,7 @@ abstract class SNode extends Node with SNodeMappable {
             action,
           ),
           menuItemButton(context, "GridView", GridViewNode, action),
+          menuItemButton(context, "Dashboard", DashboardNode, action),
           menuItemButton(context, "Column", ColumnNode, action),
           menuItemButton(context, "Row", RowNode, action),
           menuItemButton(context, "Wrap", WrapNode, action),
@@ -2261,6 +2264,7 @@ abstract class SNode extends Node with SNodeMappable {
             action,
           ),
           menuItemButton(context, "GridView", GridViewNode, action),
+          menuItemButton(context, "Dashboard", DashboardNode, action),
           menuItemButton(
             context,
             "SingleChildScrollView",
@@ -2536,6 +2540,7 @@ abstract class SNode extends Node with SNodeMappable {
               action,
             ),
             menuItemButton(context, "GridView", GridViewNode, action),
+            menuItemButton(context, "Dashboard", DashboardNode, action),
             menuItemButton(
               context,
               "InteractiveViewer",

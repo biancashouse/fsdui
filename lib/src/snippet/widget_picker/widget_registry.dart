@@ -23,6 +23,7 @@ final List<WidgetEntry> widgetRegistry = [
   const WidgetEntry(label: 'Wrap', type: WrapNode, category: WidgetCategory.flex),
   // scroll
   const WidgetEntry(label: 'GridView', type: GridViewNode, category: WidgetCategory.scroll),
+  const WidgetEntry(label: 'Dashboard', type: DashboardNode, category: WidgetCategory.scroll, keywords: ['grid', 'draggable', 'resizable', 'layout']),
   const WidgetEntry(label: 'InteractiveViewer', type: InteractiveViewerNode, category: WidgetCategory.scroll),
   const WidgetEntry(label: 'ListView', type: ListViewNode, category: WidgetCategory.scroll),
   const WidgetEntry(label: 'PageView', type: PageViewNode, category: WidgetCategory.scroll),

@@ -34,6 +34,7 @@ import 'package:fsdui/src/snippet/snodes/asset_image_node.dart';
 // import 'package:fsdui/src/snippet/snodes/button_node.dart';
 import 'package:fsdui/src/snippet/snodes/carousel_node.dart';
 import 'package:fsdui/src/snippet/snodes/carousel_view_node.dart';
+import 'package:fsdui/src/snippet/snodes/dashboard_node.dart';
 
 import 'package:fsdui/src/snippet/snodes/center_node.dart';
 
@@ -260,6 +261,7 @@ export 'src/snippet/snodes/asset_image_node.dart';
 export 'src/snippet/snodes/button_mixin.dart';
 export 'src/snippet/snodes/carousel_node.dart';
 export 'src/snippet/snodes/carousel_view_node.dart';
+export 'src/snippet/snodes/dashboard_node.dart';
 export 'src/snippet/snodes/center_node.dart';
 export 'src/snippet/snodes/mixin_cl_node.dart';
 export 'src/snippet/snodes/chip_node.dart';

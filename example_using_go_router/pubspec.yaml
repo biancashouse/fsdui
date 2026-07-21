@@ -15,7 +15,8 @@ dependencies:
     path: ../../fsdui
 
   vsc_quill_delta_to_html: ^1.0.5
-
+#  sliver_dashboard: ^1.2.0
+#  responsive_bootstrap_ui: ^1.0.5
 #  window_manager: ^0.5.1
 #  firebase_core: any
 #  go_router: any

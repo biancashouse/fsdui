@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_quill/flutter_quill.dart' hide Style;
 
 // flutter_quill's built-in h1/h2/h3 styles only add spacing *above* a
 // heading (their verticalSpacing bottom is 0), so a heading sits flush
@@ -50,4 +51,31 @@ DefaultStyles quillHeadingGapStyles(
       ),
     ),
   );
+}
+
+// Same bottom-gap config as quillHeadingGapStyles(), for the read-only
+// flutter_html render path. flutter_html's builtin per-tag stylesheet
+// already gives h1/h2/h3/p a symmetric top+bottom margin (like a browser
+// default stylesheet), so — unlike the Quill styles above, which fill in a
+// *missing* bottom gap — this only needs to override the bottom side.
+// Leaving `top` unset in Margins(...) preserves flutter_html's existing top
+// margin: Style.merge()/Margins.merge() treat a null field as "keep the
+// current value", not "zero it out".
+Map<String, Style> quillHeadingGapHtmlStyles({
+  required double h1Bottom,
+  required double h2Bottom,
+  required double h3Bottom,
+  required double listBottom,
+  required double paragraphBottom,
+}) {
+  Style bottomGap(double bottom) =>
+      Style(margin: Margins(bottom: Margin(bottom)));
+
+  return {
+    'h1': bottomGap(h1Bottom),
+    'h2': bottomGap(h2Bottom),
+    'h3': bottomGap(h3Bottom),
+    'p': bottomGap(paragraphBottom),
+    'li': bottomGap(listBottom),
+  };
 }
