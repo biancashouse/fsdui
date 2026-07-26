@@ -1081,7 +1081,7 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
       const (StorageImageNode) => StorageImageNode(),
       // const (FirebaseStorageImageNode) => FirebaseStorageImageNode(),
       const (ConstrainedBoxNode) => ConstrainedBoxNode(),
-      const (CarouselNode) => CarouselNode(
+      const (CarouselViewNode) => CarouselViewNode(
         children: childNode != null ? [childNode] : [],
       ),
       const (CenterNode) => CenterNode(child: childNode),
@@ -1154,6 +1154,7 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
         padding: EdgeInsets.zero,
         child: childNode,
       ),
+      const (PageViewNode) => PageViewNode(),
       const (PlaceholderNode) => PlaceholderNode(),
       const (PinnedHeaderSliverNode) => PinnedHeaderSliverNode(),
       const (PollNode) => PollNode(
@@ -2059,12 +2060,14 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
 
     // create new snippet
     SNode newRootNode = event.node.clone();
-    newRootNode.name = event.node.name;
+    newRootNode.name = event.newSnippetName;
 
-    // fco.modelRepo.saveNewVersionOfSnippet(newRootNode);
+    fsdui.modelRepo.saveNewVersionOfSnippet(newRootNode);
     fsdui.appInfo
         .cachedSnippetInfo(newRootNode.name!)
         ?.notifyChange(newRootNode);
+
+    fsdui.modelRepo.saveAppInfo();
 
     // await fco.cacheAndSaveANewSnippetVersion(
     //   snippetName: event.newSnippetName,

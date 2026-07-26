@@ -122,6 +122,11 @@ class QuillTextToolbarState extends State<QuillTextToolbar> {
                   tooltip: 'font size',
                   parseValue: (raw) =>
                       raw == 'clear' ? null : double.parse(raw),
+                  formatUnmatchedValue: (value) => value is num
+                      ? (value == value.roundToDouble()
+                            ? value.toInt().toString()
+                            : value.toString())
+                      : value.toString(),
                 ),
                 _QuillAttributeMenuButton(
                   items: headerStyleItems,
@@ -312,6 +317,12 @@ class _QuillAttributeMenuButton extends StatefulWidget {
   // Attribute.fromKeyValue. Return null to clear the attribute.
   final dynamic Function(String rawValue) parseValue;
 
+  // Formats the current attribute value for display when it's set but
+  // doesn't match any preset in [items] (e.g. a font size from pasted/
+  // imported content that isn't one of the dropdown's fixed choices).
+  // If omitted, an unmatched value falls back to [defaultDisplayText].
+  final String Function(dynamic value)? formatUnmatchedValue;
+
   const _QuillAttributeMenuButton({
     required this.items,
     required this.controller,
@@ -319,6 +330,7 @@ class _QuillAttributeMenuButton extends StatefulWidget {
     required this.defaultDisplayText,
     required this.tooltip,
     required this.parseValue,
+    this.formatUnmatchedValue,
   });
 
   @override
@@ -337,7 +349,8 @@ class _QuillAttributeMenuButtonState extends State<_QuillAttributeMenuButton> {
     for (final entry in widget.items.entries) {
       if (widget.parseValue(entry.value) == attribute.value) return entry.key;
     }
-    return widget.defaultDisplayText;
+    return widget.formatUnmatchedValue?.call(attribute.value) ??
+        widget.defaultDisplayText;
   }
 
   @override

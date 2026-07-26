@@ -7,11 +7,11 @@ import '../pnodes/fyi_pnodes.dart';
 part 'pageview_node.mapper.dart';
 
 @MappableClass()
-abstract class PageViewNode extends SNode with MC, PageViewNodeMappable {
+class PageViewNode extends SNode with MC, PageViewNodeMappable {
   @override
   List<SNode> children;
 
-  PageViewNode({super.name, required this.children});
+  PageViewNode({super.name, this.children = const []});
 
   @override
   List<SNode>? get ownChildren => children;

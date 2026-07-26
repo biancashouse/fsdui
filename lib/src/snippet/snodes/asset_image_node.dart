@@ -186,20 +186,20 @@ class AssetImageNode extends SNode with AssetImageNodeMappable {
   //   )''';
   // }
 
-  @override
-  List<Widget> menuAnchorWidgets_WrapWith(
-    BuildContext context,
-    NodeAction action,
-    bool? skipHeading,
-    
-  ) {
-    return [
-      ...super.menuAnchorWidgets_Heading(context, action),
-      menuItemButton(context, "Carousel", CarouselNode, action),
-      menuItemButton(context, "AspectRatio", AspectRatioNode, action),
-      ...super.menuAnchorWidgets_WrapWith(context, action, true),
-    ];
-  }
+  // @override
+  // List<Widget> menuAnchorWidgets_WrapWith(
+  //   BuildContext context,
+  //   NodeAction action,
+  //   bool? skipHeading,
+  //
+  // ) {
+  //   return [
+  //     ...super.menuAnchorWidgets_Heading(context, action),
+  //     menuItemButton(context, "Carousel", CarouselNode, action),
+  //     menuItemButton(context, "AspectRatio", AspectRatioNode, action),
+  //     ...super.menuAnchorWidgets_WrapWith(context, action, true),
+  //   ];
+  // }
 
   @override
   String toString() => FLUTTER_TYPE;

@@ -666,7 +666,7 @@ class SNodeWidget extends StatelessWidget {
                       ? 'Remove, including all children'
                       : 'Remove',
                 ),
-                if (!node.isASnippetRoot)
+                // if (!node.isASnippetRoot)
                   IconButton(
                     hoverColor: Colors.white30,
                     onPressed: () {

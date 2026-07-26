@@ -112,7 +112,7 @@ class StorageImageNode extends SNode with StorageImageNodeMappable {
       setParent(parentNode);
 
       GlobalKey? gk;
-      if (parentNode is! CarouselNode) {
+      if (parentNode is! CarouselViewNode) {
         gk = createNodeWidgetGK();
       }
 

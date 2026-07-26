@@ -1,10 +1,17 @@
 // ignore_for_file: constant_identifier_names
+import 'dart:async';
+
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
-import 'package:fsdui/src/measuring/size_aware_widget.dart';
 import 'package:fsdui/src/snippet/pnodes/bool_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
+
+import '../pnodes/color_pnode.dart' show ColorPNode;
+import '../pnodes/edgeinsets_pnode.dart' show EdgeInsetsPNode;
+import '../pnodes/enum_pnode.dart' show EnumPNode;
+import '../pnodes/fyi_pnodes.dart' show FlutterDocPNode;
+
 // import 'package:fsdui/src/snippet/pnodes/enum_pnode.dart';
 // import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 
@@ -14,42 +21,58 @@ import 'package:fsdui/src/snippet/pnodes/decimal_pnode.dart';
 
 part 'carousel_view_node.mapper.dart';
 
+List<String> kDemoImages = [
+  'lib/assets/images/carousel-demo/2-carnations.jpeg',
+  'lib/assets/images/carousel-demo/blue-jug.jpeg',
+  'lib/assets/images/carousel-demo/cherries.jpeg',
+  'lib/assets/images/carousel-demo/grapes.jpeg',
+  'lib/assets/images/carousel-demo/honey.jpeg',
+  'lib/assets/images/carousel-demo/jug.webp',
+  'lib/assets/images/carousel-demo/lamp.jpeg',
+  'lib/assets/images/carousel-demo/pears.jpg',
+];
+
 @MappableClass()
 class CarouselViewNode extends SNode with MC, CarouselViewNodeMappable {
   @override
   List<SNode> children;
 
-  // Color? backgroundColor;
-  // EdgeInsets? padding;
+  Color? backgroundColor;
+  Color? overlayColor;
+  EdgeInsets? padding;
   double height;
-  // double? elevation;
-  // bool itemSnapping;
-  bool autoPlay;
-  // double shrinkExtent;
-  // AxisEnum scrollDirection;
+  double? elevation;
+  bool itemSnapping;
+  double shrinkExtent;
+  AxisEnum scrollDirection;
+  double? itemExtent;
+
   // bool consumeMaxWeight;
   // bool enableSplash;
-  // bool infinite;
+  bool infinite;
+
   // String flexWeights;
 
-  // Cache each item's measured size so _offsetForIndex can compute accurate
-  // scroll offsets for auto-play without querying intrinsic dimensions.
-  final Map<int, Size> _itemSizeCache = {};
+  bool autoPlay;
+  double autoPlayIntervalSecs;
 
   CarouselViewNode({
     super.name,
-    // this.backgroundColor,
-    // this.padding,
+    this.backgroundColor,
+    this.overlayColor,
+    this.padding,
     this.height = 200,
-    // this.elevation,
-    // this.itemSnapping = false,
-    // this.scrollDirection = AxisEnum.horizontal,
-    // this.shrinkExtent = 0.0,
+    this.elevation,
+    this.itemSnapping = false,
+    this.scrollDirection = AxisEnum.horizontal,
+    this.shrinkExtent = 0.0,
+    this.itemExtent = 600.0,
     // this.consumeMaxWeight = true,
     // this.enableSplash = true,
-    // this.infinite = false,
-    // this.flexWeights = '[1]',
+    this.infinite = false,
     this.autoPlay = false,
+    this.autoPlayIntervalSecs = 3.0,
+    // this.flexWeights = '[1]',
     required this.children,
   });
 
@@ -58,13 +81,27 @@ class CarouselViewNode extends SNode with MC, CarouselViewNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-    // ColorPNode(
-    //   snode: this,
-    //   name: 'background color',
-    //   color: backgroundColor,
-    //   onColorChange: (newValue) =>
-    //       refreshWithUpdate(context, () => backgroundColor = newValue),
-    // ),
+    EdgeInsetsPNode(
+      snode: this,
+      name: 'padding',
+      ei: padding,
+      onEIChangedF: (newEI) =>
+          refreshWithUpdate(context, () => padding = newEI),
+    ),
+    ColorPNode(
+      snode: this,
+      name: 'background color',
+      color: backgroundColor,
+      onColorChange: (newValue) =>
+          refreshWithUpdate(context, () => backgroundColor = newValue),
+    ),
+    ColorPNode(
+      snode: this,
+      name: 'overlay color',
+      color: overlayColor,
+      onColorChange: (newValue) =>
+          refreshWithUpdate(context, () => overlayColor = newValue),
+    ),
     // EdgeInsetsPNode(
     //   snode: this,
     //   name: 'padding',
@@ -77,92 +114,82 @@ class CarouselViewNode extends SNode with MC, CarouselViewNodeMappable {
       name: 'height',
       decimalValue: height,
       onDoubleChange: (newValue) =>
-          refreshWithUpdate(context, () => height = newValue??200),
+          refreshWithUpdate(context, () => height = newValue ?? 200),
     ),
-    // DecimalPNode(
-    //   snode: this,
-    //   name: 'shrinkExtent',
-    //   decimalValue: shrinkExtent,
-    //   onDoubleChange: (newValue) =>
-    //       refreshWithUpdate(context, () => shrinkExtent = newValue ?? 0.0),
-    // ),
-    // BoolPNode(
-    //   snode: this,
-    //   name: 'itemSnapping',
-    //   boolValue: itemSnapping,
-    //   onBoolChange: (newValue) =>
-    //       refreshWithUpdate(context, () => itemSnapping = newValue ?? true),
-    // ),
+    DecimalPNode(
+      snode: this,
+      name: 'shrinkExtent',
+      decimalValue: shrinkExtent,
+      onDoubleChange: (newValue) =>
+          refreshWithUpdate(context, () => shrinkExtent = newValue ?? 0.0),
+    ),
+    DecimalPNode(
+      snode: this,
+      name: 'itemExtent',
+      decimalValue: itemExtent,
+      onDoubleChange: (newValue) =>
+          refreshWithUpdate(context, () => itemExtent = newValue ?? 100.0),
+    ),
+    BoolPNode(
+      snode: this,
+      name: 'itemSnapping',
+      boolValue: itemSnapping,
+      onBoolChange: (newValue) =>
+          refreshWithUpdate(context, () => itemSnapping = newValue ?? true),
+    ),
+    //     snode: this,
+    DecimalPNode(
+      snode: this,
+      name: 'elevation',
+      decimalValue: height,
+      onDoubleChange: (newValue) =>
+          refreshWithUpdate(context, () => elevation = newValue),
+    ),
+    EnumPNode<AxisEnum?>(
+      snode: this,
+      name: 'scrollDirection',
+      valueIndex: scrollDirection.index,
+      onIndexChange: (newValue) => refreshWithUpdate(
+        context,
+        () => scrollDirection = AxisEnum.of(newValue) ?? AxisEnum.horizontal,
+      ),
+    ),
+    BoolPNode(
+      snode: this,
+      name: 'infinite',
+      boolValue: infinite,
+      onBoolChange: (newValue) =>
+          refreshWithUpdate(context, () => infinite = newValue ?? false),
+    ),
     BoolPNode(
       snode: this,
       name: 'autoPlay',
       boolValue: autoPlay,
       onBoolChange: (newValue) =>
           refreshWithUpdate(context, () => autoPlay = newValue ?? false),
-    ), //     snode: this,
-    // DecimalPNode(
-    //   snode: this,
-    //   name: 'elevation',
-    //   decimalValue: height,
-    //   onDoubleChange: (newValue) =>
-    //       refreshWithUpdate(context, () => elevation = newValue),
-    // ),
-    // EnumPNode<AxisEnum?>(
-    //   snode: this,
-    //   name: 'scrollDirection',
-    //   valueIndex: scrollDirection.index,
-    //   onIndexChange: (newValue) => refreshWithUpdate(
-    //     context,
-    //     () => scrollDirection = AxisEnum.of(newValue) ?? AxisEnum.horizontal,
-    //   ),
-    // ), //     name: 'aspectRatio',
-    // BoolPNode(
-    //   snode: this,
-    //   name: 'consumeMaxWeight',
-    //   boolValue: consumeMaxWeight,
-    //   onBoolChange: (newValue) =>
-    //       refreshWithUpdate(context, () => consumeMaxWeight = newValue ?? true),
-    // ),
-    // BoolPNode(
-    //   snode: this,
-    //   name: 'enableSplash',
-    //   boolValue: enableSplash,
-    //   onBoolChange: (newValue) =>
-    //       refreshWithUpdate(context, () => enableSplash = newValue ?? true),
-    // ),
-    // BoolPNode(
-    //   snode: this,
-    //   name: 'infinite',
-    //   boolValue: infinite,
-    //   onBoolChange: (newValue) =>
-    //       refreshWithUpdate(context, () => infinite = newValue ?? false),
-    // ), //     decimalValue: aspectRatio,
-    // StringPNode(
-    //   snode: this,
-    //   name: 'flexWeights',
-    //   nameOnSeparateLine: true,
-    //   expands: true,
-    //   numLines: 3,
-    //   stringValue: flexWeights,
-    //   onStringChange: (newValue) {
-    //     refreshWithUpdate(context, () => flexWeights = newValue ?? '[1]');
-    //   },
-    //   calloutButtonSize: const Size(280, 70),
-    //   calloutWidth: 300,
-    // ),
-    // FlutterDocPNode(
-    //   buttonLabel: 'CarouselView',
-    //   webLink: 'https://pub.dev/packages/carousel_slider',
-    //   snode: this,
-    //   name: 'fyi',
-    // ),
+    ),
+    DecimalPNode(
+      snode: this,
+      name: 'autoPlayIntervalSecs',
+      decimalValue: autoPlayIntervalSecs,
+      onDoubleChange: (newValue) => refreshWithUpdate(
+        context,
+        () => autoPlayIntervalSecs = newValue ?? 3.0,
+      ),
+    ),
+    FlutterDocPNode(
+      buttonLabel: 'CarouselView',
+      webLink: 'https://pub.dev/packages/carousel_slider',
+      snode: this,
+      name: 'fyi',
+    ),
   ];
 
-  @override
-  String toSource(BuildContext context) => '''CarouselView(
-        children: children.map((child) => child.toWidget(context, this)).toList(),
-      );
-  ''';
+  // @override
+  // String toSource(BuildContext context) => '''CarouselView(
+  //       children: children.map((child) => child.toWidget(context, this)).toList(),
+  //     );
+  // ''';
 
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
@@ -190,8 +217,8 @@ class CarouselViewNode extends SNode with MC, CarouselViewNodeMappable {
               final w = node.build(context, this);
               // ListView / GridView / CustomScrollView render as RenderViewport,
               // which asserts on computeMinIntrinsicWidth. Pre-wrap them in a
-              // SizedBox so _AutoPlayingListView's IntrinsicWidth measures the
-              // SizedBox (safe) rather than the viewport directly.
+              // SizedBox so they get a bounded width instead of the viewport
+              // being measured directly.
               if (node is ListViewNode ||
                   node is GridViewNode ||
                   node is CustomScrollViewNode) {
@@ -200,18 +227,28 @@ class CarouselViewNode extends SNode with MC, CarouselViewNodeMappable {
               return w;
             }).toList();
 
-      Widget view = _AutoPlayingListView(
-        key: createNodeWidgetGK(),
-        autoPlay: autoPlay,
-        itemSizeCache: _itemSizeCache,
-        children: widgets,
-      );
-
       // CarouselView lays out via a Viewport that needs a bounded
       // cross-axis extent (height, for the default horizontal
       // scrollDirection). Without it, ancestors that hand out unbounded
       // height (e.g. a Column) trigger a hasSize assertion failure.
-      return /* height == null ? view : */ SizedBox(height: height, child: view);
+      return SizedBox(
+        height: height,
+        child: _AutoPlayingCarouselView(
+          key: createNodeWidgetGK(),
+          padding: padding,
+          backgroundColor: backgroundColor,
+          overlayColor: overlayColor,
+          infinite: infinite,
+          elevation: elevation,
+          itemSnapping: itemSnapping,
+          shrinkExtent: shrinkExtent,
+          scrollDirection: scrollDirection.flutterValue,
+          itemExtent: itemExtent ?? 600.0,
+          autoPlay: autoPlay,
+          autoPlayIntervalSecs: autoPlayIntervalSecs,
+          children: widgets,
+        ),
+      );
     } catch (e) {
       return Error(
         key: createNodeWidgetGK(),
@@ -244,79 +281,109 @@ class CarouselViewNode extends SNode with MC, CarouselViewNodeMappable {
   static const String FLUTTER_TYPE = "CarouselView";
 }
 
-/// Horizontal item list that, when [autoPlay] is on, advances to the next
-/// item on a timer. Uses [ListView] (not [ListView.builder]) so all items
-/// are built and laid out eagerly in one pass — this prevents the
-/// "Cannot hit test a render box with no size" error that occurs when
-/// [ListView.builder] lazily constructs items mid-scroll and a pointer event
-/// arrives before their layout is complete.
-class _AutoPlayingListView extends StatefulWidget {
+/// Wraps [CarouselView] with a [Timer]-driven [CarouselController] so it can
+/// auto-advance. [CarouselView] itself has no autoplay concept — its
+/// [CarouselView.infinite] flag only makes manual scroll gestures wrap
+/// around indefinitely, it doesn't move anything on its own.
+class _AutoPlayingCarouselView extends StatefulWidget {
   final List<Widget> children;
-  final Map<int, Size> itemSizeCache;
+  final EdgeInsets? padding;
+  final Color? backgroundColor;
+  final Color? overlayColor;
+  final double? elevation;
+  final bool itemSnapping;
+  final double shrinkExtent;
+  final Axis scrollDirection;
+  final double itemExtent;
+  final bool infinite;
   final bool autoPlay;
+  final double autoPlayIntervalSecs;
 
-  const _AutoPlayingListView({
+  const _AutoPlayingCarouselView({
     super.key,
     required this.children,
-    required this.itemSizeCache,
+    this.padding,
+    this.backgroundColor,
+    this.overlayColor,
+    this.elevation,
+    required this.itemSnapping,
+    required this.shrinkExtent,
+    required this.scrollDirection,
+    required this.itemExtent,
+    required this.infinite,
     required this.autoPlay,
+    required this.autoPlayIntervalSecs,
   });
 
   @override
-  State<_AutoPlayingListView> createState() => _AutoPlayingListViewState();
+  State<_AutoPlayingCarouselView> createState() =>
+      _AutoPlayingCarouselViewState();
 }
 
-class _AutoPlayingListViewState extends State<_AutoPlayingListView> {
-  final _scrollController = ScrollController();
-  Offset _slideOffset = const Offset(0.5, 0);
+class _AutoPlayingCarouselViewState extends State<_AutoPlayingCarouselView> {
+  final _controller = CarouselController();
+  Timer? _timer;
 
   @override
   void initState() {
     super.initState();
-    if (widget.autoPlay && widget.children.length > 1) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) setState(() => _slideOffset = Offset.zero);
-      });
+    _restartTimer();
+  }
+
+  @override
+  void didUpdateWidget(_AutoPlayingCarouselView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.autoPlay != oldWidget.autoPlay ||
+        widget.autoPlayIntervalSecs != oldWidget.autoPlayIntervalSecs ||
+        widget.children.length != oldWidget.children.length) {
+      _restartTimer();
     }
+  }
+
+  void _restartTimer() {
+    _timer?.cancel();
+    if (!widget.autoPlay || widget.children.length < 2) return;
+    _timer = Timer.periodic(
+      Duration(milliseconds: (widget.autoPlayIntervalSecs * 1000).round()),
+      (_) => _advance(),
+    );
+  }
+
+  void _advance() {
+    if (!mounted || !_controller.hasClients) return;
+    final position = _controller.position;
+    final next = position.pixels + widget.itemExtent;
+    final loopBackToStart = !widget.infinite && next > position.maxScrollExtent;
+    _controller.animateTo(
+      loopBackToStart ? 0 : next,
+      duration: const Duration(milliseconds: 600),
+      curve: Curves.easeInOut,
+    );
   }
 
   @override
   void dispose() {
-    _scrollController.dispose();
+    _timer?.cancel();
+    _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget list = Scrollbar(
-      controller: _scrollController,
-      thumbVisibility: true,
-      child: ListView(
-        controller: _scrollController,
-        scrollDirection: Axis.horizontal,
-        physics: const BouncingScrollPhysics(),
-        children: [
-          for (var i = 0; i < widget.children.length; i++)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: SizeAwareWidget(
-                onSizeAvailable: (size) => widget.itemSizeCache[i] = size,
-                child: IntrinsicWidth(child: widget.children[i]),
-              ),
-            ),
-        ],
-      ),
-    );
-
-    if (!widget.autoPlay) return list;
-
-    return ClipRect(
-      child: AnimatedSlide(
-        offset: _slideOffset,
-        duration: const Duration(milliseconds: 600),
-        curve: Curves.easeOut,
-        child: list,
-      ),
+    return CarouselView(
+      controller: _controller,
+      padding: widget.padding,
+      backgroundColor: widget.backgroundColor,
+      overlayColor: widget.overlayColor != null
+          ? WidgetStatePropertyAll(widget.overlayColor)
+          : null,
+      infinite: widget.infinite,
+      elevation: widget.elevation,
+      itemSnapping: widget.itemSnapping,
+      shrinkExtent: widget.shrinkExtent,
+      scrollDirection: widget.scrollDirection,
+      itemExtent: widget.itemExtent,
+      children: widget.children,
     );
   }
 }

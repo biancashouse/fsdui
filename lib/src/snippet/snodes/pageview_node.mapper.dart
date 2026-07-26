@@ -27,7 +27,7 @@ class PageViewNodeMapper extends SubClassMapperBase<PageViewNode> {
       Field('name', _$name, opt: true);
   static List<SNode> _$children(PageViewNode v) => v.children;
   static const Field<PageViewNode, List<SNode>> _f$children =
-      Field('children', _$children);
+      Field('children', _$children, opt: true, def: const []);
   static String _$uid(PageViewNode v) => v.uid;
   static const Field<PageViewNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
@@ -73,7 +73,8 @@ class PageViewNodeMapper extends SubClassMapperBase<PageViewNode> {
   final MappingHook superHook = const PropertyRenameHook('snode', 'DK:snode');
 
   static PageViewNode _instantiate(DecodingData data) {
-    throw MapperException.missingConstructor('PageViewNode');
+    return PageViewNode(
+        name: data.dec(_f$name), children: data.dec(_f$children));
   }
 
   @override
@@ -89,9 +90,42 @@ class PageViewNodeMapper extends SubClassMapperBase<PageViewNode> {
 }
 
 mixin PageViewNodeMappable {
-  String toJson();
-  Map<String, dynamic> toMap();
-  PageViewNodeCopyWith<PageViewNode, PageViewNode, PageViewNode> get copyWith;
+  String toJson() {
+    return PageViewNodeMapper.ensureInitialized()
+        .encodeJson<PageViewNode>(this as PageViewNode);
+  }
+
+  Map<String, dynamic> toMap() {
+    return PageViewNodeMapper.ensureInitialized()
+        .encodeMap<PageViewNode>(this as PageViewNode);
+  }
+
+  PageViewNodeCopyWith<PageViewNode, PageViewNode, PageViewNode> get copyWith =>
+      _PageViewNodeCopyWithImpl<PageViewNode, PageViewNode>(
+          this as PageViewNode, $identity, $identity);
+  @override
+  String toString() {
+    return PageViewNodeMapper.ensureInitialized()
+        .stringifyValue(this as PageViewNode);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return PageViewNodeMapper.ensureInitialized()
+        .equalsValue(this as PageViewNode, other);
+  }
+
+  @override
+  int get hashCode {
+    return PageViewNodeMapper.ensureInitialized()
+        .hashValue(this as PageViewNode);
+  }
+}
+
+extension PageViewNodeValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, PageViewNode, $Out> {
+  PageViewNodeCopyWith<$R, PageViewNode, $Out> get $asPageViewNode =>
+      $base.as((v, t, t2) => _PageViewNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class PageViewNodeCopyWith<$R, $In extends PageViewNode, $Out>
@@ -100,4 +134,33 @@ abstract class PageViewNodeCopyWith<$R, $In extends PageViewNode, $Out>
   @override
   $R call({String? name, List<SNode>? children});
   PageViewNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+}
+
+class _PageViewNodeCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, PageViewNode, $Out>
+    implements PageViewNodeCopyWith<$R, PageViewNode, $Out> {
+  _PageViewNodeCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<PageViewNode> $mapper =
+      PageViewNodeMapper.ensureInitialized();
+  @override
+  ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children =>
+      ListCopyWith($value.children, (v, t) => v.copyWith.$chain(t),
+          (v) => call(children: v));
+  @override
+  $R call({Object? name = $none, List<SNode>? children}) =>
+      $apply(FieldCopyWithData({
+        if (name != $none) #name: name,
+        if (children != null) #children: children
+      }));
+  @override
+  PageViewNode $make(CopyWithData data) => PageViewNode(
+      name: data.get(#name, or: $value.name),
+      children: data.get(#children, or: $value.children));
+
+  @override
+  PageViewNodeCopyWith<$R2, PageViewNode, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _PageViewNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

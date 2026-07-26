@@ -23,7 +23,7 @@ class Page_RowOf2Panels extends StatelessWidget {
           Expanded(
             child: SnippetBuilder(
               // panelName: 'panel2',
-              initialValue: CarouselNode(
+              initialValue: CarouselViewNode(
                 name: 'panels-demo2-panel2',
                 children: [
                   AssetImageNode(assetPath: 'assets/images/frog.jpg'),

@@ -76,7 +76,7 @@ const List<Type> singleChildSubClasses = [
 ];
 
 const List<Type> multiChildSubClasses = [
-  CarouselNode,
+  // CarouselNode,
   CarouselViewNode,
   DashboardNode,
   DirectoryNode,
@@ -189,7 +189,7 @@ enum NodeAction {
     TabNode,
     TargetsWrapperNode,
     // multi-child
-    CarouselNode,
+    // CarouselNode,
     CarouselViewNode,
     DashboardNode,
     DirectoryNode,
@@ -912,7 +912,7 @@ abstract class SNode extends Node with SNodeMappable {
   // }
 
   bool get canShowTappableNodeWidgetOverlay =>
-      getParent() is! CarouselNode &&
+      // getParent() is! CarouselNode &&
       getParent() is! CarouselViewNode &&
       getParent() is! MarkdownNode &&
       getParent() is! QuillTextNode;
@@ -2135,107 +2135,107 @@ abstract class SNode extends Node with SNodeMappable {
     );
   }
 
-  List<Widget> menuAnchorWidgets_WrapWith(
-    BuildContext context,
-    NodeAction action,
-    bool? skipHeading,
-  ) {
-    return [
-      if (!(skipHeading ?? false))
-        ...menuAnchorWidgets_Heading(context, action),
-      SubmenuButton(
-        menuChildren: [
-          menuItemButton(context, "Align", AlignNode, action),
-          menuItemButton(context, "Center", CenterNode, action),
-          menuItemButton(context, "Container", ContainerNode, action),
-          menuItemButton(context, "Padding", PaddingNode, action),
-          menuItemButton(context, "SizedBox", SizedBoxNode, action),
-          menuItemButton(context, "ConstrainedBox", ConstrainedBoxNode, action),
-          menuItemButton(
-            context,
-            "InteractiveViewer",
-            InteractiveViewerNode,
-            action,
-          ),
-          menuItemButton(
-            context,
-            "SingleChildScrollView",
-            SingleChildScrollViewNode,
-            action,
-          ),
-          const Divider(),
-          menuItemButton(context, "ListView", ListViewNode, action),
-          menuItemButton(
-            context,
-            "ArticleListView",
-            ArticleListViewNode,
-            action,
-          ),
-          menuItemButton(context, "GridView", GridViewNode, action),
-          menuItemButton(context, "Dashboard", DashboardNode, action),
-          menuItemButton(context, "Column", ColumnNode, action),
-          menuItemButton(context, "Row", RowNode, action),
-          menuItemButton(context, "Wrap", WrapNode, action),
-          menuItemButton(context, "Expanded", ExpandedNode, action),
-          menuItemButton(context, "Flexible", FlexibleNode, action),
-          menuItemButton(context, "IntrinsicWidth", IntrinsicWidthNode, action),
-          menuItemButton(
-            context,
-            "IntrinsicHeight",
-            IntrinsicHeightNode,
-            action,
-          ),
-          const Divider(),
-          menuItemButton(context, "Stack", StackNode, action),
-          menuItemButton(context, "Positioned", PositionedNode, action),
-          const Divider(),
-          menuItemButton(context, "Scaffold", ScaffoldNode, action),
-        ],
-        child: fsdui.coloredText("container", fontWeight: FontWeight.normal),
-      ),
-      SubmenuButton(
-        menuChildren: [
-          menuItemButton(
-            context,
-            "CustomScrollView",
-            CustomScrollViewNode,
-            action,
-          ),
-          menuItemButton(context, "SliverAppBar", SliverAppBarNode, action),
-          menuItemButton(
-            context,
-            "SliverList.list",
-            SliverListListNode,
-            action,
-          ),
-          menuItemButton(
-            context,
-            "SliverToBoxAdapter",
-            SliverToBoxAdapterNode,
-            action,
-          ),
-          menuItemButton(
-            context,
-            "SliverResizingHeader",
-            SliverResizingHeaderNode,
-            action,
-          ),
-          menuItemButton(
-            context,
-            "SliverFloatingHeader",
-            SliverFloatingHeaderNode,
-            action,
-          ),
-        ],
-        child: fsdui.coloredText("slivers", fontWeight: FontWeight.normal),
-      ),
-      menuItemButton(context, "Align", AlignNode, action),
-      menuItemButton(context, "SplitView", SplitViewNode, action),
-      menuItemButton(context, "Hotspots", TargetsWrapperNode, action),
-      menuItemButton(context, "DefaultTextStyle", DefaultTextStyleNode, action),
-      menuItemButton(context, "Aspect Ratio", AspectRatioNode, action),
-    ];
-  }
+  // List<Widget> menuAnchorWidgets_WrapWith(
+  //   BuildContext context,
+  //   NodeAction action,
+  //   bool? skipHeading,
+  // ) {
+  //   return [
+  //     if (!(skipHeading ?? false))
+  //       ...menuAnchorWidgets_Heading(context, action),
+  //     SubmenuButton(
+  //       menuChildren: [
+  //         menuItemButton(context, "Align", AlignNode, action),
+  //         menuItemButton(context, "Center", CenterNode, action),
+  //         menuItemButton(context, "Container", ContainerNode, action),
+  //         menuItemButton(context, "Padding", PaddingNode, action),
+  //         menuItemButton(context, "SizedBox", SizedBoxNode, action),
+  //         menuItemButton(context, "ConstrainedBox", ConstrainedBoxNode, action),
+  //         menuItemButton(
+  //           context,
+  //           "InteractiveViewer",
+  //           InteractiveViewerNode,
+  //           action,
+  //         ),
+  //         menuItemButton(
+  //           context,
+  //           "SingleChildScrollView",
+  //           SingleChildScrollViewNode,
+  //           action,
+  //         ),
+  //         const Divider(),
+  //         menuItemButton(context, "ListView", ListViewNode, action),
+  //         menuItemButton(
+  //           context,
+  //           "ArticleListView",
+  //           ArticleListViewNode,
+  //           action,
+  //         ),
+  //         menuItemButton(context, "GridView", GridViewNode, action),
+  //         menuItemButton(context, "Dashboard", DashboardNode, action),
+  //         menuItemButton(context, "Column", ColumnNode, action),
+  //         menuItemButton(context, "Row", RowNode, action),
+  //         menuItemButton(context, "Wrap", WrapNode, action),
+  //         menuItemButton(context, "Expanded", ExpandedNode, action),
+  //         menuItemButton(context, "Flexible", FlexibleNode, action),
+  //         menuItemButton(context, "IntrinsicWidth", IntrinsicWidthNode, action),
+  //         menuItemButton(
+  //           context,
+  //           "IntrinsicHeight",
+  //           IntrinsicHeightNode,
+  //           action,
+  //         ),
+  //         const Divider(),
+  //         menuItemButton(context, "Stack", StackNode, action),
+  //         menuItemButton(context, "Positioned", PositionedNode, action),
+  //         const Divider(),
+  //         menuItemButton(context, "Scaffold", ScaffoldNode, action),
+  //       ],
+  //       child: fsdui.coloredText("container", fontWeight: FontWeight.normal),
+  //     ),
+  //     SubmenuButton(
+  //       menuChildren: [
+  //         menuItemButton(
+  //           context,
+  //           "CustomScrollView",
+  //           CustomScrollViewNode,
+  //           action,
+  //         ),
+  //         menuItemButton(context, "SliverAppBar", SliverAppBarNode, action),
+  //         menuItemButton(
+  //           context,
+  //           "SliverList.list",
+  //           SliverListListNode,
+  //           action,
+  //         ),
+  //         menuItemButton(
+  //           context,
+  //           "SliverToBoxAdapter",
+  //           SliverToBoxAdapterNode,
+  //           action,
+  //         ),
+  //         menuItemButton(
+  //           context,
+  //           "SliverResizingHeader",
+  //           SliverResizingHeaderNode,
+  //           action,
+  //         ),
+  //         menuItemButton(
+  //           context,
+  //           "SliverFloatingHeader",
+  //           SliverFloatingHeaderNode,
+  //           action,
+  //         ),
+  //       ],
+  //       child: fsdui.coloredText("slivers", fontWeight: FontWeight.normal),
+  //     ),
+  //     menuItemButton(context, "Align", AlignNode, action),
+  //     menuItemButton(context, "SplitView", SplitViewNode, action),
+  //     menuItemButton(context, "Hotspots", TargetsWrapperNode, action),
+  //     menuItemButton(context, "DefaultTextStyle", DefaultTextStyleNode, action),
+  //     menuItemButton(context, "Aspect Ratio", AspectRatioNode, action),
+  //   ];
+  // }
 
   List<Widget> menuAnchorWidgets_Append(
     BuildContext context,
@@ -2408,7 +2408,7 @@ abstract class SNode extends Node with SNodeMappable {
             StorageImageNode,
             action,
           ),
-          menuItemButton(context, "Carousel", CarouselNode, action),
+          // menuItemButton(context, "Carousel", CarouselNode, action),
           menuItemButton(context, "CarouselView", CarouselViewNode, action),
           menuItemButton(context, "Aspect Ratio", AspectRatioNode, action),
         ],
@@ -2440,58 +2440,58 @@ abstract class SNode extends Node with SNodeMappable {
     ];
   }
 
-  List<Widget> menuAnchorWidgets_InsertSibling(
-    BuildContext context,
-    NodeAction action,
-    bool? skipHeading,
-  ) {
-    return [
-      if (!(skipHeading ?? false))
-        ...menuAnchorWidgets_Heading(context, action),
-      if (getParent() is FlexNode) ...[
-        menuItemButton(context, "Expanded", ExpandedNode, action),
-        menuItemButton(context, "Flexible", FlexibleNode, action),
-      ],
-      menuItemButton(context, "IntrinsicWidth", IntrinsicWidthNode, action),
-      menuItemButton(context, "IntrinsicHeight", IntrinsicHeightNode, action),
-      if (getParent() is StepperNode)
-        menuItemButton(context, "Step", StepNode, action),
-      if (getParent() is PollNode)
-        menuItemButton(context, "PollOption", PollOptionNode, action),
-      if (getParent() is StackNode)
-        menuItemButton(context, "Positioned", PositionedNode, action),
-      if (getParent() is StackNode)
-        menuItemButton(context, "Align", AlignNode, action),
-      if (getParent() is DirectoryNode) ...[
-        menuItemButton(context, "Directory", DirectoryNode, action),
-        menuItemButton(context, "File", FileNode, action),
-      ],
-      if (getParent() is MenuBarNode) ...[
-        menuItemButton(context, "SubMenuButton", SubmenuButtonNode, action),
-        menuItemButton(context, "MenuItemButton", MenuItemButtonNode, action),
-      ],
-      if (getParent() is SubmenuButtonNode) ...[
-        menuItemButton(context, "MenuItemButton", MenuItemButtonNode, action),
-      ],
-      if (getParent() is CarouselNode || getParent() is CarouselViewNode) ...[
-        menuItemButton(context, "AssetImage", AssetImageNode, action),
-        menuItemButton(context, "Algorithm", AlgCNode, action),
-        menuItemButton(context, "UML", UMLImageNode, action),
-        menuItemButton(
-          context,
-          "FirestoreStorageImage",
-          StorageImageNode,
-          action,
-        ),
-      ],
-      if (getParent() is TextSpanNode) ...[
-        menuItemButton(context, "TextSpanN", TextSpanNode, action),
-        menuItemButton(context, "WidgetSpan", WidgetSpanNode, action),
-      ],
-      if (getParent() is! PollNode)
-        ...menuAnchorWidgets_Append(context, action, true),
-    ];
-  }
+  // List<Widget> menuAnchorWidgets_InsertSibling(
+  //   BuildContext context,
+  //   NodeAction action,
+  //   bool? skipHeading,
+  // ) {
+  //   return [
+  //     if (!(skipHeading ?? false))
+  //       ...menuAnchorWidgets_Heading(context, action),
+  //     if (getParent() is FlexNode) ...[
+  //       menuItemButton(context, "Expanded", ExpandedNode, action),
+  //       menuItemButton(context, "Flexible", FlexibleNode, action),
+  //     ],
+  //     menuItemButton(context, "IntrinsicWidth", IntrinsicWidthNode, action),
+  //     menuItemButton(context, "IntrinsicHeight", IntrinsicHeightNode, action),
+  //     if (getParent() is StepperNode)
+  //       menuItemButton(context, "Step", StepNode, action),
+  //     if (getParent() is PollNode)
+  //       menuItemButton(context, "PollOption", PollOptionNode, action),
+  //     if (getParent() is StackNode)
+  //       menuItemButton(context, "Positioned", PositionedNode, action),
+  //     if (getParent() is StackNode)
+  //       menuItemButton(context, "Align", AlignNode, action),
+  //     if (getParent() is DirectoryNode) ...[
+  //       menuItemButton(context, "Directory", DirectoryNode, action),
+  //       menuItemButton(context, "File", FileNode, action),
+  //     ],
+  //     if (getParent() is MenuBarNode) ...[
+  //       menuItemButton(context, "SubMenuButton", SubmenuButtonNode, action),
+  //       menuItemButton(context, "MenuItemButton", MenuItemButtonNode, action),
+  //     ],
+  //     if (getParent() is SubmenuButtonNode) ...[
+  //       menuItemButton(context, "MenuItemButton", MenuItemButtonNode, action),
+  //     ],
+  //     if (getParent() is CarouselNode || getParent() is CarouselViewNode) ...[
+  //       menuItemButton(context, "AssetImage", AssetImageNode, action),
+  //       menuItemButton(context, "Algorithm", AlgCNode, action),
+  //       menuItemButton(context, "UML", UMLImageNode, action),
+  //       menuItemButton(
+  //         context,
+  //         "FirestoreStorageImage",
+  //         StorageImageNode,
+  //         action,
+  //       ),
+  //     ],
+  //     if (getParent() is TextSpanNode) ...[
+  //       menuItemButton(context, "TextSpanN", TextSpanNode, action),
+  //       menuItemButton(context, "WidgetSpan", WidgetSpanNode, action),
+  //     ],
+  //     if (getParent() is! PollNode)
+  //       ...menuAnchorWidgets_Append(context, action, true),
+  //   ];
+  // }
 
   List<Widget> menuAnchorWidgets_ReplaceWith(
     BuildContext context,
@@ -2708,7 +2708,7 @@ abstract class SNode extends Node with SNodeMappable {
               StorageImageNode,
               action,
             ),
-            menuItemButton(context, "Carousel", CarouselNode, action),
+            // menuItemButton(context, "Carousel", CarouselNode, action),
             menuItemButton(context, "CarouselView", CarouselViewNode, action),
             menuItemButton(context, "Aspect Ratio", AspectRatioNode, action),
           ],

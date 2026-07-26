@@ -176,8 +176,8 @@ class SnippetInfoModel with SnippetInfoModelMappable {
 
   static VersionId createNewVersion(SNode snippet) {
     VersionId newVersionId = _prepareNewVersionId(snippet.name!);
-    SnippetInfoModel snippetInfo = fsdui.appInfo.cachedSnippetInfo(snippet.name!)!;
-    snippetInfo.cacheVersion(newVersionId, snippet);
+    // SnippetInfoModel snippetInfo = fsdui.appInfo.cachedSnippetInfo(snippet.name!)!;
+    // snippetInfo.cacheVersion(newVersionId, snippet);
     return newVersionId;
   }
 

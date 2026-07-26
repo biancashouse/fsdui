@@ -14,6 +14,7 @@ class CarouselViewNodeMapper extends SubClassMapperBase<CarouselViewNode> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = CarouselViewNodeMapper._());
       SNodeMapper.ensureInitialized().addSubMapper(_instance!);
+      AxisEnumMapper.ensureInitialized();
       SNodeMapper.ensureInitialized();
     }
     return _instance!;
@@ -25,12 +26,45 @@ class CarouselViewNodeMapper extends SubClassMapperBase<CarouselViewNode> {
   static String? _$name(CarouselViewNode v) => v.name;
   static const Field<CarouselViewNode, String> _f$name =
       Field('name', _$name, opt: true);
+  static Color? _$backgroundColor(CarouselViewNode v) => v.backgroundColor;
+  static const Field<CarouselViewNode, Color> _f$backgroundColor =
+      Field('backgroundColor', _$backgroundColor, opt: true);
+  static Color? _$overlayColor(CarouselViewNode v) => v.overlayColor;
+  static const Field<CarouselViewNode, Color> _f$overlayColor =
+      Field('overlayColor', _$overlayColor, opt: true);
+  static EdgeInsets? _$padding(CarouselViewNode v) => v.padding;
+  static const Field<CarouselViewNode, EdgeInsets> _f$padding =
+      Field('padding', _$padding, opt: true);
   static double _$height(CarouselViewNode v) => v.height;
   static const Field<CarouselViewNode, double> _f$height =
       Field('height', _$height, opt: true, def: 200);
+  static double? _$elevation(CarouselViewNode v) => v.elevation;
+  static const Field<CarouselViewNode, double> _f$elevation =
+      Field('elevation', _$elevation, opt: true);
+  static bool _$itemSnapping(CarouselViewNode v) => v.itemSnapping;
+  static const Field<CarouselViewNode, bool> _f$itemSnapping =
+      Field('itemSnapping', _$itemSnapping, opt: true, def: false);
+  static AxisEnum _$scrollDirection(CarouselViewNode v) => v.scrollDirection;
+  static const Field<CarouselViewNode, AxisEnum> _f$scrollDirection = Field(
+      'scrollDirection', _$scrollDirection,
+      opt: true, def: AxisEnum.horizontal);
+  static double _$shrinkExtent(CarouselViewNode v) => v.shrinkExtent;
+  static const Field<CarouselViewNode, double> _f$shrinkExtent =
+      Field('shrinkExtent', _$shrinkExtent, opt: true, def: 0.0);
+  static double? _$itemExtent(CarouselViewNode v) => v.itemExtent;
+  static const Field<CarouselViewNode, double> _f$itemExtent =
+      Field('itemExtent', _$itemExtent, opt: true, def: 600.0);
+  static bool _$infinite(CarouselViewNode v) => v.infinite;
+  static const Field<CarouselViewNode, bool> _f$infinite =
+      Field('infinite', _$infinite, opt: true, def: false);
   static bool _$autoPlay(CarouselViewNode v) => v.autoPlay;
   static const Field<CarouselViewNode, bool> _f$autoPlay =
       Field('autoPlay', _$autoPlay, opt: true, def: false);
+  static double _$autoPlayIntervalSecs(CarouselViewNode v) =>
+      v.autoPlayIntervalSecs;
+  static const Field<CarouselViewNode, double> _f$autoPlayIntervalSecs = Field(
+      'autoPlayIntervalSecs', _$autoPlayIntervalSecs,
+      opt: true, def: 3.0);
   static List<SNode> _$children(CarouselViewNode v) => v.children;
   static const Field<CarouselViewNode, List<SNode>> _f$children =
       Field('children', _$children);
@@ -60,8 +94,18 @@ class CarouselViewNodeMapper extends SubClassMapperBase<CarouselViewNode> {
   @override
   final MappableFields<CarouselViewNode> fields = const {
     #name: _f$name,
+    #backgroundColor: _f$backgroundColor,
+    #overlayColor: _f$overlayColor,
+    #padding: _f$padding,
     #height: _f$height,
+    #elevation: _f$elevation,
+    #itemSnapping: _f$itemSnapping,
+    #scrollDirection: _f$scrollDirection,
+    #shrinkExtent: _f$shrinkExtent,
+    #itemExtent: _f$itemExtent,
+    #infinite: _f$infinite,
     #autoPlay: _f$autoPlay,
+    #autoPlayIntervalSecs: _f$autoPlayIntervalSecs,
     #children: _f$children,
     #uid: _f$uid,
     #tags: _f$tags,
@@ -84,8 +128,18 @@ class CarouselViewNodeMapper extends SubClassMapperBase<CarouselViewNode> {
   static CarouselViewNode _instantiate(DecodingData data) {
     return CarouselViewNode(
         name: data.dec(_f$name),
+        backgroundColor: data.dec(_f$backgroundColor),
+        overlayColor: data.dec(_f$overlayColor),
+        padding: data.dec(_f$padding),
         height: data.dec(_f$height),
+        elevation: data.dec(_f$elevation),
+        itemSnapping: data.dec(_f$itemSnapping),
+        scrollDirection: data.dec(_f$scrollDirection),
+        shrinkExtent: data.dec(_f$shrinkExtent),
+        itemExtent: data.dec(_f$itemExtent),
+        infinite: data.dec(_f$infinite),
         autoPlay: data.dec(_f$autoPlay),
+        autoPlayIntervalSecs: data.dec(_f$autoPlayIntervalSecs),
         children: data.dec(_f$children));
   }
 
@@ -147,7 +201,20 @@ abstract class CarouselViewNodeCopyWith<$R, $In extends CarouselViewNode, $Out>
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
   $R call(
-      {String? name, double? height, bool? autoPlay, List<SNode>? children});
+      {String? name,
+      Color? backgroundColor,
+      Color? overlayColor,
+      EdgeInsets? padding,
+      double? height,
+      double? elevation,
+      bool? itemSnapping,
+      AxisEnum? scrollDirection,
+      double? shrinkExtent,
+      double? itemExtent,
+      bool? infinite,
+      bool? autoPlay,
+      double? autoPlayIntervalSecs,
+      List<SNode>? children});
   CarouselViewNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -167,20 +234,52 @@ class _CarouselViewNodeCopyWithImpl<$R, $Out>
   @override
   $R call(
           {Object? name = $none,
+          Object? backgroundColor = $none,
+          Object? overlayColor = $none,
+          Object? padding = $none,
           double? height,
+          Object? elevation = $none,
+          bool? itemSnapping,
+          AxisEnum? scrollDirection,
+          double? shrinkExtent,
+          Object? itemExtent = $none,
+          bool? infinite,
           bool? autoPlay,
+          double? autoPlayIntervalSecs,
           List<SNode>? children}) =>
       $apply(FieldCopyWithData({
         if (name != $none) #name: name,
+        if (backgroundColor != $none) #backgroundColor: backgroundColor,
+        if (overlayColor != $none) #overlayColor: overlayColor,
+        if (padding != $none) #padding: padding,
         if (height != null) #height: height,
+        if (elevation != $none) #elevation: elevation,
+        if (itemSnapping != null) #itemSnapping: itemSnapping,
+        if (scrollDirection != null) #scrollDirection: scrollDirection,
+        if (shrinkExtent != null) #shrinkExtent: shrinkExtent,
+        if (itemExtent != $none) #itemExtent: itemExtent,
+        if (infinite != null) #infinite: infinite,
         if (autoPlay != null) #autoPlay: autoPlay,
+        if (autoPlayIntervalSecs != null)
+          #autoPlayIntervalSecs: autoPlayIntervalSecs,
         if (children != null) #children: children
       }));
   @override
   CarouselViewNode $make(CopyWithData data) => CarouselViewNode(
       name: data.get(#name, or: $value.name),
+      backgroundColor: data.get(#backgroundColor, or: $value.backgroundColor),
+      overlayColor: data.get(#overlayColor, or: $value.overlayColor),
+      padding: data.get(#padding, or: $value.padding),
       height: data.get(#height, or: $value.height),
+      elevation: data.get(#elevation, or: $value.elevation),
+      itemSnapping: data.get(#itemSnapping, or: $value.itemSnapping),
+      scrollDirection: data.get(#scrollDirection, or: $value.scrollDirection),
+      shrinkExtent: data.get(#shrinkExtent, or: $value.shrinkExtent),
+      itemExtent: data.get(#itemExtent, or: $value.itemExtent),
+      infinite: data.get(#infinite, or: $value.infinite),
       autoPlay: data.get(#autoPlay, or: $value.autoPlay),
+      autoPlayIntervalSecs:
+          data.get(#autoPlayIntervalSecs, or: $value.autoPlayIntervalSecs),
       children: data.get(#children, or: $value.children));
 
   @override

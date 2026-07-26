@@ -66,7 +66,7 @@ final List<WidgetEntry> widgetRegistry = [
   // image
   const WidgetEntry(label: 'Algorithm', type: AlgCNode, category: WidgetCategory.image, keywords: ['algc', 'diagram']),
   const WidgetEntry(label: 'Asset Image', type: AssetImageNode, category: WidgetCategory.image, keywords: ['image', 'asset', 'local']),
-  const WidgetEntry(label: 'Carousel', type: CarouselNode, category: WidgetCategory.image, keywords: ['slider', 'gallery']),
+  const WidgetEntry(label: 'Carousel', type: CarouselViewNode, category: WidgetCategory.image, keywords: ['slider', 'gallery']),
   const WidgetEntry(label: 'Firebase Storage Image', type: StorageImageNode, category: WidgetCategory.image, keywords: ['firebase', 'image', 'storage', 'cloud']),
   const WidgetEntry(label: 'UML', type: UMLImageNode, category: WidgetCategory.image, keywords: ['diagram', 'class']),
   WidgetEntry(label: 'Crossword', type: CrosswordNode, category: WidgetCategory.image, keywords: const ['crossword']),

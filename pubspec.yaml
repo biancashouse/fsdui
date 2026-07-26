@@ -53,7 +53,7 @@ dependencies:
   #flutter_polls: ^0.1.5
   flutter_hooks: ^0.21.2
   auto_size_text_field: ^2.2.4
-  carousel_slider: ^5.1.2
+#  carousel_slider: ^5.1.2
 #  flutter_fancy_tree_view: ^1.6.0
   webview_flutter: ^4.13.0
   webview_flutter_wkwebview: ^3.22.0

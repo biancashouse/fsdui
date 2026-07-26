@@ -1240,7 +1240,6 @@ class FSDUI_Mixins
     TabNodeMapper.ensureInitialized();
     TargetsWrapperNodeMapper.ensureInitialized();
     // MC
-    CarouselNodeMapper.ensureInitialized();
     CarouselViewNodeMapper.ensureInitialized();
     CustomScrollViewNodeMapper.ensureInitialized();
     DirectoryNodeMapper.ensureInitialized();

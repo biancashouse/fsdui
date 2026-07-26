@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fsdui/fsdui.dart' hide Line;
 import 'package:fsdui/src/model/quill_target_model.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_target_pointer_type.dart';
@@ -218,7 +219,31 @@ class _FocusAwareQuillEditorState extends State<FocusAwareQuillEditor> {
                   width: 2,
                 ),
               ),
-              child: _quillEditor(_focusNode, _scrollController, _controller),
+              child: CallbackShortcuts(
+                bindings: {
+                  const SingleActivator(LogicalKeyboardKey.keyC, meta: true):
+                      () => _controller.formatSelection(
+                        Attribute.centerAlignment,
+                      ),
+                  const SingleActivator(LogicalKeyboardKey.keyL, meta: true):
+                      () => _controller.formatSelection(
+                        Attribute.leftAlignment,
+                      ),
+                  const SingleActivator(LogicalKeyboardKey.keyR, meta: true):
+                      () => _controller.formatSelection(
+                        Attribute.rightAlignment,
+                      ),
+                  const SingleActivator(LogicalKeyboardKey.keyJ, meta: true):
+                      () => _controller.formatSelection(
+                        Attribute.justifyAlignment,
+                      ),
+                },
+                child: _quillEditor(
+                  _focusNode,
+                  _scrollController,
+                  _controller,
+                ),
+              ),
             ),
           ],
         );

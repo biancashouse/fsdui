@@ -46,19 +46,19 @@ class FlexNode extends SNode with MC, FlexMixin, FlexNodeMappable {
     ),
   ];
 
-  @override
-  List<Widget> menuAnchorWidgets_WrapWith(
-    BuildContext context,
-    NodeAction action,
-    bool? skipHeading,
-  ) {
-    return [
-      ...super.menuAnchorWidgets_Heading(context, action),
-      menuItemButton(context, "Expanded", ExpandedNode, action),
-      menuItemButton(context, "Flexible", FlexibleNode, action),
-      ...super.menuAnchorWidgets_WrapWith(context, action, true),
-    ];
-  }
+  // @override
+  // List<Widget> menuAnchorWidgets_WrapWith(
+  //   BuildContext context,
+  //   NodeAction action,
+  //   bool? skipHeading,
+  // ) {
+  //   return [
+  //     ...super.menuAnchorWidgets_Heading(context, action),
+  //     menuItemButton(context, "Expanded", ExpandedNode, action),
+  //     menuItemButton(context, "Flexible", FlexibleNode, action),
+  //     ...super.menuAnchorWidgets_WrapWith(context, action, true),
+  //   ];
+  // }
 
   @override
   String toString() => FLUTTER_TYPE;
