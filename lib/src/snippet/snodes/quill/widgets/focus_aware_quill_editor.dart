@@ -132,14 +132,15 @@ class _FocusAwareQuillEditorState extends State<FocusAwareQuillEditor> {
   }
 
   void _focusListener() {
-
     void dismissToolbarForLostFocus() {
       if (_isDirty) {
         final newJson = jsonEncode(_controller.document.toDelta().toJson());
         widget.onChange(newJson);
         _isDirty = false;
       }
-      fsdui.dismiss(fsdui.quillTextToolbarCIDVN.value!);
+      if (fsdui.quillTextToolbarCIDVN.value != null) {
+        fsdui.dismiss(fsdui.quillTextToolbarCIDVN.value!);
+      }
       fsdui.quillTextToolbarCIDVN.value = null;
     }
 
@@ -181,7 +182,6 @@ class _FocusAwareQuillEditorState extends State<FocusAwareQuillEditor> {
     }
   }
 
-
   // void notifyChange() {
   // final newJson = jsonEncode(_controller.document.toDelta().toJson());
   // widget.onChange(newJson);
@@ -221,28 +221,28 @@ class _FocusAwareQuillEditorState extends State<FocusAwareQuillEditor> {
               ),
               child: CallbackShortcuts(
                 bindings: {
-                  const SingleActivator(LogicalKeyboardKey.keyC, meta: true):
-                      () => _controller.formatSelection(
-                        Attribute.centerAlignment,
-                      ),
-                  const SingleActivator(LogicalKeyboardKey.keyL, meta: true):
-                      () => _controller.formatSelection(
-                        Attribute.leftAlignment,
-                      ),
-                  const SingleActivator(LogicalKeyboardKey.keyR, meta: true):
-                      () => _controller.formatSelection(
-                        Attribute.rightAlignment,
-                      ),
-                  const SingleActivator(LogicalKeyboardKey.keyJ, meta: true):
-                      () => _controller.formatSelection(
-                        Attribute.justifyAlignment,
-                      ),
+                  const SingleActivator(
+                    LogicalKeyboardKey.keyC,
+                    meta: true,
+                  ): () =>
+                      _controller.formatSelection(Attribute.centerAlignment),
+                  const SingleActivator(
+                    LogicalKeyboardKey.keyL,
+                    meta: true,
+                  ): () =>
+                      _controller.formatSelection(Attribute.leftAlignment),
+                  const SingleActivator(
+                    LogicalKeyboardKey.keyR,
+                    meta: true,
+                  ): () =>
+                      _controller.formatSelection(Attribute.rightAlignment),
+                  const SingleActivator(
+                    LogicalKeyboardKey.keyJ,
+                    meta: true,
+                  ): () =>
+                      _controller.formatSelection(Attribute.justifyAlignment),
                 },
-                child: _quillEditor(
-                  _focusNode,
-                  _scrollController,
-                  _controller,
-                ),
+                child: _quillEditor(_focusNode, _scrollController, _controller),
               ),
             ),
           ],

@@ -683,6 +683,12 @@ class FSDUI_Mixins
   FocusNode? focussedFN;
   final quillTextToolbarCIDVN = ValueNotifier<CalloutId?>(null);
 
+  // Title of whichever page is currently visible in a PageViewNode, so a
+  // SliverAppBar elsewhere in the tree (not an ancestor of the PageView) can
+  // display it. Updated from PageViewNode.buildFlutterWidget's
+  // PageController.onPageChanged.
+  final currentPageTitleVN = ValueNotifier<String>('');
+
   // >0 while one of the QuillTextToolbar's MenuAnchor popups (font family,
   // font size) is open. Each popup renders in its own OverlayEntry (a
   // structural sibling of the toolbar, not a focus/widget-tree descendant),
@@ -1240,6 +1246,7 @@ class FSDUI_Mixins
     TabNodeMapper.ensureInitialized();
     TargetsWrapperNodeMapper.ensureInitialized();
     // MC
+    // CarouselNodeMapper.ensureInitialized();
     CarouselViewNodeMapper.ensureInitialized();
     CustomScrollViewNodeMapper.ensureInitialized();
     DirectoryNodeMapper.ensureInitialized();

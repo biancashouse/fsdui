@@ -14,7 +14,6 @@ class PageViewNodeMapper extends SubClassMapperBase<PageViewNode> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = PageViewNodeMapper._());
       SNodeMapper.ensureInitialized().addSubMapper(_instance!);
-      SNodeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -25,9 +24,15 @@ class PageViewNodeMapper extends SubClassMapperBase<PageViewNode> {
   static String? _$name(PageViewNode v) => v.name;
   static const Field<PageViewNode, String> _f$name =
       Field('name', _$name, opt: true);
-  static List<SNode> _$children(PageViewNode v) => v.children;
-  static const Field<PageViewNode, List<SNode>> _f$children =
-      Field('children', _$children, opt: true, def: const []);
+  static List<String> _$childSnippetNames(PageViewNode v) =>
+      v.childSnippetNames;
+  static const Field<PageViewNode, List<String>> _f$childSnippetNames =
+      Field('childSnippetNames', _$childSnippetNames, opt: true, def: const []);
+  static List<String> _$childSnippetTitles(PageViewNode v) =>
+      v.childSnippetTitles;
+  static const Field<PageViewNode, List<String>> _f$childSnippetTitles = Field(
+      'childSnippetTitles', _$childSnippetTitles,
+      opt: true, def: const []);
   static String _$uid(PageViewNode v) => v.uid;
   static const Field<PageViewNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
@@ -53,7 +58,8 @@ class PageViewNodeMapper extends SubClassMapperBase<PageViewNode> {
   @override
   final MappableFields<PageViewNode> fields = const {
     #name: _f$name,
-    #children: _f$children,
+    #childSnippetNames: _f$childSnippetNames,
+    #childSnippetTitles: _f$childSnippetTitles,
     #uid: _f$uid,
     #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
@@ -74,7 +80,9 @@ class PageViewNodeMapper extends SubClassMapperBase<PageViewNode> {
 
   static PageViewNode _instantiate(DecodingData data) {
     return PageViewNode(
-        name: data.dec(_f$name), children: data.dec(_f$children));
+        name: data.dec(_f$name),
+        childSnippetNames: data.dec(_f$childSnippetNames),
+        childSnippetTitles: data.dec(_f$childSnippetTitles));
   }
 
   @override
@@ -130,9 +138,15 @@ extension PageViewNodeValueCopy<$R, $Out>
 
 abstract class PageViewNodeCopyWith<$R, $In extends PageViewNode, $Out>
     implements SNodeCopyWith<$R, $In, $Out> {
-  ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
+      get childSnippetNames;
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
+      get childSnippetTitles;
   @override
-  $R call({String? name, List<SNode>? children});
+  $R call(
+      {String? name,
+      List<String>? childSnippetNames,
+      List<String>? childSnippetTitles});
   PageViewNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -145,19 +159,34 @@ class _PageViewNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<PageViewNode> $mapper =
       PageViewNodeMapper.ensureInitialized();
   @override
-  ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children =>
-      ListCopyWith($value.children, (v, t) => v.copyWith.$chain(t),
-          (v) => call(children: v));
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
+      get childSnippetNames => ListCopyWith(
+          $value.childSnippetNames,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(childSnippetNames: v));
   @override
-  $R call({Object? name = $none, List<SNode>? children}) =>
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
+      get childSnippetTitles => ListCopyWith(
+          $value.childSnippetTitles,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(childSnippetTitles: v));
+  @override
+  $R call(
+          {Object? name = $none,
+          List<String>? childSnippetNames,
+          List<String>? childSnippetTitles}) =>
       $apply(FieldCopyWithData({
         if (name != $none) #name: name,
-        if (children != null) #children: children
+        if (childSnippetNames != null) #childSnippetNames: childSnippetNames,
+        if (childSnippetTitles != null) #childSnippetTitles: childSnippetTitles
       }));
   @override
   PageViewNode $make(CopyWithData data) => PageViewNode(
       name: data.get(#name, or: $value.name),
-      children: data.get(#children, or: $value.children));
+      childSnippetNames:
+          data.get(#childSnippetNames, or: $value.childSnippetNames),
+      childSnippetTitles:
+          data.get(#childSnippetTitles, or: $value.childSnippetTitles));
 
   @override
   PageViewNodeCopyWith<$R2, PageViewNode, $Out2> $chain<$R2, $Out2>(

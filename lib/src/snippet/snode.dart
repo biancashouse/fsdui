@@ -1970,6 +1970,21 @@ abstract class SNode extends Node with SNodeMappable {
     ...scrollViewChildSubClasses,
   ];
 
+  // Existing snippets offered in the "Snippets" section of the quick-pick
+  // panel. Override to narrow this per node type/action — e.g. PageViewNode
+  // only wants page snippets (name starts with '/') when adding a child.
+  List<String> snippetCandidates(NodeAction action) => fsdui.appInfo.snippetNames;
+
+  // Called when a snippet is picked from the quick-pick's "Snippets" section
+  // for NodeAction.addChild. Default behavior appends a blank node of the
+  // same type as the picked snippet's root (the snippet's own content isn't
+  // referenced). Override for nodes that instead want to keep a reference to
+  // the snippet itself — e.g. PageViewNode appends snippetName to
+  // childSnippetNames rather than creating a same-typed blank node.
+  void onAddChildSnippetSelected(String snippetName, Type snippetType) {
+    fsdui.capiBloc.add(AppendChild(nodeType: snippetType));
+  }
+
   // ---------------------------------------------------------------------------
   // Widget picker helpers
   // ---------------------------------------------------------------------------
@@ -2062,18 +2077,24 @@ abstract class SNode extends Node with SNodeMappable {
     final snippet = await SNode.loadSnippetFromCacheOrFromFB(
       snippetName: snippetName,
     );
+    if (snippet == null) return;
     switch (action) {
+      // Clone rather than reuse the loaded (possibly cached) snippet
+      // instance directly — these actions splice it into another snippet's
+      // tree, and without cloning it'd share object identity with whatever
+      // else references snippetName, so editing one would silently mutate
+      // the other.
       case NodeAction.replaceWith:
-        fsdui.capiBloc.add(ReplaceSelectionWith(nodeType: snippet.runtimeType));
+        fsdui.capiBloc.add(ReplaceSelectionWith(testNode: snippet.clone()));
         fsdui.afterNextBuildDo(() => fsdui.dismiss('node-actions'));
       case NodeAction.addSiblingBefore:
-        fsdui.capiBloc.add(AddSiblingBefore(nodeType: snippet.runtimeType));
+        fsdui.capiBloc.add(AddSiblingBefore(testNode: snippet.clone()));
         fsdui.afterNextBuildDo(() => fsdui.dismiss('node-actions'));
       case NodeAction.addSiblingAfter:
-        fsdui.capiBloc.add(AddSiblingAfter(nodeType: snippet.runtimeType));
+        fsdui.capiBloc.add(AddSiblingAfter(testNode: snippet.clone()));
         fsdui.afterNextBuildDo(() => fsdui.dismiss('node-actions'));
       case NodeAction.addChild:
-        fsdui.capiBloc.add(AppendChild(nodeType: snippet.runtimeType));
+        onAddChildSnippetSelected(snippetName, snippet.runtimeType);
         fsdui.afterNextBuildDo(() => fsdui.dismiss('node-actions'));
       case NodeAction.wrapWith:
         break;
@@ -2099,7 +2120,7 @@ abstract class SNode extends Node with SNodeMappable {
   void _openQuickPick(NodeAction action) {
     final recommended = recommendedEntries(action);
     final allCandidates = _allCandidatesForAction(action);
-    final snippetNames = List<String>.from(fsdui.appInfo.snippetNames)..sort();
+    final snippetNames = List<String>.from(snippetCandidates(action))..sort();
     final hasPaste =
         fsdui.appInfo.clipboard != null && action != NodeAction.wrapWith;
 
@@ -2947,7 +2968,8 @@ abstract class SNode extends Node with SNodeMappable {
     node.getParent();
     Iterable<SNode> children = [];
 
-    if (node.isASnippetRoot && node.getParent() != null) {
+    // skip the rootNode test
+    if (false && node.isASnippetRoot && node.getParent() != null) {
       children = [];
     } else if (node is ScaffoldNode) {
       children = [?node.appBar, ?node.body];
