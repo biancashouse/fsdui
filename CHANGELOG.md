@@ -5,6 +5,14 @@ The message format is based on [Keep a Changelog](https://keepachangelog.com/en/
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## \[Unreleased\]
+### Fixed
+- QuillTextToolbar font-size dropdown showed the "Size" placeholder instead of the actual value when the current size wasn't one of the preset options
+- StringListPNode's edit popup rendered non-interactively, underneath the editor UI (was using `showDialog`, which conflicts with this app's own overlay/callout stacking)
+- StringListPNode triggered a full snippet-tree rebuild on every keystroke instead of committing on blur/submit
+- CarouselViewNode ignored its own `infinite` property (was hardcoded to `true`)
+- CarouselViewNode's `overlayColor` property was never applied to the rendered widget
+- QuillTextToolbar could crash when dismissing a null toolbar callout id
+- New-snippet creation used the wrong name and never actually persisted the new snippet
 
 ## 4.0.0 - 2025-10-16
 ## added
