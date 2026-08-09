@@ -21,7 +21,7 @@ class TabBarNode extends SNode with MC, TabBarNodeMappable {
   TextStyleProperties labelTSPropGroup;
   Color? selectedLabelColor;
   Color? unselectedLabelColor;
-  Color? indicatorColor;
+  Color indicatorColor;
   double? indicatorWeight;
   int? selection;
 
@@ -31,7 +31,7 @@ class TabBarNode extends SNode with MC, TabBarNodeMappable {
     required this.labelTSPropGroup,
     this.selectedLabelColor,
     this.unselectedLabelColor,
-    this.indicatorColor,
+    this.indicatorColor = Colors.blue,
     this.indicatorWeight = 2.0,
     this.selection,
     required this.children,
@@ -179,9 +179,9 @@ class TabBarNode extends SNode with MC, TabBarNodeMappable {
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     setParent(parentNode);
     return PreferredSize(
-      preferredSize: const Size.fromHeight(100), //tabBar.preferredSize,
+      preferredSize: const Size.fromHeight(60), //tabBar.preferredSize,
       child: Container(
-        color: bgColor ?? Colors.grey,
+        color: bgColor ?? Colors.white,
         child: TabBarWidget(
           node: this,
           parentNode: parentNode,
@@ -203,7 +203,7 @@ class TabBarNode extends SNode with MC, TabBarNodeMappable {
       return IconButton(
         key: key,
         padding: EdgeInsets.zero,
-        onPressed: () => fsdui.capiBloc.add(AppendChild(nodeType: TabNode)),
+        onPressed: () => fsdui.capiBloc.add(AppendChild(nodeType: TextNode)),
         icon: Icon(Icons.add_box, color: bgColor),
         tooltip: 'Add Tab',
         iconSize: 40,
@@ -226,7 +226,7 @@ class TabBarNode extends SNode with MC, TabBarNodeMappable {
     bool? skipHeading,
   ) => [
     ...super.menuAnchorWidgets_Heading(context, action),
-    menuItemButton(context, "Tab", TabNode, action),
+    menuItemButton(context, "Tab", TextNode, action),
   ];
 
   @override
@@ -271,16 +271,26 @@ class TabBarWidgetState extends State<TabBarWidget>
   @override
   void initState() {
     super.initState();
+
+    // _tabC is created synchronously (not deferred) since build() below
+    // reads it on the very first frame, before any deferred callback runs.
     _tabC = TabController(
       vsync: this,
       length: widget.node.children.length,
     );
     _tabC.addListener(_tabListenerF);
-    // Deferring via addPostFrameCallback means the notification fires
-    // after the current frame's build/layout/paint is fully complete, at
-    // which point setState from ValueListenableBuilder is legal and the
-    // TabBarView renders correctly.
-    fsdui.afterNextBuildDo((){
+
+    // Both node-level assignments are deferred: this lets the
+    // notifications fire after the current frame's build/layout/paint is
+    // fully complete, at which point setState from a ValueListenableBuilder
+    // (in a TabBarViewNode that's already listening, possibly in an
+    // unrelated snippet tree) is legal and the TabBarView renders
+    // correctly — regardless of whether that TabBarViewNode built before
+    // or after this TabBarNode.
+    fsdui.afterNextBuildDo(() {
+      if (widget.node.name != null) {
+        fsdui.tabBarNodeNotifierFor(widget.node.name!).value = widget.node;
+      }
       widget.node.tabC = _tabC;
     });
   }
@@ -309,9 +319,10 @@ class TabBarWidgetState extends State<TabBarWidget>
       // _TabBarViewState to call getTransformTo on transitional render objects.
       if (_tabC.indexIsChanging) return;
       final selected = fsdui.selectedNode;
-      final selectedIdx = selected is TabNode
-          ? widget.node.children.indexOf(selected)
-          : -1;
+      final selectedIdx = -1;
+      // selected is TabNode
+      //     ? widget.node.children.indexOf(selected)
+      //     : -1;
       final targetIdx = selectedIdx >= 0
           ? selectedIdx
           : min(widget.node.selection ?? 0, widget.node.children.length - 1);
@@ -327,17 +338,34 @@ class TabBarWidgetState extends State<TabBarWidget>
   void dispose() {
     _tabC.removeListener(_tabListenerF);
     _tabC.dispose();
-    widget.node.tabC = null;
+
+    // Flutter can call dispose() mid-build, while reconciling the element
+    // tree (not only between frames) — e.g. when this widget is being
+    // swapped out for a new instance. Clearing these notifiers here would
+    // notify any listening ValueListenableBuilder while the framework is
+    // still locked, so defer to right after the frame. Locals are
+    // captured up front since `widget` is gone once dispose() returns.
+    final node = widget.node;
+    final name = node.name;
+    final disposedTabC = _tabC;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (node.tabC == disposedTabC) node.tabC = null;
+      if (name != null) {
+        final notifier = fsdui.tabBarNodeNotifierFor(name);
+        if (notifier.value == node) notifier.value = null;
+      }
+    });
+
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> tabs = [];
+    List<Tab> tabs = [];
     for (SNode node in widget.node.children) {
       tabs.add(
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+        Tab(
+          iconMargin: const EdgeInsets.symmetric(horizontal: 8),
           child: node.build(context, widget.node),
         ),
       );
@@ -350,10 +378,11 @@ class TabBarWidgetState extends State<TabBarWidget>
       unselectedLabelColor: widget.node.unselectedLabelColor,
       labelPadding: EdgeInsets.all(10),
       labelStyle: widget.node.labelTSPropGroup.toTextStyle(context),
-      indicatorColor: widget.node.indicatorColor,
+      indicatorColor: Colors.white,//widget.node.indicatorColor,
       indicatorWeight: widget.node.indicatorWeight ?? 2.0,
-      indicator: BoxDecoration(
-        border: Border.all(color: Colors.white, width: 2),
+      indicator:
+      BoxDecoration(
+        border: Border.all(color: Colors.white, width: 0),
         borderRadius: BorderRadius.circular(10.0),
       ),
     );

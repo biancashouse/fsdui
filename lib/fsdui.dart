@@ -34,6 +34,7 @@ import 'package:fsdui/src/snippet/snodes/asset_image_node.dart';
 // import 'package:fsdui/src/snippet/snodes/button_node.dart';
 import 'package:fsdui/src/snippet/snodes/carousel_node.dart';
 import 'package:fsdui/src/snippet/snodes/carousel_view_node.dart';
+import 'package:fsdui/src/snippet/snodes/named_widget_node.dart';
 import 'package:fsdui/src/snippet/snodes/dashboard_node.dart';
 
 import 'package:fsdui/src/snippet/snodes/center_node.dart';
@@ -249,6 +250,7 @@ export 'src/snippet/snodes/uml_image_node.dart';
 export 'src/snippet/snode.dart';
 export 'src/snippet/snodes/align_node.dart';
 export 'src/snippet/snodes/appbar_node.dart';
+export 'src/snippet/snodes/named_widget_node.dart';
 export 'src/snippet/snodes/sliver_appbar_node.dart';
 export 'src/snippet/snodes/flexible_space_bar_node.dart';
 export 'src/snippet/snodes/sliverlist_list_node.dart';
@@ -674,6 +676,20 @@ class FSDUI_Mixins
 
   Map<String, SnippetBuilderState> snippetBuilderStates = {};
 
+  // Lets a TabBarViewNode find its TabBarNode by name instead of by tree
+  // ancestry, for layouts (e.g. TabBar pinned in a SliverAppBar.bottom,
+  // TabBarView scrolling in a sibling sliver) where the two live in
+  // separate SnippetBuilder trees and share no common named ancestor.
+  // Notifier-based (not a plain map) because either node's widget can
+  // mount first — TabBarViewNode listens via ValueListenableBuilder and
+  // waits for TabBarWidgetState (initState/dispose) to publish itself,
+  // rather than doing a single one-shot lookup that's wrong if it runs
+  // before the TabBarNode has registered.
+  final Map<String, ValueNotifier<TabBarNode?>> _tabBarNodeNotifiers = {};
+
+  ValueNotifier<TabBarNode?> tabBarNodeNotifierFor(String name) =>
+      _tabBarNodeNotifiers.putIfAbsent(name, () => ValueNotifier(null));
+
   late TapGestureRecognizer webLinkF;
 
   // TODO perhaps replace with context.read<CAPIBloC>()
@@ -886,6 +902,7 @@ class FSDUI_Mixins
   // final Map<String, void Function(BuildContext, GlobalKey?)> namedCallbacks =
   //     {};
 
+  final Map<String, WidgetBuilder> namedWidgets = {};
   final Map<TextStyleName, TextStyleProperties> namedTextStyles = {};
   final Map<ButtonStyleName, ButtonStyleProperties> namedButtonStyles = {};
   final Map<ContainerStyleName, ContainerStyleProperties> namedContainerStyles =
@@ -1233,6 +1250,7 @@ class FSDUI_Mixins
     FlexibleNodeMapper.ensureInitialized();
     NamedSCMapper.ensureInitialized();
     NamedPSMapper.ensureInitialized();
+    NamedWidgetNodeMapper.ensureInitialized();
     IntrinsicWidthNodeMapper.ensureInitialized();
     IntrinsicHeightNodeMapper.ensureInitialized();
     PaddingNodeMapper.ensureInitialized();
@@ -1243,7 +1261,7 @@ class FSDUI_Mixins
     SliverFloatingHeaderNodeMapper.ensureInitialized();
     SliverResizingHeaderNodeMapper.ensureInitialized();
     SliverToBoxAdapterNodeMapper.ensureInitialized();
-    TabNodeMapper.ensureInitialized();
+    // TabNodeMapper.ensureInitialized();
     TargetsWrapperNodeMapper.ensureInitialized();
     // MC
     // CarouselNodeMapper.ensureInitialized();

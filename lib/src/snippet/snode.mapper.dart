@@ -13,6 +13,7 @@ class SNodeMapper extends ClassMapperBase<SNode> {
   static SNodeMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = SNodeMapper._());
+      NamedWidgetNodeMapper.ensureInitialized();
       AlgCNodeMapper.ensureInitialized();
       AppBarNodeMapper.ensureInitialized();
       NamedSCMapper.ensureInitialized();
@@ -64,7 +65,6 @@ class SNodeMapper extends ClassMapperBase<SNode> {
       SliverResizingHeaderNodeMapper.ensureInitialized();
       SliverToBoxAdapterNodeMapper.ensureInitialized();
       TabDataNodeMapper.ensureInitialized();
-      TabNodeMapper.ensureInitialized();
       TargetsWrapperNodeMapper.ensureInitialized();
       CarouselViewNodeMapper.ensureInitialized();
       DashboardNodeMapper.ensureInitialized();

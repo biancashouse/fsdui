@@ -39,9 +39,9 @@ class TabBarNodeMapper extends SubClassMapperBase<TabBarNode> {
   static Color? _$unselectedLabelColor(TabBarNode v) => v.unselectedLabelColor;
   static const Field<TabBarNode, Color> _f$unselectedLabelColor =
       Field('unselectedLabelColor', _$unselectedLabelColor, opt: true);
-  static Color? _$indicatorColor(TabBarNode v) => v.indicatorColor;
+  static Color _$indicatorColor(TabBarNode v) => v.indicatorColor;
   static const Field<TabBarNode, Color> _f$indicatorColor =
-      Field('indicatorColor', _$indicatorColor, opt: true);
+      Field('indicatorColor', _$indicatorColor, opt: true, def: Colors.blue);
   static double? _$indicatorWeight(TabBarNode v) => v.indicatorWeight;
   static const Field<TabBarNode, double> _f$indicatorWeight =
       Field('indicatorWeight', _$indicatorWeight, opt: true, def: 2.0);
@@ -225,7 +225,7 @@ class _TabBarNodeCopyWithImpl<$R, $Out>
           TextStyleProperties? labelTSPropGroup,
           Object? selectedLabelColor = $none,
           Object? unselectedLabelColor = $none,
-          Object? indicatorColor = $none,
+          Color? indicatorColor,
           Object? indicatorWeight = $none,
           Object? selection = $none,
           List<SNode>? children}) =>
@@ -237,7 +237,7 @@ class _TabBarNodeCopyWithImpl<$R, $Out>
           #selectedLabelColor: selectedLabelColor,
         if (unselectedLabelColor != $none)
           #unselectedLabelColor: unselectedLabelColor,
-        if (indicatorColor != $none) #indicatorColor: indicatorColor,
+        if (indicatorColor != null) #indicatorColor: indicatorColor,
         if (indicatorWeight != $none) #indicatorWeight: indicatorWeight,
         if (selection != $none) #selection: selection,
         if (children != null) #children: children

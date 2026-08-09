@@ -92,7 +92,7 @@ class TextNode extends SNode with TextNodeMappable {
       //     calloutButtonSize: const Size(280, 70),
       //     calloutWidth: 280,
       //   ),
-      if (parentSNode is! TabBarNode && parentSNode is! ButtonMixin)
+      if (parentSNode is! ButtonMixin)
         TextStylePNode /*Group*/ (
           snode: this,
           name: 'textStyle',

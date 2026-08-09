@@ -12,13 +12,25 @@ class TabBarViewNode extends SNode with MC, TabBarViewNodeMappable {
   @override
   List<SNode> children;
 
-  TabBarViewNode({super.name, required this.children});
+  /// Name of the TabBarNode driving this view, when it lives outside this
+  /// node's own snippet tree (e.g. pinned in a SliverAppBar.bottom while
+  /// this view scrolls in a sibling sliver) and so can't be found by
+  /// ancestry. Looked up reactively via fsdui.tabBarNodeNotifierFor(), so
+  /// it doesn't matter whether this node or its TabBarNode builds/mounts
+  /// first. When null, falls back to the ancestry-based lookup for
+  /// same-tree layouts.
+  String? tabBarName;
+
+  TabBarViewNode({super.name, this.tabBarName, required this.children});
 
   @override
   List<SNode>? get ownChildren => children;
 
-  TabBarNode? get tabBarNode =>
-      rootNodeOfSnippet()?.findDescendant(TabBarNode) as TabBarNode?;
+  /// Ancestry-based lookup, used only when [tabBarName] is null.
+  TabBarNode? get tabBarNode {
+    final rn = rootNodeOfSnippet();
+    return rn?.findDescendant(TabBarNode) as TabBarNode?;
+  }
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
@@ -33,6 +45,17 @@ class TabBarViewNode extends SNode with MC, TabBarViewNodeMappable {
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     setParent(parentNode);
+
+    if (tabBarName != null) {
+      // Reactive: waits for TabBarWidgetState to publish itself, whichever
+      // of the two nodes happens to build/mount first.
+      return ValueListenableBuilder<TabBarNode?>(
+        valueListenable: fsdui.tabBarNodeNotifierFor(tabBarName!),
+        builder: (context, tb, _) =>
+            tb == null ? const SizedBox.shrink() : _buildWithTabBar(context, tb),
+      );
+    }
+
     final tb = tabBarNode;
     if (tb == null) {
       return Error(
@@ -41,6 +64,10 @@ class TabBarViewNode extends SNode with MC, TabBarViewNodeMappable {
         errorMsg: 'No TabBarNode found in snippet tree.',
       );
     }
+    return _buildWithTabBar(context, tb);
+  }
+
+  Widget _buildWithTabBar(BuildContext context, TabBarNode tb) {
     return ValueListenableBuilder<TabController?>(
       valueListenable: tb.tabCNotifier,
       builder: (context, controller, _) {

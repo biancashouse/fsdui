@@ -5,7 +5,13 @@ The message format is based on [Keep a Changelog](https://keepachangelog.com/en/
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## \[Unreleased\]
+### Added
+- `PreferredSizeSnippetBuilder`: a `SnippetBuilder` variant implementing `PreferredSizeWidget`, for slots like `AppBar.bottom`/`SliverAppBar.bottom` that need a size known synchronously
+- `TabBarViewNode.tabBarName`: optional name-based lookup for its `TabBarNode`, for layouts where the two live in separate `SnippetBuilder` trees (e.g. a pinned `TabBar` in a `SliverAppBar.bottom` with the `TabBarView` scrolling in a sibling sliver) with no common named ancestor
 ### Fixed
+- `TabBarWidgetState` never successfully published its `TabController` — a swapped assignment order read a `late` field before it was ever initialized, throwing (silently, since it ran inside a deferred post-frame callback) on every attempt
+- `TabBarViewNode` couldn't find its `TabBarNode` when the two were roots of separate `SnippetBuilder` trees — ancestry-based lookup only works within a single named snippet tree; see `tabBarName` above
+- `TabBarWidgetState.dispose()` could throw "setState() or markNeedsBuild() called when widget tree was locked" — it cleared its notifiers synchronously, but `dispose()` can run mid-build (not only between frames); the clearing is now deferred to a post-frame callback
 - QuillTextToolbar font-size dropdown showed the "Size" placeholder instead of the actual value when the current size wasn't one of the preset options
 - StringListPNode's edit popup rendered non-interactively, underneath the editor UI (was using `showDialog`, which conflicts with this app's own overlay/callout stacking)
 - StringListPNode triggered a full snippet-tree rebuild on every keystroke instead of committing on blur/submit

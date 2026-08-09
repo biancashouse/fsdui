@@ -28,6 +28,7 @@ const List<Type> childlessSubClasses = [
   FlexibleSpaceBarNode,
   StorageImageNode,
   GapNode,
+  NamedWidgetNode,
   GoogleDriveIFrameNode,
   IFrameNode,
   MarkdownNode,
@@ -71,7 +72,7 @@ const List<Type> singleChildSubClasses = [
   SliverResizingHeaderNode,
   SliverToBoxAdapterNode,
   TabDataNode,
-  TabNode,
+  // TabNode,
   TargetsWrapperNode,
 ];
 
@@ -135,6 +136,7 @@ enum NodeAction {
   discriminatorKey: 'DK:snode',
   includeSubClasses: [
     // childless
+    NamedWidgetNode,
     AlgCNode,
     AppBarNode,
     SliverAppBarNode,
@@ -186,7 +188,7 @@ enum NodeAction {
     SliverResizingHeaderNode,
     SliverToBoxAdapterNode,
     TabDataNode,
-    TabNode,
+    // TabNode,
     TargetsWrapperNode,
     // multi-child
     // CarouselNode,
@@ -1002,7 +1004,7 @@ abstract class SNode extends Node with SNodeMappable {
       tabBarView?.children.add(PlaceholderNode()..setParent(tabBarView));
     } else if ((tabBar?.children.length ?? 0) <
         (tabBarView?.children.length ?? 0)) {
-      tabBar?.children.add(TabNode(text: 'Tab')..setParent(tabBar));
+      tabBar?.children.add(TextNode(text: 'new-tab', tsPropGroup: TextStyleProperties())..setParent(tabBar));
     }
     // bool doubleCheck = anyMissingParents();
     // fco.logger.i("missing parents: $doubleCheck");
@@ -2006,7 +2008,7 @@ abstract class SNode extends Node with SNodeMappable {
         return [ContainerNode, TextNode, ColumnNode, RowNode, PaddingNode];
       case NodeAction.addSiblingBefore:
       case NodeAction.addSiblingAfter:
-        return [ContainerNode, TextNode, ColumnNode, RowNode, GapNode];
+        return [ContainerNode, TextNode, ColumnNode, RowNode, GapNode, NamedWidgetNode];
     }
   }
 
@@ -2449,6 +2451,7 @@ abstract class SNode extends Node with SNodeMappable {
         ],
         child: fsdui.coloredText("file", fontWeight: FontWeight.normal),
       ),
+      menuItemButton(context, "NamedWidgetNode", NamedWidgetNode, action),
       menuItemButton(context, "SplitView", SplitViewNode, action),
       menuItemButton(context, "Stepper", StepperNode, action),
       menuItemButton(context, "Gap", GapNode, action),
@@ -2674,7 +2677,7 @@ abstract class SNode extends Node with SNodeMappable {
             ),
             SubmenuButton(
               menuChildren: [
-                menuItemButton(context, "Tab", TabNode, action),
+                // menuItemButton(context, "Tab", TabNode, action),
                 menuItemButton(context, "TabBar", TabBarNode, action),
                 menuItemButton(context, "TabBarView", TabBarViewNode, action),
                 menuItemButton(
@@ -2749,6 +2752,7 @@ abstract class SNode extends Node with SNodeMappable {
           ],
           child: fsdui.coloredText("file", fontWeight: FontWeight.normal),
         ),
+        menuItemButton(context, "NamedWidgetNode", NamedWidgetNode, action),
         menuItemButton(context, "SplitView", SplitViewNode, action),
         menuItemButton(context, "Stepper", StepperNode, action),
         menuItemButton(context, "Gap", GapNode, action),

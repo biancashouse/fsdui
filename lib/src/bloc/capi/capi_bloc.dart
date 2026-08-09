@@ -1141,6 +1141,7 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
       const (IntrinsicWidthNode) => IntrinsicWidthNode(child: childNode),
       const (IntrinsicHeightNode) => IntrinsicHeightNode(child: childNode),
       const (ListViewNode) => ListViewNode(children: []),
+      const (NamedWidgetNode) => NamedWidgetNode(),
       const (MarkdownNode) => MarkdownNode(),
       const (MenuBarNode) => MenuBarNode(children: []),
       const (MenuItemButtonNode) => MenuItemButtonNode(
@@ -1359,7 +1360,7 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
       // const (TargetButtonNode) =>
       //   TargetButtonNode(name: 'no name!', child: childNode),
       const (TargetsWrapperNode) => TargetsWrapperNode(child: childNode),
-      const (TabNode) => TabNode(text: 'new tab'),
+      // const (TabNode) => TabNode(child:TextNode(text: 'a-tab', tsPropGroup: TextStyleProperties())),
       const (TabBarNode) => TabBarNode(
         labelTSPropGroup: TextStyleProperties(),
         children: childNode != null ? [childNode] : [],
@@ -1714,7 +1715,7 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
                 TabBarNode,
               )
               as TabBarNode?;
-      SNode newTab = TabNode(text: 'new tab');
+      SNode newTab = TextNode(text: 'new-tab', tsPropGroup: TextStyleProperties());
       tabBarNode?.children.add(newTab);
       newTab.setParent(tabBarNode);
       selectedNode.children.add(newNode);
@@ -1972,7 +1973,7 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
               as TabBarNode?;
       tabBarNode?.children.insert(
         i,
-        TabNode(text: 'new tab')..setParent(tabBarNode),
+        TextNode(text: 'new-tab', tsPropGroup: TextStyleProperties())..setParent(tabBarNode),
       );
       parent.children.insert(i, newNode..setParent(parent));
     } else {

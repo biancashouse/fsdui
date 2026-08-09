@@ -57,12 +57,7 @@ class GapNode extends SNode with GapNodeMappable {
   }
 
   @override
-  String toSource(BuildContext context) {
-    return '''Gap($gap)''';
-  }
-
-  @override
-  String toString() => 'gap';
+  String toString() => FLUTTER_TYPE;
 
   @override
   Widget? widgetLogo() => Icon(Icons.square_outlined,

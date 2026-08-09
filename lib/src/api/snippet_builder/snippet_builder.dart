@@ -374,6 +374,45 @@ class SnippetBuilderState extends State<SnippetBuilder> {
   }
 }
 
+/// A [SnippetBuilder] wrapped to satisfy [PreferredSizeWidget], for spots
+/// like [AppBar.bottom] / [SliverAppBar.bottom] that need a size known
+/// synchronously, before the snippet's actual (possibly async-loaded)
+/// content has built. Since that content's real height isn't known ahead
+/// of time, the caller must pick a [preferredSize] to reserve; content
+/// taller than that will be clipped rather than pushing the bar taller.
+class PreferredSizeSnippetBuilder extends StatelessWidget
+    implements PreferredSizeWidget {
+  final SNode initialValue;
+  final bool justPlaying;
+  final void Function(ScrollNotification)? onScrollF;
+  final VoidCallback? onLayoutDone;
+
+  @override
+  final Size preferredSize;
+
+  const PreferredSizeSnippetBuilder({
+    required this.initialValue,
+    required this.preferredSize,
+    this.justPlaying = false,
+    this.onScrollF,
+    this.onLayoutDone,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) => SizedBox.fromSize(
+    size: preferredSize,
+    child: ClipRect(
+      child: SnippetBuilder(
+        initialValue: initialValue,
+        justPlaying: justPlaying,
+        onScrollF: onScrollF,
+        onLayoutDone: onLayoutDone,
+      ),
+    ),
+  );
+}
+
 // void _tappedTriangle(bool isCID) {
 //   if ((!pageIsEditable && !isCID) || fco.snippetBeingEdited != null) {
 //     return;

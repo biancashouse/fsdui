@@ -502,6 +502,8 @@ class SNodeWidget extends StatelessWidget {
         ? 'src ?'
         : node is FileNode
         ? node.fileName
+        : node is NamedWidgetNode
+        ? node.widgetName??'? '
         : node.toString();
 
     // bool badParent = selectedNode.sensibleParents().isNotEmpty && !selectedNode.sensibleParents().contains(selectNodeParent?.toString());
