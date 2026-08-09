@@ -40,7 +40,7 @@ mixin NavMixin {
     Color pencilIconColor,
     String? appVersion,
   ) {
-    List<DropdownMenuItem<String>> dropdownItems = [
+    List<PopupMenuEntry<String>> dropdownItems = [
       _dropdownItemWithPI(
         value: 'sign-in',
         child: MenuItemButton(
@@ -93,16 +93,14 @@ mixin NavMixin {
     return PointerInterceptor(
       child: Theme(
         data: Theme.of(context).copyWith(hoverColor: Colors.transparent),
-        child: DropdownButton<String>(
+        child: PopupMenuButton<String>(
           // key: fco.authIconGK,
-          items: dropdownItems,
-          underline: Offstage(),
-          focusColor: Colors.transparent,
+          itemBuilder: (context) => dropdownItems,
           icon: PointerInterceptor(
             child: Icon(Icons.edit, color: pencilIconColor, size: 24),
           ),
-          dropdownColor: Colors.white,
-          onChanged: (value) {
+          color: Colors.white,
+          onSelected: (value) {
             if (fsdui.router != null) {
               EditablePage.of(context)?.showPageNameDialog();
             }
@@ -113,7 +111,7 @@ mixin NavMixin {
   }
 
   Widget _dropdownButtonSignedIn(BuildContext context, CAPIState state, String? appVersion) {
-    List<DropdownMenuItem<String>> dropdownItems = [
+    List<PopupMenuEntry<String>> dropdownItems = [
       // signed in as super, article or guest editor
       // if (!(state.isSignedInAsNormalUser ?? false))
       _dropdownItemWithPI(value: 'sign-out', child: _signOutBtn(context)),
@@ -167,10 +165,8 @@ mixin NavMixin {
     return PointerInterceptor(
       child: Theme(
         data: Theme.of(context).copyWith(hoverColor: Colors.transparent),
-        child: DropdownButton<String>(
-          items: dropdownItems,
-          underline: Offstage(),
-          focusColor: Colors.transparent,
+        child: PopupMenuButton<String>(
+          itemBuilder: (context) => dropdownItems,
           icon: PointerInterceptor(
             child: (state.verified ?? false) && !state.isSignedInAsNormalUser()
                 ? Icon(
@@ -189,7 +185,8 @@ mixin NavMixin {
                     ),
                   ),
           ),
-          onChanged: (value) {
+          color: Colors.white,
+          onSelected: (value) {
             if (fsdui.router != null) {
               switch (value) {
                 case 'create-editable-page':
@@ -205,7 +202,7 @@ mixin NavMixin {
     );
   }
 
-  DropdownMenuItem<String> _aboutUsItem(
+  PopupMenuItem<String> _aboutUsItem(
     BuildContext context,
     CAPIState state,
   ) => _dropdownItemWithPI(
@@ -343,7 +340,7 @@ mixin NavMixin {
     ),
   );
 
-  void _addVersionItem(String? appVersion, List<DropdownMenuItem<String>> items) {
+  void _addVersionItem(String? appVersion, List<PopupMenuEntry<String>> items) {
     if (appVersion == null || appVersion.isEmpty) return;
     items.add(
       _dropdownItemWithPI(
@@ -356,10 +353,10 @@ mixin NavMixin {
     );
   }
 
-  DropdownMenuItem<String> _dropdownItemWithPI({
+  PopupMenuItem<String> _dropdownItemWithPI({
     required String value,
     required Widget child,
-  }) => DropdownMenuItem<String>(
+  }) => PopupMenuItem<String>(
     value: value,
     child: PointerInterceptor(child: child),
   );

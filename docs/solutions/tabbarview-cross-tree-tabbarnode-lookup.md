@@ -114,3 +114,48 @@ both can run synchronously mid-build, so any side effect in either that
 can notify a listener elsewhere in the tree needs the same
 post-frame-deferral treatment, not just one of the two.
 
+## Addendum 2: the node-identity dispose guard wasn't enough either
+
+Even after the above, the app still hit the original symptom — `TabBarView`
+permanently blank — but now *intermittently*, and only after specific user
+actions (e.g. signing out) that caused `TabBarNode`'s `SnippetBuilder` to
+tear down and recreate its subtree.
+
+**Root Cause:** The dispose-time guard added above —
+`if (notifier.value == node) notifier.value = null;` — compares the
+underlying `TabBarNode` *SNode*, not the `TabBarWidgetState` instance doing
+the disposing. But the SNode is a plain Dart object independent of Flutter's
+widget lifecycle, so it survives across a dispose+recreate cycle unchanged:
+old `TabBarWidgetState` instance A and new instance B, both wrap the *same*
+`node`. Sequence observed via temporary logging:
+
+1. A's `dispose()` fires (e.g. `SnippetBuilder` rebuilding for some
+   unrelated reason), queuing a deferred cleanup.
+2. B mounts for the *same* `node`, and its deferred registration runs
+   first, correctly setting `notifier.value = node`.
+3. A's deferred cleanup then runs and — since `notifier.value == node`
+   is still true, it's the *same* node B just registered — clears it
+   anyway, even though B is the current, legitimate registrant.
+
+**Fix:** Track *which State instance* currently owns the registration per
+name, not just which node. Added `TabBarWidgetState._activeRegistrationTokens`
+(a `static final Map<String, Object>`) plus a `final Object
+_registrationToken = Object()` unique to each instance. Registration writes
+`_activeRegistrationTokens[name] = _registrationToken` alongside the
+notifier; the dispose-time cleanup only clears the notifier if
+`identical(_activeRegistrationTokens[name], myToken)` — i.e. only if no
+newer instance has registered since.
+
+**Lesson:** when guarding a "did I still own this" check across an async
+gap, compare identity of the *owner* (the object doing the owning), not
+identity of the *value* being owned — two different owners can legitimately
+hold/produce the same value.
+
+**How this was actually diagnosed:** `fsdui.logger` was useless throughout
+this entire investigation — see
+[fsdui-logger-globally-suppressed.md](./fsdui-logger-globally-suppressed.md).
+Switching temporary diagnostic logging to plain `print()` calls (with
+per-instance `hashCode`s and timestamps) is what actually surfaced the
+ordering race above; several earlier rounds of `fsdui.logger.w(...)`-based
+logging showed nothing and were red herrings.
+

@@ -268,6 +268,18 @@ class TabBarWidgetState extends State<TabBarWidget>
     with SingleTickerProviderStateMixin {
   late TabController _tabC;
 
+  // Multiple TabBarWidgetState instances can register under the same name
+  // in quick succession (e.g. an old instance disposing while a new one for
+  // the same underlying TabBarNode mounts) — since both wrap the *same*
+  // SNode object, a plain `notifier.value == node` identity check can't
+  // tell "am I still the current registrant" from "does the current
+  // registrant merely happen to wrap the same node". This per-name token
+  // records which State instance registered most recently, so a stale
+  // instance's deferred dispose-cleanup can't clobber a newer instance's
+  // registration.
+  static final Map<String, Object> _activeRegistrationTokens = {};
+  final Object _registrationToken = Object();
+
   @override
   void initState() {
     super.initState();
@@ -289,6 +301,7 @@ class TabBarWidgetState extends State<TabBarWidget>
     // or after this TabBarNode.
     fsdui.afterNextBuildDo(() {
       if (widget.node.name != null) {
+        _activeRegistrationTokens[widget.node.name!] = _registrationToken;
         fsdui.tabBarNodeNotifierFor(widget.node.name!).value = widget.node;
       }
       widget.node.tabC = _tabC;
@@ -348,11 +361,12 @@ class TabBarWidgetState extends State<TabBarWidget>
     final node = widget.node;
     final name = node.name;
     final disposedTabC = _tabC;
+    final myToken = _registrationToken;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (node.tabC == disposedTabC) node.tabC = null;
-      if (name != null) {
-        final notifier = fsdui.tabBarNodeNotifierFor(name);
-        if (notifier.value == node) notifier.value = null;
+      if (name != null && identical(_activeRegistrationTokens[name], myToken)) {
+        _activeRegistrationTokens.remove(name);
+        fsdui.tabBarNodeNotifierFor(name).value = null;
       }
     });
 
