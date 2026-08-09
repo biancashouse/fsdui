@@ -213,37 +213,37 @@ class _SnippetMenuAnchorState extends State<SnippetMenuAnchor> {
                 ],
               ),
             ),
-          if (snippetInfo.changesPending(
-            snippetInfo.currentVersionInCache()?.toJson(),
-          ))
-            MenuItemButton(
-              onPressed: () {
-                final rootNode = snippetInfo.currentVersionInCache();
-                if (rootNode != null) {
-                  // notify possible changes to the quill text (controller)
-                  snippetInfo.notifyChange(rootNode);
-                  fsdui.modelRepo.saveNewVersionOfSnippet(rootNode);
-                  fsdui.forceRefresh();
-                }
-              },
-              child: ListTile(
-                tileColor: Colors.lightBlue,
-                title: const Text('save pending change(s) to firestore'),
-              ),
-            ),
-          if (snippetInfo.changesPending(
-            snippetInfo.currentVersionInCache()?.toJson(),
-          ))
-            MenuItemButton(
-              onPressed: () {
-                _discardPendingChanges(snippetInfo);
-                fsdui.capiBloc.add(ForceSnippetRefresh());
-              },
-              child: ListTile(
-                tileColor: Colors.red,
-                title: const Text('discard pending change(s)'),
-              ),
-            ),
+          // if (snippetInfo.changesPending(
+          //   snippetInfo.currentVersionInCache()?.toJson(),
+          // ))
+          //   MenuItemButton(
+          //     onPressed: () {
+          //       final rootNode = snippetInfo.currentVersionInCache();
+          //       if (rootNode != null) {
+          //         // notify possible changes to the quill text (controller)
+          //         snippetInfo.notifyChange(rootNode);
+          //         fsdui.modelRepo.saveNewVersionOfSnippet(rootNode);
+          //         fsdui.forceRefresh();
+          //       }
+          //     },
+          //     child: ListTile(
+          //       tileColor: Colors.lightBlue,
+          //       title: const Text('save pending change(s) to firestore'),
+          //     ),
+          //   ),
+          // if (snippetInfo.changesPending(
+          //   snippetInfo.currentVersionInCache()?.toJson(),
+          // ))
+          //   MenuItemButton(
+          //     onPressed: () {
+          //       _discardPendingChanges(snippetInfo);
+          //       fsdui.capiBloc.add(ForceSnippetRefresh());
+          //     },
+          //     child: ListTile(
+          //       tileColor: Colors.red,
+          //       title: const Text('discard pending change(s)'),
+          //     ),
+          //   ),
           if (snippetInfo.editingVersionId != snippetInfo.publishedVersionId)
             _menuItemButtonWithPI(
               onPressed: () {

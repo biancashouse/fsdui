@@ -127,6 +127,7 @@ import 'package:fsdui/x_fsdui/text_styles_extn.dart';
 // import 'package:fsdui/src/snippet/snodes/widget/fs_folder_node.dart';
 import 'package:go_router/go_router.dart';
 
+import 'src/api/editable_page/snippet_tree_controller.dart';
 import 'src/bloc/capi/capi_bloc.dart';
 import 'src/model/app_info_model.dart';
 import 'src/model/model_repo.dart';
@@ -704,6 +705,139 @@ class FSDUI_Mixins
   // display it. Updated from PageViewNode.buildFlutterWidget's
   // PageController.onPageChanged.
   final currentPageTitleVN = ValueNotifier<String>('');
+
+  // Gravity used for the persistent "pending changes" toast, so callers
+  // elsewhere (e.g. a manual dismiss button) can target the same toast.
+  static const pendingChangesToastGravity = Alignment.bottomCenter;
+
+  // Recomputes which cached snippets currently have unsaved changes and
+  // shows/updates/dismisses a single persistent toast summarising them, with
+  // "save all"/"discard all" actions. Called from
+  // SnippetInfoModel.notifyChange() and .cacheVersion() — the two places a
+  // snippet's changesPendingNotifier can flip. Works for snippets rendered
+  // as normal roots (which also get the triangle/banner) and for snippets
+  // embedded via NamedWidgetNode (which don't have a reliable visible root
+  // of their own) since it's driven purely by the SnippetInfoModel cache,
+  // not by anything in the widget tree.
+  void refreshPendingChangesToast() {
+    final pendingNames =
+        appInfo.cachedSnippetNames()
+            .where(
+              (name) =>
+                  appInfo.cachedSnippetInfo(name)?.changesPendingNotifier.value ??
+                  false,
+            )
+            .toList()
+          ..sort();
+
+    // A toast can't be updated in place (showOverlay is a no-op while a
+    // callout with the same cId is already showing) — dismiss and reshow.
+    dismissToast(pendingChangesToastGravity);
+
+    if (pendingNames.isEmpty) return;
+
+    final msg = pendingNames.length == 1
+        ? 'Pending changes: ${pendingNames.first}'
+        : 'Pending changes (${pendingNames.length}): ${pendingNames.join(', ')}';
+
+    // Built directly on showToastOverlay (not the showToast string-only
+    // convenience wrapper) since this needs Save all/Discard all buttons,
+    // not just a message. Mirrors showToast's own CalloutConfig construction
+    // so it looks/behaves consistently with every other toast in the app.
+    showToastOverlay(
+      calloutConfig: CalloutConfig(
+        cId: 'toast-$pendingChangesToastGravity',
+        gravity: pendingChangesToastGravity,
+        decorationFillColors: ColorOrGradient.color(Colors.orangeAccent),
+        initialCalloutW: scrW * .8,
+        initialCalloutH: 120,
+        contentTranslateY: -50,
+        showCloseButton: true,
+        elevation: 10,
+        decorationBorderRadius: 24,
+      ),
+      calloutContent: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            coloredText(msg, color: Colors.black),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () => _saveAllPendingSnippets(pendingNames),
+                  child: const Text('Save all'),
+                ),
+                const SizedBox(width: 12),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.redAccent,
+                  ),
+                  onPressed: () => _discardAllPendingSnippets(pendingNames),
+                  child: const Text('Discard all'),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Saves every listed snippet's current in-memory content as a new version
+  // — same operation as the per-snippet "save pending change(s) to
+  // firestore" menu item (SnippetMenuAnchor), just applied to all pending
+  // snippets in one go.
+  void _saveAllPendingSnippets(List<String> snippetNames) {
+    for (final name in snippetNames) {
+      final info = appInfo.cachedSnippetInfo(name);
+      final rootNode = info?.currentVersionInCache();
+      if (info == null || rootNode == null) continue;
+      info.notifyChange(rootNode);
+      modelRepo.saveNewVersionOfSnippet(rootNode);
+    }
+    forceRefresh();
+  }
+
+  // Reverts every listed snippet's in-memory content back to its
+  // last-saved baseline — same operation as the per-snippet "discard
+  // pending change(s)" menu item (SnippetMenuAnchor._discardPendingChanges),
+  // just applied to all pending snippets in one go. Unlike that per-snippet
+  // version, this only rebuilds the live editor's tree/selection for a
+  // snippet if it's the one currently open (snippetBeingEdited) — with
+  // multiple different pending snippets involved, unconditionally
+  // overwriting snippetBeingEdited with whichever one was processed last
+  // would show the wrong content for the others.
+  void _discardAllPendingSnippets(List<String> snippetNames) {
+    for (final name in snippetNames) {
+      final info = appInfo.cachedSnippetInfo(name);
+      if (info == null) continue;
+      final originalJson = info.originalEditingJson;
+      if (originalJson == null || originalJson.isEmpty) continue;
+      final originalNode = SNodeMapper.fromJson(originalJson);
+      info.cacheVersion(info.editingVersionId, originalNode);
+      info.notifyChange(originalNode);
+
+      if (snippetBeingEdited?.getRootNode().name == name) {
+        final newTreeC = SnippetTreeController(
+          roots: [originalNode],
+          childrenProvider: SNode.childrenProvider,
+          parentProvider: SNode.parentProvider,
+        );
+        newTreeC.roots.first.validateTree();
+        newTreeC.expand(originalNode);
+        newTreeC.rebuild();
+        snippetBeingEdited!
+          ..setRootNode(originalNode)
+          ..selectedNode = originalNode
+          ..showProperties = false
+          ..treeC = newTreeC;
+      }
+    }
+    refreshAll();
+  }
 
   // >0 while one of the QuillTextToolbar's MenuAnchor popups (font family,
   // font size) is open. Each popup renders in its own OverlayEntry (a

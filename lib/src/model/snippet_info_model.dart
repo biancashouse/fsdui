@@ -87,6 +87,7 @@ class SnippetInfoModel with SnippetInfoModelMappable {
       final json = changedSnippet.toJson();
       getChangeNotifier().value = json;
       changesPendingNotifier.value = changesPending(json);
+      fsdui.refreshPendingChangesToast();
     } catch (e) {
       print(e);
     }
@@ -144,6 +145,7 @@ class SnippetInfoModel with SnippetInfoModelMappable {
     // so we can determine whether any changes are pending
     _originalEditingJson = rootNode.toJson();
     changesPendingNotifier.value = false;
+    fsdui.refreshPendingChangesToast();
   }
 
   SNode? cachedVersion(VersionId versionId) =>

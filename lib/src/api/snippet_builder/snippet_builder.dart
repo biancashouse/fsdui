@@ -114,7 +114,7 @@ class SnippetBuilderState extends State<SnippetBuilder> {
   }
 
   Widget buildWithBloc({required String updatedSnippetJson}) {
-    return BlocBuilder<CAPIBloC, CAPIState>(
+     return BlocBuilder<CAPIBloC, CAPIState>(
       buildWhen: (previous, current) {
         bool result =
             (!(current.onlyTargetsWrappers ?? false)

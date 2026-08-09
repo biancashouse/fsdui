@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:clipboard/clipboard.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/bloc/capi/snippet_being_edited.dart';
@@ -141,6 +142,20 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
     on<ToggleNodeProperties>(
       (event, emit) => _toggleNodeProperties(event, emit),
     );
+
+    // Debug convenience: skip the real passwordless email-token sign-in flow
+    // and simulate an already-verified sign-in. Goes through the same event
+    // handler (_onTokenConfirmed) as a real sign-in, so it overrides
+    // whatever HydratedBloc restored from persisted state (e.g. a previous
+    // sign-out) rather than only affecting the initial state.
+    if (kDebugMode) {
+      add(
+        const TokenConfirmed(
+          ea: 'biancashouse@gmail.com',
+          token: 'debug-mode-token',
+        ),
+      );
+    }
   }
 
   /// auth ---------------
@@ -602,6 +617,15 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
 
   Future<void> _changedSnippet(_, emit) async {
     if (state.snippetBeingEdited?.aNodeIsNotSelected ?? false) return;
+
+    // Property-panel edits (refreshWithUpdate) only ever dispatch
+    // ChangedSnippet — unlike structural edits (wrap/replace/paste/undo/...)
+    // they don't call SnippetInfoModel.notifyChange() themselves, so without
+    // this they'd never mark the snippet as having pending changes.
+    final rootNode = state.snippetBeingEdited?.selectedNode?.rootNodeOfSnippet();
+    if (rootNode?.name != null) {
+      fsdui.appInfo.cachedSnippetInfo(rootNode!.name!)?.notifyChange(rootNode);
+    }
 
     emit(
       state.copyWith(

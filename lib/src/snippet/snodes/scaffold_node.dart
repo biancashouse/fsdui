@@ -63,7 +63,7 @@ class ScaffoldNode extends SNode with ScaffoldNodeMappable {
       key: createNodeWidgetGK(),
       backgroundColor: bgColor,
       appBar: appBarProp,
-      body: body?.child != null ? body?.build(context, this) : null,
+      body: body?.child != null ? body?.build(context, this) : Icon(Icons.warning),
     );
   }
 

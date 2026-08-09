@@ -128,13 +128,13 @@ class _PanelHeader extends StatelessWidget {
 
   void _close(String snippetName, SnippetInfoModel? snippetInfo) {
     if (SNode.isHotspotCalloutContent(snippetName)) {
-      fsdui.dismissAll();
+      fsdui.dismissAll(exceptToasts: true);
     } else {
       fsdui.dismiss('selected-node');
       fsdui.unhide(HotspotTargetConfigToolbar.CID);
       fsdui.appInfo.hideClipboard();
     }
-    fsdui.dismissAll();
+    fsdui.dismissAll(exceptToasts: true);
     fsdui.capiBloc.add(PopSnippetEditor());
     final rootNode = snippetInfo?.currentVersionInCache();
     if (rootNode != null) {
