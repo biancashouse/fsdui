@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - StringListPNode triggered a full snippet-tree rebuild on every keystroke instead of committing on blur/submit
 - CarouselViewNode ignored its own `infinite` property (was hardcoded to `true`)
 - CarouselViewNode's `overlayColor` property was never applied to the rendered widget
+- CarouselViewNode's autoplay kept auto-advancing after the user tapped or dragged the carousel, fighting their interaction — a pointer-down on the carousel now stops autoplay for good
 - QuillTextToolbar could crash when dismissing a null toolbar callout id
 - New-snippet creation used the wrong name and never actually persisted the new snippet
 - `ResponsiveFlexListNode` children rendered as blank `Placeholder` boxes — its `itemBuilder` called `item.buildFlutterWidget()` directly instead of `item.build(context, this)`, bypassing leaf nodes like `TextNode` that only override `build()`
