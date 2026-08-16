@@ -1110,6 +1110,9 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
       ),
       const (CenterNode) => CenterNode(child: childNode),
       const (ChipNode) => ChipNode(labelTSPropGroup: TextStyleProperties()),
+      const (CSSGridNode) => CSSGridNode(
+        children: childNode != null ? [childNode] : [],
+      ),
       const (ColumnNode) => ColumnNode(
         mainAxisSize: MainAxisSizeEnum.max,
         children: childNode != null ? [childNode] : [],
@@ -1140,9 +1143,9 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
       //     root: GenericSingleChildNode(
       //         propertyName: 'root',
       //         child: FSDirectoryNode(name: 'root', children: []))),
-      const (DashboardNode) => DashboardNode(
-        children: childNode != null ? [childNode] : [],
-      ),
+      // const (DashboardNode) => DashboardNode(
+      //   children: childNode != null ? [childNode] : [],
+      // ),
       const (DirectoryNode) => DirectoryNode(children: []),
       // const (FSDirectoryNode) => FSDirectoryNode(children: []),
       const (ExpandedNode) => ExpandedNode(child: childNode),
@@ -1160,6 +1163,7 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
       const (GapNode) => GapNode(gap: 0),
       const (GoogleDriveIFrameNode) => GoogleDriveIFrameNode(),
       const (GridViewNode) => GridViewNode(children: []),
+      const (GridPlacementNode) => GridPlacementNode(child: childNode),
       const (IFrameNode) => IFrameNode(),
       const (InteractiveViewerNode) => InteractiveViewerNode(child: childNode),
       const (IntrinsicWidthNode) => IntrinsicWidthNode(child: childNode),
@@ -1181,6 +1185,9 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
       ),
       const (PageViewNode) => PageViewNode(),
       const (PlaceholderNode) => PlaceholderNode(),
+      const (ResponsiveFlexListNode) => ResponsiveFlexListNode(
+        children: childNode != null ? [childNode] : [],
+      ),
       const (PinnedHeaderSliverNode) => PinnedHeaderSliverNode(),
       const (PollNode) => PollNode(
         pollName: 'sample-poll',
@@ -1451,6 +1458,7 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
       if (selectedNode is ExpandedNode && w is! FlexNode) return;
       if (selectedNode is FlexibleNode && w is! FlexNode) return;
       if (selectedNode is PositionedNode && w is! StackNode) return;
+      if (selectedNode is GridPlacementNode && w is! CSSGridNode) return;
       if (selectedNode is InlineSpanNode &&
           selectedNodeParent is RichTextNode &&
           w is RichTextNode) {

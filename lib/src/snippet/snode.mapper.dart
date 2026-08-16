@@ -1,6 +1,8 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -57,6 +59,7 @@ class SNodeMapper extends ClassMapperBase<SNode> {
       IntrinsicWidthNodeMapper.ensureInitialized();
       IntrinsicHeightNodeMapper.ensureInitialized();
       PaddingNodeMapper.ensureInitialized();
+      GridPlacementNodeMapper.ensureInitialized();
       PinnedHeaderSliverNodeMapper.ensureInitialized();
       PositionedNodeMapper.ensureInitialized();
       SingleChildScrollViewNodeMapper.ensureInitialized();
@@ -67,7 +70,7 @@ class SNodeMapper extends ClassMapperBase<SNode> {
       TabDataNodeMapper.ensureInitialized();
       TargetsWrapperNodeMapper.ensureInitialized();
       CarouselViewNodeMapper.ensureInitialized();
-      DashboardNodeMapper.ensureInitialized();
+      CSSGridNodeMapper.ensureInitialized();
       DirectoryNodeMapper.ensureInitialized();
       DynamicTabBarNodeMapper.ensureInitialized();
       FlexNodeMapper.ensureInitialized();
@@ -76,6 +79,7 @@ class SNodeMapper extends ClassMapperBase<SNode> {
       MenuBarNodeMapper.ensureInitialized();
       PageViewNodeMapper.ensureInitialized();
       PollNodeMapper.ensureInitialized();
+      ResponsiveFlexListNodeMapper.ensureInitialized();
       SliverListListNodeMapper.ensureInitialized();
       SplitViewNodeMapper.ensureInitialized();
       StackNodeMapper.ensureInitialized();
@@ -99,26 +103,40 @@ class SNodeMapper extends ClassMapperBase<SNode> {
   static String? _$name(SNode v) => v.name;
   static const Field<SNode, String> _f$name = Field('name', _$name, opt: true);
   static List<String>? _$tags(SNode v) => v.tags;
-  static const Field<SNode, List<String>> _f$tags =
-      Field('tags', _$tags, opt: true);
+  static const Field<SNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    opt: true,
+  );
   static String _$uid(SNode v) => v.uid;
-  static const Field<SNode, String> _f$uid =
-      Field('uid', _$uid, mode: FieldMode.member);
+  static const Field<SNode, String> _f$uid = Field(
+    'uid',
+    _$uid,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(SNode v) =>
       v.treeNodeGK;
   static const Field<SNode, GlobalKey<State<StatefulWidget>>> _f$treeNodeGK =
       Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(SNode v) => v.isExpanded;
-  static const Field<SNode, bool> _f$isExpanded =
-      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static const Field<SNode, bool> _f$isExpanded = Field(
+    'isExpanded',
+    _$isExpanded,
+    mode: FieldMode.member,
+  );
   static bool? _$hidePropertiesWhileDragging(SNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<SNode, bool> _f$hidePropertiesWhileDragging = Field(
-      'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
-      mode: FieldMode.member);
+    'hidePropertiesWhileDragging',
+    _$hidePropertiesWhileDragging,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$nodeGK(SNode v) => v.nodeGK;
-  static const Field<SNode, GlobalKey<State<StatefulWidget>>> _f$nodeGK =
-      Field('nodeGK', _$nodeGK, mode: FieldMode.member);
+  static const Field<SNode, GlobalKey<State<StatefulWidget>>> _f$nodeGK = Field(
+    'nodeGK',
+    _$nodeGK,
+    mode: FieldMode.member,
+  );
 
   @override
   final MappableFields<SNode> fields = const {
@@ -135,7 +153,10 @@ class SNodeMapper extends ClassMapperBase<SNode> {
   final MappingHook hook = const PropertyRenameHook('snode', 'DK:snode');
   static SNode _instantiate(DecodingData data) {
     throw MapperException.missingSubclass(
-        'SNode', 'DK:snode', '${data.value['DK:snode']}');
+      'SNode',
+      'DK:snode',
+      '${data.value['DK:snode']}',
+    );
   }
 
   @override
@@ -161,3 +182,4 @@ abstract class SNodeCopyWith<$R, $In extends SNode, $Out>
   $R call();
   SNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
+

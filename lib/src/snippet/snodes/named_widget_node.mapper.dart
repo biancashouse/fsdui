@@ -1,6 +1,8 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -22,33 +24,51 @@ class NamedWidgetNodeMapper extends SubClassMapperBase<NamedWidgetNode> {
   final String id = 'NamedWidgetNode';
 
   static String? _$name(NamedWidgetNode v) => v.name;
-  static const Field<NamedWidgetNode, String> _f$name =
-      Field('name', _$name, opt: true);
+  static const Field<NamedWidgetNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static String? _$widgetName(NamedWidgetNode v) => v.widgetName;
-  static const Field<NamedWidgetNode, String> _f$widgetName =
-      Field('widgetName', _$widgetName, opt: true);
+  static const Field<NamedWidgetNode, String> _f$widgetName = Field(
+    'widgetName',
+    _$widgetName,
+    opt: true,
+  );
   static String _$uid(NamedWidgetNode v) => v.uid;
-  static const Field<NamedWidgetNode, String> _f$uid =
-      Field('uid', _$uid, mode: FieldMode.member);
+  static const Field<NamedWidgetNode, String> _f$uid = Field(
+    'uid',
+    _$uid,
+    mode: FieldMode.member,
+  );
   static List<String>? _$tags(NamedWidgetNode v) => v.tags;
-  static const Field<NamedWidgetNode, List<String>> _f$tags =
-      Field('tags', _$tags, mode: FieldMode.member);
+  static const Field<NamedWidgetNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(NamedWidgetNode v) =>
       v.treeNodeGK;
   static const Field<NamedWidgetNode, GlobalKey<State<StatefulWidget>>>
-      _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
+  _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(NamedWidgetNode v) => v.isExpanded;
-  static const Field<NamedWidgetNode, bool> _f$isExpanded =
-      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static const Field<NamedWidgetNode, bool> _f$isExpanded = Field(
+    'isExpanded',
+    _$isExpanded,
+    mode: FieldMode.member,
+  );
   static bool? _$hidePropertiesWhileDragging(NamedWidgetNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<NamedWidgetNode, bool> _f$hidePropertiesWhileDragging =
-      Field('hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
-          mode: FieldMode.member);
+      Field(
+        'hidePropertiesWhileDragging',
+        _$hidePropertiesWhileDragging,
+        mode: FieldMode.member,
+      );
   static GlobalKey<State<StatefulWidget>>? _$nodeGK(NamedWidgetNode v) =>
       v.nodeGK;
   static const Field<NamedWidgetNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
+  _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
 
   @override
   final MappableFields<NamedWidgetNode> fields = const {
@@ -74,7 +94,9 @@ class NamedWidgetNodeMapper extends SubClassMapperBase<NamedWidgetNode> {
 
   static NamedWidgetNode _instantiate(DecodingData data) {
     return NamedWidgetNode(
-        name: data.dec(_f$name), widgetName: data.dec(_f$widgetName));
+      name: data.dec(_f$name),
+      widgetName: data.dec(_f$widgetName),
+    );
   }
 
   @override
@@ -96,30 +118,38 @@ mixin NamedWidgetNodeMappable {
   }
 
   Map<String, dynamic> toMap() {
-    return NamedWidgetNodeMapper.ensureInitialized()
-        .encodeMap<NamedWidgetNode>(this as NamedWidgetNode);
+    return NamedWidgetNodeMapper.ensureInitialized().encodeMap<NamedWidgetNode>(
+      this as NamedWidgetNode,
+    );
   }
 
   NamedWidgetNodeCopyWith<NamedWidgetNode, NamedWidgetNode, NamedWidgetNode>
-      get copyWith =>
-          _NamedWidgetNodeCopyWithImpl<NamedWidgetNode, NamedWidgetNode>(
-              this as NamedWidgetNode, $identity, $identity);
+  get copyWith =>
+      _NamedWidgetNodeCopyWithImpl<NamedWidgetNode, NamedWidgetNode>(
+        this as NamedWidgetNode,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return NamedWidgetNodeMapper.ensureInitialized()
-        .stringifyValue(this as NamedWidgetNode);
+    return NamedWidgetNodeMapper.ensureInitialized().stringifyValue(
+      this as NamedWidgetNode,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return NamedWidgetNodeMapper.ensureInitialized()
-        .equalsValue(this as NamedWidgetNode, other);
+    return NamedWidgetNodeMapper.ensureInitialized().equalsValue(
+      this as NamedWidgetNode,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return NamedWidgetNodeMapper.ensureInitialized()
-        .hashValue(this as NamedWidgetNode);
+    return NamedWidgetNodeMapper.ensureInitialized().hashValue(
+      this as NamedWidgetNode,
+    );
   }
 }
 
@@ -134,7 +164,8 @@ abstract class NamedWidgetNodeCopyWith<$R, $In extends NamedWidgetNode, $Out>
   @override
   $R call({String? name, String? widgetName});
   NamedWidgetNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _NamedWidgetNodeCopyWithImpl<$R, $Out>
@@ -146,18 +177,21 @@ class _NamedWidgetNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<NamedWidgetNode> $mapper =
       NamedWidgetNodeMapper.ensureInitialized();
   @override
-  $R call({Object? name = $none, Object? widgetName = $none}) =>
-      $apply(FieldCopyWithData({
-        if (name != $none) #name: name,
-        if (widgetName != $none) #widgetName: widgetName
-      }));
+  $R call({Object? name = $none, Object? widgetName = $none}) => $apply(
+    FieldCopyWithData({
+      if (name != $none) #name: name,
+      if (widgetName != $none) #widgetName: widgetName,
+    }),
+  );
   @override
   NamedWidgetNode $make(CopyWithData data) => NamedWidgetNode(
-      name: data.get(#name, or: $value.name),
-      widgetName: data.get(#widgetName, or: $value.widgetName));
+    name: data.get(#name, or: $value.name),
+    widgetName: data.get(#widgetName, or: $value.widgetName),
+  );
 
   @override
   NamedWidgetNodeCopyWith<$R2, NamedWidgetNode, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _NamedWidgetNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _NamedWidgetNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

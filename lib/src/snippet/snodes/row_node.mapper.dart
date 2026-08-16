@@ -1,6 +1,8 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -27,44 +29,70 @@ class RowNodeMapper extends SubClassMapperBase<RowNode> {
   final String id = 'RowNode';
 
   static String? _$name(RowNode v) => v.name;
-  static const Field<RowNode, String> _f$name =
-      Field('name', _$name, opt: true);
+  static const Field<RowNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static MainAxisAlignmentEnumModel? _$mainAxisAlignment(RowNode v) =>
       v.mainAxisAlignment;
   static const Field<RowNode, MainAxisAlignmentEnumModel> _f$mainAxisAlignment =
       Field('mainAxisAlignment', _$mainAxisAlignment, opt: true);
   static MainAxisSizeEnum? _$mainAxisSize(RowNode v) => v.mainAxisSize;
-  static const Field<RowNode, MainAxisSizeEnum> _f$mainAxisSize =
-      Field('mainAxisSize', _$mainAxisSize, opt: true);
+  static const Field<RowNode, MainAxisSizeEnum> _f$mainAxisSize = Field(
+    'mainAxisSize',
+    _$mainAxisSize,
+    opt: true,
+  );
   static CrossAxisAlignmentEnumModel? _$crossAxisAlignment(RowNode v) =>
       v.crossAxisAlignment;
   static const Field<RowNode, CrossAxisAlignmentEnumModel>
-      _f$crossAxisAlignment =
-      Field('crossAxisAlignment', _$crossAxisAlignment, opt: true);
+  _f$crossAxisAlignment = Field(
+    'crossAxisAlignment',
+    _$crossAxisAlignment,
+    opt: true,
+  );
   static AxisEnum _$direction(RowNode v) => v.direction;
-  static const Field<RowNode, AxisEnum> _f$direction =
-      Field('direction', _$direction, opt: true, def: AxisEnum.horizontal);
+  static const Field<RowNode, AxisEnum> _f$direction = Field(
+    'direction',
+    _$direction,
+    opt: true,
+    def: AxisEnum.horizontal,
+  );
   static List<SNode> _$children(RowNode v) => v.children;
-  static const Field<RowNode, List<SNode>> _f$children =
-      Field('children', _$children);
+  static const Field<RowNode, List<SNode>> _f$children = Field(
+    'children',
+    _$children,
+  );
   static String _$uid(RowNode v) => v.uid;
-  static const Field<RowNode, String> _f$uid =
-      Field('uid', _$uid, mode: FieldMode.member);
+  static const Field<RowNode, String> _f$uid = Field(
+    'uid',
+    _$uid,
+    mode: FieldMode.member,
+  );
   static List<String>? _$tags(RowNode v) => v.tags;
-  static const Field<RowNode, List<String>> _f$tags =
-      Field('tags', _$tags, mode: FieldMode.member);
+  static const Field<RowNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(RowNode v) =>
       v.treeNodeGK;
   static const Field<RowNode, GlobalKey<State<StatefulWidget>>> _f$treeNodeGK =
       Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(RowNode v) => v.isExpanded;
-  static const Field<RowNode, bool> _f$isExpanded =
-      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static const Field<RowNode, bool> _f$isExpanded = Field(
+    'isExpanded',
+    _$isExpanded,
+    mode: FieldMode.member,
+  );
   static bool? _$hidePropertiesWhileDragging(RowNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<RowNode, bool> _f$hidePropertiesWhileDragging = Field(
-      'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
-      mode: FieldMode.member);
+    'hidePropertiesWhileDragging',
+    _$hidePropertiesWhileDragging,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$nodeGK(RowNode v) => v.nodeGK;
   static const Field<RowNode, GlobalKey<State<StatefulWidget>>> _f$nodeGK =
       Field('nodeGK', _$nodeGK, mode: FieldMode.member);
@@ -97,12 +125,13 @@ class RowNodeMapper extends SubClassMapperBase<RowNode> {
 
   static RowNode _instantiate(DecodingData data) {
     return RowNode(
-        name: data.dec(_f$name),
-        mainAxisAlignment: data.dec(_f$mainAxisAlignment),
-        mainAxisSize: data.dec(_f$mainAxisSize),
-        crossAxisAlignment: data.dec(_f$crossAxisAlignment),
-        direction: data.dec(_f$direction),
-        children: data.dec(_f$children));
+      name: data.dec(_f$name),
+      mainAxisAlignment: data.dec(_f$mainAxisAlignment),
+      mainAxisSize: data.dec(_f$mainAxisSize),
+      crossAxisAlignment: data.dec(_f$crossAxisAlignment),
+      direction: data.dec(_f$direction),
+      children: data.dec(_f$children),
+    );
   }
 
   @override
@@ -119,18 +148,23 @@ class RowNodeMapper extends SubClassMapperBase<RowNode> {
 
 mixin RowNodeMappable {
   String toJson() {
-    return RowNodeMapper.ensureInitialized()
-        .encodeJson<RowNode>(this as RowNode);
+    return RowNodeMapper.ensureInitialized().encodeJson<RowNode>(
+      this as RowNode,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return RowNodeMapper.ensureInitialized()
-        .encodeMap<RowNode>(this as RowNode);
+    return RowNodeMapper.ensureInitialized().encodeMap<RowNode>(
+      this as RowNode,
+    );
   }
 
   RowNodeCopyWith<RowNode, RowNode, RowNode> get copyWith =>
       _RowNodeCopyWithImpl<RowNode, RowNode>(
-          this as RowNode, $identity, $identity);
+        this as RowNode,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
     return RowNodeMapper.ensureInitialized().stringifyValue(this as RowNode);
@@ -138,8 +172,10 @@ mixin RowNodeMappable {
 
   @override
   bool operator ==(Object other) {
-    return RowNodeMapper.ensureInitialized()
-        .equalsValue(this as RowNode, other);
+    return RowNodeMapper.ensureInitialized().equalsValue(
+      this as RowNode,
+      other,
+    );
   }
 
   @override
@@ -157,13 +193,14 @@ abstract class RowNodeCopyWith<$R, $In extends RowNode, $Out>
     implements SNodeCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
-  $R call(
-      {String? name,
-      MainAxisAlignmentEnumModel? mainAxisAlignment,
-      MainAxisSizeEnum? mainAxisSize,
-      CrossAxisAlignmentEnumModel? crossAxisAlignment,
-      AxisEnum? direction,
-      List<SNode>? children});
+  $R call({
+    String? name,
+    MainAxisAlignmentEnumModel? mainAxisAlignment,
+    MainAxisSizeEnum? mainAxisSize,
+    CrossAxisAlignmentEnumModel? crossAxisAlignment,
+    AxisEnum? direction,
+    List<SNode>? children,
+  });
   RowNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -177,37 +214,47 @@ class _RowNodeCopyWithImpl<$R, $Out>
       RowNodeMapper.ensureInitialized();
   @override
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children =>
-      ListCopyWith($value.children, (v, t) => v.copyWith.$chain(t),
-          (v) => call(children: v));
+      ListCopyWith(
+        $value.children,
+        (v, t) => v.copyWith.$chain(t),
+        (v) => call(children: v),
+      );
   @override
-  $R call(
-          {Object? name = $none,
-          Object? mainAxisAlignment = $none,
-          Object? mainAxisSize = $none,
-          Object? crossAxisAlignment = $none,
-          AxisEnum? direction,
-          List<SNode>? children}) =>
-      $apply(FieldCopyWithData({
-        if (name != $none) #name: name,
-        if (mainAxisAlignment != $none) #mainAxisAlignment: mainAxisAlignment,
-        if (mainAxisSize != $none) #mainAxisSize: mainAxisSize,
-        if (crossAxisAlignment != $none)
-          #crossAxisAlignment: crossAxisAlignment,
-        if (direction != null) #direction: direction,
-        if (children != null) #children: children
-      }));
+  $R call({
+    Object? name = $none,
+    Object? mainAxisAlignment = $none,
+    Object? mainAxisSize = $none,
+    Object? crossAxisAlignment = $none,
+    AxisEnum? direction,
+    List<SNode>? children,
+  }) => $apply(
+    FieldCopyWithData({
+      if (name != $none) #name: name,
+      if (mainAxisAlignment != $none) #mainAxisAlignment: mainAxisAlignment,
+      if (mainAxisSize != $none) #mainAxisSize: mainAxisSize,
+      if (crossAxisAlignment != $none) #crossAxisAlignment: crossAxisAlignment,
+      if (direction != null) #direction: direction,
+      if (children != null) #children: children,
+    }),
+  );
   @override
   RowNode $make(CopyWithData data) => RowNode(
-      name: data.get(#name, or: $value.name),
-      mainAxisAlignment:
-          data.get(#mainAxisAlignment, or: $value.mainAxisAlignment),
-      mainAxisSize: data.get(#mainAxisSize, or: $value.mainAxisSize),
-      crossAxisAlignment:
-          data.get(#crossAxisAlignment, or: $value.crossAxisAlignment),
-      direction: data.get(#direction, or: $value.direction),
-      children: data.get(#children, or: $value.children));
+    name: data.get(#name, or: $value.name),
+    mainAxisAlignment: data.get(
+      #mainAxisAlignment,
+      or: $value.mainAxisAlignment,
+    ),
+    mainAxisSize: data.get(#mainAxisSize, or: $value.mainAxisSize),
+    crossAxisAlignment: data.get(
+      #crossAxisAlignment,
+      or: $value.crossAxisAlignment,
+    ),
+    direction: data.get(#direction, or: $value.direction),
+    children: data.get(#children, or: $value.children),
+  );
 
   @override
   RowNodeCopyWith<$R2, RowNode, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
       _RowNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

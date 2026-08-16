@@ -1,6 +1,8 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -23,38 +25,64 @@ class SizedBoxNodeMapper extends SubClassMapperBase<SizedBoxNode> {
   final String id = 'SizedBoxNode';
 
   static String? _$name(SizedBoxNode v) => v.name;
-  static const Field<SizedBoxNode, String> _f$name =
-      Field('name', _$name, opt: true);
+  static const Field<SizedBoxNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static double? _$width(SizedBoxNode v) => v.width;
-  static const Field<SizedBoxNode, double> _f$width =
-      Field('width', _$width, opt: true);
+  static const Field<SizedBoxNode, double> _f$width = Field(
+    'width',
+    _$width,
+    opt: true,
+  );
   static double? _$height(SizedBoxNode v) => v.height;
-  static const Field<SizedBoxNode, double> _f$height =
-      Field('height', _$height, opt: true);
+  static const Field<SizedBoxNode, double> _f$height = Field(
+    'height',
+    _$height,
+    opt: true,
+  );
   static bool? _$expand(SizedBoxNode v) => v.expand;
-  static const Field<SizedBoxNode, bool> _f$expand =
-      Field('expand', _$expand, opt: true);
+  static const Field<SizedBoxNode, bool> _f$expand = Field(
+    'expand',
+    _$expand,
+    opt: true,
+  );
   static SNode? _$child(SizedBoxNode v) => v.child;
-  static const Field<SizedBoxNode, SNode> _f$child =
-      Field('child', _$child, opt: true);
+  static const Field<SizedBoxNode, SNode> _f$child = Field(
+    'child',
+    _$child,
+    opt: true,
+  );
   static String _$uid(SizedBoxNode v) => v.uid;
-  static const Field<SizedBoxNode, String> _f$uid =
-      Field('uid', _$uid, mode: FieldMode.member);
+  static const Field<SizedBoxNode, String> _f$uid = Field(
+    'uid',
+    _$uid,
+    mode: FieldMode.member,
+  );
   static List<String>? _$tags(SizedBoxNode v) => v.tags;
-  static const Field<SizedBoxNode, List<String>> _f$tags =
-      Field('tags', _$tags, mode: FieldMode.member);
+  static const Field<SizedBoxNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(SizedBoxNode v) =>
       v.treeNodeGK;
   static const Field<SizedBoxNode, GlobalKey<State<StatefulWidget>>>
-      _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
+  _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(SizedBoxNode v) => v.isExpanded;
-  static const Field<SizedBoxNode, bool> _f$isExpanded =
-      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static const Field<SizedBoxNode, bool> _f$isExpanded = Field(
+    'isExpanded',
+    _$isExpanded,
+    mode: FieldMode.member,
+  );
   static bool? _$hidePropertiesWhileDragging(SizedBoxNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<SizedBoxNode, bool> _f$hidePropertiesWhileDragging = Field(
-      'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
-      mode: FieldMode.member);
+    'hidePropertiesWhileDragging',
+    _$hidePropertiesWhileDragging,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$nodeGK(SizedBoxNode v) => v.nodeGK;
   static const Field<SizedBoxNode, GlobalKey<State<StatefulWidget>>> _f$nodeGK =
       Field('nodeGK', _$nodeGK, mode: FieldMode.member);
@@ -86,11 +114,12 @@ class SizedBoxNodeMapper extends SubClassMapperBase<SizedBoxNode> {
 
   static SizedBoxNode _instantiate(DecodingData data) {
     return SizedBoxNode(
-        name: data.dec(_f$name),
-        width: data.dec(_f$width),
-        height: data.dec(_f$height),
-        expand: data.dec(_f$expand),
-        child: data.dec(_f$child));
+      name: data.dec(_f$name),
+      width: data.dec(_f$width),
+      height: data.dec(_f$height),
+      expand: data.dec(_f$expand),
+      child: data.dec(_f$child),
+    );
   }
 
   @override
@@ -107,34 +136,43 @@ class SizedBoxNodeMapper extends SubClassMapperBase<SizedBoxNode> {
 
 mixin SizedBoxNodeMappable {
   String toJson() {
-    return SizedBoxNodeMapper.ensureInitialized()
-        .encodeJson<SizedBoxNode>(this as SizedBoxNode);
+    return SizedBoxNodeMapper.ensureInitialized().encodeJson<SizedBoxNode>(
+      this as SizedBoxNode,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return SizedBoxNodeMapper.ensureInitialized()
-        .encodeMap<SizedBoxNode>(this as SizedBoxNode);
+    return SizedBoxNodeMapper.ensureInitialized().encodeMap<SizedBoxNode>(
+      this as SizedBoxNode,
+    );
   }
 
   SizedBoxNodeCopyWith<SizedBoxNode, SizedBoxNode, SizedBoxNode> get copyWith =>
       _SizedBoxNodeCopyWithImpl<SizedBoxNode, SizedBoxNode>(
-          this as SizedBoxNode, $identity, $identity);
+        this as SizedBoxNode,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return SizedBoxNodeMapper.ensureInitialized()
-        .stringifyValue(this as SizedBoxNode);
+    return SizedBoxNodeMapper.ensureInitialized().stringifyValue(
+      this as SizedBoxNode,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return SizedBoxNodeMapper.ensureInitialized()
-        .equalsValue(this as SizedBoxNode, other);
+    return SizedBoxNodeMapper.ensureInitialized().equalsValue(
+      this as SizedBoxNode,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return SizedBoxNodeMapper.ensureInitialized()
-        .hashValue(this as SizedBoxNode);
+    return SizedBoxNodeMapper.ensureInitialized().hashValue(
+      this as SizedBoxNode,
+    );
   }
 }
 
@@ -148,12 +186,13 @@ abstract class SizedBoxNodeCopyWith<$R, $In extends SizedBoxNode, $Out>
     implements SNodeCopyWith<$R, $In, $Out> {
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call(
-      {String? name,
-      double? width,
-      double? height,
-      bool? expand,
-      SNode? child});
+  $R call({
+    String? name,
+    double? width,
+    double? height,
+    bool? expand,
+    SNode? child,
+  });
   SizedBoxNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -169,29 +208,33 @@ class _SizedBoxNodeCopyWithImpl<$R, $Out>
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
-  $R call(
-          {Object? name = $none,
-          Object? width = $none,
-          Object? height = $none,
-          Object? expand = $none,
-          Object? child = $none}) =>
-      $apply(FieldCopyWithData({
-        if (name != $none) #name: name,
-        if (width != $none) #width: width,
-        if (height != $none) #height: height,
-        if (expand != $none) #expand: expand,
-        if (child != $none) #child: child
-      }));
+  $R call({
+    Object? name = $none,
+    Object? width = $none,
+    Object? height = $none,
+    Object? expand = $none,
+    Object? child = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (name != $none) #name: name,
+      if (width != $none) #width: width,
+      if (height != $none) #height: height,
+      if (expand != $none) #expand: expand,
+      if (child != $none) #child: child,
+    }),
+  );
   @override
   SizedBoxNode $make(CopyWithData data) => SizedBoxNode(
-      name: data.get(#name, or: $value.name),
-      width: data.get(#width, or: $value.width),
-      height: data.get(#height, or: $value.height),
-      expand: data.get(#expand, or: $value.expand),
-      child: data.get(#child, or: $value.child));
+    name: data.get(#name, or: $value.name),
+    width: data.get(#width, or: $value.width),
+    height: data.get(#height, or: $value.height),
+    expand: data.get(#expand, or: $value.expand),
+    child: data.get(#child, or: $value.child),
+  );
 
   @override
   SizedBoxNodeCopyWith<$R2, SizedBoxNode, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _SizedBoxNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _SizedBoxNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

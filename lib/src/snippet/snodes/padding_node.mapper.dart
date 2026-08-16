@@ -1,6 +1,8 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -23,32 +25,52 @@ class PaddingNodeMapper extends SubClassMapperBase<PaddingNode> {
   final String id = 'PaddingNode';
 
   static String? _$name(PaddingNode v) => v.name;
-  static const Field<PaddingNode, String> _f$name =
-      Field('name', _$name, opt: true);
+  static const Field<PaddingNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static EdgeInsets? _$padding(PaddingNode v) => v.padding;
-  static const Field<PaddingNode, EdgeInsets> _f$padding =
-      Field('padding', _$padding, opt: true);
+  static const Field<PaddingNode, EdgeInsets> _f$padding = Field(
+    'padding',
+    _$padding,
+    opt: true,
+  );
   static SNode? _$child(PaddingNode v) => v.child;
-  static const Field<PaddingNode, SNode> _f$child =
-      Field('child', _$child, opt: true);
+  static const Field<PaddingNode, SNode> _f$child = Field(
+    'child',
+    _$child,
+    opt: true,
+  );
   static String _$uid(PaddingNode v) => v.uid;
-  static const Field<PaddingNode, String> _f$uid =
-      Field('uid', _$uid, mode: FieldMode.member);
+  static const Field<PaddingNode, String> _f$uid = Field(
+    'uid',
+    _$uid,
+    mode: FieldMode.member,
+  );
   static List<String>? _$tags(PaddingNode v) => v.tags;
-  static const Field<PaddingNode, List<String>> _f$tags =
-      Field('tags', _$tags, mode: FieldMode.member);
+  static const Field<PaddingNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(PaddingNode v) =>
       v.treeNodeGK;
   static const Field<PaddingNode, GlobalKey<State<StatefulWidget>>>
-      _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
+  _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(PaddingNode v) => v.isExpanded;
-  static const Field<PaddingNode, bool> _f$isExpanded =
-      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static const Field<PaddingNode, bool> _f$isExpanded = Field(
+    'isExpanded',
+    _$isExpanded,
+    mode: FieldMode.member,
+  );
   static bool? _$hidePropertiesWhileDragging(PaddingNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<PaddingNode, bool> _f$hidePropertiesWhileDragging = Field(
-      'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
-      mode: FieldMode.member);
+    'hidePropertiesWhileDragging',
+    _$hidePropertiesWhileDragging,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$nodeGK(PaddingNode v) => v.nodeGK;
   static const Field<PaddingNode, GlobalKey<State<StatefulWidget>>> _f$nodeGK =
       Field('nodeGK', _$nodeGK, mode: FieldMode.member);
@@ -78,9 +100,10 @@ class PaddingNodeMapper extends SubClassMapperBase<PaddingNode> {
 
   static PaddingNode _instantiate(DecodingData data) {
     return PaddingNode(
-        name: data.dec(_f$name),
-        padding: data.dec(_f$padding),
-        child: data.dec(_f$child));
+      name: data.dec(_f$name),
+      padding: data.dec(_f$padding),
+      child: data.dec(_f$child),
+    );
   }
 
   @override
@@ -97,28 +120,36 @@ class PaddingNodeMapper extends SubClassMapperBase<PaddingNode> {
 
 mixin PaddingNodeMappable {
   String toJson() {
-    return PaddingNodeMapper.ensureInitialized()
-        .encodeJson<PaddingNode>(this as PaddingNode);
+    return PaddingNodeMapper.ensureInitialized().encodeJson<PaddingNode>(
+      this as PaddingNode,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return PaddingNodeMapper.ensureInitialized()
-        .encodeMap<PaddingNode>(this as PaddingNode);
+    return PaddingNodeMapper.ensureInitialized().encodeMap<PaddingNode>(
+      this as PaddingNode,
+    );
   }
 
   PaddingNodeCopyWith<PaddingNode, PaddingNode, PaddingNode> get copyWith =>
       _PaddingNodeCopyWithImpl<PaddingNode, PaddingNode>(
-          this as PaddingNode, $identity, $identity);
+        this as PaddingNode,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return PaddingNodeMapper.ensureInitialized()
-        .stringifyValue(this as PaddingNode);
+    return PaddingNodeMapper.ensureInitialized().stringifyValue(
+      this as PaddingNode,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return PaddingNodeMapper.ensureInitialized()
-        .equalsValue(this as PaddingNode, other);
+    return PaddingNodeMapper.ensureInitialized().equalsValue(
+      this as PaddingNode,
+      other,
+    );
   }
 
   @override
@@ -153,23 +184,27 @@ class _PaddingNodeCopyWithImpl<$R, $Out>
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
-  $R call(
-          {Object? name = $none,
-          Object? padding = $none,
-          Object? child = $none}) =>
-      $apply(FieldCopyWithData({
-        if (name != $none) #name: name,
-        if (padding != $none) #padding: padding,
-        if (child != $none) #child: child
-      }));
+  $R call({
+    Object? name = $none,
+    Object? padding = $none,
+    Object? child = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (name != $none) #name: name,
+      if (padding != $none) #padding: padding,
+      if (child != $none) #child: child,
+    }),
+  );
   @override
   PaddingNode $make(CopyWithData data) => PaddingNode(
-      name: data.get(#name, or: $value.name),
-      padding: data.get(#padding, or: $value.padding),
-      child: data.get(#child, or: $value.child));
+    name: data.get(#name, or: $value.name),
+    padding: data.get(#padding, or: $value.padding),
+    child: data.get(#child, or: $value.child),
+  );
 
   @override
   PaddingNodeCopyWith<$R2, PaddingNode, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _PaddingNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _PaddingNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

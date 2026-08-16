@@ -1,6 +1,8 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -49,28 +51,36 @@ class SizeModelMapper extends ClassMapperBase<SizeModel> {
 
 mixin SizeModelMappable {
   String toJson() {
-    return SizeModelMapper.ensureInitialized()
-        .encodeJson<SizeModel>(this as SizeModel);
+    return SizeModelMapper.ensureInitialized().encodeJson<SizeModel>(
+      this as SizeModel,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return SizeModelMapper.ensureInitialized()
-        .encodeMap<SizeModel>(this as SizeModel);
+    return SizeModelMapper.ensureInitialized().encodeMap<SizeModel>(
+      this as SizeModel,
+    );
   }
 
   SizeModelCopyWith<SizeModel, SizeModel, SizeModel> get copyWith =>
       _SizeModelCopyWithImpl<SizeModel, SizeModel>(
-          this as SizeModel, $identity, $identity);
+        this as SizeModel,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return SizeModelMapper.ensureInitialized()
-        .stringifyValue(this as SizeModel);
+    return SizeModelMapper.ensureInitialized().stringifyValue(
+      this as SizeModel,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return SizeModelMapper.ensureInitialized()
-        .equalsValue(this as SizeModel, other);
+    return SizeModelMapper.ensureInitialized().equalsValue(
+      this as SizeModel,
+      other,
+    );
   }
 
   @override
@@ -99,14 +109,21 @@ class _SizeModelCopyWithImpl<$R, $Out>
   late final ClassMapperBase<SizeModel> $mapper =
       SizeModelMapper.ensureInitialized();
   @override
-  $R call({double? width, double? height}) => $apply(FieldCopyWithData(
-      {if (width != null) #width: width, if (height != null) #height: height}));
+  $R call({double? width, double? height}) => $apply(
+    FieldCopyWithData({
+      if (width != null) #width: width,
+      if (height != null) #height: height,
+    }),
+  );
   @override
   SizeModel $make(CopyWithData data) => SizeModel(
-      data.get(#width, or: $value.width), data.get(#height, or: $value.height));
+    data.get(#width, or: $value.width),
+    data.get(#height, or: $value.height),
+  );
 
   @override
   SizeModelCopyWith<$R2, SizeModel, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _SizeModelCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _SizeModelCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

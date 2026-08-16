@@ -2,7 +2,6 @@
 
 // library fsdui;
 
-import 'dart:async';
 import 'dart:core';
 
 import 'package:email_validator/email_validator.dart';
@@ -178,6 +177,7 @@ export 'package:cloud_firestore/cloud_firestore.dart'
         Sum,
         Type
 ;
+export 'package:flutter_layout_grid/flutter_layout_grid.dart';
 export 'package:package_info_plus/package_info_plus.dart';
 export 'package:hydrated_bloc/hydrated_bloc.dart';
 export 'package:firebase_core/firebase_core.dart';
@@ -229,6 +229,8 @@ export 'src/gotits/gotits_helper_string.dart';
 // export 'src/gsi/sign_in_button.dart';
 export 'src/measuring/find_global_rect.dart';
 export 'src/measuring/measure_sizebox.dart';
+export 'src/measuring/measuring_wrapper.dart';
+export 'src/measuring/self_sizing_state_mixin.dart';
 export 'src/model/app_info_model.dart';
 
 // export 'src/model/branch_model.dart';
@@ -262,7 +264,7 @@ export 'src/snippet/snodes/sliver_to_box_adapter_node.dart';
 export 'src/snippet/snodes/aspect_ratio_node.dart';
 export 'src/snippet/snodes/asset_image_node.dart';
 export 'src/snippet/snodes/button_mixin.dart';
-export 'src/snippet/snodes/carousel_node.dart';
+// export 'src/snippet/snodes/carousel_node.dart';
 export 'src/snippet/snodes/carousel_view_node.dart';
 export 'src/snippet/snodes/dashboard_node.dart';
 export 'src/snippet/snodes/center_node.dart';
@@ -287,6 +289,8 @@ export 'src/snippet/snodes/article_listview_node.dart';
 export 'src/snippet/snodes/listview_node.dart';
 export 'src/snippet/snodes/gridview_node.dart';
 export 'src/snippet/snodes/pageview_node.dart';
+export 'src/snippet/snodes/responsive_flex_list_node.dart';
+export 'src/snippet/snodes/css_grid_node.dart';
 export 'src/snippet/snodes/interactiveviewer_node.dart';
 // export 'src/dev_grid/dev_grid.dart';
 
@@ -316,6 +320,7 @@ export 'src/snippet/snodes/placeholder_node.dart';
 export 'src/snippet/snodes/poll_node.dart';
 export 'src/snippet/snodes/poll_option_node.dart';
 export 'src/snippet/snodes/positioned_node.dart';
+export 'src/snippet/snodes/grid_placement_node.dart';
 export 'src/snippet/snodes/rich_text_node.dart';
 export 'src/snippet/snodes/row_node.dart';
 export 'src/snippet/snodes/scaffold_node.dart';

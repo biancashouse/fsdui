@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'package:fsdui/fsdui.dart';
 
+const cellRed = Color(0xffc73232);
+const cellMustard = Color(0xffd7aa22);
+const cellGrey = Color(0xffcfd4e0);
+const cellBlue = Color(0xff1553be);
+const background = Color(0xff242830);
+
+
 class Page_Home extends StatefulWidget {
   const Page_Home({super.key});
 

@@ -1,6 +1,8 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -24,44 +26,70 @@ class InteractiveViewerNodeMapper
   final String id = 'InteractiveViewerNode';
 
   static String? _$name(InteractiveViewerNode v) => v.name;
-  static const Field<InteractiveViewerNode, String> _f$name =
-      Field('name', _$name, opt: true);
+  static const Field<InteractiveViewerNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static SNode? _$child(InteractiveViewerNode v) => v.child;
-  static const Field<InteractiveViewerNode, SNode> _f$child =
-      Field('child', _$child, opt: true);
+  static const Field<InteractiveViewerNode, SNode> _f$child = Field(
+    'child',
+    _$child,
+    opt: true,
+  );
   static double? _$maxScale(InteractiveViewerNode v) => v.maxScale;
-  static const Field<InteractiveViewerNode, double> _f$maxScale =
-      Field('maxScale', _$maxScale, opt: true);
+  static const Field<InteractiveViewerNode, double> _f$maxScale = Field(
+    'maxScale',
+    _$maxScale,
+    opt: true,
+  );
   static double? _$minScale(InteractiveViewerNode v) => v.minScale;
-  static const Field<InteractiveViewerNode, double> _f$minScale =
-      Field('minScale', _$minScale, opt: true);
+  static const Field<InteractiveViewerNode, double> _f$minScale = Field(
+    'minScale',
+    _$minScale,
+    opt: true,
+  );
   static bool? _$scaleEnabled(InteractiveViewerNode v) => v.scaleEnabled;
-  static const Field<InteractiveViewerNode, bool> _f$scaleEnabled =
-      Field('scaleEnabled', _$scaleEnabled, opt: true);
+  static const Field<InteractiveViewerNode, bool> _f$scaleEnabled = Field(
+    'scaleEnabled',
+    _$scaleEnabled,
+    opt: true,
+  );
   static String _$uid(InteractiveViewerNode v) => v.uid;
-  static const Field<InteractiveViewerNode, String> _f$uid =
-      Field('uid', _$uid, mode: FieldMode.member);
+  static const Field<InteractiveViewerNode, String> _f$uid = Field(
+    'uid',
+    _$uid,
+    mode: FieldMode.member,
+  );
   static List<String>? _$tags(InteractiveViewerNode v) => v.tags;
-  static const Field<InteractiveViewerNode, List<String>> _f$tags =
-      Field('tags', _$tags, mode: FieldMode.member);
+  static const Field<InteractiveViewerNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(
-          InteractiveViewerNode v) =>
-      v.treeNodeGK;
+    InteractiveViewerNode v,
+  ) => v.treeNodeGK;
   static const Field<InteractiveViewerNode, GlobalKey<State<StatefulWidget>>>
-      _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
+  _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(InteractiveViewerNode v) => v.isExpanded;
-  static const Field<InteractiveViewerNode, bool> _f$isExpanded =
-      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static const Field<InteractiveViewerNode, bool> _f$isExpanded = Field(
+    'isExpanded',
+    _$isExpanded,
+    mode: FieldMode.member,
+  );
   static bool? _$hidePropertiesWhileDragging(InteractiveViewerNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<InteractiveViewerNode, bool>
-      _f$hidePropertiesWhileDragging = Field(
-          'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
-          mode: FieldMode.member);
+  _f$hidePropertiesWhileDragging = Field(
+    'hidePropertiesWhileDragging',
+    _$hidePropertiesWhileDragging,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$nodeGK(InteractiveViewerNode v) =>
       v.nodeGK;
   static const Field<InteractiveViewerNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
+  _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
 
   @override
   final MappableFields<InteractiveViewerNode> fields = const {
@@ -90,11 +118,12 @@ class InteractiveViewerNodeMapper
 
   static InteractiveViewerNode _instantiate(DecodingData data) {
     return InteractiveViewerNode(
-        name: data.dec(_f$name),
-        child: data.dec(_f$child),
-        maxScale: data.dec(_f$maxScale),
-        minScale: data.dec(_f$minScale),
-        scaleEnabled: data.dec(_f$scaleEnabled));
+      name: data.dec(_f$name),
+      child: data.dec(_f$child),
+      maxScale: data.dec(_f$maxScale),
+      minScale: data.dec(_f$minScale),
+      scaleEnabled: data.dec(_f$scaleEnabled),
+    );
   }
 
   @override
@@ -120,50 +149,65 @@ mixin InteractiveViewerNodeMappable {
         .encodeMap<InteractiveViewerNode>(this as InteractiveViewerNode);
   }
 
-  InteractiveViewerNodeCopyWith<InteractiveViewerNode, InteractiveViewerNode,
-      InteractiveViewerNode> get copyWith => _InteractiveViewerNodeCopyWithImpl<
-          InteractiveViewerNode, InteractiveViewerNode>(
-      this as InteractiveViewerNode, $identity, $identity);
+  InteractiveViewerNodeCopyWith<
+    InteractiveViewerNode,
+    InteractiveViewerNode,
+    InteractiveViewerNode
+  >
+  get copyWith =>
+      _InteractiveViewerNodeCopyWithImpl<
+        InteractiveViewerNode,
+        InteractiveViewerNode
+      >(this as InteractiveViewerNode, $identity, $identity);
   @override
   String toString() {
-    return InteractiveViewerNodeMapper.ensureInitialized()
-        .stringifyValue(this as InteractiveViewerNode);
+    return InteractiveViewerNodeMapper.ensureInitialized().stringifyValue(
+      this as InteractiveViewerNode,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return InteractiveViewerNodeMapper.ensureInitialized()
-        .equalsValue(this as InteractiveViewerNode, other);
+    return InteractiveViewerNodeMapper.ensureInitialized().equalsValue(
+      this as InteractiveViewerNode,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return InteractiveViewerNodeMapper.ensureInitialized()
-        .hashValue(this as InteractiveViewerNode);
+    return InteractiveViewerNodeMapper.ensureInitialized().hashValue(
+      this as InteractiveViewerNode,
+    );
   }
 }
 
 extension InteractiveViewerNodeValueCopy<$R, $Out>
     on ObjectCopyWith<$R, InteractiveViewerNode, $Out> {
   InteractiveViewerNodeCopyWith<$R, InteractiveViewerNode, $Out>
-      get $asInteractiveViewerNode => $base.as(
-          (v, t, t2) => _InteractiveViewerNodeCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asInteractiveViewerNode => $base.as(
+    (v, t, t2) => _InteractiveViewerNodeCopyWithImpl<$R, $Out>(v, t, t2),
+  );
 }
 
 abstract class InteractiveViewerNodeCopyWith<
-    $R,
-    $In extends InteractiveViewerNode,
-    $Out> implements SNodeCopyWith<$R, $In, $Out> {
+  $R,
+  $In extends InteractiveViewerNode,
+  $Out
+>
+    implements SNodeCopyWith<$R, $In, $Out> {
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call(
-      {String? name,
-      SNode? child,
-      double? maxScale,
-      double? minScale,
-      bool? scaleEnabled});
+  $R call({
+    String? name,
+    SNode? child,
+    double? maxScale,
+    double? minScale,
+    bool? scaleEnabled,
+  });
   InteractiveViewerNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _InteractiveViewerNodeCopyWithImpl<$R, $Out>
@@ -178,29 +222,33 @@ class _InteractiveViewerNodeCopyWithImpl<$R, $Out>
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
-  $R call(
-          {Object? name = $none,
-          Object? child = $none,
-          Object? maxScale = $none,
-          Object? minScale = $none,
-          Object? scaleEnabled = $none}) =>
-      $apply(FieldCopyWithData({
-        if (name != $none) #name: name,
-        if (child != $none) #child: child,
-        if (maxScale != $none) #maxScale: maxScale,
-        if (minScale != $none) #minScale: minScale,
-        if (scaleEnabled != $none) #scaleEnabled: scaleEnabled
-      }));
+  $R call({
+    Object? name = $none,
+    Object? child = $none,
+    Object? maxScale = $none,
+    Object? minScale = $none,
+    Object? scaleEnabled = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (name != $none) #name: name,
+      if (child != $none) #child: child,
+      if (maxScale != $none) #maxScale: maxScale,
+      if (minScale != $none) #minScale: minScale,
+      if (scaleEnabled != $none) #scaleEnabled: scaleEnabled,
+    }),
+  );
   @override
   InteractiveViewerNode $make(CopyWithData data) => InteractiveViewerNode(
-      name: data.get(#name, or: $value.name),
-      child: data.get(#child, or: $value.child),
-      maxScale: data.get(#maxScale, or: $value.maxScale),
-      minScale: data.get(#minScale, or: $value.minScale),
-      scaleEnabled: data.get(#scaleEnabled, or: $value.scaleEnabled));
+    name: data.get(#name, or: $value.name),
+    child: data.get(#child, or: $value.child),
+    maxScale: data.get(#maxScale, or: $value.maxScale),
+    minScale: data.get(#minScale, or: $value.minScale),
+    scaleEnabled: data.get(#scaleEnabled, or: $value.scaleEnabled),
+  );
 
   @override
   InteractiveViewerNodeCopyWith<$R2, InteractiveViewerNode, $Out2>
-      $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _InteractiveViewerNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+      _InteractiveViewerNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

@@ -1,6 +1,8 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -24,39 +26,64 @@ class ListViewNodeMapper extends SubClassMapperBase<ListViewNode> {
   final String id = 'ListViewNode';
 
   static String? _$name(ListViewNode v) => v.name;
-  static const Field<ListViewNode, String> _f$name =
-      Field('name', _$name, opt: true);
+  static const Field<ListViewNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static AxisEnum _$scrollDirection(ListViewNode v) => v.scrollDirection;
   static const Field<ListViewNode, AxisEnum> _f$scrollDirection = Field(
-      'scrollDirection', _$scrollDirection,
-      opt: true, def: AxisEnum.vertical);
+    'scrollDirection',
+    _$scrollDirection,
+    opt: true,
+    def: AxisEnum.vertical,
+  );
   static bool? _$shrinkWrap(ListViewNode v) => v.shrinkWrap;
-  static const Field<ListViewNode, bool> _f$shrinkWrap =
-      Field('shrinkWrap', _$shrinkWrap, opt: true);
+  static const Field<ListViewNode, bool> _f$shrinkWrap = Field(
+    'shrinkWrap',
+    _$shrinkWrap,
+    opt: true,
+  );
   static EdgeInsets? _$padding(ListViewNode v) => v.padding;
-  static const Field<ListViewNode, EdgeInsets> _f$padding =
-      Field('padding', _$padding, opt: true);
+  static const Field<ListViewNode, EdgeInsets> _f$padding = Field(
+    'padding',
+    _$padding,
+    opt: true,
+  );
   static List<SNode> _$children(ListViewNode v) => v.children;
-  static const Field<ListViewNode, List<SNode>> _f$children =
-      Field('children', _$children);
+  static const Field<ListViewNode, List<SNode>> _f$children = Field(
+    'children',
+    _$children,
+  );
   static String _$uid(ListViewNode v) => v.uid;
-  static const Field<ListViewNode, String> _f$uid =
-      Field('uid', _$uid, mode: FieldMode.member);
+  static const Field<ListViewNode, String> _f$uid = Field(
+    'uid',
+    _$uid,
+    mode: FieldMode.member,
+  );
   static List<String>? _$tags(ListViewNode v) => v.tags;
-  static const Field<ListViewNode, List<String>> _f$tags =
-      Field('tags', _$tags, mode: FieldMode.member);
+  static const Field<ListViewNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(ListViewNode v) =>
       v.treeNodeGK;
   static const Field<ListViewNode, GlobalKey<State<StatefulWidget>>>
-      _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
+  _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(ListViewNode v) => v.isExpanded;
-  static const Field<ListViewNode, bool> _f$isExpanded =
-      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static const Field<ListViewNode, bool> _f$isExpanded = Field(
+    'isExpanded',
+    _$isExpanded,
+    mode: FieldMode.member,
+  );
   static bool? _$hidePropertiesWhileDragging(ListViewNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<ListViewNode, bool> _f$hidePropertiesWhileDragging = Field(
-      'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
-      mode: FieldMode.member);
+    'hidePropertiesWhileDragging',
+    _$hidePropertiesWhileDragging,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$nodeGK(ListViewNode v) => v.nodeGK;
   static const Field<ListViewNode, GlobalKey<State<StatefulWidget>>> _f$nodeGK =
       Field('nodeGK', _$nodeGK, mode: FieldMode.member);
@@ -88,11 +115,12 @@ class ListViewNodeMapper extends SubClassMapperBase<ListViewNode> {
 
   static ListViewNode _instantiate(DecodingData data) {
     return ListViewNode(
-        name: data.dec(_f$name),
-        scrollDirection: data.dec(_f$scrollDirection),
-        shrinkWrap: data.dec(_f$shrinkWrap),
-        padding: data.dec(_f$padding),
-        children: data.dec(_f$children));
+      name: data.dec(_f$name),
+      scrollDirection: data.dec(_f$scrollDirection),
+      shrinkWrap: data.dec(_f$shrinkWrap),
+      padding: data.dec(_f$padding),
+      children: data.dec(_f$children),
+    );
   }
 
   @override
@@ -109,34 +137,43 @@ class ListViewNodeMapper extends SubClassMapperBase<ListViewNode> {
 
 mixin ListViewNodeMappable {
   String toJson() {
-    return ListViewNodeMapper.ensureInitialized()
-        .encodeJson<ListViewNode>(this as ListViewNode);
+    return ListViewNodeMapper.ensureInitialized().encodeJson<ListViewNode>(
+      this as ListViewNode,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return ListViewNodeMapper.ensureInitialized()
-        .encodeMap<ListViewNode>(this as ListViewNode);
+    return ListViewNodeMapper.ensureInitialized().encodeMap<ListViewNode>(
+      this as ListViewNode,
+    );
   }
 
   ListViewNodeCopyWith<ListViewNode, ListViewNode, ListViewNode> get copyWith =>
       _ListViewNodeCopyWithImpl<ListViewNode, ListViewNode>(
-          this as ListViewNode, $identity, $identity);
+        this as ListViewNode,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return ListViewNodeMapper.ensureInitialized()
-        .stringifyValue(this as ListViewNode);
+    return ListViewNodeMapper.ensureInitialized().stringifyValue(
+      this as ListViewNode,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return ListViewNodeMapper.ensureInitialized()
-        .equalsValue(this as ListViewNode, other);
+    return ListViewNodeMapper.ensureInitialized().equalsValue(
+      this as ListViewNode,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return ListViewNodeMapper.ensureInitialized()
-        .hashValue(this as ListViewNode);
+    return ListViewNodeMapper.ensureInitialized().hashValue(
+      this as ListViewNode,
+    );
   }
 }
 
@@ -150,12 +187,13 @@ abstract class ListViewNodeCopyWith<$R, $In extends ListViewNode, $Out>
     implements SNodeCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
-  $R call(
-      {String? name,
-      AxisEnum? scrollDirection,
-      bool? shrinkWrap,
-      EdgeInsets? padding,
-      List<SNode>? children});
+  $R call({
+    String? name,
+    AxisEnum? scrollDirection,
+    bool? shrinkWrap,
+    EdgeInsets? padding,
+    List<SNode>? children,
+  });
   ListViewNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -169,32 +207,39 @@ class _ListViewNodeCopyWithImpl<$R, $Out>
       ListViewNodeMapper.ensureInitialized();
   @override
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children =>
-      ListCopyWith($value.children, (v, t) => v.copyWith.$chain(t),
-          (v) => call(children: v));
+      ListCopyWith(
+        $value.children,
+        (v, t) => v.copyWith.$chain(t),
+        (v) => call(children: v),
+      );
   @override
-  $R call(
-          {Object? name = $none,
-          AxisEnum? scrollDirection,
-          Object? shrinkWrap = $none,
-          Object? padding = $none,
-          List<SNode>? children}) =>
-      $apply(FieldCopyWithData({
-        if (name != $none) #name: name,
-        if (scrollDirection != null) #scrollDirection: scrollDirection,
-        if (shrinkWrap != $none) #shrinkWrap: shrinkWrap,
-        if (padding != $none) #padding: padding,
-        if (children != null) #children: children
-      }));
+  $R call({
+    Object? name = $none,
+    AxisEnum? scrollDirection,
+    Object? shrinkWrap = $none,
+    Object? padding = $none,
+    List<SNode>? children,
+  }) => $apply(
+    FieldCopyWithData({
+      if (name != $none) #name: name,
+      if (scrollDirection != null) #scrollDirection: scrollDirection,
+      if (shrinkWrap != $none) #shrinkWrap: shrinkWrap,
+      if (padding != $none) #padding: padding,
+      if (children != null) #children: children,
+    }),
+  );
   @override
   ListViewNode $make(CopyWithData data) => ListViewNode(
-      name: data.get(#name, or: $value.name),
-      scrollDirection: data.get(#scrollDirection, or: $value.scrollDirection),
-      shrinkWrap: data.get(#shrinkWrap, or: $value.shrinkWrap),
-      padding: data.get(#padding, or: $value.padding),
-      children: data.get(#children, or: $value.children));
+    name: data.get(#name, or: $value.name),
+    scrollDirection: data.get(#scrollDirection, or: $value.scrollDirection),
+    shrinkWrap: data.get(#shrinkWrap, or: $value.shrinkWrap),
+    padding: data.get(#padding, or: $value.padding),
+    children: data.get(#children, or: $value.children),
+  );
 
   @override
   ListViewNodeCopyWith<$R2, ListViewNode, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _ListViewNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _ListViewNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

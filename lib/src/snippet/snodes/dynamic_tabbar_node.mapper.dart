@@ -1,6 +1,8 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -23,33 +25,50 @@ class DynamicTabBarNodeMapper extends SubClassMapperBase<DynamicTabBarNode> {
   final String id = 'DynamicTabBarNode';
 
   static String? _$name(DynamicTabBarNode v) => v.name;
-  static const Field<DynamicTabBarNode, String> _f$name =
-      Field('name', _$name, opt: true);
+  static const Field<DynamicTabBarNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static List<SNode> _$children(DynamicTabBarNode v) => v.children;
-  static const Field<DynamicTabBarNode, List<SNode>> _f$children =
-      Field('children', _$children);
+  static const Field<DynamicTabBarNode, List<SNode>> _f$children = Field(
+    'children',
+    _$children,
+  );
   static String _$uid(DynamicTabBarNode v) => v.uid;
-  static const Field<DynamicTabBarNode, String> _f$uid =
-      Field('uid', _$uid, mode: FieldMode.member);
+  static const Field<DynamicTabBarNode, String> _f$uid = Field(
+    'uid',
+    _$uid,
+    mode: FieldMode.member,
+  );
   static List<String>? _$tags(DynamicTabBarNode v) => v.tags;
-  static const Field<DynamicTabBarNode, List<String>> _f$tags =
-      Field('tags', _$tags, mode: FieldMode.member);
+  static const Field<DynamicTabBarNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(DynamicTabBarNode v) =>
       v.treeNodeGK;
   static const Field<DynamicTabBarNode, GlobalKey<State<StatefulWidget>>>
-      _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
+  _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(DynamicTabBarNode v) => v.isExpanded;
-  static const Field<DynamicTabBarNode, bool> _f$isExpanded =
-      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static const Field<DynamicTabBarNode, bool> _f$isExpanded = Field(
+    'isExpanded',
+    _$isExpanded,
+    mode: FieldMode.member,
+  );
   static bool? _$hidePropertiesWhileDragging(DynamicTabBarNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<DynamicTabBarNode, bool> _f$hidePropertiesWhileDragging =
-      Field('hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
-          mode: FieldMode.member);
+      Field(
+        'hidePropertiesWhileDragging',
+        _$hidePropertiesWhileDragging,
+        mode: FieldMode.member,
+      );
   static GlobalKey<State<StatefulWidget>>? _$nodeGK(DynamicTabBarNode v) =>
       v.nodeGK;
   static const Field<DynamicTabBarNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
+  _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
 
   @override
   final MappableFields<DynamicTabBarNode> fields = const {
@@ -75,7 +94,9 @@ class DynamicTabBarNodeMapper extends SubClassMapperBase<DynamicTabBarNode> {
 
   static DynamicTabBarNode _instantiate(DecodingData data) {
     return DynamicTabBarNode(
-        name: data.dec(_f$name), children: data.dec(_f$children));
+      name: data.dec(_f$name),
+      children: data.dec(_f$children),
+    );
   }
 
   @override
@@ -101,44 +122,60 @@ mixin DynamicTabBarNodeMappable {
         .encodeMap<DynamicTabBarNode>(this as DynamicTabBarNode);
   }
 
-  DynamicTabBarNodeCopyWith<DynamicTabBarNode, DynamicTabBarNode,
-          DynamicTabBarNode>
-      get copyWith =>
-          _DynamicTabBarNodeCopyWithImpl<DynamicTabBarNode, DynamicTabBarNode>(
-              this as DynamicTabBarNode, $identity, $identity);
+  DynamicTabBarNodeCopyWith<
+    DynamicTabBarNode,
+    DynamicTabBarNode,
+    DynamicTabBarNode
+  >
+  get copyWith =>
+      _DynamicTabBarNodeCopyWithImpl<DynamicTabBarNode, DynamicTabBarNode>(
+        this as DynamicTabBarNode,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return DynamicTabBarNodeMapper.ensureInitialized()
-        .stringifyValue(this as DynamicTabBarNode);
+    return DynamicTabBarNodeMapper.ensureInitialized().stringifyValue(
+      this as DynamicTabBarNode,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return DynamicTabBarNodeMapper.ensureInitialized()
-        .equalsValue(this as DynamicTabBarNode, other);
+    return DynamicTabBarNodeMapper.ensureInitialized().equalsValue(
+      this as DynamicTabBarNode,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return DynamicTabBarNodeMapper.ensureInitialized()
-        .hashValue(this as DynamicTabBarNode);
+    return DynamicTabBarNodeMapper.ensureInitialized().hashValue(
+      this as DynamicTabBarNode,
+    );
   }
 }
 
 extension DynamicTabBarNodeValueCopy<$R, $Out>
     on ObjectCopyWith<$R, DynamicTabBarNode, $Out> {
   DynamicTabBarNodeCopyWith<$R, DynamicTabBarNode, $Out>
-      get $asDynamicTabBarNode => $base
-          .as((v, t, t2) => _DynamicTabBarNodeCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asDynamicTabBarNode => $base.as(
+    (v, t, t2) => _DynamicTabBarNodeCopyWithImpl<$R, $Out>(v, t, t2),
+  );
 }
 
-abstract class DynamicTabBarNodeCopyWith<$R, $In extends DynamicTabBarNode,
-    $Out> implements SNodeCopyWith<$R, $In, $Out> {
+abstract class DynamicTabBarNodeCopyWith<
+  $R,
+  $In extends DynamicTabBarNode,
+  $Out
+>
+    implements SNodeCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
   $R call({String? name, List<SNode>? children});
   DynamicTabBarNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _DynamicTabBarNodeCopyWithImpl<$R, $Out>
@@ -151,21 +188,27 @@ class _DynamicTabBarNodeCopyWithImpl<$R, $Out>
       DynamicTabBarNodeMapper.ensureInitialized();
   @override
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children =>
-      ListCopyWith($value.children, (v, t) => v.copyWith.$chain(t),
-          (v) => call(children: v));
+      ListCopyWith(
+        $value.children,
+        (v, t) => v.copyWith.$chain(t),
+        (v) => call(children: v),
+      );
   @override
-  $R call({Object? name = $none, List<SNode>? children}) =>
-      $apply(FieldCopyWithData({
-        if (name != $none) #name: name,
-        if (children != null) #children: children
-      }));
+  $R call({Object? name = $none, List<SNode>? children}) => $apply(
+    FieldCopyWithData({
+      if (name != $none) #name: name,
+      if (children != null) #children: children,
+    }),
+  );
   @override
   DynamicTabBarNode $make(CopyWithData data) => DynamicTabBarNode(
-      name: data.get(#name, or: $value.name),
-      children: data.get(#children, or: $value.children));
+    name: data.get(#name, or: $value.name),
+    children: data.get(#children, or: $value.children),
+  );
 
   @override
   DynamicTabBarNodeCopyWith<$R2, DynamicTabBarNode, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _DynamicTabBarNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _DynamicTabBarNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

@@ -44,7 +44,6 @@ export 'src/feature_discovery/play_overlays_button.dart';
 export 'src/gotits_mixin.dart';
 export 'src/kbd_mixin.dart';
 export 'src/ls_mixin.dart';
-export 'src/measuring/measure_sizebox.dart';
 export 'src/measuring_mixin.dart';
 export 'src/root_context_mixin.dart';
 export 'src/system_mixin.dart';

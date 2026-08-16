@@ -1,6 +1,8 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -23,32 +25,51 @@ class NamedPSMapper extends SubClassMapperBase<NamedPS> {
   final String id = 'NamedPS';
 
   static String? _$name(NamedPS v) => v.name;
-  static const Field<NamedPS, String> _f$name =
-      Field('name', _$name, opt: true);
+  static const Field<NamedPS, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static String _$propertyName(NamedPS v) => v.propertyName;
-  static const Field<NamedPS, String> _f$propertyName =
-      Field('propertyName', _$propertyName);
+  static const Field<NamedPS, String> _f$propertyName = Field(
+    'propertyName',
+    _$propertyName,
+  );
   static SNode? _$child(NamedPS v) => v.child;
-  static const Field<NamedPS, SNode> _f$child =
-      Field('child', _$child, opt: true);
+  static const Field<NamedPS, SNode> _f$child = Field(
+    'child',
+    _$child,
+    opt: true,
+  );
   static String _$uid(NamedPS v) => v.uid;
-  static const Field<NamedPS, String> _f$uid =
-      Field('uid', _$uid, mode: FieldMode.member);
+  static const Field<NamedPS, String> _f$uid = Field(
+    'uid',
+    _$uid,
+    mode: FieldMode.member,
+  );
   static List<String>? _$tags(NamedPS v) => v.tags;
-  static const Field<NamedPS, List<String>> _f$tags =
-      Field('tags', _$tags, mode: FieldMode.member);
+  static const Field<NamedPS, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(NamedPS v) =>
       v.treeNodeGK;
   static const Field<NamedPS, GlobalKey<State<StatefulWidget>>> _f$treeNodeGK =
       Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(NamedPS v) => v.isExpanded;
-  static const Field<NamedPS, bool> _f$isExpanded =
-      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static const Field<NamedPS, bool> _f$isExpanded = Field(
+    'isExpanded',
+    _$isExpanded,
+    mode: FieldMode.member,
+  );
   static bool? _$hidePropertiesWhileDragging(NamedPS v) =>
       v.hidePropertiesWhileDragging;
   static const Field<NamedPS, bool> _f$hidePropertiesWhileDragging = Field(
-      'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
-      mode: FieldMode.member);
+    'hidePropertiesWhileDragging',
+    _$hidePropertiesWhileDragging,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$nodeGK(NamedPS v) => v.nodeGK;
   static const Field<NamedPS, GlobalKey<State<StatefulWidget>>> _f$nodeGK =
       Field('nodeGK', _$nodeGK, mode: FieldMode.member);
@@ -78,9 +99,10 @@ class NamedPSMapper extends SubClassMapperBase<NamedPS> {
 
   static NamedPS _instantiate(DecodingData data) {
     return NamedPS(
-        name: data.dec(_f$name),
-        propertyName: data.dec(_f$propertyName),
-        child: data.dec(_f$child));
+      name: data.dec(_f$name),
+      propertyName: data.dec(_f$propertyName),
+      child: data.dec(_f$child),
+    );
   }
 
   @override
@@ -97,18 +119,23 @@ class NamedPSMapper extends SubClassMapperBase<NamedPS> {
 
 mixin NamedPSMappable {
   String toJson() {
-    return NamedPSMapper.ensureInitialized()
-        .encodeJson<NamedPS>(this as NamedPS);
+    return NamedPSMapper.ensureInitialized().encodeJson<NamedPS>(
+      this as NamedPS,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return NamedPSMapper.ensureInitialized()
-        .encodeMap<NamedPS>(this as NamedPS);
+    return NamedPSMapper.ensureInitialized().encodeMap<NamedPS>(
+      this as NamedPS,
+    );
   }
 
   NamedPSCopyWith<NamedPS, NamedPS, NamedPS> get copyWith =>
       _NamedPSCopyWithImpl<NamedPS, NamedPS>(
-          this as NamedPS, $identity, $identity);
+        this as NamedPS,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
     return NamedPSMapper.ensureInitialized().stringifyValue(this as NamedPS);
@@ -116,8 +143,10 @@ mixin NamedPSMappable {
 
   @override
   bool operator ==(Object other) {
-    return NamedPSMapper.ensureInitialized()
-        .equalsValue(this as NamedPS, other);
+    return NamedPSMapper.ensureInitialized().equalsValue(
+      this as NamedPS,
+      other,
+    );
   }
 
   @override
@@ -151,22 +180,26 @@ class _NamedPSCopyWithImpl<$R, $Out>
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
-  $R call(
-          {Object? name = $none,
-          String? propertyName,
-          Object? child = $none}) =>
-      $apply(FieldCopyWithData({
-        if (name != $none) #name: name,
-        if (propertyName != null) #propertyName: propertyName,
-        if (child != $none) #child: child
-      }));
+  $R call({
+    Object? name = $none,
+    String? propertyName,
+    Object? child = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (name != $none) #name: name,
+      if (propertyName != null) #propertyName: propertyName,
+      if (child != $none) #child: child,
+    }),
+  );
   @override
   NamedPS $make(CopyWithData data) => NamedPS(
-      name: data.get(#name, or: $value.name),
-      propertyName: data.get(#propertyName, or: $value.propertyName),
-      child: data.get(#child, or: $value.child));
+    name: data.get(#name, or: $value.name),
+    propertyName: data.get(#propertyName, or: $value.propertyName),
+    child: data.get(#child, or: $value.child),
+  );
 
   @override
   NamedPSCopyWith<$R2, NamedPS, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
       _NamedPSCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

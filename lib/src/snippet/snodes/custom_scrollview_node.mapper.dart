@@ -1,6 +1,8 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -25,43 +27,65 @@ class CustomScrollViewNodeMapper
   final String id = 'CustomScrollViewNode';
 
   static String? _$name(CustomScrollViewNode v) => v.name;
-  static const Field<CustomScrollViewNode, String> _f$name =
-      Field('name', _$name, opt: true);
+  static const Field<CustomScrollViewNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static List<SNode> _$slivers(CustomScrollViewNode v) => v.slivers;
-  static const Field<CustomScrollViewNode, List<SNode>> _f$slivers =
-      Field('slivers', _$slivers);
+  static const Field<CustomScrollViewNode, List<SNode>> _f$slivers = Field(
+    'slivers',
+    _$slivers,
+  );
   static AxisEnum _$scrollDirection(CustomScrollViewNode v) =>
       v.scrollDirection;
   static const Field<CustomScrollViewNode, AxisEnum> _f$scrollDirection = Field(
-      'scrollDirection', _$scrollDirection,
-      opt: true, def: AxisEnum.vertical);
+    'scrollDirection',
+    _$scrollDirection,
+    opt: true,
+    def: AxisEnum.vertical,
+  );
   static bool? _$shrinkWrap(CustomScrollViewNode v) => v.shrinkWrap;
-  static const Field<CustomScrollViewNode, bool> _f$shrinkWrap =
-      Field('shrinkWrap', _$shrinkWrap, opt: true);
+  static const Field<CustomScrollViewNode, bool> _f$shrinkWrap = Field(
+    'shrinkWrap',
+    _$shrinkWrap,
+    opt: true,
+  );
   static String _$uid(CustomScrollViewNode v) => v.uid;
-  static const Field<CustomScrollViewNode, String> _f$uid =
-      Field('uid', _$uid, mode: FieldMode.member);
+  static const Field<CustomScrollViewNode, String> _f$uid = Field(
+    'uid',
+    _$uid,
+    mode: FieldMode.member,
+  );
   static List<String>? _$tags(CustomScrollViewNode v) => v.tags;
-  static const Field<CustomScrollViewNode, List<String>> _f$tags =
-      Field('tags', _$tags, mode: FieldMode.member);
+  static const Field<CustomScrollViewNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(
-          CustomScrollViewNode v) =>
-      v.treeNodeGK;
+    CustomScrollViewNode v,
+  ) => v.treeNodeGK;
   static const Field<CustomScrollViewNode, GlobalKey<State<StatefulWidget>>>
-      _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
+  _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(CustomScrollViewNode v) => v.isExpanded;
-  static const Field<CustomScrollViewNode, bool> _f$isExpanded =
-      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static const Field<CustomScrollViewNode, bool> _f$isExpanded = Field(
+    'isExpanded',
+    _$isExpanded,
+    mode: FieldMode.member,
+  );
   static bool? _$hidePropertiesWhileDragging(CustomScrollViewNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<CustomScrollViewNode, bool>
-      _f$hidePropertiesWhileDragging = Field(
-          'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
-          mode: FieldMode.member);
+  _f$hidePropertiesWhileDragging = Field(
+    'hidePropertiesWhileDragging',
+    _$hidePropertiesWhileDragging,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$nodeGK(CustomScrollViewNode v) =>
       v.nodeGK;
   static const Field<CustomScrollViewNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
+  _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
 
   @override
   final MappableFields<CustomScrollViewNode> fields = const {
@@ -89,10 +113,11 @@ class CustomScrollViewNodeMapper
 
   static CustomScrollViewNode _instantiate(DecodingData data) {
     return CustomScrollViewNode(
-        name: data.dec(_f$name),
-        slivers: data.dec(_f$slivers),
-        scrollDirection: data.dec(_f$scrollDirection),
-        shrinkWrap: data.dec(_f$shrinkWrap));
+      name: data.dec(_f$name),
+      slivers: data.dec(_f$slivers),
+      scrollDirection: data.dec(_f$scrollDirection),
+      shrinkWrap: data.dec(_f$shrinkWrap),
+    );
   }
 
   @override
@@ -118,49 +143,64 @@ mixin CustomScrollViewNodeMappable {
         .encodeMap<CustomScrollViewNode>(this as CustomScrollViewNode);
   }
 
-  CustomScrollViewNodeCopyWith<CustomScrollViewNode, CustomScrollViewNode,
-      CustomScrollViewNode> get copyWith => _CustomScrollViewNodeCopyWithImpl<
-          CustomScrollViewNode, CustomScrollViewNode>(
-      this as CustomScrollViewNode, $identity, $identity);
+  CustomScrollViewNodeCopyWith<
+    CustomScrollViewNode,
+    CustomScrollViewNode,
+    CustomScrollViewNode
+  >
+  get copyWith =>
+      _CustomScrollViewNodeCopyWithImpl<
+        CustomScrollViewNode,
+        CustomScrollViewNode
+      >(this as CustomScrollViewNode, $identity, $identity);
   @override
   String toString() {
-    return CustomScrollViewNodeMapper.ensureInitialized()
-        .stringifyValue(this as CustomScrollViewNode);
+    return CustomScrollViewNodeMapper.ensureInitialized().stringifyValue(
+      this as CustomScrollViewNode,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return CustomScrollViewNodeMapper.ensureInitialized()
-        .equalsValue(this as CustomScrollViewNode, other);
+    return CustomScrollViewNodeMapper.ensureInitialized().equalsValue(
+      this as CustomScrollViewNode,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return CustomScrollViewNodeMapper.ensureInitialized()
-        .hashValue(this as CustomScrollViewNode);
+    return CustomScrollViewNodeMapper.ensureInitialized().hashValue(
+      this as CustomScrollViewNode,
+    );
   }
 }
 
 extension CustomScrollViewNodeValueCopy<$R, $Out>
     on ObjectCopyWith<$R, CustomScrollViewNode, $Out> {
   CustomScrollViewNodeCopyWith<$R, CustomScrollViewNode, $Out>
-      get $asCustomScrollViewNode => $base.as(
-          (v, t, t2) => _CustomScrollViewNodeCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asCustomScrollViewNode => $base.as(
+    (v, t, t2) => _CustomScrollViewNodeCopyWithImpl<$R, $Out>(v, t, t2),
+  );
 }
 
 abstract class CustomScrollViewNodeCopyWith<
-    $R,
-    $In extends CustomScrollViewNode,
-    $Out> implements SNodeCopyWith<$R, $In, $Out> {
+  $R,
+  $In extends CustomScrollViewNode,
+  $Out
+>
+    implements SNodeCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get slivers;
   @override
-  $R call(
-      {String? name,
-      List<SNode>? slivers,
-      AxisEnum? scrollDirection,
-      bool? shrinkWrap});
+  $R call({
+    String? name,
+    List<SNode>? slivers,
+    AxisEnum? scrollDirection,
+    bool? shrinkWrap,
+  });
   CustomScrollViewNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _CustomScrollViewNodeCopyWithImpl<$R, $Out>
@@ -173,29 +213,36 @@ class _CustomScrollViewNodeCopyWithImpl<$R, $Out>
       CustomScrollViewNodeMapper.ensureInitialized();
   @override
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get slivers =>
-      ListCopyWith($value.slivers, (v, t) => v.copyWith.$chain(t),
-          (v) => call(slivers: v));
+      ListCopyWith(
+        $value.slivers,
+        (v, t) => v.copyWith.$chain(t),
+        (v) => call(slivers: v),
+      );
   @override
-  $R call(
-          {Object? name = $none,
-          List<SNode>? slivers,
-          AxisEnum? scrollDirection,
-          Object? shrinkWrap = $none}) =>
-      $apply(FieldCopyWithData({
-        if (name != $none) #name: name,
-        if (slivers != null) #slivers: slivers,
-        if (scrollDirection != null) #scrollDirection: scrollDirection,
-        if (shrinkWrap != $none) #shrinkWrap: shrinkWrap
-      }));
+  $R call({
+    Object? name = $none,
+    List<SNode>? slivers,
+    AxisEnum? scrollDirection,
+    Object? shrinkWrap = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (name != $none) #name: name,
+      if (slivers != null) #slivers: slivers,
+      if (scrollDirection != null) #scrollDirection: scrollDirection,
+      if (shrinkWrap != $none) #shrinkWrap: shrinkWrap,
+    }),
+  );
   @override
   CustomScrollViewNode $make(CopyWithData data) => CustomScrollViewNode(
-      name: data.get(#name, or: $value.name),
-      slivers: data.get(#slivers, or: $value.slivers),
-      scrollDirection: data.get(#scrollDirection, or: $value.scrollDirection),
-      shrinkWrap: data.get(#shrinkWrap, or: $value.shrinkWrap));
+    name: data.get(#name, or: $value.name),
+    slivers: data.get(#slivers, or: $value.slivers),
+    scrollDirection: data.get(#scrollDirection, or: $value.scrollDirection),
+    shrinkWrap: data.get(#shrinkWrap, or: $value.shrinkWrap),
+  );
 
   @override
   CustomScrollViewNodeCopyWith<$R2, CustomScrollViewNode, $Out2>
-      $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _CustomScrollViewNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+      _CustomScrollViewNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

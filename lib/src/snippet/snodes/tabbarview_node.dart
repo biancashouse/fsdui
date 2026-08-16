@@ -3,6 +3,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
+import 'package:fsdui/src/snippet/pnodes/bool_pnode.dart';
 import 'package:fsdui/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'tabbarview_node.mapper.dart';
@@ -21,7 +22,21 @@ class TabBarViewNode extends SNode with MC, TabBarViewNodeMappable {
   /// same-tree layouts.
   String? tabBarName;
 
-  TabBarViewNode({super.name, this.tabBarName, required this.children});
+  /// Whether tabs can be changed by swiping/dragging, not just by tapping
+  /// the TabBar. Defaults to true, matching Flutter's own TabBarView
+  /// default. Turn off when a child (e.g. a CarouselView) also wants
+  /// horizontal drag gestures — TabBarView's own swipe recognizer competes
+  /// with and usually wins over a nested horizontally-scrolling child's,
+  /// leaving that child unable to respond to taps/drags at all. Tapping
+  /// the TabBar still works either way.
+  bool? enableSwipe;
+
+  TabBarViewNode({
+    super.name,
+    this.tabBarName,
+    this.enableSwipe,
+    required this.children,
+  });
 
   @override
   List<SNode>? get ownChildren => children;
@@ -34,6 +49,13 @@ class TabBarViewNode extends SNode with MC, TabBarViewNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
+    BoolPNode(
+      snode: this,
+      name: 'enableSwipe',
+      boolValue: enableSwipe,
+      onBoolChange: (newValue) =>
+          refreshWithUpdate(context, () => enableSwipe = newValue ?? true),
+    ),
     FlutterDocPNode(
       buttonLabel: 'TabBarView',
       webLink: 'https://api.flutter.dev/flutter/material/TabBarView-class.html',
@@ -85,6 +107,23 @@ class TabBarViewNode extends SNode with MC, TabBarViewNodeMappable {
         }
         // Stable key preserves the element across controller changes, preventing
         // element teardown mid-animation (assert(attached) in getTransformTo).
+        final tabBarView = TabBarView(
+          key: createNodeWidgetGK(),
+          controller: controller,
+          physics: (enableSwipe ?? true) ? null : const NeverScrollableScrollPhysics(),
+          children: childWidgets,
+        );
+
+        if (!(enableSwipe ?? true)) {
+          // No swipe gesture is possible with drag disabled, so there's no
+          // DOM-focus/layout race for the Listener below to guard against
+          // — and unconditionally unfocusing on every pointer-down would
+          // otherwise make any editable content inside a tab (e.g. a
+          // QuillTextNode's FocusAwareQuillEditor) impossible to focus:
+          // the unfocus() fires on the same tap that's trying to focus it.
+          return tabBarView;
+        }
+
         // Listener.onPointerDown fires on the very first touch event, before
         // scroll physics run. unfocus() schedules a microtask that detaches the
         // active web DOM input element; because microtasks run between Dart
@@ -92,11 +131,7 @@ class TabBarViewNode extends SNode with MC, TabBarViewNodeMappable {
         // preventing "targeted input element must be the active input element".
         return Listener(
           onPointerDown: (_) => FocusManager.instance.primaryFocus?.unfocus(),
-          child: TabBarView(
-            key: createNodeWidgetGK(),
-            controller: controller,
-            children: childWidgets,
-          ),
+          child: tabBarView,
         );
       },
     );

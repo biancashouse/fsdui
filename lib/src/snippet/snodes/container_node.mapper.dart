@@ -1,6 +1,8 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -24,49 +26,79 @@ class ContainerNodeMapper extends SubClassMapperBase<ContainerNode> {
   final String id = 'ContainerNode';
 
   static String? _$name(ContainerNode v) => v.name;
-  static const Field<ContainerNode, String> _f$name =
-      Field('name', _$name, opt: true);
+  static const Field<ContainerNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static ContainerStyleProperties _$csPropGroup(ContainerNode v) =>
       v.csPropGroup;
   static const Field<ContainerNode, ContainerStyleProperties> _f$csPropGroup =
       Field('csPropGroup', _$csPropGroup, hook: ContainerStyleHook());
   static double? _$minWidth(ContainerNode v) => v.minWidth;
-  static const Field<ContainerNode, double> _f$minWidth =
-      Field('minWidth', _$minWidth, opt: true);
+  static const Field<ContainerNode, double> _f$minWidth = Field(
+    'minWidth',
+    _$minWidth,
+    opt: true,
+  );
   static double? _$maxHeight(ContainerNode v) => v.maxHeight;
-  static const Field<ContainerNode, double> _f$maxHeight =
-      Field('maxHeight', _$maxHeight, opt: true);
+  static const Field<ContainerNode, double> _f$maxHeight = Field(
+    'maxHeight',
+    _$maxHeight,
+    opt: true,
+  );
   static double? _$maxWidth(ContainerNode v) => v.maxWidth;
-  static const Field<ContainerNode, double> _f$maxWidth =
-      Field('maxWidth', _$maxWidth, opt: true);
+  static const Field<ContainerNode, double> _f$maxWidth = Field(
+    'maxWidth',
+    _$maxWidth,
+    opt: true,
+  );
   static double? _$minHeight(ContainerNode v) => v.minHeight;
-  static const Field<ContainerNode, double> _f$minHeight =
-      Field('minHeight', _$minHeight, opt: true);
+  static const Field<ContainerNode, double> _f$minHeight = Field(
+    'minHeight',
+    _$minHeight,
+    opt: true,
+  );
   static SNode? _$child(ContainerNode v) => v.child;
-  static const Field<ContainerNode, SNode> _f$child =
-      Field('child', _$child, opt: true);
+  static const Field<ContainerNode, SNode> _f$child = Field(
+    'child',
+    _$child,
+    opt: true,
+  );
   static String _$uid(ContainerNode v) => v.uid;
-  static const Field<ContainerNode, String> _f$uid =
-      Field('uid', _$uid, mode: FieldMode.member);
+  static const Field<ContainerNode, String> _f$uid = Field(
+    'uid',
+    _$uid,
+    mode: FieldMode.member,
+  );
   static List<String>? _$tags(ContainerNode v) => v.tags;
-  static const Field<ContainerNode, List<String>> _f$tags =
-      Field('tags', _$tags, mode: FieldMode.member);
+  static const Field<ContainerNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(ContainerNode v) =>
       v.treeNodeGK;
   static const Field<ContainerNode, GlobalKey<State<StatefulWidget>>>
-      _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
+  _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(ContainerNode v) => v.isExpanded;
-  static const Field<ContainerNode, bool> _f$isExpanded =
-      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static const Field<ContainerNode, bool> _f$isExpanded = Field(
+    'isExpanded',
+    _$isExpanded,
+    mode: FieldMode.member,
+  );
   static bool? _$hidePropertiesWhileDragging(ContainerNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<ContainerNode, bool> _f$hidePropertiesWhileDragging =
-      Field('hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
-          mode: FieldMode.member);
+      Field(
+        'hidePropertiesWhileDragging',
+        _$hidePropertiesWhileDragging,
+        mode: FieldMode.member,
+      );
   static GlobalKey<State<StatefulWidget>>? _$nodeGK(ContainerNode v) =>
       v.nodeGK;
   static const Field<ContainerNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
+  _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
 
   @override
   final MappableFields<ContainerNode> fields = const {
@@ -97,13 +129,14 @@ class ContainerNodeMapper extends SubClassMapperBase<ContainerNode> {
 
   static ContainerNode _instantiate(DecodingData data) {
     return ContainerNode(
-        name: data.dec(_f$name),
-        csPropGroup: data.dec(_f$csPropGroup),
-        minWidth: data.dec(_f$minWidth),
-        maxHeight: data.dec(_f$maxHeight),
-        maxWidth: data.dec(_f$maxWidth),
-        minHeight: data.dec(_f$minHeight),
-        child: data.dec(_f$child));
+      name: data.dec(_f$name),
+      csPropGroup: data.dec(_f$csPropGroup),
+      minWidth: data.dec(_f$minWidth),
+      maxHeight: data.dec(_f$maxHeight),
+      maxWidth: data.dec(_f$maxWidth),
+      minHeight: data.dec(_f$minHeight),
+      child: data.dec(_f$child),
+    );
   }
 
   @override
@@ -120,34 +153,43 @@ class ContainerNodeMapper extends SubClassMapperBase<ContainerNode> {
 
 mixin ContainerNodeMappable {
   String toJson() {
-    return ContainerNodeMapper.ensureInitialized()
-        .encodeJson<ContainerNode>(this as ContainerNode);
+    return ContainerNodeMapper.ensureInitialized().encodeJson<ContainerNode>(
+      this as ContainerNode,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return ContainerNodeMapper.ensureInitialized()
-        .encodeMap<ContainerNode>(this as ContainerNode);
+    return ContainerNodeMapper.ensureInitialized().encodeMap<ContainerNode>(
+      this as ContainerNode,
+    );
   }
 
   ContainerNodeCopyWith<ContainerNode, ContainerNode, ContainerNode>
-      get copyWith => _ContainerNodeCopyWithImpl<ContainerNode, ContainerNode>(
-          this as ContainerNode, $identity, $identity);
+  get copyWith => _ContainerNodeCopyWithImpl<ContainerNode, ContainerNode>(
+    this as ContainerNode,
+    $identity,
+    $identity,
+  );
   @override
   String toString() {
-    return ContainerNodeMapper.ensureInitialized()
-        .stringifyValue(this as ContainerNode);
+    return ContainerNodeMapper.ensureInitialized().stringifyValue(
+      this as ContainerNode,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return ContainerNodeMapper.ensureInitialized()
-        .equalsValue(this as ContainerNode, other);
+    return ContainerNodeMapper.ensureInitialized().equalsValue(
+      this as ContainerNode,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return ContainerNodeMapper.ensureInitialized()
-        .hashValue(this as ContainerNode);
+    return ContainerNodeMapper.ensureInitialized().hashValue(
+      this as ContainerNode,
+    );
   }
 }
 
@@ -159,18 +201,23 @@ extension ContainerNodeValueCopy<$R, $Out>
 
 abstract class ContainerNodeCopyWith<$R, $In extends ContainerNode, $Out>
     implements SNodeCopyWith<$R, $In, $Out> {
-  ContainerStylePropertiesCopyWith<$R, ContainerStyleProperties,
-      ContainerStyleProperties> get csPropGroup;
+  ContainerStylePropertiesCopyWith<
+    $R,
+    ContainerStyleProperties,
+    ContainerStyleProperties
+  >
+  get csPropGroup;
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call(
-      {String? name,
-      ContainerStyleProperties? csPropGroup,
-      double? minWidth,
-      double? maxHeight,
-      double? maxWidth,
-      double? minHeight,
-      SNode? child});
+  $R call({
+    String? name,
+    ContainerStyleProperties? csPropGroup,
+    double? minWidth,
+    double? maxHeight,
+    double? maxWidth,
+    double? minHeight,
+    SNode? child,
+  });
   ContainerNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -183,43 +230,50 @@ class _ContainerNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ContainerNode> $mapper =
       ContainerNodeMapper.ensureInitialized();
   @override
-  ContainerStylePropertiesCopyWith<$R, ContainerStyleProperties,
-          ContainerStyleProperties>
-      get csPropGroup =>
-          $value.csPropGroup.copyWith.$chain((v) => call(csPropGroup: v));
+  ContainerStylePropertiesCopyWith<
+    $R,
+    ContainerStyleProperties,
+    ContainerStyleProperties
+  >
+  get csPropGroup =>
+      $value.csPropGroup.copyWith.$chain((v) => call(csPropGroup: v));
   @override
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
-  $R call(
-          {Object? name = $none,
-          ContainerStyleProperties? csPropGroup,
-          Object? minWidth = $none,
-          Object? maxHeight = $none,
-          Object? maxWidth = $none,
-          Object? minHeight = $none,
-          Object? child = $none}) =>
-      $apply(FieldCopyWithData({
-        if (name != $none) #name: name,
-        if (csPropGroup != null) #csPropGroup: csPropGroup,
-        if (minWidth != $none) #minWidth: minWidth,
-        if (maxHeight != $none) #maxHeight: maxHeight,
-        if (maxWidth != $none) #maxWidth: maxWidth,
-        if (minHeight != $none) #minHeight: minHeight,
-        if (child != $none) #child: child
-      }));
+  $R call({
+    Object? name = $none,
+    ContainerStyleProperties? csPropGroup,
+    Object? minWidth = $none,
+    Object? maxHeight = $none,
+    Object? maxWidth = $none,
+    Object? minHeight = $none,
+    Object? child = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (name != $none) #name: name,
+      if (csPropGroup != null) #csPropGroup: csPropGroup,
+      if (minWidth != $none) #minWidth: minWidth,
+      if (maxHeight != $none) #maxHeight: maxHeight,
+      if (maxWidth != $none) #maxWidth: maxWidth,
+      if (minHeight != $none) #minHeight: minHeight,
+      if (child != $none) #child: child,
+    }),
+  );
   @override
   ContainerNode $make(CopyWithData data) => ContainerNode(
-      name: data.get(#name, or: $value.name),
-      csPropGroup: data.get(#csPropGroup, or: $value.csPropGroup),
-      minWidth: data.get(#minWidth, or: $value.minWidth),
-      maxHeight: data.get(#maxHeight, or: $value.maxHeight),
-      maxWidth: data.get(#maxWidth, or: $value.maxWidth),
-      minHeight: data.get(#minHeight, or: $value.minHeight),
-      child: data.get(#child, or: $value.child));
+    name: data.get(#name, or: $value.name),
+    csPropGroup: data.get(#csPropGroup, or: $value.csPropGroup),
+    minWidth: data.get(#minWidth, or: $value.minWidth),
+    maxHeight: data.get(#maxHeight, or: $value.maxHeight),
+    maxWidth: data.get(#maxWidth, or: $value.maxWidth),
+    minHeight: data.get(#minHeight, or: $value.minHeight),
+    child: data.get(#child, or: $value.child),
+  );
 
   @override
   ContainerNodeCopyWith<$R2, ContainerNode, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _ContainerNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _ContainerNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

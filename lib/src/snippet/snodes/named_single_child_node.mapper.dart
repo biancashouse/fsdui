@@ -1,6 +1,8 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -23,32 +25,51 @@ class NamedSCMapper extends SubClassMapperBase<NamedSC> {
   final String id = 'NamedSC';
 
   static String? _$name(NamedSC v) => v.name;
-  static const Field<NamedSC, String> _f$name =
-      Field('name', _$name, opt: true);
+  static const Field<NamedSC, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static String _$propertyName(NamedSC v) => v.propertyName;
-  static const Field<NamedSC, String> _f$propertyName =
-      Field('propertyName', _$propertyName);
+  static const Field<NamedSC, String> _f$propertyName = Field(
+    'propertyName',
+    _$propertyName,
+  );
   static SNode? _$child(NamedSC v) => v.child;
-  static const Field<NamedSC, SNode> _f$child =
-      Field('child', _$child, opt: true);
+  static const Field<NamedSC, SNode> _f$child = Field(
+    'child',
+    _$child,
+    opt: true,
+  );
   static String _$uid(NamedSC v) => v.uid;
-  static const Field<NamedSC, String> _f$uid =
-      Field('uid', _$uid, mode: FieldMode.member);
+  static const Field<NamedSC, String> _f$uid = Field(
+    'uid',
+    _$uid,
+    mode: FieldMode.member,
+  );
   static List<String>? _$tags(NamedSC v) => v.tags;
-  static const Field<NamedSC, List<String>> _f$tags =
-      Field('tags', _$tags, mode: FieldMode.member);
+  static const Field<NamedSC, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(NamedSC v) =>
       v.treeNodeGK;
   static const Field<NamedSC, GlobalKey<State<StatefulWidget>>> _f$treeNodeGK =
       Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(NamedSC v) => v.isExpanded;
-  static const Field<NamedSC, bool> _f$isExpanded =
-      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static const Field<NamedSC, bool> _f$isExpanded = Field(
+    'isExpanded',
+    _$isExpanded,
+    mode: FieldMode.member,
+  );
   static bool? _$hidePropertiesWhileDragging(NamedSC v) =>
       v.hidePropertiesWhileDragging;
   static const Field<NamedSC, bool> _f$hidePropertiesWhileDragging = Field(
-      'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
-      mode: FieldMode.member);
+    'hidePropertiesWhileDragging',
+    _$hidePropertiesWhileDragging,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$nodeGK(NamedSC v) => v.nodeGK;
   static const Field<NamedSC, GlobalKey<State<StatefulWidget>>> _f$nodeGK =
       Field('nodeGK', _$nodeGK, mode: FieldMode.member);
@@ -78,9 +99,10 @@ class NamedSCMapper extends SubClassMapperBase<NamedSC> {
 
   static NamedSC _instantiate(DecodingData data) {
     return NamedSC(
-        name: data.dec(_f$name),
-        propertyName: data.dec(_f$propertyName),
-        child: data.dec(_f$child));
+      name: data.dec(_f$name),
+      propertyName: data.dec(_f$propertyName),
+      child: data.dec(_f$child),
+    );
   }
 
   @override
@@ -97,18 +119,23 @@ class NamedSCMapper extends SubClassMapperBase<NamedSC> {
 
 mixin NamedSCMappable {
   String toJson() {
-    return NamedSCMapper.ensureInitialized()
-        .encodeJson<NamedSC>(this as NamedSC);
+    return NamedSCMapper.ensureInitialized().encodeJson<NamedSC>(
+      this as NamedSC,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return NamedSCMapper.ensureInitialized()
-        .encodeMap<NamedSC>(this as NamedSC);
+    return NamedSCMapper.ensureInitialized().encodeMap<NamedSC>(
+      this as NamedSC,
+    );
   }
 
   NamedSCCopyWith<NamedSC, NamedSC, NamedSC> get copyWith =>
       _NamedSCCopyWithImpl<NamedSC, NamedSC>(
-          this as NamedSC, $identity, $identity);
+        this as NamedSC,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
     return NamedSCMapper.ensureInitialized().stringifyValue(this as NamedSC);
@@ -116,8 +143,10 @@ mixin NamedSCMappable {
 
   @override
   bool operator ==(Object other) {
-    return NamedSCMapper.ensureInitialized()
-        .equalsValue(this as NamedSC, other);
+    return NamedSCMapper.ensureInitialized().equalsValue(
+      this as NamedSC,
+      other,
+    );
   }
 
   @override
@@ -151,22 +180,26 @@ class _NamedSCCopyWithImpl<$R, $Out>
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
-  $R call(
-          {Object? name = $none,
-          String? propertyName,
-          Object? child = $none}) =>
-      $apply(FieldCopyWithData({
-        if (name != $none) #name: name,
-        if (propertyName != null) #propertyName: propertyName,
-        if (child != $none) #child: child
-      }));
+  $R call({
+    Object? name = $none,
+    String? propertyName,
+    Object? child = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (name != $none) #name: name,
+      if (propertyName != null) #propertyName: propertyName,
+      if (child != $none) #child: child,
+    }),
+  );
   @override
   NamedSC $make(CopyWithData data) => NamedSC(
-      name: data.get(#name, or: $value.name),
-      propertyName: data.get(#propertyName, or: $value.propertyName),
-      child: data.get(#child, or: $value.child));
+    name: data.get(#name, or: $value.name),
+    propertyName: data.get(#propertyName, or: $value.propertyName),
+    child: data.get(#child, or: $value.child),
+  );
 
   @override
   NamedSCCopyWith<$R2, NamedSC, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
       _NamedSCCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

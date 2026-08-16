@@ -1,6 +1,8 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -24,35 +26,60 @@ class FlexibleNodeMapper extends SubClassMapperBase<FlexibleNode> {
   final String id = 'FlexibleNode';
 
   static String? _$name(FlexibleNode v) => v.name;
-  static const Field<FlexibleNode, String> _f$name =
-      Field('name', _$name, opt: true);
+  static const Field<FlexibleNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static int _$flex(FlexibleNode v) => v.flex;
-  static const Field<FlexibleNode, int> _f$flex =
-      Field('flex', _$flex, opt: true, def: 1);
+  static const Field<FlexibleNode, int> _f$flex = Field(
+    'flex',
+    _$flex,
+    opt: true,
+    def: 1,
+  );
   static FlexFitEnum _$fit(FlexibleNode v) => v.fit;
-  static const Field<FlexibleNode, FlexFitEnum> _f$fit =
-      Field('fit', _$fit, opt: true, def: FlexFitEnum.loose);
+  static const Field<FlexibleNode, FlexFitEnum> _f$fit = Field(
+    'fit',
+    _$fit,
+    opt: true,
+    def: FlexFitEnum.loose,
+  );
   static SNode? _$child(FlexibleNode v) => v.child;
-  static const Field<FlexibleNode, SNode> _f$child =
-      Field('child', _$child, opt: true);
+  static const Field<FlexibleNode, SNode> _f$child = Field(
+    'child',
+    _$child,
+    opt: true,
+  );
   static String _$uid(FlexibleNode v) => v.uid;
-  static const Field<FlexibleNode, String> _f$uid =
-      Field('uid', _$uid, mode: FieldMode.member);
+  static const Field<FlexibleNode, String> _f$uid = Field(
+    'uid',
+    _$uid,
+    mode: FieldMode.member,
+  );
   static List<String>? _$tags(FlexibleNode v) => v.tags;
-  static const Field<FlexibleNode, List<String>> _f$tags =
-      Field('tags', _$tags, mode: FieldMode.member);
+  static const Field<FlexibleNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(FlexibleNode v) =>
       v.treeNodeGK;
   static const Field<FlexibleNode, GlobalKey<State<StatefulWidget>>>
-      _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
+  _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(FlexibleNode v) => v.isExpanded;
-  static const Field<FlexibleNode, bool> _f$isExpanded =
-      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static const Field<FlexibleNode, bool> _f$isExpanded = Field(
+    'isExpanded',
+    _$isExpanded,
+    mode: FieldMode.member,
+  );
   static bool? _$hidePropertiesWhileDragging(FlexibleNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<FlexibleNode, bool> _f$hidePropertiesWhileDragging = Field(
-      'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
-      mode: FieldMode.member);
+    'hidePropertiesWhileDragging',
+    _$hidePropertiesWhileDragging,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$nodeGK(FlexibleNode v) => v.nodeGK;
   static const Field<FlexibleNode, GlobalKey<State<StatefulWidget>>> _f$nodeGK =
       Field('nodeGK', _$nodeGK, mode: FieldMode.member);
@@ -83,10 +110,11 @@ class FlexibleNodeMapper extends SubClassMapperBase<FlexibleNode> {
 
   static FlexibleNode _instantiate(DecodingData data) {
     return FlexibleNode(
-        name: data.dec(_f$name),
-        flex: data.dec(_f$flex),
-        fit: data.dec(_f$fit),
-        child: data.dec(_f$child));
+      name: data.dec(_f$name),
+      flex: data.dec(_f$flex),
+      fit: data.dec(_f$fit),
+      child: data.dec(_f$child),
+    );
   }
 
   @override
@@ -103,34 +131,43 @@ class FlexibleNodeMapper extends SubClassMapperBase<FlexibleNode> {
 
 mixin FlexibleNodeMappable {
   String toJson() {
-    return FlexibleNodeMapper.ensureInitialized()
-        .encodeJson<FlexibleNode>(this as FlexibleNode);
+    return FlexibleNodeMapper.ensureInitialized().encodeJson<FlexibleNode>(
+      this as FlexibleNode,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return FlexibleNodeMapper.ensureInitialized()
-        .encodeMap<FlexibleNode>(this as FlexibleNode);
+    return FlexibleNodeMapper.ensureInitialized().encodeMap<FlexibleNode>(
+      this as FlexibleNode,
+    );
   }
 
   FlexibleNodeCopyWith<FlexibleNode, FlexibleNode, FlexibleNode> get copyWith =>
       _FlexibleNodeCopyWithImpl<FlexibleNode, FlexibleNode>(
-          this as FlexibleNode, $identity, $identity);
+        this as FlexibleNode,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return FlexibleNodeMapper.ensureInitialized()
-        .stringifyValue(this as FlexibleNode);
+    return FlexibleNodeMapper.ensureInitialized().stringifyValue(
+      this as FlexibleNode,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return FlexibleNodeMapper.ensureInitialized()
-        .equalsValue(this as FlexibleNode, other);
+    return FlexibleNodeMapper.ensureInitialized().equalsValue(
+      this as FlexibleNode,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return FlexibleNodeMapper.ensureInitialized()
-        .hashValue(this as FlexibleNode);
+    return FlexibleNodeMapper.ensureInitialized().hashValue(
+      this as FlexibleNode,
+    );
   }
 }
 
@@ -160,26 +197,30 @@ class _FlexibleNodeCopyWithImpl<$R, $Out>
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
-  $R call(
-          {Object? name = $none,
-          int? flex,
-          FlexFitEnum? fit,
-          Object? child = $none}) =>
-      $apply(FieldCopyWithData({
-        if (name != $none) #name: name,
-        if (flex != null) #flex: flex,
-        if (fit != null) #fit: fit,
-        if (child != $none) #child: child
-      }));
+  $R call({
+    Object? name = $none,
+    int? flex,
+    FlexFitEnum? fit,
+    Object? child = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (name != $none) #name: name,
+      if (flex != null) #flex: flex,
+      if (fit != null) #fit: fit,
+      if (child != $none) #child: child,
+    }),
+  );
   @override
   FlexibleNode $make(CopyWithData data) => FlexibleNode(
-      name: data.get(#name, or: $value.name),
-      flex: data.get(#flex, or: $value.flex),
-      fit: data.get(#fit, or: $value.fit),
-      child: data.get(#child, or: $value.child));
+    name: data.get(#name, or: $value.name),
+    flex: data.get(#flex, or: $value.flex),
+    fit: data.get(#fit, or: $value.fit),
+    child: data.get(#child, or: $value.child),
+  );
 
   @override
   FlexibleNodeCopyWith<$R2, FlexibleNode, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _FlexibleNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _FlexibleNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

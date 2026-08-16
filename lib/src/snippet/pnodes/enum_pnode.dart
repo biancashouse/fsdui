@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_boxfit.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_clip.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_css_grid_auto_placement.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_css_grid_fit.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_cross_axis_alignment.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_flex_fit.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_font_style.dart';
@@ -9,6 +11,7 @@ import 'package:fsdui/src/snippet/pnodes/enums/enum_font_weight.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_main_axis_alignment.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_main_axis_size.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_outlined_border.dart';
+import 'package:fsdui/src/snippet/pnodes/enums/enum_rfl_animation_type.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_stack_fit.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_stepper_type.dart';
 import 'package:fsdui/src/snippet/pnodes/enums/enum_text_align.dart';
@@ -219,6 +222,36 @@ class EnumPNode<T> extends PNode {
         onChangedF: (newValueIndex) =>
             onIndexChange(valueIndex = newValueIndex),
          
+      );
+    }
+    // CSSGrid AutoPlacement -------------
+    if (_sameType<T, CSSGridAutoPlacementEnumModel?>()) {
+      return CSSGridAutoPlacementEnumModel.propertyNodeContents(
+        snode: snode,
+        label: name,
+        enumValueIndex: valueIndex,
+        onChangedF: (newValueIndex) =>
+            onIndexChange(valueIndex = newValueIndex),
+      );
+    }
+    // CSSGrid GridFit -------------
+    if (_sameType<T, CSSGridFitEnumModel?>()) {
+      return CSSGridFitEnumModel.propertyNodeContents(
+        snode: snode,
+        label: name,
+        enumValueIndex: valueIndex,
+        onChangedF: (newValueIndex) =>
+            onIndexChange(valueIndex = newValueIndex),
+      );
+    }
+    // ResponsiveFlexList AnimationType -------------
+    if (_sameType<T, RFLAnimationTypeEnumModel?>()) {
+      return RFLAnimationTypeEnumModel.propertyNodeContents(
+        snode: snode,
+        label: name,
+        enumValueIndex: valueIndex,
+        onChangedF: (newValueIndex) =>
+            onIndexChange(valueIndex = newValueIndex),
       );
     }
     // StackFit -------------

@@ -115,7 +115,7 @@ class QuillViewer extends HookWidget {
     return Stack(
       children: [
         Container(
-          padding: const EdgeInsets.all(4),
+          padding: parentSNode.padding,
           decoration: BoxDecoration(
             border: Border.all(color: Colors.transparent, width: 2),
             borderRadius: BorderRadius.circular(4),

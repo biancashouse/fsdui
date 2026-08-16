@@ -9,7 +9,7 @@ import 'snippet_being_edited.dart';
 part 'capi_state.freezed.dart';
 
 @freezed
-class CAPIState with _$CAPIState {
+abstract class CAPIState with _$CAPIState {
   const CAPIState._();
 
   // one per page, each having its own json data file

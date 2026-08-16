@@ -1,6 +1,8 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -22,49 +24,93 @@ class QuillTextNodeMapper extends SubClassMapperBase<QuillTextNode> {
   final String id = 'QuillTextNode';
 
   static String? _$name(QuillTextNode v) => v.name;
-  static const Field<QuillTextNode, String> _f$name =
-      Field('name', _$name, opt: true);
+  static const Field<QuillTextNode, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static String _$deltaJsonString(QuillTextNode v) => v.deltaJsonString;
   static const Field<QuillTextNode, String> _f$deltaJsonString = Field(
-      'deltaJsonString', _$deltaJsonString,
-      opt: true, def: k_emptyDeltaJsonString);
+    'deltaJsonString',
+    _$deltaJsonString,
+    opt: true,
+    def: k_emptyDeltaJsonString,
+  );
   static double _$h1BottomGap(QuillTextNode v) => v.h1BottomGap;
-  static const Field<QuillTextNode, double> _f$h1BottomGap =
-      Field('h1BottomGap', _$h1BottomGap, opt: true, def: 16.0);
+  static const Field<QuillTextNode, double> _f$h1BottomGap = Field(
+    'h1BottomGap',
+    _$h1BottomGap,
+    opt: true,
+    def: 16.0,
+  );
   static double _$h2BottomGap(QuillTextNode v) => v.h2BottomGap;
-  static const Field<QuillTextNode, double> _f$h2BottomGap =
-      Field('h2BottomGap', _$h2BottomGap, opt: true, def: 12.0);
+  static const Field<QuillTextNode, double> _f$h2BottomGap = Field(
+    'h2BottomGap',
+    _$h2BottomGap,
+    opt: true,
+    def: 12.0,
+  );
   static double _$h3BottomGap(QuillTextNode v) => v.h3BottomGap;
-  static const Field<QuillTextNode, double> _f$h3BottomGap =
-      Field('h3BottomGap', _$h3BottomGap, opt: true, def: 8.0);
+  static const Field<QuillTextNode, double> _f$h3BottomGap = Field(
+    'h3BottomGap',
+    _$h3BottomGap,
+    opt: true,
+    def: 8.0,
+  );
   static double _$listItemGap(QuillTextNode v) => v.listItemGap;
-  static const Field<QuillTextNode, double> _f$listItemGap =
-      Field('listItemGap', _$listItemGap, opt: true, def: 8.0);
+  static const Field<QuillTextNode, double> _f$listItemGap = Field(
+    'listItemGap',
+    _$listItemGap,
+    opt: true,
+    def: 8.0,
+  );
   static double _$paragraphBottomGap(QuillTextNode v) => v.paragraphBottomGap;
-  static const Field<QuillTextNode, double> _f$paragraphBottomGap =
-      Field('paragraphBottomGap', _$paragraphBottomGap, opt: true, def: 16.0);
+  static const Field<QuillTextNode, double> _f$paragraphBottomGap = Field(
+    'paragraphBottomGap',
+    _$paragraphBottomGap,
+    opt: true,
+    def: 16.0,
+  );
+  static EdgeInsets? _$padding(QuillTextNode v) => v.padding;
+  static const Field<QuillTextNode, EdgeInsets> _f$padding = Field(
+    'padding',
+    _$padding,
+    opt: true,
+  );
   static String _$uid(QuillTextNode v) => v.uid;
-  static const Field<QuillTextNode, String> _f$uid =
-      Field('uid', _$uid, mode: FieldMode.member);
+  static const Field<QuillTextNode, String> _f$uid = Field(
+    'uid',
+    _$uid,
+    mode: FieldMode.member,
+  );
   static List<String>? _$tags(QuillTextNode v) => v.tags;
-  static const Field<QuillTextNode, List<String>> _f$tags =
-      Field('tags', _$tags, mode: FieldMode.member);
+  static const Field<QuillTextNode, List<String>> _f$tags = Field(
+    'tags',
+    _$tags,
+    mode: FieldMode.member,
+  );
   static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(QuillTextNode v) =>
       v.treeNodeGK;
   static const Field<QuillTextNode, GlobalKey<State<StatefulWidget>>>
-      _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
+  _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(QuillTextNode v) => v.isExpanded;
-  static const Field<QuillTextNode, bool> _f$isExpanded =
-      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static const Field<QuillTextNode, bool> _f$isExpanded = Field(
+    'isExpanded',
+    _$isExpanded,
+    mode: FieldMode.member,
+  );
   static bool? _$hidePropertiesWhileDragging(QuillTextNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<QuillTextNode, bool> _f$hidePropertiesWhileDragging =
-      Field('hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
-          mode: FieldMode.member);
+      Field(
+        'hidePropertiesWhileDragging',
+        _$hidePropertiesWhileDragging,
+        mode: FieldMode.member,
+      );
   static GlobalKey<State<StatefulWidget>>? _$nodeGK(QuillTextNode v) =>
       v.nodeGK;
   static const Field<QuillTextNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
+  _f$nodeGK = Field('nodeGK', _$nodeGK, mode: FieldMode.member);
 
   @override
   final MappableFields<QuillTextNode> fields = const {
@@ -75,6 +121,7 @@ class QuillTextNodeMapper extends SubClassMapperBase<QuillTextNode> {
     #h3BottomGap: _f$h3BottomGap,
     #listItemGap: _f$listItemGap,
     #paragraphBottomGap: _f$paragraphBottomGap,
+    #padding: _f$padding,
     #uid: _f$uid,
     #tags: _f$tags,
     #treeNodeGK: _f$treeNodeGK,
@@ -95,13 +142,15 @@ class QuillTextNodeMapper extends SubClassMapperBase<QuillTextNode> {
 
   static QuillTextNode _instantiate(DecodingData data) {
     return QuillTextNode(
-        name: data.dec(_f$name),
-        deltaJsonString: data.dec(_f$deltaJsonString),
-        h1BottomGap: data.dec(_f$h1BottomGap),
-        h2BottomGap: data.dec(_f$h2BottomGap),
-        h3BottomGap: data.dec(_f$h3BottomGap),
-        listItemGap: data.dec(_f$listItemGap),
-        paragraphBottomGap: data.dec(_f$paragraphBottomGap));
+      name: data.dec(_f$name),
+      deltaJsonString: data.dec(_f$deltaJsonString),
+      h1BottomGap: data.dec(_f$h1BottomGap),
+      h2BottomGap: data.dec(_f$h2BottomGap),
+      h3BottomGap: data.dec(_f$h3BottomGap),
+      listItemGap: data.dec(_f$listItemGap),
+      paragraphBottomGap: data.dec(_f$paragraphBottomGap),
+      padding: data.dec(_f$padding),
+    );
   }
 
   @override
@@ -118,34 +167,43 @@ class QuillTextNodeMapper extends SubClassMapperBase<QuillTextNode> {
 
 mixin QuillTextNodeMappable {
   String toJson() {
-    return QuillTextNodeMapper.ensureInitialized()
-        .encodeJson<QuillTextNode>(this as QuillTextNode);
+    return QuillTextNodeMapper.ensureInitialized().encodeJson<QuillTextNode>(
+      this as QuillTextNode,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return QuillTextNodeMapper.ensureInitialized()
-        .encodeMap<QuillTextNode>(this as QuillTextNode);
+    return QuillTextNodeMapper.ensureInitialized().encodeMap<QuillTextNode>(
+      this as QuillTextNode,
+    );
   }
 
   QuillTextNodeCopyWith<QuillTextNode, QuillTextNode, QuillTextNode>
-      get copyWith => _QuillTextNodeCopyWithImpl<QuillTextNode, QuillTextNode>(
-          this as QuillTextNode, $identity, $identity);
+  get copyWith => _QuillTextNodeCopyWithImpl<QuillTextNode, QuillTextNode>(
+    this as QuillTextNode,
+    $identity,
+    $identity,
+  );
   @override
   String toString() {
-    return QuillTextNodeMapper.ensureInitialized()
-        .stringifyValue(this as QuillTextNode);
+    return QuillTextNodeMapper.ensureInitialized().stringifyValue(
+      this as QuillTextNode,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return QuillTextNodeMapper.ensureInitialized()
-        .equalsValue(this as QuillTextNode, other);
+    return QuillTextNodeMapper.ensureInitialized().equalsValue(
+      this as QuillTextNode,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return QuillTextNodeMapper.ensureInitialized()
-        .hashValue(this as QuillTextNode);
+    return QuillTextNodeMapper.ensureInitialized().hashValue(
+      this as QuillTextNode,
+    );
   }
 }
 
@@ -158,14 +216,16 @@ extension QuillTextNodeValueCopy<$R, $Out>
 abstract class QuillTextNodeCopyWith<$R, $In extends QuillTextNode, $Out>
     implements SNodeCopyWith<$R, $In, $Out> {
   @override
-  $R call(
-      {String? name,
-      String? deltaJsonString,
-      double? h1BottomGap,
-      double? h2BottomGap,
-      double? h3BottomGap,
-      double? listItemGap,
-      double? paragraphBottomGap});
+  $R call({
+    String? name,
+    String? deltaJsonString,
+    double? h1BottomGap,
+    double? h2BottomGap,
+    double? h3BottomGap,
+    double? listItemGap,
+    double? paragraphBottomGap,
+    EdgeInsets? padding,
+  });
   QuillTextNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -178,36 +238,45 @@ class _QuillTextNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<QuillTextNode> $mapper =
       QuillTextNodeMapper.ensureInitialized();
   @override
-  $R call(
-          {Object? name = $none,
-          String? deltaJsonString,
-          double? h1BottomGap,
-          double? h2BottomGap,
-          double? h3BottomGap,
-          double? listItemGap,
-          double? paragraphBottomGap}) =>
-      $apply(FieldCopyWithData({
-        if (name != $none) #name: name,
-        if (deltaJsonString != null) #deltaJsonString: deltaJsonString,
-        if (h1BottomGap != null) #h1BottomGap: h1BottomGap,
-        if (h2BottomGap != null) #h2BottomGap: h2BottomGap,
-        if (h3BottomGap != null) #h3BottomGap: h3BottomGap,
-        if (listItemGap != null) #listItemGap: listItemGap,
-        if (paragraphBottomGap != null) #paragraphBottomGap: paragraphBottomGap
-      }));
+  $R call({
+    Object? name = $none,
+    String? deltaJsonString,
+    double? h1BottomGap,
+    double? h2BottomGap,
+    double? h3BottomGap,
+    double? listItemGap,
+    double? paragraphBottomGap,
+    Object? padding = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (name != $none) #name: name,
+      if (deltaJsonString != null) #deltaJsonString: deltaJsonString,
+      if (h1BottomGap != null) #h1BottomGap: h1BottomGap,
+      if (h2BottomGap != null) #h2BottomGap: h2BottomGap,
+      if (h3BottomGap != null) #h3BottomGap: h3BottomGap,
+      if (listItemGap != null) #listItemGap: listItemGap,
+      if (paragraphBottomGap != null) #paragraphBottomGap: paragraphBottomGap,
+      if (padding != $none) #padding: padding,
+    }),
+  );
   @override
   QuillTextNode $make(CopyWithData data) => QuillTextNode(
-      name: data.get(#name, or: $value.name),
-      deltaJsonString: data.get(#deltaJsonString, or: $value.deltaJsonString),
-      h1BottomGap: data.get(#h1BottomGap, or: $value.h1BottomGap),
-      h2BottomGap: data.get(#h2BottomGap, or: $value.h2BottomGap),
-      h3BottomGap: data.get(#h3BottomGap, or: $value.h3BottomGap),
-      listItemGap: data.get(#listItemGap, or: $value.listItemGap),
-      paragraphBottomGap:
-          data.get(#paragraphBottomGap, or: $value.paragraphBottomGap));
+    name: data.get(#name, or: $value.name),
+    deltaJsonString: data.get(#deltaJsonString, or: $value.deltaJsonString),
+    h1BottomGap: data.get(#h1BottomGap, or: $value.h1BottomGap),
+    h2BottomGap: data.get(#h2BottomGap, or: $value.h2BottomGap),
+    h3BottomGap: data.get(#h3BottomGap, or: $value.h3BottomGap),
+    listItemGap: data.get(#listItemGap, or: $value.listItemGap),
+    paragraphBottomGap: data.get(
+      #paragraphBottomGap,
+      or: $value.paragraphBottomGap,
+    ),
+    padding: data.get(#padding, or: $value.padding),
+  );
 
   @override
   QuillTextNodeCopyWith<$R2, QuillTextNode, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _QuillTextNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _QuillTextNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

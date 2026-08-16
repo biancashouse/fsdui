@@ -24,14 +24,17 @@ final List<WidgetEntry> widgetRegistry = [
   const WidgetEntry(label: 'Wrap', type: WrapNode, category: WidgetCategory.flex),
   // scroll
   const WidgetEntry(label: 'GridView', type: GridViewNode, category: WidgetCategory.scroll),
-  const WidgetEntry(label: 'Dashboard', type: DashboardNode, category: WidgetCategory.scroll, keywords: ['grid', 'draggable', 'resizable', 'layout']),
+  // const WidgetEntry(label: 'Dashboard', type: DashboardNode, category: WidgetCategory.scroll, keywords: ['grid', 'draggable', 'resizable', 'layout']),
   const WidgetEntry(label: 'InteractiveViewer', type: InteractiveViewerNode, category: WidgetCategory.scroll),
   const WidgetEntry(label: 'ListView', type: ListViewNode, category: WidgetCategory.scroll),
   const WidgetEntry(label: 'PageView', type: PageViewNode, category: WidgetCategory.scroll),
+  const WidgetEntry(label: 'ResponsiveFlexList', type: ResponsiveFlexListNode, category: WidgetCategory.scroll, keywords: ['grid', 'responsive', 'list', 'masonry']),
+  const WidgetEntry(label: 'CSSGrid', type: CSSGridNode, category: WidgetCategory.scroll, keywords: ['grid', 'css', 'layout', 'columns', 'rows']),
   const WidgetEntry(label: 'SingleChildScrollView', type: SingleChildScrollViewNode, category: WidgetCategory.scroll),
   const WidgetEntry(label: 'ArticleListView', type: ArticleListViewNode, category: WidgetCategory.scroll),
   // stack
   const WidgetEntry(label: 'Positioned', type: PositionedNode, category: WidgetCategory.stack),
+  const WidgetEntry(label: 'GridPlacement', type: GridPlacementNode, category: WidgetCategory.stack, keywords: ['grid', 'css', 'placement']),
   const WidgetEntry(label: 'SplitView', type: SplitViewNode, category: WidgetCategory.stack),
   const WidgetEntry(label: 'Stack', type: StackNode, category: WidgetCategory.stack),
   // slivers

@@ -1,6 +1,7 @@
 // ignore_for_file: constant_identifier_names
 import 'dart:async';
 
+import 'package:carousel_slider_plus/carousel_slider_plus.dart';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:fsdui/fsdui.dart';
@@ -39,8 +40,10 @@ class CarouselViewNode extends SNode with MC, CarouselViewNodeMappable {
 
   Color? backgroundColor;
   Color? overlayColor;
+  EdgeInsets? margin;
   EdgeInsets? padding;
-  double height;
+
+  // double? height;
   double? elevation;
   bool itemSnapping;
   double shrinkExtent;
@@ -61,7 +64,8 @@ class CarouselViewNode extends SNode with MC, CarouselViewNodeMappable {
     this.backgroundColor,
     this.overlayColor,
     this.padding,
-    this.height = 200,
+    this.margin,
+    // this.height,
     this.elevation,
     this.itemSnapping = false,
     this.scrollDirection = AxisEnum.horizontal,
@@ -81,6 +85,12 @@ class CarouselViewNode extends SNode with MC, CarouselViewNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
+    EdgeInsetsPNode(
+      snode: this,
+      name: 'margin',
+      ei: margin,
+      onEIChangedF: (newEI) => refreshWithUpdate(context, () => margin = newEI),
+    ),
     EdgeInsetsPNode(
       snode: this,
       name: 'padding',
@@ -109,13 +119,13 @@ class CarouselViewNode extends SNode with MC, CarouselViewNodeMappable {
     //   onEIChangedF: (newEI) =>
     //       refreshWithUpdate(context, () => padding = newEI),
     // ), //   DecimalPNode(
-    DecimalPNode(
-      snode: this,
-      name: 'height',
-      decimalValue: height,
-      onDoubleChange: (newValue) =>
-          refreshWithUpdate(context, () => height = newValue ?? 200),
-    ),
+    // DecimalPNode(
+    //   snode: this,
+    //   name: 'height',
+    //   decimalValue: height,
+    //   onDoubleChange: (newValue) =>
+    //       refreshWithUpdate(context, () => height = newValue ?? 200),
+    // ),
     DecimalPNode(
       snode: this,
       name: 'shrinkExtent',
@@ -141,7 +151,7 @@ class CarouselViewNode extends SNode with MC, CarouselViewNodeMappable {
     DecimalPNode(
       snode: this,
       name: 'elevation',
-      decimalValue: height,
+      decimalValue: elevation,
       onDoubleChange: (newValue) =>
           refreshWithUpdate(context, () => elevation = newValue),
     ),
@@ -199,7 +209,7 @@ class CarouselViewNode extends SNode with MC, CarouselViewNodeMappable {
           ? kDemoImages
                 .map(
                   (name) => Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    padding: padding ?? EdgeInsets.zero,
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
@@ -214,7 +224,10 @@ class CarouselViewNode extends SNode with MC, CarouselViewNodeMappable {
                 )
                 .toList()
           : children.map((SNode node) {
-              final w = node.build(context, this);
+              final w = Padding(
+                padding: padding ?? EdgeInsets.zero,
+                child: node.build(context, this),
+              );
               // ListView / GridView / CustomScrollView render as RenderViewport,
               // which asserts on computeMinIntrinsicWidth. Pre-wrap them in a
               // SizedBox so they get a bounded width instead of the viewport
@@ -222,7 +235,11 @@ class CarouselViewNode extends SNode with MC, CarouselViewNodeMappable {
               if (node is ListViewNode ||
                   node is GridViewNode ||
                   node is CustomScrollViewNode) {
-                return SizedBox(width: height, child: w);
+                return SizedBox(
+                  width: fsdui.scrW / 2,
+                  height: fsdui.scrH - 250,
+                  child: w,
+                );
               }
               return w;
             }).toList();
@@ -231,23 +248,36 @@ class CarouselViewNode extends SNode with MC, CarouselViewNodeMappable {
       // cross-axis extent (height, for the default horizontal
       // scrollDirection). Without it, ancestors that hand out unbounded
       // height (e.g. a Column) trigger a hasSize assertion failure.
-      return SizedBox(
-        height: height,
-        child: _AutoPlayingCarouselView(
-          key: createNodeWidgetGK(),
-          padding: padding,
-          backgroundColor: backgroundColor,
-          overlayColor: overlayColor,
-          infinite: infinite,
-          elevation: elevation,
-          itemSnapping: itemSnapping,
-          shrinkExtent: shrinkExtent,
-          scrollDirection: scrollDirection.flutterValue,
-          itemExtent: itemExtent ?? 600.0,
-          autoPlay: autoPlay,
-          autoPlayIntervalSecs: autoPlayIntervalSecs,
-          children: widgets,
-        ),
+      return Container(
+        margin: margin ?? EdgeInsets.zero,
+        width: fsdui.scrW / 2,
+        height: fsdui.scrH - 250,
+        child: fsdui.canEditAnyContent()
+            ? CarouselSlider.builder(
+                key: createNodeWidgetGK(),
+                itemCount: widgets.length,
+                options: CarouselOptions(
+                  aspectRatio: 1.0,
+                  height: fsdui.scrH - 250,
+                ),
+                itemBuilder: (context, itemIndex, realIndex) {
+                  return widgets[itemIndex];
+                },
+              )
+            : _AutoPlayingCarouselView(
+                key: createNodeWidgetGK(),
+                backgroundColor: backgroundColor,
+                overlayColor: overlayColor,
+                infinite: infinite,
+                elevation: elevation,
+                itemSnapping: itemSnapping,
+                shrinkExtent: shrinkExtent,
+                scrollDirection: scrollDirection.flutterValue,
+                itemExtent: itemExtent ?? 600.0,
+                autoPlay: autoPlay,
+                autoPlayIntervalSecs: autoPlayIntervalSecs,
+                children: widgets,
+              ),
       );
     } catch (e) {
       return Error(
@@ -287,7 +317,6 @@ class CarouselViewNode extends SNode with MC, CarouselViewNodeMappable {
 /// around indefinitely, it doesn't move anything on its own.
 class _AutoPlayingCarouselView extends StatefulWidget {
   final List<Widget> children;
-  final EdgeInsets? padding;
   final Color? backgroundColor;
   final Color? overlayColor;
   final double? elevation;
@@ -302,7 +331,6 @@ class _AutoPlayingCarouselView extends StatefulWidget {
   const _AutoPlayingCarouselView({
     super.key,
     required this.children,
-    this.padding,
     this.backgroundColor,
     this.overlayColor,
     this.elevation,
@@ -324,6 +352,11 @@ class _AutoPlayingCarouselViewState extends State<_AutoPlayingCarouselView> {
   final _controller = CarouselController();
   Timer? _timer;
 
+  // Once the user taps or drags the carousel themselves, autoplay stops
+  // for good rather than resuming later — resuming mid-interaction (or
+  // after) would fight the user's own scroll position.
+  bool _userInteracted = false;
+
   @override
   void initState() {
     super.initState();
@@ -342,11 +375,25 @@ class _AutoPlayingCarouselViewState extends State<_AutoPlayingCarouselView> {
 
   void _restartTimer() {
     _timer?.cancel();
-    if (!widget.autoPlay || widget.children.length < 2) return;
+    if (_userInteracted || !widget.autoPlay || widget.children.length < 2) {
+      return;
+    }
     _timer = Timer.periodic(
       Duration(milliseconds: (widget.autoPlayIntervalSecs * 1000).round()),
       (_) => _advance(),
     );
+  }
+
+  // Any pointer-down on the carousel — whether it turns into a tap or a
+  // drag — means the user is interacting with it, so autoplay should get
+  // out of the way. Our own _advance()'s controller.animateTo() calls are
+  // programmatic and never involve a pointer event, so they don't trigger
+  // this.
+  void _stopAutoPlayOnUserInteraction() {
+    if (_userInteracted) return;
+    _userInteracted = true;
+    _timer?.cancel();
+    _timer = null;
   }
 
   void _advance() {
@@ -370,20 +417,23 @@ class _AutoPlayingCarouselViewState extends State<_AutoPlayingCarouselView> {
 
   @override
   Widget build(BuildContext context) {
-    return CarouselView(
-      controller: _controller,
-      padding: widget.padding,
-      backgroundColor: widget.backgroundColor,
-      overlayColor: widget.overlayColor != null
-          ? WidgetStatePropertyAll(widget.overlayColor)
-          : null,
-      infinite: widget.infinite,
-      elevation: widget.elevation,
-      itemSnapping: widget.itemSnapping,
-      shrinkExtent: widget.shrinkExtent,
-      scrollDirection: widget.scrollDirection,
-      itemExtent: widget.itemExtent,
-      children: widget.children,
+    return Listener(
+      onPointerDown: (_) => _stopAutoPlayOnUserInteraction(),
+      child: CarouselView.weighted(
+        controller: _controller,
+        // padding: const EdgeInsets.all(28.0),
+        backgroundColor: widget.backgroundColor,
+        overlayColor: widget.overlayColor != null
+            ? WidgetStatePropertyAll(widget.overlayColor)
+            : null,
+        infinite: widget.infinite,
+        elevation: widget.elevation,
+        itemSnapping: widget.itemSnapping,
+        shrinkExtent: widget.shrinkExtent,
+        scrollDirection: widget.scrollDirection,
+        flexWeights: const [6, 5, 2, 2],
+        children: widget.children,
+      ),
     );
   }
 }

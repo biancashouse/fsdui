@@ -16,6 +16,7 @@ import 'package:fsdui/src/snippet/snodes/quill/widgets/quill_viewer.dart' show Q
 import 'package:vsc_quill_delta_to_html/vsc_quill_delta_to_html.dart';
 import 'package:flutter_html/flutter_html.dart';
 
+import '../../pnodes/edgeinsets_pnode.dart';
 import 'widgets/focus_aware_quill_editor.dart';
 
 part 'quill_text_node.mapper.dart';
@@ -39,6 +40,7 @@ class QuillTextNode extends SNode with QuillTextNodeMappable {
   // has *no* spacing at all (top or bottom), so paragraphs sit flush
   // against each other unless this is set.
   double paragraphBottomGap;
+  EdgeInsets? padding;
 
   QuillTextNode({
     super.name,
@@ -48,6 +50,7 @@ class QuillTextNode extends SNode with QuillTextNodeMappable {
     this.h3BottomGap = 8.0,
     this.listItemGap = 8.0,
     this.paragraphBottomGap = 16.0,
+    this.padding,
   });
 
   CalloutId get quillTextToolbarCID => 'quill-toolbar-$uid';
@@ -73,6 +76,13 @@ class QuillTextNode extends SNode with QuillTextNodeMappable {
         webLink: 'https://pub.dev/packages/flutter_quill',
         snode: this,
         name: 'fyi',
+      ),
+      EdgeInsetsPNode(
+        snode: this,
+        name: 'padding',
+        ei: padding,
+        onEIChangedF: (newEI) =>
+            refreshWithUpdate(context, () => padding = newEI),
       ),
       DecimalPNode(
         snode: this,
