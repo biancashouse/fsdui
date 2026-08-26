@@ -24,17 +24,27 @@ mixin NavMixin {
     }
   }
 
-  Widget NavigationDD({Color pencilIconColor = Colors.white, String? appVersion}) =>
-      BlocBuilder<CAPIBloC, CAPIState>(
-        builder: (context, state) {
-          bool showPencil = !(state.verified ?? false);
-          return showPencil
-              ? _dropdownButtonNotSignedIn(context, state, pencilIconColor, appVersion)
-              : _dropdownButtonSignedIn(context, state, appVersion);
-        },
-      );
+  Widget NavigationDD({
+    Color pencilIconColor = Colors.white,
+    String? appVersion,
+    GlobalKey? gk,
+  }) => BlocBuilder<CAPIBloC, CAPIState>(
+    builder: (context, state) {
+      bool showPencil = !(state.verified ?? false);
+      return showPencil
+          ? _dropdownButtonNotSignedIn(
+              gk,
+              context,
+              state,
+              pencilIconColor,
+              appVersion,
+            )
+          : _dropdownButtonSignedIn(context, state, appVersion);
+    },
+  );
 
   Widget _dropdownButtonNotSignedIn(
+    GlobalKey? gk,
     BuildContext context,
     CAPIState state,
     Color pencilIconColor,
@@ -97,7 +107,7 @@ mixin NavMixin {
           // key: fco.authIconGK,
           itemBuilder: (context) => dropdownItems,
           icon: PointerInterceptor(
-            child: Icon(Icons.edit, color: pencilIconColor, size: 24),
+            child: Icon(key: gk, Icons.edit, color: pencilIconColor, size: 24),
           ),
           color: Colors.white,
           onSelected: (value) {
@@ -110,7 +120,11 @@ mixin NavMixin {
     );
   }
 
-  Widget _dropdownButtonSignedIn(BuildContext context, CAPIState state, String? appVersion) {
+  Widget _dropdownButtonSignedIn(
+    BuildContext context,
+    CAPIState state,
+    String? appVersion,
+  ) {
     List<PopupMenuEntry<String>> dropdownItems = [
       // signed in as super, article or guest editor
       // if (!(state.isSignedInAsNormalUser ?? false))
@@ -202,24 +216,22 @@ mixin NavMixin {
     );
   }
 
-  PopupMenuItem<String> _aboutUsItem(
-    BuildContext context,
-    CAPIState state,
-  ) => _dropdownItemWithPI(
-    value: 'about-us',
-    child: MenuItemButton(
-      onPressed: () {
-        Navigator.pop(context);
-        // context.go('/about-us');
-        if (state.isNotSignedIn()) {
-          fsdui.aboutUsNotSignedInF?.call();
-        } else {
-          fsdui.aboutUsSignedInF?.call();
-        }
-      },
-      child: Text('about us'),
-    ),
-  );
+  PopupMenuItem<String> _aboutUsItem(BuildContext context, CAPIState state) =>
+      _dropdownItemWithPI(
+        value: 'about-us',
+        child: MenuItemButton(
+          onPressed: () {
+            Navigator.pop(context);
+            // context.go('/about-us');
+            if (state.isNotSignedIn()) {
+              fsdui.aboutUsNotSignedInF?.call();
+            } else {
+              fsdui.aboutUsSignedInF?.call();
+            }
+          },
+          child: Text('about us'),
+        ),
+      );
 
   void _addBrightnessItem(
     BuildContext context,
@@ -280,6 +292,7 @@ mixin NavMixin {
     String sandboxIndicator,
   ) => GestureDetector(
     onTap: () {
+      Navigator.pop(context);
       context.go(pagePath);
       // something funny going on when not in prod mode
       // if (false && kDebugMode) {
