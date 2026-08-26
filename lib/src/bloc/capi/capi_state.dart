@@ -69,7 +69,10 @@ abstract class CAPIState with _$CAPIState {
   }) = _CAPIState;
 
   bool isNotSignedIn() {
-    return ea == null || token == null || !(verified ?? false);
+    if (isSignedInAsNormalUser()??false) return false;
+    if (isSignedInAsSuperEditor??false) return false;
+    if ((isSignedInAsArticleEditor??false)) return false;
+    return  ea == null || token == null || !(verified ?? false);
   }
 
   bool isSignedInAsNormalUser() {

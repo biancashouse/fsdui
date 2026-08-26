@@ -49,6 +49,12 @@ class CarouselViewNodeMapper extends SubClassMapperBase<CarouselViewNode> {
     _$padding,
     opt: true,
   );
+  static EdgeInsets? _$margin(CarouselViewNode v) => v.margin;
+  static const Field<CarouselViewNode, EdgeInsets> _f$margin = Field(
+    'margin',
+    _$margin,
+    opt: true,
+  );
   static double? _$elevation(CarouselViewNode v) => v.elevation;
   static const Field<CarouselViewNode, double> _f$elevation = Field(
     'elevation',
@@ -151,6 +157,7 @@ class CarouselViewNodeMapper extends SubClassMapperBase<CarouselViewNode> {
     #backgroundColor: _f$backgroundColor,
     #overlayColor: _f$overlayColor,
     #padding: _f$padding,
+    #margin: _f$margin,
     #elevation: _f$elevation,
     #itemSnapping: _f$itemSnapping,
     #scrollDirection: _f$scrollDirection,
@@ -184,6 +191,7 @@ class CarouselViewNodeMapper extends SubClassMapperBase<CarouselViewNode> {
       backgroundColor: data.dec(_f$backgroundColor),
       overlayColor: data.dec(_f$overlayColor),
       padding: data.dec(_f$padding),
+      margin: data.dec(_f$margin),
       elevation: data.dec(_f$elevation),
       itemSnapping: data.dec(_f$itemSnapping),
       scrollDirection: data.dec(_f$scrollDirection),
@@ -265,6 +273,7 @@ abstract class CarouselViewNodeCopyWith<$R, $In extends CarouselViewNode, $Out>
     Color? backgroundColor,
     Color? overlayColor,
     EdgeInsets? padding,
+    EdgeInsets? margin,
     double? elevation,
     bool? itemSnapping,
     AxisEnum? scrollDirection,
@@ -301,6 +310,7 @@ class _CarouselViewNodeCopyWithImpl<$R, $Out>
     Object? backgroundColor = $none,
     Object? overlayColor = $none,
     Object? padding = $none,
+    Object? margin = $none,
     Object? elevation = $none,
     bool? itemSnapping,
     AxisEnum? scrollDirection,
@@ -316,6 +326,7 @@ class _CarouselViewNodeCopyWithImpl<$R, $Out>
       if (backgroundColor != $none) #backgroundColor: backgroundColor,
       if (overlayColor != $none) #overlayColor: overlayColor,
       if (padding != $none) #padding: padding,
+      if (margin != $none) #margin: margin,
       if (elevation != $none) #elevation: elevation,
       if (itemSnapping != null) #itemSnapping: itemSnapping,
       if (scrollDirection != null) #scrollDirection: scrollDirection,
@@ -334,6 +345,7 @@ class _CarouselViewNodeCopyWithImpl<$R, $Out>
     backgroundColor: data.get(#backgroundColor, or: $value.backgroundColor),
     overlayColor: data.get(#overlayColor, or: $value.overlayColor),
     padding: data.get(#padding, or: $value.padding),
+    margin: data.get(#margin, or: $value.margin),
     elevation: data.get(#elevation, or: $value.elevation),
     itemSnapping: data.get(#itemSnapping, or: $value.itemSnapping),
     scrollDirection: data.get(#scrollDirection, or: $value.scrollDirection),
