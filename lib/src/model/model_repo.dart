@@ -106,4 +106,19 @@ abstract class IModelRepository {
 
   Future<void> saveRating(String appId, String email, int stars);
   Future<void> saveFeedback(String appId, String email, String feedback);
+
+  /// Merges [fields] into the verified-user doc's `crosswordProgress.<puzzleId>`
+  /// map. Firestore's merge:true recursively merges nested maps, so this only
+  /// touches the given puzzle's sub-fields — safe to call with a partial
+  /// [fields] (e.g. just `{'completed': true}`) without clobbering the rest.
+  Future<void> saveCrosswordProgress(
+    String appId,
+    String email,
+    String puzzleId,
+    Map<String, dynamic> fields,
+  );
+  Stream<Map<String, dynamic>?> watchVerifiedUserDoc(
+    String appId,
+    String email,
+  );
 }

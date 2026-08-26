@@ -846,6 +846,33 @@ class FireStoreModelRepository implements IModelRepository {
         }, SetOptions(merge: true));
   }
 
+  @override
+  Future<void> saveCrosswordProgress(
+    String appId,
+    String email,
+    String puzzleId,
+    Map<String, dynamic> fields,
+  ) async {
+    await FirebaseFirestore.instance
+        .collection(_confirmedTokensCollection(appId))
+        .doc(_normaliseEa(email))
+        .set({
+          'crosswordProgress': {puzzleId: fields},
+        }, SetOptions(merge: true));
+  }
+
+  @override
+  Stream<Map<String, dynamic>?> watchVerifiedUserDoc(
+    String appId,
+    String email,
+  ) {
+    return FirebaseFirestore.instance
+        .collection(_confirmedTokensCollection(appId))
+        .doc(_normaliseEa(email))
+        .snapshots()
+        .map((snapshot) => snapshot.data());
+  }
+
   DocumentReference get appDocRef => FirebaseFirestore.instance
       .collection('/flutter-content')
       .doc(fsdui.appId);
