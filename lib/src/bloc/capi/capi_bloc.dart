@@ -143,19 +143,19 @@ class CAPIBloC extends HydratedBloc<CAPIEvent, CAPIState> {
       (event, emit) => _toggleNodeProperties(event, emit),
     );
 
-    // Debug convenience: skip the real passwordless email-token sign-in flow
-    // and simulate an already-verified sign-in. Goes through the same event
-    // handler (_onTokenConfirmed) as a real sign-in, so it overrides
-    // whatever HydratedBloc restored from persisted state (e.g. a previous
-    // sign-out) rather than only affecting the initial state.
-    if (kDebugMode) {
-      add(
-        const TokenConfirmed(
-          ea: 'biancashouse@gmail.com',
-          token: 'debug-mode-token',
-        ),
-      );
-    }
+    // // Debug convenience: skip the real passwordless email-token sign-in flow
+    // // and simulate an already-verified sign-in. Goes through the same event
+    // // handler (_onTokenConfirmed) as a real sign-in, so it overrides
+    // // whatever HydratedBloc restored from persisted state (e.g. a previous
+    // // sign-out) rather than only affecting the initial state.
+    // if (kDebugMode) {
+    //   add(
+    //     const TokenConfirmed(
+    //       ea: 'biancashouse@gmail.com',
+    //       token: 'debug-mode-token',
+    //     ),
+    //   );
+    // }
   }
 
   /// auth ---------------

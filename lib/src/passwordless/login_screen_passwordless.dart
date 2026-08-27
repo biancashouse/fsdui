@@ -31,6 +31,8 @@ class _LoginScreenPasswordlessState extends State<LoginScreenPasswordless>
 
     if (fsdui.capiBloc.state.ea != null) {
       _eaController = TextEditingController(text: fsdui.capiBloc.state.ea!);
+    } else if (fsdui.capiBloc.state.verifiedEas.isNotEmpty) {
+      _eaController = TextEditingController(text: fsdui.capiBloc.state.verifiedEas[0]);
     } else {
       _eaController = TextEditingController();
     }
@@ -143,7 +145,7 @@ class _LoginScreenPasswordlessState extends State<LoginScreenPasswordless>
               child: CircularProgressIndicator(strokeWidth: 2),
             )
                 : state.ea != null
-                ? const Text('Sign back in')
+                ? const Text('Sign back in (or Use a different email.)')
                 : const Text('Send verification email'),
           ),
         ],
@@ -193,7 +195,9 @@ class _LoginScreenPasswordlessState extends State<LoginScreenPasswordless>
 
   void _submit(BuildContext context) {
     final ea = removeDotsAndForceLowercase(_eaController.text.trim());
-    final prevEa = fsdui.capiBloc.state.ea != null ? removeDotsAndForceLowercase(fsdui.capiBloc.state.ea!.trim()) : null;
+    final prevEa = fsdui.capiBloc.state.ea != null
+        ? removeDotsAndForceLowercase(fsdui.capiBloc.state.ea!.trim())
+        : null;
     if (prevEa == ea) {
       // simply sign back in (applies to users who are editors)
       context.read<CAPIBloC>().add(SignBackIn());
