@@ -117,6 +117,30 @@ abstract class IModelRepository {
     String puzzleId,
     Map<String, dynamic> fields,
   );
+
+  /// Atomically increments the verified-user doc's `wordleProgress.completed`
+  /// and/or `wordleProgress.gaveUp` counters by the given deltas. Unlike
+  /// [saveCrosswordProgress] (keyed by puzzle id), wordle games have no
+  /// stable identity to key by, so progress is just running totals —
+  /// increments (rather than overwrites) so concurrent devices add up
+  /// correctly instead of clobbering each other.
+  Future<void> incrementWordleProgress(
+    String appId,
+    String email, {
+    int completed = 0,
+    int gaveUp = 0,
+  });
+
+  /// Merges [gameState] into the verified-user doc's `wordleProgress.gameState`
+  /// map — the in-progress game's word/clue/guesses, mirroring
+  /// [saveCrosswordProgress]'s `gridState` field. Unlike crossword, wordle has
+  /// only one active game at a time, so this isn't keyed by an id — each call
+  /// overwrites the previously synced game.
+  Future<void> saveWordleGameState(
+    String appId,
+    String email,
+    Map<String, dynamic> gameState,
+  );
   Stream<Map<String, dynamic>?> watchVerifiedUserDoc(
     String appId,
     String email,

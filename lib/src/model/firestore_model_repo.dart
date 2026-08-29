@@ -862,6 +862,38 @@ class FireStoreModelRepository implements IModelRepository {
   }
 
   @override
+  Future<void> incrementWordleProgress(
+    String appId,
+    String email, {
+    int completed = 0,
+    int gaveUp = 0,
+  }) async {
+    final progress = <String, dynamic>{};
+    if (completed != 0) progress['completed'] = FieldValue.increment(completed);
+    if (gaveUp != 0) progress['gaveUp'] = FieldValue.increment(gaveUp);
+    if (progress.isEmpty) return;
+
+    await FirebaseFirestore.instance
+        .collection(_confirmedTokensCollection(appId))
+        .doc(_normaliseEa(email))
+        .set({'wordleProgress': progress}, SetOptions(merge: true));
+  }
+
+  @override
+  Future<void> saveWordleGameState(
+    String appId,
+    String email,
+    Map<String, dynamic> gameState,
+  ) async {
+    await FirebaseFirestore.instance
+        .collection(_confirmedTokensCollection(appId))
+        .doc(_normaliseEa(email))
+        .set({
+          'wordleProgress': {'gameState': gameState},
+        }, SetOptions(merge: true));
+  }
+
+  @override
   Stream<Map<String, dynamic>?> watchVerifiedUserDoc(
     String appId,
     String email,
